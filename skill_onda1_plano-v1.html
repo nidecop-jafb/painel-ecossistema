@@ -633,7 +633,7 @@ select option { background: var(--superficie); color: var(--texto); }
 <div class="header">
   <div class="header-inner">
     <div class="header-marca">
-      <div class="header-titulo">Onda 1 — Plano</div>
+      <div class="header-titulo">Texto Temático — Onda 1</div>
       <div class="header-sub" id="header-sub-disciplina">Trilhas de Fisica I Aplicada a Mineracao &nbsp;·&nbsp; IFMG-OP</div>
     </div>
     <div class="trilha-badge" id="badge-trilha">T__</div>
@@ -2059,7 +2059,7 @@ async function carregarDadosJSON(disciplina, curso) {
 
     if(!dados.trilhas || Object.keys(dados.trilhas).length === 0) {
       if(statusEl) statusEl.textContent = `⚠ ${disciplina.toUpperCase()}-${curso.toUpperCase()}: template vazio`;
-      showToast(`${disciplina.toUpperCase()}-${curso.toUpperCase()} ainda não tem trilhas definidas. Use a Onda 1 (Plano) para gerar a matriz.`, 'erro');
+      showToast(`${disciplina.toUpperCase()}-${curso.toUpperCase()} ainda não tem trilhas definidas. Use a aba Texto Temático (Onda 1) para gerar a matriz.`, 'erro');
       return false;
     }
 
@@ -2311,6 +2311,10 @@ function limparEstado() {
   Object.keys(localStorage)
     .filter(k => k.startsWith(LS))
     .forEach(k => localStorage.removeItem(k));
+  /* Avisa o painel (modo embed) ANTES do reload, para ele limpar chips e ocultar o exportar */
+  if (window.parent && window.parent !== window) {
+    try { window.parent.postMessage({ type: 'trilhaLimpa' }, '*'); } catch (e) {}
+  }
   location.reload();
 }
 

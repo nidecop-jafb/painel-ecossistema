@@ -2142,7 +2142,6 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--cinza-borda);gap:8px;">
           <h2 class="section-title" style="margin:0;font-size:16px;white-space:nowrap;">Texto Tem&aacute;tico &mdash; Plano de Produ&ccedil;&atilde;o da Trilha (Onda 1)</h2>
           <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
-            <button onclick="postToOnda1('limparEstado')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:transparent;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.75);cursor:pointer;" title="Apagar campos e come&ccedil;ar nova trilha">&#10005; Nova Trilha</button>
             <button id="btn-painel-export" onclick="postToOnda1('exportRascunho')" style="display:none;font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px dashed var(--verde-claro);color:var(--verde-claro);cursor:pointer;">&#128190; Exportar rascunho (.md)</button>
             <button onclick="window.open('skill_onda1_plano-v1.html','_blank')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px solid var(--verde-claro);color:var(--verde-claro);cursor:pointer;">Abrir em nova janela &#8599;</button>
           </div>
@@ -2153,15 +2152,6 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             <span style="font-size:10px;padding:1px 8px;background:var(--verde-bg);color:var(--verde-claro);border:1px solid var(--verde-claro);font-family:var(--mono);">Clique em uma trilha &mdash; preenchimento autom&aacute;tico</span>
           </div>
           <div id="onda1-chips" style="display:flex;flex-wrap:wrap;gap:4px;max-height:72px;overflow-y:auto;"></div>
-        </div>
-        <div class="tabs" id="onda1-nav" style="margin:0;padding:0 16px;border-bottom:1px solid var(--cinza-borda);overflow-x:auto;flex-wrap:nowrap;">
-          <div class="tab active" onclick="navOnda1('sec1',this)">Ep&iacute;grafe</div>
-          <div class="tab" onclick="navOnda1('sec2',this)">Conte&uacute;do</div>
-          <div class="tab" onclick="navOnda1('sec3',this)">Narrativa</div>
-          <div class="tab" onclick="navOnda1('sec4',this)">Contextualiza&ccedil;&atilde;o</div>
-          <div class="tab" onclick="navOnda1('sec5',this)">Lacunas</div>
-          <div class="tab" onclick="navOnda1('sec6',this)">Finaliza&ccedil;&atilde;o</div>
-          <div class="tab" onclick="navOnda1('sec7',this)">P&oacute;s-Produ&ccedil;&atilde;o</div>
         </div>
         </div><!-- /onda1-sticky-header -->
         <iframe id="onda1-iframe" src="about:blank" data-src="skill_onda1_plano-v1.html" allow="clipboard-write; clipboard-read" style="width:100%;flex:1;min-height:0;border:none;display:block;background:var(--fundo);"></iframe>
@@ -2434,7 +2424,7 @@ function showTab(id) {
   if (map[id] !== undefined && tabs[map[id]]) tabs[map[id]].classList.add('active');
   var main = document.querySelector('.main');
   if (main) main.scrollTop = 0;
-  if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); }
+  if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); loadCitacoesIframe(); }
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
@@ -2534,27 +2524,6 @@ function lazyLoadIframe(iframeId) {
     }
   } else if (!iframe.getAttribute('src') || iframe.src === 'about:blank') {
     iframe.src = iframe.dataset.src;
-  }
-}
-
-function navOnda1(secId, btn) {
-  var tabs = document.querySelectorAll('#onda1-nav .tab');
-  tabs.forEach(function(t) { t.classList.remove('active'); });
-  btn.classList.add('active');
-  var iframe = document.getElementById('onda1-iframe');
-  lazyLoadIframe('onda1-iframe');
-  function sendNav() {
-    try {
-      iframe.contentWindow.postMessage({ type: 'navSecao', secId: secId }, '*');
-    } catch(e) {}
-  }
-  if (iframe.contentWindow && iframe.getAttribute('data-loaded')) {
-    sendNav();
-  } else {
-    iframe.addEventListener('load', function() {
-      iframe.setAttribute('data-loaded', '1');
-      sendNav();
-    }, { once: true });
   }
 }
 
@@ -2920,17 +2889,26 @@ document.getElementById('sel-disciplina').addEventListener('change', loadDiscipl
 document.getElementById('sel-curso').addEventListener('change', loadDisciplina);
 loadDisciplina();
 
-/* ── CITAÇÕES: iframe oculto + relay para Onda 1 ── */
-var CITACOES_PATHS = {
+/* ── CITAÇÕES: iframe oculto + relay para o formulário do Texto Temático ──
+   Robustez: o pedido fica PENDENTE e é repetido até o catálogo (~1 MB)
+   terminar de carregar — corrige as epígrafes vazias no primeiro clique. */
+var CITACOES_PATHS = (location.protocol === 'file:') ? {
   fc1: '../FC1-citacoes-v2.html',
   fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html'
+} : {
+  fc1: 'epigrafes/FC1-citacoes-v2.html',
+  fe1: 'epigrafes/FE1-citacoes-v2.html'
 };
+var _citTrilhaPendente = null;
+var _citTentativas = 0;
+
 function loadCitacoesIframe() {
   var disc = document.getElementById('sel-disciplina').value;
   var iframe = document.getElementById('citacoes-hidden-iframe');
   if (!iframe) return;
   var path = CITACOES_PATHS[disc];
-  if (path && (iframe.src === 'about:blank' || iframe.getAttribute('data-disc') !== disc)) {
+  if (path && (iframe.src === 'about:blank' || !iframe.src || iframe.getAttribute('data-disc') !== disc)) {
+    iframe.onload = function() { tentarPedirCitacoes(); };
     iframe.src = path;
     iframe.setAttribute('data-disc', disc);
   }
@@ -2941,20 +2919,30 @@ function pedirCitacoes(trilhaCode) {
     try { iframe.contentWindow.postMessage({ type: 'getCitacoes', trilha: trilhaCode }, '*'); } catch(e) {}
   }
 }
+function tentarPedirCitacoes() {
+  if (!_citTrilhaPendente) return;
+  pedirCitacoes(_citTrilhaPendente);
+  _citTentativas++;
+  if (_citTentativas < 25) setTimeout(tentarPedirCitacoes, 600);
+}
 window.addEventListener('message', function(ev) {
   if (!ev.data || !ev.data.type) return;
   if (ev.data.type === 'trilhaSelecionada') {
     var btn = document.getElementById('btn-painel-export');
     if (btn) btn.style.display = '';
+    _citTrilhaPendente = ev.data.trilha;
+    _citTentativas = 0;
     loadCitacoesIframe();
-    setTimeout(function() { pedirCitacoes(ev.data.trilha); }, 500);
+    setTimeout(tentarPedirCitacoes, 150);
   }
   if (ev.data.type === 'trilhaLimpa') {
     var btn = document.getElementById('btn-painel-export');
     if (btn) btn.style.display = 'none';
+    _citTrilhaPendente = null;
     document.querySelectorAll('#onda1-chips .onda1-chip').forEach(function(c) { c.classList.remove('sel'); });
   }
   if (ev.data.type === 'citacoesData') {
+    if (ev.data.trilha === _citTrilhaPendente) _citTrilhaPendente = null; /* pedido atendido */
     var onda1 = document.getElementById('onda1-iframe');
     if (onda1 && onda1.contentWindow) {
       try { onda1.contentWindow.postMessage({ type: 'citacoesData', trilha: ev.data.trilha, citacoes: ev.data.citacoes }, '*'); } catch(e) {}
