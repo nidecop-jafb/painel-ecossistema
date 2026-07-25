@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dados da Coleta — FC1</title>
+<style>
+:root {
+  --ouro: oklch(0.65 0.22 45);
+  --ouro-claro: oklch(0.72 0.19 45);
+  --ouro-bg: oklch(0.28 0.05 45);
+  --verde-claro: oklch(0.70 0.15 150);
+  --verde-bg: oklch(0.25 0.04 150);
+  --erro: oklch(0.62 0.21 25);
+  --fundo: oklch(0.12 0.02 260);
+  --cinza-card: oklch(0.17 0.02 260);
+  --cinza-claro: oklch(0.22 0.02 260);
+  --cinza-borda: oklch(0.30 0.02 260);
+  --texto: oklch(0.90 0.01 260);
+  --texto-suave: oklch(0.68 0.01 260);
+  --mono: 'Courier New', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--fundo); color: var(--texto); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; padding: 20px; }
+h2 { font-family: var(--mono); font-size: 1rem; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.05em; margin: 28px 0 12px; }
+.toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn { background: var(--ouro); color: #000; border: none; font-family: var(--mono); font-weight: 700; padding: 9px 18px; cursor: pointer; font-size: 0.85rem; }
+.btn:disabled { opacity: 0.5; cursor: wait; }
+select { background: var(--cinza-claro); color: var(--texto); border: 1px solid var(--cinza-borda); padding: 8px 10px; font-size: 0.85rem; }
+.meta { font-family: var(--mono); font-size: 0.75rem; color: var(--texto-suave); }
+.aviso { margin-top: 14px; padding: 12px 16px; border: 1px solid var(--cinza-borda); font-size: 0.85rem; color: var(--texto-suave); }
+.aviso.erro { border-color: var(--erro); color: var(--erro); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 16px; }
+.card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); padding: 16px; }
+.card .num { font-family: var(--mono); font-size: 1.9rem; font-weight: 700; color: var(--ouro-claro); }
+.card .lbl { font-size: 0.75rem; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
+table { width: 100%; border-collapse: collapse; background: var(--cinza-card); }
+th, td { padding: 8px 10px; border: 1px solid var(--cinza-borda); text-align: left; font-size: 0.82rem; }
+th { font-family: var(--mono); color: var(--texto-suave); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.04em; }
+td.num, th.num { text-align: right; font-family: var(--mono); }
+.barwrap { background: var(--cinza-claro); height: 12px; min-width: 90px; position: relative; }
+.bar { height: 100%; background: var(--verde-claro); }
+.bar.medio { background: var(--ouro); }
+.bar.baixo { background: var(--erro); }
+.tag { font-family: var(--mono); font-size: 0.72rem; padding: 2px 7px; border: 1px solid var(--cinza-borda); color: var(--texto-suave); }
+details { margin-top: 8px; }
+summary { cursor: pointer; font-size: 0.82rem; color: var(--ouro-claro); font-family: var(--mono); }
+.pendlist { columns: 3; font-size: 0.8rem; color: var(--texto-suave); margin: 10px 0 0 0; list-style: none; }
+.pendlist li { margin-bottom: 4px; break-inside: avoid; }
+.dist { display: flex; align-items: flex-end; gap: 6px; height: 120px; margin-top: 12px; padding: 12px; background: var(--cinza-card); border: 1px solid var(--cinza-borda); }
+.dist .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; height: 100%; }
+.dist .colbar { width: 100%; background: var(--ouro); min-height: 1px; }
+.dist .collbl { font-family: var(--mono); font-size: 0.68rem; color: var(--texto-suave); }
+.dist .colval { font-family: var(--mono); font-size: 0.7rem; color: var(--texto); }
+@media (max-width: 700px) { .pendlist { columns: 1; } }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button class="btn" id="btnAtualizar" onclick="carregar()">Atualizar dados</button>
+  <label class="meta">Turma
+    <select id="fTurma" onchange="render()"><option value="">Todas</option></select>
+  </label>
+  <label class="meta">OA
+    <select id="fOA" onchange="render()"><option value="">Todos</option></select>
+  </label>
+  <span class="meta" id="metaInfo">Clique em "Atualizar dados" para buscar a planilha.</span>
+</div>
+<div class="aviso" id="aviso" hidden></div>
+
+<div id="conteudo" hidden>
+  <div class="cards">
+    <div class="card"><div class="num" id="cEnvios">–</div><div class="lbl">Envios v&aacute;lidos</div></div>
+    <div class="card"><div class="num" id="cAlunos">–</div><div class="lbl">Alunos que entregaram</div></div>
+    <div class="card"><div class="num" id="cPendentes">–</div><div class="lbl">Pendentes</div></div>
+    <div class="card"><div class="num" id="cMedia">–</div><div class="lbl">M&eacute;dia (1.&ordm; envio)</div></div>
+    <div class="card"><div class="num" id="cReenvios">–</div><div class="lbl">Reenvios</div></div>
+  </div>
+
+  <h2>Entrega por turma</h2>
+  <table id="tblTurmas"></table>
+  <details id="detPendentes"><summary>Ver alunos pendentes</summary><ul class="pendlist" id="listaPendentes"></ul></details>
+
+  <h2>Distribui&ccedil;&atilde;o de notas (0–10)</h2>
+  <div class="dist" id="dist"></div>
+
+  <h2>Resultados por OA</h2>
+  <table id="tblOA"></table>
+
+  <h2>Taxa de acerto por item (@ID) — do mais cr&iacute;tico ao mais f&aacute;cil</h2>
+  <div class="meta" style="margin-bottom:8px;">Vermelho &lt; 50% &middot; Ouro 50–69% &middot; Verde &ge; 70% &middot; Base: 1.&ordm; envio de cada aluno</div>
+  <table id="tblItens"></table>
+</div>
+
+<script>
+/* Config da coleta — endpoint publico; a CHAVE nao fica no codigo:
+   e solicitada uma unica vez e guardada apenas neste navegador (localStorage).
+   Isso permite hospedar o painel na web sem expor os dados das turmas. */
+var CFG = {
+  url: 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec'
+};
+var CHAVE_KEY = 'fc1_chave_relatorio';
+
+function obterChave(forcar) {
+  var c = forcar ? '' : (localStorage.getItem(CHAVE_KEY) || '');
+  if (!c) {
+    c = (prompt('Digite a chave de acesso da equipe (fornecida pelo professor):') || '').trim();
+    if (c) { try { localStorage.setItem(CHAVE_KEY, c); } catch (e) {} }
+  }
+  return c;
+}
+
+var DB = null; /* {alunos, envios, itens, gerado_em} */
+
+function carregar() {
+  var chave = obterChave(false);
+  if (!chave) {
+    var av0 = document.getElementById('aviso');
+    av0.hidden = false; av0.className = 'aviso erro';
+    av0.textContent = 'Sem a chave de acesso nao e possivel buscar os dados. Clique em "Atualizar dados" e informe a chave.';
+    return;
+  }
+  var btn = document.getElementById('btnAtualizar');
+  btn.disabled = true;
+  document.getElementById('metaInfo').textContent = 'Buscando dados da planilha...';
+  fetch(CFG.url + '?relatorio=1&chave=' + encodeURIComponent(chave))
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'resposta invalida');
+      DB = res;
+      preencherFiltros();
+      render();
+      document.getElementById('metaInfo').textContent =
+        'Atualizado em ' + new Date(res.gerado_em).toLocaleString('pt-BR') +
+        ' · linhas de TESTE excluidas automaticamente';
+      document.getElementById('aviso').hidden = true;
+      document.getElementById('conteudo').hidden = false;
+    })
+    .catch(function (e) {
+      var av = document.getElementById('aviso');
+      av.hidden = false; av.className = 'aviso erro';
+      if (String(e.message).indexOf('Chave') !== -1) {
+        try { localStorage.removeItem(CHAVE_KEY); } catch (err) {}
+        av.textContent = 'Chave incorreta. Clique em "Atualizar dados" e digite novamente.';
+      } else {
+        av.textContent = 'Falha ao buscar dados: ' + e.message + ' — verifique a internet e tente de novo.';
+      }
+      document.getElementById('metaInfo').textContent = '';
+    })
+    .finally(function () { btn.disabled = false; });
+}
+
+function preencherFiltros() {
+  var selT = document.getElementById('fTurma');
+  var selO = document.getElementById('fOA');
+  var turmas = {}, oas = {};
+  DB.alunos.forEach(function (a) { turmas[a.turma] = 1; });
+  DB.envios.forEach(function (e) { oas[e.trilha + '-' + e.oa] = 1; });
+  var vt = selT.value, vo = selO.value;
+  selT.innerHTML = '<option value="">Todas</option>' + Object.keys(turmas).sort().map(function (t) {
+    return '<option value="' + t + '">' + t.replace('FISI-', '').replace('-26', '') + '</option>'; }).join('');
+  selO.innerHTML = '<option value="">Todos</option>' + Object.keys(oas).sort().map(function (o) {
+    return '<option value="' + o + '">' + o + '</option>'; }).join('');
+  selT.value = vt; selO.value = vo;
+}
+
+/* 1.o envio de cada aluno por OA (reenvio="nao"); se so houver reenvios, usa o primeiro. */
+function enviosBase() {
+  var ft = document.getElementById('fTurma').value;
+  var fo = document.getElementById('fOA').value;
+  var vistos = {}, base = [];
+  DB.envios.forEach(function (e) {
+    if (ft && e.turma !== ft) return;
+    if (fo && (e.trilha + '-' + e.oa) !== fo) return;
+    var k = e.ra + '|' + e.trilha + '|' + e.oa;
+    if (vistos[k]) return;
+    vistos[k] = true;
+    base.push(e);
+  });
+  return base;
+}
+
+function render() {
+  if (!DB) return;
+  var ft = document.getElementById('fTurma').value;
+  var fo = document.getElementById('fOA').value;
+  var base = enviosBase();
+  var alunosFiltro = DB.alunos.filter(function (a) { return !ft || a.turma === ft; });
+
+  var totEnvios = DB.envios.filter(function (e) {
+    return (!ft || e.turma === ft) && (!fo || (e.trilha + '-' + e.oa) === fo); }).length;
+  var reenvios = totEnvios - base.length;
+  var rasEntregues = {};
+  base.forEach(function (e) { rasEntregues[e.ra] = true; });
+  var nEntregaram = Object.keys(rasEntregues).length;
+  var soma = 0, nNota = 0;
+  base.forEach(function (e) { if (e.pontuacao !== '' && e.pontuacao != null) { soma += Number(e.pontuacao); nNota++; } });
+
+  document.getElementById('cEnvios').textContent = base.length;
+  document.getElementById('cAlunos').textContent = nEntregaram;
+  document.getElementById('cPendentes').textContent = alunosFiltro.length - nEntregaram;
+  document.getElementById('cMedia').textContent = nNota ? (soma / nNota).toFixed(1) : '–';
+  document.getElementById('cReenvios').textContent = reenvios;
+
+  /* Entrega por turma */
+  var porTurma = {};
+  alunosFiltro.forEach(function (a) {
+    porTurma[a.turma] = porTurma[a.turma] || { total: 0, entregues: 0 };
+    porTurma[a.turma].total++;
+    if (rasEntregues[a.ra]) porTurma[a.turma].entregues++;
+  });
+  var html = '<tr><th>Turma</th><th class="num">Alunos</th><th class="num">Entregaram</th><th class="num">%</th><th>Progresso</th></tr>';
+  Object.keys(porTurma).sort().forEach(function (t) {
+    var d = porTurma[t], pct = d.total ? Math.round(d.entregues / d.total * 100) : 0;
+    var cls = pct >= 70 ? '' : (pct >= 50 ? 'medio' : 'baixo');
+    html += '<tr><td>' + t + '</td><td class="num">' + d.total + '</td><td class="num">' + d.entregues +
+      '</td><td class="num">' + pct + '%</td><td><div class="barwrap"><div class="bar ' + cls + '" style="width:' + pct + '%"></div></div></td></tr>';
+  });
+  document.getElementById('tblTurmas').innerHTML = html;
+
+  /* Pendentes nominais */
+  var pend = alunosFiltro.filter(function (a) { return !rasEntregues[a.ra]; });
+  document.getElementById('listaPendentes').innerHTML = pend.map(function (a) {
+    return '<li>' + a.ra + ' · ' + a.nome + ' <span class="tag">' + a.turma.replace('FISI-', '').replace('-26', '') + '</span></li>';
+  }).join('') || '<li>Nenhum pendente 🎉</li>';
+  document.querySelector('#detPendentes summary').textContent = 'Ver alunos pendentes (' + pend.length + ')';
+
+  /* Distribuicao de notas */
+  var buckets = [0,0,0,0,0,0,0,0,0,0,0];
+  base.forEach(function (e) {
+    if (e.pontuacao === '' || e.pontuacao == null) return;
+    var b = Math.max(0, Math.min(10, Math.round(Number(e.pontuacao))));
+    buckets[b]++;
+  });
+  var max = Math.max.apply(null, buckets.concat([1]));
+  document.getElementById('dist').innerHTML = buckets.map(function (v, i) {
+    return '<div class="col"><div class="colval">' + (v || '') + '</div><div class="colbar" style="height:' +
+      Math.round(v / max * 100) + '%"></div><div class="collbl">' + i + '</div></div>';
+  }).join('');
+
+  /* Por OA */
+  var porOA = {};
+  base.forEach(function (e) {
+    var k = e.trilha + '-' + e.oa;
+    porOA[k] = porOA[k] || { n: 0, soma: 0, nNota: 0 };
+    porOA[k].n++;
+    if (e.pontuacao !== '' && e.pontuacao != null) { porOA[k].soma += Number(e.pontuacao); porOA[k].nNota++; }
+  });
+  html = '<tr><th>Trilha-OA</th><th class="num">Entregas</th><th class="num">% da base</th><th class="num">M&eacute;dia</th></tr>';
+  Object.keys(porOA).sort().forEach(function (k) {
+    var d = porOA[k];
+    html += '<tr><td>' + k + '</td><td class="num">' + d.n + '</td><td class="num">' +
+      Math.round(d.n / (alunosFiltro.length || 1) * 100) + '%</td><td class="num">' +
+      (d.nNota ? (d.soma / d.nNota).toFixed(1) : '–') + '</td></tr>';
+  });
+  document.getElementById('tblOA').innerHTML = html;
+
+  /* Por item — usa so os itens dos comprovantes da base */
+  var compBase = {};
+  base.forEach(function (e) { compBase[e.comprovante] = true; });
+  var porItem = {};
+  DB.itens.forEach(function (it) {
+    if (!compBase[it.comprovante]) return;
+    if (it.oa === 'PP') return; /* PP e diagnostico sem gabarito — fora da taxa de acerto */
+    porItem[it.item] = porItem[it.item] || { n: 0, acertos: 0, tipo: it.tipo, bloom: it.bloom };
+    porItem[it.item].n++;
+    if (it.acertou) porItem[it.item].acertos++;
+  });
+  var linhas = Object.keys(porItem).map(function (id) {
+    var d = porItem[id];
+    return { id: id, tipo: d.tipo, bloom: d.bloom, n: d.n, taxa: d.n ? d.acertos / d.n : 0 };
+  }).sort(function (a, b) { return a.taxa - b.taxa; });
+  html = '<tr><th>Item @ID</th><th>Tipo</th><th>Bloom</th><th class="num">N</th><th class="num">Acerto</th><th>Taxa</th></tr>';
+  linhas.forEach(function (l) {
+    var pct = Math.round(l.taxa * 100);
+    var cls = pct >= 70 ? '' : (pct >= 50 ? 'medio' : 'baixo');
+    html += '<tr><td style="font-family:var(--mono)">' + l.id + '</td><td>' + l.tipo + '</td><td>' + l.bloom +
+      '</td><td class="num">' + l.n + '</td><td class="num">' + pct + '%</td>' +
+      '<td><div class="barwrap"><div class="bar ' + cls + '" style="width:' + pct + '%"></div></div></td></tr>';
+  });
+  document.getElementById('tblItens').innerHTML = html ===
+    '<tr><th>Item @ID</th><th>Tipo</th><th>Bloom</th><th class="num">N</th><th class="num">Acerto</th><th>Taxa</th></tr>'
+    ? '<tr><td colspan="6" style="color:var(--texto-suave)">Sem itens na base filtrada.</td></tr>' : html;
+}
+</script>
+</body>
+</html>

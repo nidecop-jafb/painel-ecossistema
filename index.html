@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trilhas de Aprendizagem — Painel do Ecossistema</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ouro: oklch(0.65 0.22 45);
+  --ouro-claro: oklch(0.72 0.19 45);
+  --ouro-escuro: oklch(0.55 0.22 45);
+  --ouro-bg: oklch(0.28 0.05 45);
+  --verde-mina: oklch(0.40 0.12 150);
+  --verde-claro: oklch(0.70 0.15 150);
+  --verde-bg: oklch(0.25 0.04 150);
+  --erro: oklch(0.60 0.22 25);
+  --ok: oklch(0.70 0.18 150);
+  --cinza: oklch(0.55 0.02 260);
+  --cinza-claro: oklch(0.18 0.02 260);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --texto-sub: oklch(0.70 0 0);
+  --superficie: oklch(0.22 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.18 0.02 260);
+  --azul: oklch(0.60 0.15 250);
+  --azul-bg: oklch(0.25 0.05 250);
+  --azul-borda: oklch(0.50 0.12 250);
+  --r: 0px;
+  --r-lg: 0px;
+  --rail-w: 36px;
+  --header-h: 153px;
+  --mono: 'DM Mono', 'Cascadia Code', 'Consolas', monospace;
+  --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  --display: 'Syne', 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--fundo);
+  color: var(--texto);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  grid-column: 1 / -1;
+  background: var(--superficie);
+  border-bottom: 2px solid var(--ouro);
+  padding: 16px 24px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.header-marca { display: flex; flex-direction: column; }
+.header-titulo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: var(--ouro);
+  letter-spacing: .02em;
+}
+.header-sub {
+  font-size: clamp(10px, 1vw, 12px);
+  color: var(--texto-sub);
+  opacity: .7;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.trilha-badge {
+  font-family: var(--mono);
+  font-size: clamp(16px, 2.2vw, 24px);
+  font-weight: 500;
+  color: var(--ouro);
+  background: var(--ouro-bg);
+  border: 1.5px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 6px 16px;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* ── LAYOUT ── */
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+/* ── RAIL (barra vertical de abas) ── */
+.rail {
+  background: var(--superficie);
+  border-right: 1px solid var(--cinza-borda);
+  padding: 0;
+  height: calc(100vh - var(--header-h));
+  position: sticky;
+  top: var(--header-h);
+  display: flex;
+  flex-direction: column;
+}
+.rail-btn {
+  background: var(--superficie);
+  border: none;
+  border-bottom: 1px solid var(--cinza-borda);
+  color: var(--cinza);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  padding: 14px 10px;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.15s, background 0.15s;
+}
+.rail-btn:hover { color: var(--ouro); }
+.rail-btn.active { color: var(--ouro); background: var(--ouro-bg); }
+
+/* ── RAIL PANELS (slide-in) ── */
+.rail-panel {
+  position: fixed;
+  top: var(--header-h);
+  left: var(--rail-w);
+  z-index: 50;
+  width: 300px;
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  background: var(--superficie);
+  border-right: 1px solid var(--cinza-borda);
+  padding: 20px 16px;
+  transform: translateX(calc(-300px - var(--rail-w)));
+  transition: transform 0.25s;
+}
+.rail-panel.open { transform: translateX(0); }
+.rail-panel-title {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ouro);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rail-section {
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+.rail-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--texto-sub);
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--r);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--texto-sub);
+  transition: background .15s;
+}
+.rail-item:hover { background: var(--cinza-claro); }
+.rail-item.active {
+  background: var(--ouro-bg);
+  color: var(--ouro);
+  font-weight: 600;
+  border-left: 3px solid var(--ouro);
+}
+.rail-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rail-dot.done { background: var(--ok); }
+.rail-dot.partial { background: var(--ouro); }
+.rail-dot.empty { background: var(--cinza-borda); }
+.rail-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--texto-sub);
+}
+
+/* ── MAIN ── */
+.main {
+  padding: 24px 32px;
+  overflow-y: auto;
+  height: calc(100vh - var(--header-h));
+}
+.main > section { margin-bottom: 32px; }
+.section-title {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-title::before {
+  content: '';
+  width: 3px;
+  height: 16px;
+  background: var(--ouro);
+  border-radius: 0;
+}
+
+/* ── DISCIPLINA × CURSO ── */
+.painel-disciplina {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.painel-disciplina span.label-disc {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ouro);
+  white-space: nowrap;
+}
+.painel-disciplina select {
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: var(--r);
+  border: 1px solid var(--cinza-borda);
+  background: var(--superficie);
+  color: var(--texto);
+  min-width: 180px;
+}
+.painel-disciplina .status-dados {
+  font-size: 12px;
+  color: var(--verde-claro);
+  font-family: var(--mono);
+}
+
+/* ── CARDS ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+.card.s-done::before { background: var(--ok); }
+.card.s-partial::before { background: var(--ouro); }
+.card.s-empty::before { background: var(--cinza-borda); }
+.card-sigla {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto);
+  margin-bottom: 2px;
+}
+.card-name {
+  font-size: 14px;
+  color: var(--texto-sub);
+  margin-bottom: 6px;
+}
+.card-ver {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--texto-sub);
+}
+.card-ver .v { color: var(--ok); font-weight: 500; }
+
+/* ── PROCESSO ── */
+.process-flow {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.process-step {
+  flex: 1;
+  min-width: 120px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 10px 12px;
+}
+.process-step.current {
+  border-color: var(--ouro);
+  background: var(--ouro-bg);
+}
+.process-step-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--texto-sub);
+  margin-bottom: 2px;
+}
+.process-step-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.process-step-desc {
+  font-size: 13px;
+  color: var(--texto-sub);
+  line-height: 1.4;
+}
+.process-arrow {
+  display: flex;
+  align-items: center;
+  color: var(--texto-sub);
+  font-size: 14px;
+  padding: 0 2px;
+}
+
+/* ── TABELA STATUS ── */
+.status-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+}
+.status-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.status-table th, .status-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid oklch(0.28 0.02 260);
+  text-align: left;
+  white-space: nowrap;
+}
+.status-table th {
+  background: oklch(0.20 0.02 260);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ouro);
+  letter-spacing: .02em;
+  position: sticky;
+  top: 0;
+}
+.status-table td:first-child {
+  font-family: var(--mono);
+  font-weight: 500;
+}
+.status-table tr:last-child td { border-bottom: none; }
+.status-table tr:hover td { background: oklch(0.20 0.03 260); }
+
+/* ── PILLS ── */
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+.pill-done { background: var(--verde-bg); color: var(--ok); }
+.pill-ver { background: var(--azul-bg); color: var(--azul); }
+.pill-empty { background: oklch(0.20 0.02 260); color: var(--texto-sub); }
+.pill-outdated { background: var(--ouro-bg); color: var(--ouro); }
+a.pill { text-decoration: none; cursor: pointer; transition: opacity .15s; }
+a.pill:hover { opacity: .7; text-decoration: underline; }
+
+/* ── SELF-LINK ── */
+.self-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ouro-bg);
+  border: 1.5px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ouro);
+  text-decoration: none;
+  transition: background .15s;
+}
+.self-link:hover { background: var(--ouro-escuro); color: var(--texto); }
+
+/* ── ANCHOR ROW ── */
+.status-table tr.anchor-row td {
+  background: var(--ouro-bg);
+  font-weight: 600;
+}
+.status-table tr.anchor-row td:first-child::after {
+  content: ' \2693';
+  font-size: 10px;
+}
+/* ── TT SUB-ROWS ── */
+.status-table tr.tt-sub td {
+  background: oklch(0.24 0.03 45);
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid oklch(0.30 0.04 45);
+}
+.status-table tr.tt-sub td:first-child {
+  padding-left: 24px;
+  font-size: 12px;
+  color: var(--ouro-claro);
+}
+
+/* ── SKILLS ── */
+.skill-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+}
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.skill-item:hover { border-color: var(--ouro); }
+.skill-item.active-skill { border-left: 3px solid var(--ok); }
+.skill-item.frozen-skill { border-left: 3px solid var(--cinza); opacity: .6; }
+.skill-sigla {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  background: oklch(0.20 0.02 260);
+  padding: 3px 8px;
+  border-radius: var(--r);
+  min-width: 36px;
+  text-align: center;
+}
+.skill-name { font-size: 14px; color: var(--texto-sub); }
+.skill-badge {
+  margin-left: auto;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: var(--r);
+  font-weight: 500;
+}
+.skill-badge.ativo { background: var(--verde-bg); color: var(--ok); }
+.skill-badge.congelada { background: oklch(0.20 0.02 260); color: var(--texto-sub); }
+
+/* ── NEXT ACTION ── */
+.next-action {
+  background: var(--ouro-bg);
+  border: 1px solid var(--ouro);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.next-action-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  color: var(--ouro);
+}
+.next-action-body { flex: 1; }
+.next-action-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.next-action-desc {
+  font-size: 14px;
+  color: var(--texto-sub);
+  line-height: 1.5;
+}
+.next-action-cmd {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  padding: 5px 10px;
+  border-radius: var(--r);
+  margin-top: 8px;
+  display: inline-block;
+  color: var(--ouro-claro);
+}
+
+/* ── CAMADAS ── */
+.camadas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.camada-card {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  padding: 12px;
+  text-align: center;
+}
+.camada-card.ativo { border-color: var(--ok); }
+.camada-card.pendente { border-color: var(--ouro); }
+.camada-num {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--texto-sub);
+}
+.camada-card.ativo .camada-num { color: var(--ok); }
+.camada-card.pendente .camada-num { color: var(--ouro); }
+.camada-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 4px 0 2px;
+}
+.camada-desc {
+  font-size: 12px;
+  color: var(--texto-sub);
+  line-height: 1.4;
+}
+.camada-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-top: 6px;
+  padding: 2px 6px;
+  border-radius: var(--r);
+  display: inline-block;
+}
+.camada-card.ativo .camada-status { background: var(--verde-bg); color: var(--ok); }
+.camada-card.pendente .camada-status { background: var(--ouro-bg); color: var(--ouro); }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--cinza-borda);
+  margin-bottom: 16px;
+}
+.tab {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--texto-sub);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+}
+#onda1-nav .tab { white-space: nowrap; flex-shrink: 0; }
+.tab:hover { color: var(--texto); }
+.tab.active {
+  color: var(--ouro);
+  border-bottom-color: var(--ouro);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── QUALIDADE SUB-ABAS ── */
+.qualidade-subtab { display: none; }
+.qualidade-subtab.active { display: block; }
+
+.problema-card {
+  background: var(--input-bg);
+  border: 1px solid var(--cinza-borda);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  transition: border-color .15s;
+}
+.problema-card:hover { border-color: var(--ouro); }
+.problema-card.resolvido { opacity: .5; }
+.problema-card .problema-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.problema-card .problema-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ouro);
+  background: oklch(0.25 0.02 80);
+  padding: 2px 6px;
+}
+.problema-card .problema-trilha {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--verde-claro);
+  background: oklch(0.22 0.04 150);
+  padding: 2px 6px;
+}
+.problema-card .problema-oa {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--azul);
+  background: oklch(0.22 0.04 240);
+  padding: 2px 6px;
+}
+.problema-card .sev-critica { background: oklch(0.35 0.18 25); color: #fff; padding: 2px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.problema-card .sev-alta { background: oklch(0.40 0.14 50); color: #fff; padding: 2px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.problema-card .sev-media { background: oklch(0.45 0.12 80); color: #000; padding: 2px 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+.problema-card .sev-baixa { background: oklch(0.40 0.06 240); color: #fff; padding: 2px 6px; font-size: 10px; text-transform: uppercase; }
+.problema-card .sev-info { background: oklch(0.35 0.02 0); color: var(--texto-sub); padding: 2px 6px; font-size: 10px; text-transform: uppercase; }
+.problema-card .problema-desc {
+  font-size: 13px;
+  color: var(--texto);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.problema-card .problema-resolucao {
+  font-size: 12px;
+  color: var(--texto-sub);
+  line-height: 1.5;
+  border-left: 3px solid var(--verde-mina);
+  padding-left: 10px;
+  margin-bottom: 8px;
+}
+.problema-card .btn-resolver {
+  background: transparent;
+  border: 1px solid var(--verde-claro);
+  color: var(--verde-claro);
+  font-size: 11px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: var(--mono);
+  transition: background .15s, color .15s;
+}
+.problema-card .btn-resolver:hover { background: var(--verde-claro); color: var(--fundo); }
+.problema-card .btn-resolver.done { border-color: var(--texto-sub); color: var(--texto-sub); cursor: default; }
+
+.problema-categoria-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0 6px;
+  border-bottom: 1px solid var(--cinza-borda);
+  margin-bottom: 10px;
+  margin-top: 16px;
+}
+.problema-categoria-header:first-child { margin-top: 0; }
+.problema-categoria-header .cat-icone { font-size: 18px; }
+.problema-categoria-header .cat-titulo { font-size: 14px; font-weight: 600; color: var(--texto); }
+.problema-categoria-header .cat-count { font-family: var(--mono); font-size: 12px; color: var(--texto-sub); margin-left: auto; }
+
+/* ── ONDAS ── */
+.ondas-visual {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.onda-col {
+  border: 1px solid var(--cinza-borda);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.onda-header {
+  padding: 8px 10px;
+  background: oklch(0.20 0.02 260);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid var(--cinza-borda);
+  color: var(--ouro);
+}
+.onda-body {
+  padding: 8px;
+}
+.onda-item {
+  font-size: 13px;
+  padding: 4px 6px;
+  margin-bottom: 3px;
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.onda-item .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── PROGRESSO GLOBAL ── */
+.pg-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.pg-stat {
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.pg-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+.pg-stat.s-done::before { background: var(--ok); }
+.pg-stat.s-partial::before { background: var(--ouro); }
+.pg-stat-num {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+.pg-stat-num .frac {
+  font-size: 16px;
+  color: var(--texto-sub);
+  font-weight: 400;
+}
+.pg-stat-label {
+  font-size: 13px;
+  color: var(--texto-sub);
+  margin-top: 6px;
+}
+.pg-stat-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--texto-sub);
+  margin-top: 6px;
+  opacity: .7;
+}
+.pg-bar {
+  background: var(--cinza-claro);
+  height: 6px;
+  overflow: hidden;
+}
+.pg-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ouro-escuro), var(--ouro));
+}
+.pg-bar-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--texto-sub);
+  margin-top: 6px;
+  text-align: right;
+}
+.tema-map {
+  border: 1px solid var(--cinza-borda);
+  overflow-x: auto;
+  margin-top: 16px;
+}
+.tema-map table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.tema-map th {
+  background: oklch(0.20 0.02 260);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ouro);
+  padding: 8px 10px;
+  text-align: center;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.tema-map th:first-child { text-align: left; min-width: 180px; }
+.tema-map td {
+  padding: 8px 10px;
+  border-bottom: 1px solid oklch(0.28 0.02 260);
+  text-align: center;
+  white-space: nowrap;
+}
+.tema-map td:first-child {
+  text-align: left;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 12px;
+}
+.tema-map tr:last-child td { border-bottom: none; }
+.tema-map tr:hover td { background: oklch(0.20 0.03 260); }
+.tema-map .tema-done td:first-child { color: var(--ok); }
+.tema-map .tema-pending td:first-child { color: var(--texto-sub); }
+.tema-map .tema-done td:last-child { color: var(--ok); }
+.tema-map .tema-pending td:last-child { color: var(--texto-sub); font-size: 12px; }
+.wave-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.wave-dot.done { background: var(--ok); }
+.wave-dot.partial { background: var(--ouro); }
+.wave-dot.empty { background: var(--cinza-borda); }
+.pg-legenda {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--texto-sub);
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--superficie);
+  border: 1px solid var(--cinza-borda);
+}
+.pg-legenda-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── CHIPS TRILHA ── */
+.onda1-chip {
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:4px 10px;min-width:36px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  border:1px solid var(--cinza-borda);color:var(--texto-sub);
+  cursor:pointer;user-select:none;transition:border-color .15s,color .15s,background .15s;
+}
+.onda1-chip:hover { border-color:var(--ouro);color:var(--ouro);background:var(--ouro-bg); }
+.onda1-chip.sel { background:var(--ouro-bg);border-color:var(--ouro);color:var(--ouro);font-weight:600; }
+.onda1-chip.orient { border-style:dashed;border-color:var(--ouro);color:var(--ouro); }
+
+/* ── CALENDARIO ── */
+.cal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.cal-table th {
+  background: oklch(0.20 0.02 260);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ouro);
+  padding: 7px 10px;
+  text-align: left;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.cal-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid oklch(0.28 0.02 260);
+  white-space: nowrap;
+}
+.cal-table tr:last-child td { border-bottom: none; }
+.cal-table tr:hover td { background: oklch(0.20 0.03 260); }
+.cal-table td:first-child {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 12px;
+}
+.cal-table td:nth-child(3) {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.cal-status {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.cal-status.done { background: var(--verde-bg); color: var(--ok); }
+.cal-status.current { background: var(--ouro-bg); color: var(--ouro); border: 1px solid var(--ouro); }
+.cal-status.upcoming { background: oklch(0.20 0.02 260); color: var(--texto-sub); }
+.cal-status.overdue { background: oklch(0.22 0.06 25); color: var(--erro); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { display: none; }
+  .rail-panel { left: 0; }
+  .camadas-grid { grid-template-columns: repeat(2, 1fr); }
+  .ondas-visual { grid-template-columns: repeat(2, 1fr); }
+  .pg-stats { grid-template-columns: repeat(2, 1fr); }
+  body { font-size: 17px; }
+  .section-title { font-size: 20px; }
+  .status-table { font-size: 15px; }
+  .status-table th { font-size: 14px; }
+  .pill { font-size: 13px; padding: 3px 10px; }
+  .tab { font-size: 15px; padding: 12px 16px; }
+  .self-link { font-size: 14px; padding: 10px 16px; }
+  .card-sigla { font-size: 15px; }
+  .card-name { font-size: 15px; }
+  .card-ver { font-size: 14px; }
+  .onda-header { font-size: 14px; }
+  .onda-item { font-size: 14px; }
+  .skill-name { font-size: 15px; }
+  .next-action-title { font-size: 16px; }
+  .next-action-desc { font-size: 15px; }
+  .next-action-cmd { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- HEADER -->
+  <header class="header" style="grid-column:1/-1;">
+    <div class="header-inner">
+      <div class="header-marca">
+        <div class="header-titulo"><span style="color:var(--texto);">Trilhas de Aprendizagem</span> &mdash; Painel do Ecossistema</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--texto-sub);letter-spacing:.03em;margin-top:2px;">Produ&ccedil;&atilde;o de OAs &middot; Distribui&ccedil;&atilde;o &middot; Coleta &middot; An&aacute;lise de Dados</div>
+      </div>
+      <div class="header-sub" id="header-sub-atualizado" style="margin-left:auto;">Atualizado: 19 Jul 2026</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center;margin-top:8px;">
+      <select id="sel-disciplina" style="font-family:var(--mono);font-size:13px;padding:6px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+        <optgroup label="F&iacute;sica Conceitual">
+          <option value="fc1">FC1 &mdash; F&iacute;sica Conceitual 1 (Mec&acirc;nica)</option>
+          <option value="fc2" disabled>FC2 &mdash; F&iacute;sica Conceitual 2 (Termo+Ondas) &#9203;</option>
+          <option value="fc3" disabled>FC3 &mdash; F&iacute;sica Conceitual 3 (Eletro+Moderna) &#9203;</option>
+        </optgroup>
+        <optgroup label="F&iacute;sica Experimental">
+          <option value="fe1">FE1 &mdash; F&iacute;sica Experimental 1 (Mec&acirc;nica)</option>
+          <option value="fe2" disabled>FE2 &mdash; F&iacute;sica Experimental 2 (Termo+Ondas) &#9203;</option>
+          <option value="fe3" disabled>FE3 &mdash; F&iacute;sica Experimental 3 (Eletro+Moderna) &#9203;</option>
+        </optgroup>
+      </select>
+      <select id="sel-curso" style="font-family:var(--mono);font-size:13px;padding:6px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+        <option value="min">MIN &mdash; T&eacute;cnico em Minera&ccedil;&atilde;o</option>
+        <option value="met" disabled>MET &mdash; T&eacute;cnico em Metalurgia &#9203;</option>
+        <option value="edi" disabled>EDI &mdash; T&eacute;cnico em Edifica&ccedil;&otilde;es &#9203;</option>
+        <option value="aut" disabled>AUT &mdash; T&eacute;cnico em Automa&ccedil;&atilde;o Industrial &#9203;</option>
+        <option value="adm" disabled>ADM &mdash; T&eacute;cnico em Administra&ccedil;&atilde;o &#9203;</option>
+      </select>
+      <span id="disc-status" style="font-family:var(--mono);font-size:11px;color:var(--verde-claro);white-space:nowrap;"></span>
+    </div>
+    <div class="tabs" id="header-tabs" style="margin-top:8px;margin-bottom:0;">
+      <div class="tab active" onclick="showTab('visao')">Vis&atilde;o Geral</div>
+      <div class="tab" onclick="showTab('producao')">Produ&ccedil;&atilde;o</div>
+      <div class="tab" onclick="showTab('onda1')">Texto Tem&aacute;tico</div>
+      <div class="tab" onclick="showTab('epigrafes')">Ep&iacute;grafes</div>
+      <div class="tab" onclick="showTab('qualidade')">Qualidade</div>
+      <div class="tab" onclick="showTab('skills')">Skills</div>
+      <div class="tab" onclick="showTab('infra')">Infraestrutura</div>
+      <div class="tab" onclick="showTab('distribuicao')">Distribui&ccedil;&atilde;o</div>
+      <div class="tab" onclick="showTab('dados')">An&aacute;lise</div>
+      <div class="tab" onclick="showTab('guias')">Guias</div>
+    </div>
+  </header>
+
+  <!-- RAIL — abas verticais -->
+  <nav class="rail">
+    <button class="rail-btn" onclick="togglePanel('projeto',this)">Projeto</button>
+    <button class="rail-btn" onclick="togglePanel('temas',this)">Temas</button>
+    <button class="rail-btn" onclick="togglePanel('navegacao',this)">Navegacao</button>
+    <button class="rail-btn" onclick="togglePanel('ineditismo',this)">Ineditismo</button>
+    <button class="rail-btn" onclick="togglePanel('creditos',this)">Creditos</button>
+  </nav>
+
+  <!-- PANELS (slide-in) -->
+  <aside class="rail-panel" id="panel-projeto">
+    <div class="rail-panel-title">Projeto</div>
+
+    <p style="font-size:13px;color:var(--texto-sub);line-height:1.7;margin-bottom:14px;">
+      Sistema estruturado de materiais did&aacute;ticos para a 1.&ordf; s&eacute;rie do Ensino
+      M&eacute;dio T&eacute;cnico Integrado em Minera&ccedil;&atilde;o do IFMG &mdash; Campus Ouro Preto.
+    </p>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Ciclo de Aprendizagem</div>
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="width:20px;height:20px;border-radius:50%;background:var(--ouro);color:var(--fundo);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;">1</span>
+        <span style="font-size:13px;color:var(--texto);">Pr&eacute;-Aula &mdash; Ativa&ccedil;&atilde;o</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--ouro);font-family:var(--mono);">~20 min</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="width:20px;height:20px;border-radius:50%;background:var(--verde-mina);color:var(--texto);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;">2</span>
+        <span style="font-size:13px;color:var(--texto);">Aula &mdash; Constru&ccedil;&atilde;o</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--verde-claro);font-family:var(--mono);">~45 min</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:20px;height:20px;border-radius:50%;background:var(--azul);color:var(--texto);font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;">3</span>
+        <span style="font-size:13px;color:var(--texto);">P&oacute;s-Aula &mdash; Consolida&ccedil;&atilde;o</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--azul);font-family:var(--mono);">~20 min</span>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Pilares</div>
+    <div style="margin-bottom:14px;">
+      <div style="background:var(--input-bg);border-left:3px solid var(--ouro);padding:8px 10px;margin-bottom:4px;">
+        <div style="font-size:13px;font-weight:600;color:var(--texto);">F&iacute;sica Conceitual</div>
+        <div style="font-size:12px;color:var(--texto-sub);">Hewitt &mdash; conceito antes da f&oacute;rmula</div>
+      </div>
+      <div style="background:var(--input-bg);border-left:3px solid var(--verde-mina);padding:8px 10px;margin-bottom:4px;">
+        <div style="font-size:13px;font-weight:600;color:var(--texto);">Neuroci&ecirc;ncia</div>
+        <div style="font-size:12px;color:var(--texto-sub);">Piazzi &mdash; ciclo circadiano e repeti&ccedil;&atilde;o espa&ccedil;ada</div>
+      </div>
+      <div style="background:var(--input-bg);border-left:3px solid var(--azul);padding:8px 10px;">
+        <div style="font-size:13px;font-weight:600;color:var(--texto);">Taxonomia de Bloom</div>
+        <div style="font-size:12px;color:var(--texto-sub);">L1 (Pr&eacute;-aula) &rarr; L4&ndash;L6 (P&oacute;s-aula)</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Contextualiza&ccedil;&atilde;o Tripla</div>
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px;">
+        <span style="font-size:13px;font-weight:600;color:var(--ouro);">T&eacute;cnico</span>
+        <span style="font-size:12px;color:var(--texto-sub);">&mdash; correia, britagem, barragens</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px;">
+        <span style="font-size:13px;font-weight:600;color:var(--ouro);">Hist&oacute;rico</span>
+        <span style="font-size:12px;color:var(--texto-sub);">&mdash; Ouro Preto, Aleijadinho, colonial</span>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:6px;">
+        <span style="font-size:13px;font-weight:600;color:var(--ouro);">Cotidiano</span>
+        <span style="font-size:12px;color:var(--texto-sub);">&mdash; estudante 15&ndash;16 anos da regi&atilde;o</span>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Protagonistas</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:13px;color:var(--texto);margin-bottom:3px;"><strong>Sofia</strong> &mdash; anal&iacute;tica, laborat&oacute;rio/mina</div>
+      <div style="font-size:13px;color:var(--texto);margin-bottom:3px;"><strong>Pedro</strong> &mdash; pr&aacute;tico, canteiro/p&aacute;tio</div>
+      <div style="font-size:13px;color:var(--texto);"><strong>Ana</strong> &mdash; reflexiva, patrim&ocirc;nio/galerias</div>
+    </div>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Materiais por Trilha</div>
+    <div style="font-size:12px;color:var(--texto-sub);line-height:1.8;">
+      <span style="color:var(--ouro);">PRE</span> PP &middot; Testinho &middot; MC &middot; CD &middot; RA<br>
+      <span style="color:var(--verde-claro);">AULA</span> TT &middot; FA &middot; AP &middot; Provinha<br>
+      <span style="color:var(--azul);">POS</span> TM &middot; TC &middot; TR (3 vers&otilde;es)<br>
+      <span style="color:var(--erro);">AVA</span> PE &middot; 2.&ordf; Chamada &middot; Recup &middot; Exame
+    </div>
+  </aside>
+
+  <aside class="rail-panel" id="panel-temas">
+    <div class="rail-panel-title">Temas</div>
+    <div id="temas-content">
+    <div class="rail-section">
+      <div class="rail-label">Tema 1 &mdash; A R&eacute;gua do Mundo</div>
+      <div class="rail-item active" onclick="showTrilha('T01')">
+        <span class="rail-dot done"></span>
+        <span>T01 Introducao</span>
+        <span class="rail-count">17/17</span>
+      </div>
+      <div class="rail-item" onclick="showTrilha('T02')">
+        <span class="rail-dot done"></span>
+        <span>T02 Unidades de Medida</span>
+        <span class="rail-count">15/17</span>
+      </div>
+      <div class="rail-item" onclick="showTrilha('T03')">
+        <span class="rail-dot done"></span>
+        <span>T03 Base 10</span>
+        <span class="rail-count">15/17</span>
+      </div>
+      <div class="rail-item" onclick="showTrilha('T04')">
+        <span class="rail-dot done"></span>
+        <span>T04 SI e Metrologia</span>
+        <span class="rail-count">15/17</span>
+      </div>
+      <div class="rail-item" onclick="showTrilha('T05')">
+        <span class="rail-dot done"></span>
+        <span>T05 Nota&ccedil;&atilde;o Cient&iacute;fica</span>
+        <span class="rail-count">15/17</span>
+      </div>
+      <div class="rail-item" onclick="showTrilha('T06')">
+        <span class="rail-dot done"></span>
+        <span>T06 Ordem de Grandeza</span>
+        <span class="rail-count">15/17</span>
+      </div>
+    </div>
+    <div class="rail-section">
+      <div class="rail-label">Tema 2 &mdash; O Ritmo das M&aacute;quinas</div>
+      <div class="rail-item" onclick="showTrilha('T07')">
+        <span class="rail-dot empty"></span>
+        <span>T07 Movimento</span>
+        <span class="rail-count">0/17</span>
+      </div>
+      <div class="rail-item">
+        <span class="rail-dot empty"></span>
+        <span>T08&ndash;T12</span>
+        <span class="rail-count">&mdash;</span>
+      </div>
+    </div>
+    <div class="rail-section">
+      <div class="rail-label">Orienta&ccedil;&atilde;o</div>
+      <div class="rail-item" onclick="showTrilha('T0A')">
+        <span class="rail-dot partial"></span>
+        <span>T0A Apresenta&ccedil;&atilde;o</span>
+        <span class="rail-count">11/17</span>
+      </div>
+      <div class="rail-item" onclick="showTrilha('T0B')">
+        <span class="rail-dot partial"></span>
+        <span>T0B Tecnologias</span>
+        <span class="rail-count">4/17</span>
+      </div>
+    </div>
+    </div>
+  </aside>
+
+  <aside class="rail-panel" id="panel-navegacao">
+    <div class="rail-panel-title">Navega&ccedil;&atilde;o</div>
+    <div class="rail-section">
+      <div class="rail-item" onclick="showTab('visao');closePanel()">
+        <span style="font-size:11px">&#9632;</span> Vis&atilde;o Geral
+      </div>
+      <div class="rail-item" onclick="showTab('producao');closePanel()">
+        <span style="font-size:11px">&#9632;</span> Produ&ccedil;&atilde;o
+      </div>
+      <div class="rail-item" onclick="showTab('onda1');closePanel()">
+        <span style="font-size:11px">&#9654;</span> Onda1-Plano
+      </div>
+      <div class="rail-item" onclick="showTab('epigrafes');closePanel()">
+        <span style="font-size:11px">&#9632;</span> Ep&iacute;grafes
+      </div>
+      <div class="rail-item" onclick="showTab('skills');closePanel()">
+        <span style="font-size:11px">&#9632;</span> Skills
+      </div>
+      <div class="rail-item" onclick="showTab('infra');closePanel()">
+        <span style="font-size:11px">&#9632;</span> Infraestrutura
+      </div>
+    </div>
+  </aside>
+
+  <aside class="rail-panel" id="panel-ineditismo">
+    <div class="rail-panel-title">Ineditismo</div>
+
+    <p style="font-family:var(--mono);font-size:14px;color:var(--ouro);margin-bottom:14px;line-height:1.6;">
+      60 trilhas &times; 17 OAs = 1.020 Objetos de Aprendizagem
+    </p>
+
+    <p style="font-size:13px;color:var(--texto-sub);line-height:1.7;margin-bottom:14px;">
+      Primeiro sistema completo de Trilhas de Aprendizagem de F&iacute;sica
+      desenhado nativamente para o Ensino T&eacute;cnico Integrado em
+      Minera&ccedil;&atilde;o no Brasil. N&atilde;o &eacute; adapta&ccedil;&atilde;o de apostila
+      &mdash; cada OA nasce contextualizado para o estudante de 15&ndash;16 anos
+      de Ouro Preto.
+    </p>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">O que n&atilde;o existia antes</div>
+    <div style="margin-bottom:14px;">
+      <div style="background:var(--input-bg);border-left:3px solid var(--ouro);padding:8px 10px;margin-bottom:4px;">
+        <div style="font-size:12px;color:var(--texto);">Material autoral completo para 1 ano letivo inteiro de F&iacute;sica I</div>
+      </div>
+      <div style="background:var(--input-bg);border-left:3px solid var(--ouro);padding:8px 10px;margin-bottom:4px;">
+        <div style="font-size:12px;color:var(--texto);">Pipeline de produ&ccedil;&atilde;o assistida por IA com curadoria humana integral</div>
+      </div>
+      <div style="background:var(--input-bg);border-left:3px solid var(--ouro);padding:8px 10px;margin-bottom:4px;">
+        <div style="font-size:12px;color:var(--texto);">Contextualiza&ccedil;&atilde;o tripla obrigat&oacute;ria em cada OA (T&eacute;cnico + Hist&oacute;rico + Cotidiano)</div>
+      </div>
+      <div style="background:var(--input-bg);border-left:3px solid var(--ouro);padding:8px 10px;margin-bottom:4px;">
+        <div style="font-size:12px;color:var(--texto);">Narrativa com protagonistas ficcionais por rota&ccedil;&atilde;o c&iacute;clica</div>
+      </div>
+      <div style="background:var(--input-bg);border-left:3px solid var(--ouro);padding:8px 10px;">
+        <div style="font-size:12px;color:var(--texto);">Ciclo Hewitt&ndash;Piazzi&ndash;Bloom integrado em 3 atos (Pr&eacute;/Aula/P&oacute;s)</div>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Escala</div>
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto);margin-bottom:4px;">
+        <span>Trilhas</span><span style="font-family:var(--mono);color:var(--ouro);">60</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto);margin-bottom:4px;">
+        <span>Temas</span><span style="font-family:var(--mono);color:var(--ouro);">9</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto);margin-bottom:4px;">
+        <span>OAs por trilha</span><span style="font-family:var(--mono);color:var(--ouro);">17</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto);margin-bottom:4px;">
+        <span>Total OAs</span><span style="font-family:var(--mono);color:var(--ouro);">1.020</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--texto);">
+        <span>Protagonistas</span><span style="font-family:var(--mono);color:var(--ouro);">3</span>
+      </div>
+    </div>
+
+    <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Assist&ecirc;ncia IA</div>
+    <p style="font-size:12px;color:var(--texto-sub);line-height:1.6;">
+      Claude (Anthropic) + Gemini (Google) como copilotos de produ&ccedil;&atilde;o.
+      Toda gera&ccedil;&atilde;o passa por curadoria humana &mdash; nenhum OA &eacute;
+      publicado sem revis&atilde;o dos autores.
+    </p>
+  </aside>
+
+  <aside class="rail-panel" id="panel-creditos">
+    <div class="rail-panel-title">Cr&eacute;ditos</div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Autoria</div>
+      <div style="font-size:14px;color:var(--texto);">Prof. Julio Azevedo</div>
+      <div style="font-size:14px;color:var(--texto);">Prof. Felipe Beato</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Institui&ccedil;&atilde;o</div>
+      <div style="font-size:14px;color:var(--texto);">IFMG &mdash; Campus Ouro Preto</div>
+      <div style="font-size:13px;color:var(--texto-sub);">T&eacute;cnico em Minera&ccedil;&atilde;o Integrado</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">N&uacute;cleo</div>
+      <div style="font-size:14px;color:var(--texto);">NIDEC-CODAFIS</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Ano letivo</div>
+      <div style="font-size:14px;color:var(--texto);">2026</div>
+    </div>
+    <div>
+      <div style="font-size:12px;color:var(--texto-sub);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Assist&ecirc;ncia IA</div>
+      <div style="font-size:13px;color:var(--texto-sub);">Claude (Anthropic) &mdash; gera&ccedil;&atilde;o assistida</div>
+      <div style="font-size:13px;color:var(--texto-sub);">Gemini (Google) &mdash; gera&ccedil;&atilde;o de imagens</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TABS movidos para o header -->
+
+    <!-- TAB: VISAO GERAL -->
+    <div class="tab-content active" id="tab-visao">
+      <!-- CRONOGRAMA — cabecalho fixo da Visao Geral -->
+      <section>
+        <h2 class="section-title">Cronograma de Produ&ccedil;&atilde;o</h2>
+        <div style="border:1px solid var(--cinza-borda);overflow-x:auto;margin-bottom:24px;">
+          <table class="cal-table">
+            <thead><tr><th>#</th><th>Tema</th><th>Trilhas</th><th>Meta</th><th>Status</th></tr></thead>
+            <tbody id="cal-body-cronograma"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title" id="status-titulo">Status de Produção — Tema 1 — A Régua do Mundo</h2>
+        <div class="status-table-wrap" id="status-table-wrap">
+          <table class="status-table">
+            <thead id="status-thead">
+              <tr>
+                <th>T0A</th>
+                <th>T01</th>
+                <th>T02</th>
+                <th>T03</th>
+                <th>T04</th>
+                <th>T05</th>
+                <th>T06</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="anchor-row">
+                <td>TT (Texto Temático)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig &middot; .pdf</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-TT-v23.md" class="pill pill-done">v23</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-TT-v10.md" class="pill pill-done">v10</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-TT-v9.md" class="pill pill-done">v9</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-TT-v11.md" class="pill pill-done">v11</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-TT-v8.md" class="pill pill-done">v8</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-TT-v10.md" class="pill pill-done">v10</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-TT-v23-digital.html" class="pill pill-done">v23</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-TT-v10-digital.html" class="pill pill-done">v10</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-TT-v9-digital.html" class="pill pill-done">v9</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-TT-v11-digital.html" class="pill pill-done">v11</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-TT-v8-digital.html" class="pill pill-done">v8</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-TT-v10-digital.html" class="pill pill-done">v10</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.pdf</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-TT-v23.pdf" class="pill pill-done">v23</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-TT-v10.pdf" class="pill pill-done">v10</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-TT-v9.pdf" class="pill pill-done">v9</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-TT-v11.pdf" class="pill pill-done">v11</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-TT-v8.pdf" class="pill pill-done">v8</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-TT-v10.pdf" class="pill pill-done">v10</a></td>
+              </tr>
+              <tr>
+                <td>IT (Imagens Temáticas)</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/_imagens/T01-IT-pt-v22-Gemine.html" class="pill pill-done">v22</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/_imagens/T02-IT-pt-v11-Gemine.html" class="pill pill-done">v11</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/_imagens/T03-IT-pt-v11-Gemine.html" class="pill pill-done">v11</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/_imagens/T04-IT-pt-v9-Gemine.html" class="pill pill-done">v9</a></td>
+                <td><a href="../T05_Notacao_Cientifica/_imagens/T05-IT-pt-v10-Gemine.html" class="pill pill-done">v10</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/_imagens/T06-IT-pt-v13-Gemine-auditado.html" class="pill pill-ver">v13*</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>MD (Resumo em Áudio)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-MD-v1.md" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr>
+                <td>MC (Mapa Conceitual)</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-MC-v3-estudante.html" class="pill pill-done">v3</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-MC-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-MC-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-MC-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-MC-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-MC-v4-estudante.html" class="pill pill-done">v4</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>CD (Cartões Didáticos)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-CD-v1.md" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-CD-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-CD-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-CD-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-CD-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-CD-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-CD-v2-estudante.html" class="pill pill-done">v2</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>PP (Ponto de Partida)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-PP-v13.md" class="pill pill-done">v13</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-PP-v5.md" class="pill pill-done">v5</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-PP-v4.md" class="pill pill-done">v4</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-PP-v4.md" class="pill pill-done">v4</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-PP-v4.md" class="pill pill-done">v4</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-PP-v14-estudante.html" class="pill pill-done">v14</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-PP-v5-estudante.html" class="pill pill-done">v5</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-PP-v6-estudante.html" class="pill pill-done">v6</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-PP-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-PP-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-PP-v4-estudante.html" class="pill pill-done">v4</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>TN (Testinho)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-TN-v18.md" class="pill pill-done">v18</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-TN-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-TN-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-TN-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-TN-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-TN-v1.md" class="pill pill-done">v1</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pre_Aula/T01-TN-v19-estudante.html" class="pill pill-done">v19</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-TN-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-TN-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pre_Aula/T04-TN-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pre_Aula/T05-TN-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pre_Aula/T06-TN-v1-estudante.html" class="pill pill-done">v1</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>IG (Infográfico)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-IG-v2-professor.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Aula/T02-IG-v1-professor.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-IG-v2-professor.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Aula/T04-IG-v2-professor.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Aula/T05-IG-v2-professor.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Aula/T06-IG-v2-professor.html" class="pill pill-done">v2</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-IG-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Aula/T02-IG-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-IG-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Aula/T04-IG-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Aula/T05-IG-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Aula/T06-IG-v2-estudante.html" class="pill pill-done">v2</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>FA (Folha de Atividades)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-FA-v18-professor.md" class="pill pill-done">v18</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Aula/T02-FA-v10-professor.md" class="pill pill-done">v10</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-FA-v9-professor.md" class="pill pill-done">v9</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Aula/T04-FA-v6-professor.md" class="pill pill-done">v6</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Aula/T05-FA-v6-professor.md" class="pill pill-done">v6</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Aula/T06-FA-v6-professor.md" class="pill pill-done">v6</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-FA-v19-professor.html" class="pill pill-done">v19</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Aula/T02-FA-v10-professor.html" class="pill pill-done">v10</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-FA-v9-professor.html" class="pill pill-done">v9</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Aula/T04-FA-v6-professor.pdf" class="pill pill-done">v6</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Aula/T05-FA-v6-professor.pdf" class="pill pill-done">v6</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Aula/T06-FA-v6-professor.pdf" class="pill pill-done">v6</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr>
+                <td>AP (Apresentação)</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-AP-v20-digital.html" class="pill pill-done">v20</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Aula/T02-AP-v10.pptx" class="pill pill-done">v10</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-AP-v8.pptx" class="pill pill-done">v8</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Aula/T04-AP-v9.pptx" class="pill pill-done">v9</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Aula/T05-AP-v2.pptx" class="pill pill-done">v2</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Aula/T06-AP-v10.pptx" class="pill pill-done">v10</a></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>PR (Provinha)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-PR-v1.md" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-PR-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Aula/T04-PR-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Aula/T05-PR-v1.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Aula/T06-PR-v1.md" class="pill pill-done">v1</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-PR-v2-professor.html" class="pill pill-done">v2</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>TM (Tarefa Mínima)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TM-v4-banco.md" class="pill pill-done">v4</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pos_Aula/T02-TM-v2-banco.md" class="pill pill-done">v2</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pos_Aula/T03-TM-v1-banco.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pos_Aula/T04-TM-v1-banco.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pos_Aula/T05-TM-v1-banco.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pos_Aula/T06-TM-v1-banco.md" class="pill pill-done">v1</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TM-v4-estudante.html" class="pill pill-done">v4</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>TC (Tarefa Complementar)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TC-v3.md" class="pill pill-done">v3</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pos_Aula/T02-TC-v2.md" class="pill pill-done">v2</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pos_Aula/T03-TC-v2.md" class="pill pill-done">v2</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pos_Aula/T04-TC-v2.md" class="pill pill-done">v2</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pos_Aula/T05-TC-v2.md" class="pill pill-done">v2</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pos_Aula/T06-TC-v2.md" class="pill pill-done">v2</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TC-v3-professor.html" class="pill pill-done">v3</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TC-v3-estudante.html" class="pill pill-done">v3</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>TR (Trabalho)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TR-v1-versaoA.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T02_Sistema_de_Numeracao_de_Base_12/Pos_Aula/T02-TR-v1-versaoA.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Pos_Aula/T03-TR-v1-versaoA.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T04_O_SI_e_a_Metrologia_no_Brasil/Pos_Aula/T04-TR-v1-versaoA.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T05_Notacao_Cientifica/Pos_Aula/T05-TR-v1-versaoA.md" class="pill pill-done">v1</a></td>
+                <td><a href="../T06_Ordem_de_Grandeza/Pos_Aula/T06-TR-v1-versaoA.md" class="pill pill-done">v1</a></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TR-v1-professor.html" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Pos_Aula/T01-TR-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="anchor-row">
+                <td>DX (Desafio)</td>
+                <td colspan="6" style="text-align:center;font-size:12px;color:var(--ouro-claro);">&#9660; .md &middot; .html-dig-prof &middot; .html-dig-est</td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.md</td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-prof</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-DX-NX-v1-professor.html" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-DX-NX-v2-professor.html" class="pill pill-done">v2</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr class="tt-sub">
+                <td>.html-dig-est</td>
+                <td><a href="../T01_Fisica_uma_linguagem_basica_da_ciencia/Aula/T01-DX-NX-v1-estudante.html" class="pill pill-done">v1</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><a href="../T03_Sistema_de_Numeracao_de_Base_10/Aula/T03-DX-NX-v2-estudante.html" class="pill pill-done">v2</a></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+                <td><span class="pill pill-empty">&mdash;</span></td>
+              </tr>
+              <tr>
+                <td>PE (Prova Escrita)</td>
+                <td colspan="6" style="text-align:center"><span class="pill pill-ver">PE1 validada (123 alunos, 1bim)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="status-legenda" style="font-size:13px;color:var(--texto-sub);margin-top:10px;padding:10px 12px;background:var(--superficie);border:1px solid var(--cinza-borda);border-radius:var(--r);">
+          <strong style="color:var(--texto);">Regra de Versionamento:</strong> O TT é a âncora — todo OA da trilha é ancorado pela versão do TT.<br>
+          <span class="pill pill-done" style="margin:4px 2px 0 0;">v10</span> = alinhado com TT &nbsp;
+          <span class="pill pill-outdated" style="margin:4px 2px 0 0;">v20</span> = desatualizado (precisa regenerar para alinhar com TT atual) &nbsp;
+          <span class="pill pill-ver" style="margin:4px 2px 0 0;">v13*</span> = parcial (descritores prontos, PNGs pendentes)<br>
+          <span style="color:var(--texto-sub);font-size:12px;margin-top:4px;display:inline-block;">
+            &#9875; TT-DIG deve OBRIGATORIAMENTE ter o mesmo v{N} do TT. Demais OAs têm versionamento próprio.
+          </span>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Progresso Global</h2>
+
+        <!-- Stat strip -->
+        <div class="pg-stats" id="pg-stats">
+          <div class="pg-stat s-done">
+            <div class="pg-stat-num">1 <span class="frac">/ 9</span></div>
+            <div class="pg-stat-label">Temas completos</div>
+            <div class="pg-stat-sub">A R&eacute;gua do Mundo</div>
+          </div>
+          <div class="pg-stat s-partial">
+            <div class="pg-stat-num">6 <span class="frac">/ 60</span></div>
+            <div class="pg-stat-label">Trilhas produzidas</div>
+            <div class="pg-stat-sub">T01&ndash;T06</div>
+          </div>
+          <div class="pg-stat s-partial">
+            <div class="pg-stat-num"><span class="frac">~</span>80 <span class="frac">/ 1020</span></div>
+            <div class="pg-stat-label">OAs produzidos</div>
+            <div class="pg-stat-sub">17 tipos &times; 6 trilhas</div>
+          </div>
+          <div class="pg-stat s-done">
+            <div class="pg-stat-num">15 <span class="frac">+ 3</span></div>
+            <div class="pg-stat-label">Skills Cowork</div>
+            <div class="pg-stat-sub">15 ativas &middot; 3 congeladas</div>
+          </div>
+        </div>
+
+        <!-- Barra de progresso -->
+        <div class="pg-bar" id="pg-bar">
+          <div class="pg-bar-fill" style="width:8%"></div>
+        </div>
+        <div class="pg-bar-label" id="pg-bar-label">~8% do escopo total &mdash; 80 de 1020 OAs</div>
+
+        <!-- Mapa de Temas -->
+        <div class="tema-map" id="tema-map">
+          <table>
+            <thead>
+              <tr>
+                <th>Tema</th>
+                <th>O1</th>
+                <th>O2</th>
+                <th>O3</th>
+                <th>O4</th>
+                <th>Trilhas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="tema-done">
+                <td>1 &mdash; A R&eacute;gua do Mundo</td>
+                <td><span class="wave-dot done"></span></td>
+                <td><span class="wave-dot done"></span></td>
+                <td><span class="wave-dot done"></span></td>
+                <td><span class="wave-dot done"></span></td>
+                <td>T01&ndash;T06</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>2 &mdash; O Ritmo das M&aacute;quinas</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T07&ndash;T12</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>3 &mdash; A For&ccedil;a que Move o Min&eacute;rio</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T13&ndash;T18</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>4 &mdash; A Dire&ccedil;&atilde;o do Movimento</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T19&ndash;T24</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>5 &mdash; O Di&aacute;logo das For&ccedil;as</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T25&ndash;T34</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>6 &mdash; A Ci&ecirc;ncia do Repouso</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T35&ndash;T40</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>7 &mdash; Energia em Transforma&ccedil;&atilde;o</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T41&ndash;T48</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>8 &mdash; O Peso das &Aacute;guas</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T49&ndash;T54</td>
+              </tr>
+              <tr class="tema-pending">
+                <td>9 &mdash; Os Movimentos Celestes</td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td><span class="wave-dot empty"></span></td>
+                <td>T55&ndash;T60</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Legenda -->
+        <div class="pg-legenda" id="pg-legenda">
+          <div class="pg-legenda-item"><span class="wave-dot done"></span> Completo</div>
+          <div class="pg-legenda-item"><span class="wave-dot partial"></span> Parcial</div>
+          <div class="pg-legenda-item"><span class="wave-dot empty"></span> Pendente</div>
+          <span style="margin-left:auto;font-family:var(--mono);font-size:11px;opacity:.6;">O1=Plano &middot; O2=Conte&uacute;do &middot; O3=Aula &middot; O4=P&oacute;s-Aula</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB: PROCESSO -->
+    <div class="tab-content" id="tab-producao">
+      <section>
+        <h2 class="section-title">Modelo de Ondas por Tema</h2>
+        <p id="ondas-desc" style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
+          Cada TEMA de uma DISCIPLINA é processado em 4 ondas sequenciais. Dentro de cada onda, todas as TRILHAS DE APRENDIZAGEM do tema avançam juntas.
+        </p>
+        <div class="ondas-visual" id="ondas-visual">
+          <div class="onda-col">
+            <div class="onda-header">Onda 1 — Plano</div>
+            <div class="onda-body">
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> Camada 2</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~30 min/trilha</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
+                <strong>Skill:</strong> /abertura-trilha
+              </div>
+            </div>
+          </div>
+          <div class="onda-col">
+            <div class="onda-header">Onda 2 — Conteúdo</div>
+            <div class="onda-body">
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT Digital</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ouro)"></span> IT (Gemini)</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> MD</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> MC + CD</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> PP + TN</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> IG</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~45 min/trilha</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
+                <strong>Skills:</strong> /texto-tematico &rarr; /imagem-tematica-manual &rarr; /mapa-conceitual &rarr; /cartoes-didaticos &rarr; /ponto-de-partida &rarr; /testinho &rarr; /infografico
+              </div>
+            </div>
+          </div>
+          <div class="onda-col">
+            <div class="onda-header">Onda 3 — Aula</div>
+            <div class="onda-body">
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> FA + DX</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> AP</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> PR</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~30 min/trilha</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
+                <strong>Skills:</strong> /folha-de-atividades &rarr; /apresentacao-trilha &rarr; /provinha
+              </div>
+            </div>
+          </div>
+          <div class="onda-col">
+            <div class="onda-header">Onda 4 — Pós-Aula</div>
+            <div class="onda-body">
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TM</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TC</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TR (A/B/C)</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~40 min/trilha</div>
+              <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
+                <strong>Skills:</strong> /tarefa-minima &rarr; /tarefa-complementar &rarr; /trabalho
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Fluxo de Dependências</h2>
+        <div id="fluxo-content" style="font-family:var(--mono);font-size:13px;background:var(--superficie);border:1px solid var(--cinza-borda);border-radius:var(--r);padding:16px;line-height:1.8;overflow-x:auto;white-space:pre;color:var(--texto-sub);">TT (Texto Temático) ─────────────────── ÂNCORA DE TUDO
+ .md + .html (digital) + .pdf
+  │
+  ├─→ TT Digital (.html interativo)
+  ├─→ IT (.html digital, 12 imagens — Gemini manual)
+  ├─→ MD (.html digital, Resumo em Áudio — NotebookLM)
+  ├─→ MC (Mapa Conceitual) ──→ CD (Cartões)
+  ├─→ PP (Ponto de Partida) ──→ TN (Testinho 3 versões)
+  ├─→ IG (Infográfico interativo)
+  │
+  ├─→ FA (.html digital + .html impressa) ──→ DX (.html digital + .html impressa, Desafio opcional)
+  ├─→ AP (Apresentação .html)
+  ├─→ PR (Provinha .html digital)
+  │
+  └─→ TM (Tarefa Mínima) ──→ TC (Complementar) ──→ TR (Trabalho A/B/C)
+       └── lê fragmento FI automaticamente</div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Como Usar o Claude (Passo a Passo)</h2>
+        <div style="display:grid;gap:10px;">
+          <div class="card s-done" style="border-left:3px solid var(--ouro);">
+            <div class="card-sigla">1. Elaborar o Plano (Onda 1)</div>
+            <div class="card-name">Protocolo 1: antes de qualquer OA, preencha o formulário digital
+              <a href="skill_onda1_plano-v1.html" target="_blank" style="color:var(--ouro);text-decoration:underline;">Onda 1 — Plano</a>
+              (~30 min/trilha). Ele define os assuntos dos 5 tópicos, protagonistas, epígrafe e contextualizações que ancoram todos os OAs da trilha.</div>
+          </div>
+          <div class="card s-partial">
+            <div class="card-sigla">2. Abrir sessão no Claude</div>
+            <div class="card-name">Diga: &ldquo;Estamos na Onda [N] do Tema [M], trilhas T[XX]&ndash;T[YY]&rdquo;. Cole o bloco gerado pelo Plano.</div>
+          </div>
+          <div class="card s-partial">
+            <div class="card-sigla">3. Acionar skill</div>
+            <div class="card-name">Uma <em>skill</em> &eacute; um conjunto de instru&ccedil;&otilde;es que o Claude segue para gerar um OA completo de forma padronizada. Digite: <code style="color:var(--ouro);">/texto-tematico</code>, <code style="color:var(--ouro);">/apresentacao-trilha</code>, etc. Cada skill produz um OA pronto para revis&atilde;o.</div>
+          </div>
+          <div class="card s-partial">
+            <div class="card-sigla">4. Revisar e aprovar</div>
+            <div class="card-name">Abra cada OA e digite ou fale &ldquo;aprovado&rdquo; para salvar, ou descreva ajustes para nova versão.</div>
+          </div>
+          <div class="card s-partial">
+            <div class="card-sigla">5. Próximo OA</div>
+            <div class="card-name">Claude sugere o próximo da sequência, ou peça diretamente.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB: SKILLS -->
+    <div class="tab-content" id="tab-skills">
+      <section>
+        <h2 class="section-title">Skills Disponíveis</h2>
+        <p style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
+          Cada skill tem um SKILL.md com protocolo detalhado. Acione com o comando de slash antes de gerar qualquer OA.
+        </p>
+
+        <div class="rail-label" style="margin:16px 0 8px;">Pré-Aula</div>
+        <div class="skill-list">
+          <div class="skill-item active-skill"><span class="skill-sigla">TT</span><span class="skill-name">texto-tematico-tex-tectonic</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">TXT</span><span class="skill-name">texto-tematico-txt</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">FIN</span><span class="skill-name">finalizar-tt</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">DIG</span><span class="skill-name">texto-tematico-digital</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">IT</span><span class="skill-name">imagem-tematica-manual</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">MC</span><span class="skill-name">mapa-conceitual</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">CD</span><span class="skill-name">cartoes-didaticos</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">PP</span><span class="skill-name">ponto-de-partida</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">TN</span><span class="skill-name">testinho</span><span class="skill-badge ativo">ativo</span></div>
+        </div>
+
+        <div class="rail-label" style="margin:16px 0 8px;">Aula</div>
+        <div class="skill-list">
+          <div class="skill-item active-skill"><span class="skill-sigla">IG</span><span class="skill-name">infografico</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">FA</span><span class="skill-name">folha-de-atividades-tex-tectonic</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill" style="flex-direction:column;align-items:stretch;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="skill-sigla">AP</span>
+              <span class="skill-name" style="flex:1">apresentacao-trilha <span style="color:var(--ouro-claro);font-size:12px;">(3 variantes)</span></span>
+              <span class="skill-badge ativo">ativo</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;margin:8px 0 4px 36px;font-size:12px;">
+              <div style="color:var(--texto-sub);">
+                <span style="color:var(--ok);font-weight:600;">A5.0</span> /apresentacao-trilha &mdash; multi-agente (3 agentes, Workflow), input .md
+              </div>
+              <div style="color:var(--texto-sub);">
+                <span style="color:var(--ok);font-weight:600;">A02</span> /apresentacao-trilha-02 &mdash; variante TXT (mais leve, input .txt)
+              </div>
+              <div style="color:var(--texto-sub);">
+                <span style="color:var(--ok);font-weight:600;">PPTX</span> /apresentacao-trilha-pptx &mdash; anti-corrup&ccedil;&atilde;o, gen_ap.py + T01-AP-v19.potx
+              </div>
+            </div>
+          </div>
+          <div class="skill-item active-skill"><span class="skill-sigla">IT-AP</span><span class="skill-name">imagem-ap-moodle</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">PR</span><span class="skill-name">provinha</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">DX</span><span class="skill-name">desafios-pedagogicos</span><span class="skill-badge ativo">ativo</span></div>
+        </div>
+
+        <div class="rail-label" style="margin:16px 0 8px;">Pós-Aula</div>
+        <div class="skill-list">
+          <div class="skill-item active-skill"><span class="skill-sigla">TM</span><span class="skill-name">tarefa-minima</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">TC</span><span class="skill-name">tarefa-complementar</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">TR</span><span class="skill-name">trabalho-tex-tectonic</span><span class="skill-badge ativo">ativo</span></div>
+        </div>
+
+        <div class="rail-label" style="margin:16px 0 8px;">Avaliação</div>
+        <div class="skill-list">
+          <div class="skill-item active-skill"><span class="skill-sigla">PE</span><span class="skill-name">prova-de-etapa</span><span class="skill-badge ativo">ativo</span></div>
+        </div>
+
+        <div class="rail-label" style="margin:16px 0 8px;">Apoio / Congeladas</div>
+        <div class="skill-list">
+          <div class="skill-item active-skill"><span class="skill-sigla">C2</span><span class="skill-name">abertura-trilha</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item active-skill"><span class="skill-sigla">FE</span><span class="skill-name">texto-tematico-fe</span><span class="skill-badge ativo">ativo</span></div>
+          <div class="skill-item frozen-skill"><span class="skill-sigla">—</span><span class="skill-name">texto-tematico-tex (Overleaf)</span><span class="skill-badge congelada">congelada</span></div>
+          <div class="skill-item frozen-skill"><span class="skill-sigla">—</span><span class="skill-name">folha-de-atividades (Pandoc)</span><span class="skill-badge congelada">congelada</span></div>
+          <div class="skill-item frozen-skill"><span class="skill-sigla">—</span><span class="skill-name">trabalho (Pandoc)</span><span class="skill-badge congelada">congelada</span></div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Referência Rápida de Comandos</h2>
+        <div class="status-table-wrap">
+          <table class="status-table">
+            <thead>
+              <tr><th>Comando</th><th>O que faz</th><th>Input necessário</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>/abertura-trilha</td><td>Gera Camada 2 (briefing)</td><td>Número da trilha</td></tr>
+              <tr><td>/texto-tematico</td><td>Gera TT em LaTeX &rarr; PDF 14&times;21</td><td>C2 aprovada</td></tr>
+              <tr><td>/texto-tematico-txt</td><td>Converte TT .md &rarr; .txt 14&times;21 (Aula/)</td><td>TT .md aprovado</td></tr>
+              <tr><td>/finalizar-tt</td><td>Insere p&aacute;ginas iniciais no .docx do TT</td><td>TT .tex ou .docx pronto</td></tr>
+              <tr><td>/imagem-tematica-manual</td><td>Gera descritores IT (12 imgs)</td><td>TT aprovado</td></tr>
+              <tr><td>/apresentacao-trilha</td><td>AP multi-agente A5.0 (Workflow, input .md)</td><td>TT + FA + C2 aprovados</td></tr>
+              <tr><td>/apresentacao-trilha-02</td><td>AP variante TXT (input .txt, mais leve)</td><td>TT .txt + FA .txt</td></tr>
+              <tr><td>/apresentacao-trilha-pptx</td><td>AP anti-corrup&ccedil;&atilde;o (gen_ap.py, T03+)</td><td>T{NN}_data.py + template v19</td></tr>
+              <tr><td>/imagem-ap-moodle</td><td>IT otimizadas para AP + Moodle</td><td>IT .png da trilha</td></tr>
+              <tr><td>/folha-de-atividades</td><td>Gera FA LaTeX &rarr; 2 PDFs A4</td><td>TT aprovado</td></tr>
+              <tr><td>/tarefa-minima</td><td>Gera TM (banco + Moodle XML)</td><td>TT + fragmento FI</td></tr>
+              <tr><td>/tarefa-complementar</td><td>Gera TC ENEM-style</td><td>TT + fragmento FI</td></tr>
+              <tr><td>/trabalho</td><td>Gera TR LaTeX &rarr; 3 PDFs A/B/C</td><td>TT + fragmento FI</td></tr>
+              <tr><td>/prova-de-etapa</td><td>Monta PE do banco central</td><td>6-10 trilhas com itens</td></tr>
+              <tr><td>/ponto-de-partida</td><td>Gera PP diagnóstico</td><td>TT aprovado</td></tr>
+              <tr><td>/testinho</td><td>Gera TN 3 versões A/B/C</td><td>TT aprovado</td></tr>
+              <tr><td>/mapa-conceitual</td><td>Gera MC interativo</td><td>TT aprovado</td></tr>
+              <tr><td>/cartoes-didaticos</td><td>Gera CD flashcards</td><td>TT + MC</td></tr>
+              <tr><td>/infografico</td><td>Gera IG interativo (3 versões)</td><td>TT aprovado</td></tr>
+              <tr><td>/provinha</td><td>Gera PR formativa (3 versões)</td><td>TT aprovado</td></tr>
+              <tr><td>/desafios-pedagogicos</td><td>Gera DX lúdico (12 tipos)</td><td>FA gerada</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB: INFRA -->
+    <div class="tab-content" id="tab-infra">
+      <section>
+        <h2 class="section-title">Ecossistema — 4 Camadas</h2>
+        <div class="camadas-grid">
+          <div class="camada-card ativo">
+            <div class="camada-num">C1</div>
+            <div class="camada-title">Autoria Interativa</div>
+            <div class="camada-desc">Claude Max + Claude Code desktop. Sessões síncronas autor + Claude.</div>
+            <div class="camada-status">ATIVO</div>
+          </div>
+          <div class="camada-card ativo">
+            <div class="camada-num">C2</div>
+            <div class="camada-title">Automação Local</div>
+            <div class="camada-desc">Tectonic, python-pptx, Pandoc, Gemini, PowerShell.</div>
+            <div class="camada-status">ATIVO</div>
+          </div>
+          <div class="camada-card ativo">
+            <div class="camada-num">C3</div>
+            <div class="camada-title">API por Token</div>
+            <div class="camada-desc">Anthropic Batch API. Chave validada 2026-07-18.</div>
+            <div class="camada-status">ATIVO</div>
+          </div>
+          <div class="camada-card pendente">
+            <div class="camada-num">C4</div>
+            <div class="camada-title">Noturno</div>
+            <div class="camada-desc">Batch API 50% off. Piloto validado, falta agendar.</div>
+            <div class="camada-status">PILOTO OK</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Pipelines de Compilação</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
+          <div class="card s-done"><div class="card-sigla">LaTeX/Tectonic</div><div class="card-name">TT &rarr; PDF 14&times;21 (~35s)</div><div class="card-ver">compilar.ps1 + _templates_tex/</div></div>
+          <div class="card s-done"><div class="card-sigla">LaTeX/Tectonic</div><div class="card-name">FA &rarr; 2 PDFs A4 (~15s)</div><div class="card-ver">ifmg-fa.cls</div></div>
+          <div class="card s-done"><div class="card-sigla">LaTeX/Tectonic</div><div class="card-name">TR &rarr; 3 PDFs A4 (~18s)</div><div class="card-ver">ifmg-tr.cls</div></div>
+          <div class="card s-done"><div class="card-sigla">python-pptx</div><div class="card-name">AP &rarr; .pptx (13 slides, 3 skills)</div><div class="card-ver">Modelo1.pptx + v19.potx</div></div>
+          <div class="card s-done"><div class="card-sigla">HTML standalone</div><div class="card-name">TT Digital (Brutalismo)</div><div class="card-ver">template T05-TT-v8-digital</div></div>
+          <div class="card s-done"><div class="card-sigla">Gemini manual</div><div class="card-name">12 IT por trilha</div><div class="card-ver">gerar_html_gemine.py</div></div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Arquivos-Chave</h2>
+        <div class="status-table-wrap">
+          <table class="status-table">
+            <thead><tr><th>Arquivo</th><th>Função</th></tr></thead>
+            <tbody>
+              <tr><td>CLAUDE.md</td><td>Instruções globais do projeto (lido automaticamente)</td></tr>
+              <tr><td>_skill_cowork/{skill}/SKILL.md</td><td>Protocolo detalhado de cada OA</td></tr>
+              <tr><td>_templates_tex/</td><td>Templates LaTeX (cls, sty, tex)</td></tr>
+              <tr><td>_scripts/</td><td>pipeline_tt, validar_tt, gerar_fa, etc.</td></tr>
+              <tr><td>Citacoes_Trilhas_T0A-T60.xlsx</td><td>Status de produção (fonte de verdade)</td></tr>
+              <tr><td>FI-Fragmentos/</td><td>Fragmentos do livro PNLD para TM/TC/TR</td></tr>
+              <tr><td>.env</td><td>Chave API Anthropic (Batch)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- TAB: ONDA 1 — PLANO (embedded) -->
+    <div class="tab-content" id="tab-onda1">
+      <section style="padding:0;display:flex;flex-direction:column;height:calc(100vh - var(--header-h) - 48px);">
+        <div id="onda1-sticky-header" style="flex-shrink:0;z-index:10;background:var(--superficie);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--cinza-borda);gap:8px;">
+          <h2 class="section-title" style="margin:0;font-size:16px;white-space:nowrap;">Onda 1 &mdash; Plano de Produ&ccedil;&atilde;o de uma Trilha de Aprendizagem</h2>
+          <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+            <button onclick="postToOnda1('limparEstado')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:transparent;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.75);cursor:pointer;" title="Apagar campos e come&ccedil;ar nova trilha">&#10005; Nova Trilha</button>
+            <button id="btn-painel-export" onclick="postToOnda1('exportRascunho')" style="display:none;font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px dashed var(--verde-claro);color:var(--verde-claro);cursor:pointer;">&#128190; Exportar rascunho (.md)</button>
+            <button onclick="window.open('skill_onda1_plano-v1.html','_blank')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px solid var(--verde-claro);color:var(--verde-claro);cursor:pointer;">Abrir em nova janela &#8599;</button>
+          </div>
+        </div>
+        <div id="onda1-trilha-bar" style="padding:8px 16px;border-bottom:1px solid var(--cinza-borda);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--ouro);text-transform:uppercase;letter-spacing:.05em;">C&oacute;digo da Trilha</span>
+            <span style="font-size:10px;padding:1px 8px;background:var(--verde-bg);color:var(--verde-claro);border:1px solid var(--verde-claro);font-family:var(--mono);">Clique em uma trilha &mdash; preenchimento autom&aacute;tico</span>
+          </div>
+          <div id="onda1-chips" style="display:flex;flex-wrap:wrap;gap:4px;max-height:72px;overflow-y:auto;"></div>
+        </div>
+        <div class="tabs" id="onda1-nav" style="margin:0;padding:0 16px;border-bottom:1px solid var(--cinza-borda);overflow-x:auto;flex-wrap:nowrap;">
+          <div class="tab active" onclick="navOnda1('sec1',this)">Ep&iacute;grafe</div>
+          <div class="tab" onclick="navOnda1('sec2',this)">Conte&uacute;do</div>
+          <div class="tab" onclick="navOnda1('sec3',this)">Narrativa</div>
+          <div class="tab" onclick="navOnda1('sec4',this)">Contextualiza&ccedil;&atilde;o</div>
+          <div class="tab" onclick="navOnda1('sec5',this)">Lacunas</div>
+          <div class="tab" onclick="navOnda1('sec6',this)">Finaliza&ccedil;&atilde;o</div>
+          <div class="tab" onclick="navOnda1('sec7',this)">P&oacute;s-Produ&ccedil;&atilde;o</div>
+        </div>
+        </div><!-- /onda1-sticky-header -->
+        <iframe id="onda1-iframe" src="about:blank" data-src="skill_onda1_plano-v1.html" allow="clipboard-write; clipboard-read" style="width:100%;flex:1;min-height:0;border:none;display:block;background:var(--fundo);"></iframe>
+      </section>
+    </div>
+
+    <!-- TAB: EPÍGRAFES -->
+    <div class="tab-content" id="tab-epigrafes">
+      <section>
+        <h2 class="section-title">Ep&iacute;grafes &mdash; Cita&ccedil;&otilde;es por Trilha</h2>
+        <p style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
+          Cada trilha usa autores &uacute;nicos &mdash; sem repeti&ccedil;&atilde;o entre trilhas. Selecione a disciplina para visualizar.
+        </p>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <select id="sel-epigrafe-disc" onchange="loadEpigrafe()" style="font-family:var(--mono);font-size:13px;padding:6px 10px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+            <option value="fc1">FC1 &mdash; F&iacute;sica Conceitual 1 (60 trilhas)</option>
+            <option value="fe1">FE1 &mdash; F&iacute;sica Experimental 1 (17 trilhas)</option>
+            <option value="fc2" disabled>FC2 &mdash; F&iacute;sica Conceitual 2 &#9203;</option>
+            <option value="fc3" disabled>FC3 &mdash; F&iacute;sica Conceitual 3 &#9203;</option>
+            <option value="fe2" disabled>FE2 &mdash; F&iacute;sica Experimental 2 &#9203;</option>
+            <option value="fe3" disabled>FE3 &mdash; F&iacute;sica Experimental 3 &#9203;</option>
+          </select>
+          <span id="epigrafe-status" style="font-family:var(--mono);font-size:11px;color:var(--verde-claro);"></span>
+        </div>
+        <div id="epigrafe-container" style="border:1px solid var(--cinza-borda);overflow:hidden;">
+          <iframe id="epigrafe-iframe" src="about:blank" style="width:100%;height:calc(100vh - 260px);border:none;display:block;background:var(--fundo);"></iframe>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB: CRONOGRAMA -->
+    <!-- ABA DADOS — coleta de respostas dos OAs (F4) -->
+    <div class="tab-content" id="tab-dados">
+      <section style="display:flex;flex-direction:column;height:calc(100vh - 170px);">
+        <h2 class="section-title">An&aacute;lise &mdash; Coleta de Respostas dos OAs</h2>
+        <iframe id="dados-iframe" src="about:blank" data-src="dados-coleta-v1.html" style="width:100%;flex:1;min-height:0;border:1px solid var(--cinza-borda);display:block;background:var(--fundo);"></iframe>
+      </section>
+    </div>
+
+    <!-- ABA DISTRIBUICAO — publicacao dos OAs aos estudantes -->
+    <div class="tab-content" id="tab-distribuicao">
+      <section>
+        <h2 class="section-title">Distribui&ccedil;&atilde;o &mdash; OAs Publicados aos Estudantes</h2>
+        <p style="font-size:13px;color:var(--texto-sub);margin-bottom:16px;">
+          Site p&uacute;blico: <a href="https://nidecop-jafb.github.io/fc1-oa/" target="_blank" style="color:var(--ouro-claro);">nidecop-jafb.github.io/fc1-oa</a>
+          &middot; aluno entra com o RA (7 d&iacute;gitos), sem senha &middot; equipe testa com RAs 9000001&ndash;9000008 (turma EQUIPE, fora das m&eacute;tricas)
+        </p>
+        <div style="border:1px solid var(--cinza-borda);overflow-x:auto;margin-bottom:24px;">
+          <table class="cal-table">
+            <thead><tr><th>Trilha</th><th>OAs no ar</th><th>Links</th><th>QR codes</th></tr></thead>
+            <tbody>
+              <tr><td>T01</td><td>PP &middot; TN &middot; PR &middot; TM &middot; TC</td>
+                <td><a href="https://nidecop-jafb.github.io/fc1-oa/t01/tn/" target="_blank" style="color:var(--ouro-claro);">abrir TN</a> &middot; <a href="https://nidecop-jafb.github.io/fc1-oa/" target="_blank" style="color:var(--ouro-claro);">todos</a></td>
+                <td style="font-family:var(--mono);font-size:11px;">T01_*/Aula/_qrcodes/ (PNG &middot; HTML &middot; PDF)</td></tr>
+              <tr><td>T02</td><td>PP &middot; TN</td>
+                <td><a href="https://nidecop-jafb.github.io/fc1-oa/t02/tn/" target="_blank" style="color:var(--ouro-claro);">abrir TN</a></td>
+                <td style="font-family:var(--mono);font-size:11px;">T02_*/Aula/_qrcodes/</td></tr>
+              <tr><td>T03</td><td>PP &middot; TN</td>
+                <td><a href="https://nidecop-jafb.github.io/fc1-oa/t03/tn/" target="_blank" style="color:var(--ouro-claro);">abrir TN</a></td>
+                <td style="font-family:var(--mono);font-size:11px;">T03_*/Aula/_qrcodes/</td></tr>
+              <tr><td>T04</td><td>PP &middot; TN</td>
+                <td><a href="https://nidecop-jafb.github.io/fc1-oa/t04/tn/" target="_blank" style="color:var(--ouro-claro);">abrir TN</a></td>
+                <td style="font-family:var(--mono);font-size:11px;">T04_*/Aula/_qrcodes/</td></tr>
+              <tr><td>T05</td><td>PP &middot; TN</td>
+                <td><a href="https://nidecop-jafb.github.io/fc1-oa/t05/tn/" target="_blank" style="color:var(--ouro-claro);">abrir TN</a></td>
+                <td style="font-family:var(--mono);font-size:11px;">T05_*/Aula/_qrcodes/</td></tr>
+              <tr><td>T06</td><td>PP &middot; TN</td>
+                <td><a href="https://nidecop-jafb.github.io/fc1-oa/t06/tn/" target="_blank" style="color:var(--ouro-claro);">abrir TN</a></td>
+                <td style="font-family:var(--mono);font-size:11px;">T06_*/Aula/_qrcodes/</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="section-title">Fluxo de publica&ccedil;&atilde;o (3 comandos no Claude Code)</h2>
+        <pre style="font-family:var(--mono);font-size:12px;background:var(--cinza-card);border:1px solid var(--cinza-borda);padding:14px 16px;overflow-x:auto;line-height:1.7;">
+1. python _scripts/publicar_trilha.py T{NN}     # injeta coletor + regenera indice do site
+2. git add -A &amp;&amp; git commit &amp;&amp; git push          # no repo G:\JA2026\_publicacao\fc1-oa
+3. python _scripts/gerar_qrcodes.py T{NN}       # PNGs + folha HTML + PDF de impressao</pre>
+        <p style="font-size:12px;color:var(--texto-sub);margin-top:10px;">
+          Refer&ecirc;ncias: <span style="font-family:var(--mono);">_painel/arquitetura-dados-oa-v1.md</span> (design completo)
+          &middot; <span style="font-family:var(--mono);">_painel/_dados/coleta/config-coleta.json</span> (endpoint, chave, planilha)
+          &middot; coleta grava na planilha <strong>FC1-Respostas-2026</strong> (Drive) em tempo real.
+        </p>
+      </section>
+    </div>
+
+    <!-- ABA GUIAS — onboarding e capacitacao da equipe (E1) -->
+    <div class="tab-content" id="tab-guias">
+      <section>
+        <h2 class="section-title">Guias &mdash; Onboarding por Papel</h2>
+        <p style="font-size:13px;color:var(--texto-sub);margin-bottom:16px;">
+          Como obter acesso: pe&ccedil;a ao Autor para adicion&aacute;-lo como colaborador do reposit&oacute;rio privado
+          <span style="font-family:var(--mono);">nidecop-jafb/Versao_A1.0</span> (Settings &rarr; Collaborators no GitHub).
+          Depois clone o reposit&oacute;rio e abra <span style="font-family:var(--mono);">_painel/painel-producao.html</span> no navegador.
+          <strong>Este painel cont&eacute;m a chave do relat&oacute;rio &mdash; nunca copie nada dele para o site dos alunos.</strong>
+        </p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:28px;">
+          <div style="border:1px solid var(--cinza-borda);padding:16px;background:var(--cinza-card);">
+            <div style="font-family:var(--mono);font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">AUTOR &mdash; Julio (RA teste 9000001)</div>
+            <ol style="font-size:12.5px;line-height:1.7;padding-left:18px;color:var(--texto);">
+              <li>Produz OAs nas 4 Ondas via abas Produ&ccedil;&atilde;o e Texto Tem&aacute;tico</li>
+              <li>Aprova vers&otilde;es (regra: nunca sobrescrever, sempre v{N+1})</li>
+              <li>Publica trilhas (aba Distribui&ccedil;&atilde;o, 3 comandos)</li>
+              <li>Acompanha a aba An&aacute;lise e decide interven&ccedil;&otilde;es</li>
+              <li>Administra planilha, Apps Script e reposit&oacute;rios</li>
+            </ol>
+          </div>
+          <div style="border:1px solid var(--cinza-borda);padding:16px;background:var(--cinza-card);">
+            <div style="font-family:var(--mono);font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">COAUTOR &mdash; Felipe (RA teste 9000002)</div>
+            <ol style="font-size:12.5px;line-height:1.7;padding-left:18px;color:var(--texto);">
+              <li>Revisa OAs em rascunho (checklist da aba Qualidade)</li>
+              <li>Valida contextualiza&ccedil;&atilde;o tripla e Protocolo C5</li>
+              <li>Testa OAs publicados com seu RA de equipe</li>
+              <li>L&ecirc; a aba An&aacute;lise para orientar a pr&oacute;xima aula</li>
+            </ol>
+          </div>
+          <div style="border:1px solid var(--cinza-borda);padding:16px;background:var(--cinza-card);">
+            <div style="font-family:var(--mono);font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">COLABORADORES</div>
+            <div style="font-family:var(--mono);font-size:11.5px;color:var(--texto-sub);margin-bottom:8px;">
+              L&aacute;zaro Souza Lima &middot; RA <strong>9000003</strong><br>
+              Daniel Bretas Roa &middot; RA <strong>9000004</strong><br>
+              Marcos Rafael &middot; RA <strong>9000005</strong>
+            </div>
+            <ol style="font-size:12.5px;line-height:1.7;padding-left:18px;color:var(--texto);">
+              <li><strong>Primeiro dia:</strong> abra um OA no site, digite seu RA de equipe, responda e envie</li>
+              <li>Teste cada OA novo publicado e registre achados em "Sugest&otilde;es" (abaixo)</li>
+              <li>Seus envios N&Atilde;O contaminam as m&eacute;tricas das turmas (turma EQUIPE &eacute; filtrada)</li>
+              <li>Use os prompts prontos para executar tarefas via Claude Code</li>
+            </ol>
+          </div>
+          <div style="border:1px solid var(--cinza-borda);padding:16px;background:var(--cinza-card);">
+            <div style="font-family:var(--mono);font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">MONITORES FC1+FE1</div>
+            <div style="font-family:var(--mono);font-size:11.5px;color:var(--texto-sub);margin-bottom:8px;">
+              Gustavo Duarte &middot; RA <strong>9000006</strong><br>
+              Gabriela Padula Marcilio &middot; RA <strong>9000007</strong>
+            </div>
+            <ol style="font-size:12.5px;line-height:1.7;padding-left:18px;color:var(--texto);">
+              <li>Acompanham entregas da turma na aba An&aacute;lise (filtro Turma)</li>
+              <li>Lista de pendentes nominais &rarr; lembram os colegas nos grupos</li>
+              <li>Orientam alunos no login (RA de 7 d&iacute;gitos, com zeros; nunca pedir senha)</li>
+            </ol>
+          </div>
+        </div>
+
+        <h2 class="section-title">Prompts prontos &mdash; copiar e colar no Claude Code</h2>
+        <p style="font-size:12.5px;color:var(--texto-sub);margin-bottom:12px;">
+          Clique para copiar. Cole no Claude Code (Cowork), ajuste o que estiver entre { } e envie.
+        </p>
+        <div id="prompts-guias" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-bottom:28px;"></div>
+
+        <h2 class="section-title">Sugest&otilde;es de Aprimoramento</h2>
+        <p style="font-size:12.5px;color:var(--texto-sub);margin-bottom:12px;">
+          Achou um problema, teve uma ideia ou algo ficou confuso? Registre aqui &mdash; a sugest&atilde;o
+          vai direto para a aba <span style="font-family:var(--mono);">sugestoes</span> da planilha do professor.
+        </p>
+        <div style="border:1px solid var(--cinza-borda);background:var(--cinza-card);padding:16px;margin-bottom:28px;max-width:720px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+            <input type="text" id="sugNome" placeholder="Seu nome" style="font-family:var(--mono);font-size:12.5px;padding:8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+            <select id="sugPapel" style="font-family:var(--mono);font-size:12.5px;padding:8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+              <option value="">Papel...</option>
+              <option>Autor</option><option>Coautor</option><option>Colaborador</option><option>Monitor(a)</option>
+            </select>
+            <select id="sugArea" style="font-family:var(--mono);font-size:12.5px;padding:8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+              <option value="">&Aacute;rea...</option>
+              <option>OA no celular (site dos alunos)</option>
+              <option>Login por RA</option>
+              <option>Painel do Ecossistema</option>
+              <option>An&aacute;lise / planilha</option>
+              <option>QR codes / distribui&ccedil;&atilde;o</option>
+              <option>Conte&uacute;do pedag&oacute;gico</option>
+              <option>Outra</option>
+            </select>
+          </div>
+          <textarea id="sugTexto" rows="4" placeholder="Descreva a sugest&atilde;o ou o problema (se for erro, diga em qual OA/tela aconteceu)" style="width:100%;font-family:inherit;font-size:13px;padding:10px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);resize:vertical;"></textarea>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:10px;">
+            <button type="button" onclick="enviarSugestaoPainel(this)" style="background:var(--ouro);color:#000;border:none;font-family:var(--mono);font-weight:700;padding:10px 22px;cursor:pointer;">Enviar sugest&atilde;o</button>
+            <span id="sugStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"></span>
+          </div>
+        </div>
+
+        <h2 class="section-title">Gloss&aacute;rio essencial</h2>
+        <div style="border:1px solid var(--cinza-borda);overflow-x:auto;">
+          <table class="cal-table">
+            <tbody>
+              <tr><td style="font-family:var(--mono);white-space:nowrap;">OA</td><td>Objeto de Aprendizagem &mdash; cada material da trilha (TT, TN, FA...)</td></tr>
+              <tr><td style="font-family:var(--mono);">TT / TN / PP</td><td>Texto Tem&aacute;tico (leitura pr&eacute;-aula) &middot; Testinho (10 min, 10 pts) &middot; Ponto de Partida (diagn&oacute;stico)</td></tr>
+              <tr><td style="font-family:var(--mono);">PR / TM / TC / TR</td><td>Provinha (aula) &middot; Tarefa M&iacute;nima &middot; Tarefa Complementar &middot; Trabalho (p&oacute;s-aula)</td></tr>
+              <tr><td style="font-family:var(--mono);">C5</td><td>Protocolo de modelagem cient&iacute;fica em 8 etapas (interpretar &rarr; responder o que foi pedido)</td></tr>
+              <tr><td style="font-family:var(--mono);">@ID</td><td>Identificador &uacute;nico de cada quest&atilde;o no Banco Central de Itens (ex.: T01-TN-B1-A)</td></tr>
+              <tr><td style="font-family:var(--mono);">E#</td><td>C&oacute;digo do erro conceitual embutido em cada distrator do Testinho</td></tr>
+              <tr><td style="font-family:var(--mono);">RA</td><td>Registro Acad&ecirc;mico SUAP, 7 d&iacute;gitos com zeros &agrave; esquerda &mdash; login do aluno (sem senha)</td></tr>
+              <tr><td style="font-family:var(--mono);">EQUIPE</td><td>Turma dos perfis de teste (RAs 9000001&ndash;9000008) &mdash; envios gravados, mas fora das m&eacute;tricas</td></tr>
+              <tr><td style="font-family:var(--mono);">Onda</td><td>Etapa de produ&ccedil;&atilde;o por tema: O1 Plano &middot; O2 Conte&uacute;do &middot; O3 Aula &middot; O4 P&oacute;s-Aula</td></tr>
+              <tr><td style="font-family:var(--mono);">Ecossistema</td><td>Ciclo completo: Produ&ccedil;&atilde;o &rarr; Distribui&ccedil;&atilde;o (site+QR) &rarr; Coleta (planilha) &rarr; An&aacute;lise &rarr; Interven&ccedil;&atilde;o</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ABA QUALIDADE -->
+    <div class="tab-content" id="tab-qualidade">
+      <section>
+        <h2 class="section-title">Qualidade &mdash; Gest&atilde;o de Problemas e Crit&eacute;rios</h2>
+        <p style="font-size:13px;color:var(--texto-sub);margin-bottom:16px;">
+          Painel integrado de qualidade: problemas pendentes, crit&eacute;rios de sucesso por OA e modos de produ&ccedil;&atilde;o (loops).
+        </p>
+
+        <!-- Sub-abas -->
+        <div class="tabs" id="qualidade-subtabs" style="margin-bottom:16px;">
+          <div class="tab active" onclick="showQualidadeSubtab('problemas')">Problemas</div>
+          <div class="tab" onclick="showQualidadeSubtab('criterios')">Crit&eacute;rios de Sucesso</div>
+          <div class="tab" onclick="showQualidadeSubtab('loops')">Loops de Produ&ccedil;&atilde;o</div>
+        </div>
+
+        <!-- SUB-ABA: Problemas -->
+        <div class="qualidade-subtab active" id="subtab-problemas">
+          <div id="problemas-header" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <span id="problemas-resumo" style="font-family:var(--mono);font-size:13px;color:var(--ouro);"></span>
+            <select id="filtro-severidade" onchange="renderProblemas()" style="background:var(--input-bg);color:var(--texto);border:1px solid var(--cinza-borda);padding:4px 8px;font-size:12px;">
+              <option value="todas">Todas as severidades</option>
+              <option value="critica">Cr&iacute;tica</option>
+              <option value="alta">Alta</option>
+              <option value="media">M&eacute;dia</option>
+              <option value="baixa">Baixa</option>
+            </select>
+            <select id="filtro-tipo" onchange="renderProblemas()" style="background:var(--input-bg);color:var(--texto);border:1px solid var(--cinza-borda);padding:4px 8px;font-size:12px;">
+              <option value="todos">Todos os tipos</option>
+            </select>
+            <label style="font-size:12px;color:var(--texto-sub);display:flex;align-items:center;gap:4px;">
+              <input type="checkbox" id="filtro-resolvidos" onchange="renderProblemas()"> Mostrar resolvidos
+            </label>
+          </div>
+          <div id="problemas-container"></div>
+          <div id="problemas-erro" style="display:none;padding:20px;text-align:center;color:var(--texto-sub);font-size:13px;">
+            N&atilde;o foi poss&iacute;vel carregar os problemas. Verifique se o arquivo <code>_dados/problemas-pendentes.json</code> existe.
+          </div>
+        </div>
+
+        <!-- SUB-ABA: Criterios de Sucesso -->
+        <div class="qualidade-subtab" id="subtab-criterios">
+          <p style="font-size:13px;color:var(--texto-sub);margin-bottom:12px;">
+            Tabelas de crit&eacute;rios de sucesso verific&aacute;veis para cada OA &mdash; FC1 e FE1.
+          </p>
+          <iframe id="criterios-iframe"
+                  data-src="Crit%C3%A9rios%20de%20Sucesso%20por%20OA%20%E2%80%94%20FC1%20%26%20FE1_files/a_002_0HNd.htm"
+                  style="width:100%;height:calc(100vh - 260px);border:1px solid var(--cinza-borda);background:var(--fundo);"
+                  loading="lazy"></iframe>
+        </div>
+
+        <!-- SUB-ABA: Loops de Producao -->
+        <div class="qualidade-subtab" id="subtab-loops">
+          <p style="font-size:13px;color:var(--texto-sub);margin-bottom:12px;">
+            Refer&ecirc;ncia dos 4 modos de loop de produ&ccedil;&atilde;o (Claude Code) e atribui&ccedil;&atilde;o por OA.
+          </p>
+          <iframe id="loops-iframe"
+                  data-src="Loops%20Claude%20Code%20%E2%80%94%20Produ%C3%A7%C3%A3o%20de%20OAs%20FC1%20%26%20FE1_files/a_VSVv.htm"
+                  style="width:100%;height:calc(100vh - 260px);border:1px solid var(--cinza-borda);background:var(--fundo);"
+                  loading="lazy"></iframe>
+        </div>
+      </section>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('#header-tabs .tab').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById('tab-' + id);
+  if (target) target.classList.add('active');
+  const tabs = document.querySelectorAll('#header-tabs .tab');
+  const map = { visao: 0, producao: 1, onda1: 2, epigrafes: 3, qualidade: 4, skills: 5, infra: 6, distribuicao: 7, dados: 8, guias: 9 };
+  if (map[id] !== undefined && tabs[map[id]]) tabs[map[id]].classList.add('active');
+  var main = document.querySelector('.main');
+  if (main) main.scrollTop = 0;
+  if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); }
+  if (id === 'dados') lazyLoadIframe('dados-iframe');
+  if (id === 'guias') renderPromptsGuias();
+  if (id === 'epigrafes') loadEpigrafe();
+  if (id === 'qualidade') initQualidade();
+}
+
+/* ── GUIAS: prompts prontos para o Claude Code ── */
+var PROMPTS_GUIAS = [
+  { t: 'Publicar uma trilha no site',
+    p: 'Publique a trilha T{NN} no site de OAs: rode _scripts/publicar_trilha.py T{NN}, faca commit e push no repositorio G:\\JA2026\\_publicacao\\fc1-oa e gere os QR codes com _scripts/gerar_qrcodes.py T{NN}.' },
+  { t: 'Analisar dados de uma trilha',
+    p: 'Analise os dados da T{NN}: baixe o relatorio do endpoint de coleta (config em _painel/_dados/coleta/config-coleta.json), calcule entrega por turma com pendentes nominais, distribuicao de notas e taxa de acerto por item @ID, e recomende intervencoes para a proxima aula.' },
+  { t: 'Adicionar colaborador de teste',
+    p: 'Adicione o colaborador {NOME} ao ecossistema de coleta: edite a lista EQUIPE no _painel/_dados/coleta/Code.gs (proximo RA livre da faixa 90000xx), atualize o Apps Script pelo Chrome, rode adicionarEquipe() e valide o login pelo endpoint.' },
+  { t: 'Testar um OA como equipe',
+    p: 'Vou testar o OA {SIGLA} da T{NN} como equipe. Me passe o link publicado e depois confirme na planilha FC1-Respostas-2026 se meu envio (RA {90000XX}) foi gravado nas abas envios e itens.' },
+  { t: 'Regenerar QR codes de uma trilha',
+    p: 'Regenere os QR codes da T{NN} (PNGs + folha HTML + PDF A4) com _scripts/gerar_qrcodes.py e me envie o PDF para impressao.' },
+  { t: 'Relatorio para reuniao pedagogica',
+    p: 'Gere um relatorio em Markdown da T{NN} para a reuniao pedagogica: resumo de entregas por turma, media, itens criticos (@ID com taxa < 50%) com o erro E# mais frequente de cada um, e 3 recomendacoes de intervencao.' }
+];
+
+function renderPromptsGuias() {
+  var box = document.getElementById('prompts-guias');
+  if (!box || box.children.length) return;
+  PROMPTS_GUIAS.forEach(function (item, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.style.cssText = 'text-align:left;border:1px solid var(--cinza-borda);background:var(--cinza-card);color:var(--texto);padding:12px 14px;cursor:pointer;font-family:var(--mono);font-size:12px;line-height:1.5;';
+    b.innerHTML = '<span style="color:var(--ouro-claro);font-weight:700;">&#10697; ' + item.t + '</span><br><span style="color:var(--texto-sub);font-size:11px;">clique para copiar o prompt</span>';
+    b.onclick = function () { copiarPromptGuia(item.p, b, item.t); };
+    box.appendChild(b);
+  });
+}
+
+function copiarPromptGuia(texto, btn, titulo) {
+  function feito() {
+    var html = btn.innerHTML;
+    btn.innerHTML = '<span style="color:var(--verde-claro);font-weight:700;">&#10003; Copiado! Cole no Claude Code</span>';
+    setTimeout(function () { btn.innerHTML = html; }, 2200);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(texto).then(feito).catch(function () { copiarFallbackGuia(texto); feito(); });
+  } else { copiarFallbackGuia(texto); feito(); }
+}
+
+var COLETA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec';
+
+function enviarSugestaoPainel(btn) {
+  var nome = document.getElementById('sugNome').value.trim();
+  var papel = document.getElementById('sugPapel').value;
+  var area = document.getElementById('sugArea').value;
+  var texto = document.getElementById('sugTexto').value.trim();
+  var st = document.getElementById('sugStatus');
+  if (!nome || !texto) { st.textContent = 'Preencha pelo menos o nome e a sugestao.'; st.style.color = 'var(--erro)'; return; }
+  btn.disabled = true;
+  st.style.color = 'var(--texto-sub)';
+  st.textContent = 'Enviando...';
+  fetch(COLETA_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'SUGESTAO', nome: nome, papel: papel, area: area, texto: texto })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitada');
+      st.textContent = '✓ Sugestao registrada — obrigado!';
+      st.style.color = 'var(--verde-claro)';
+      document.getElementById('sugTexto').value = '';
+    })
+    .catch(function () { st.textContent = 'Falha ao enviar — verifique a internet e tente de novo.'; st.style.color = 'var(--erro)'; })
+    .finally(function () { btn.disabled = false; });
+}
+
+function copiarFallbackGuia(texto) {
+  var ta = document.createElement('textarea');
+  ta.value = texto;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+function lazyLoadIframe(iframeId) {
+  var iframe = document.getElementById(iframeId);
+  if (!iframe || !iframe.dataset.src) return;
+  if (iframeId === 'onda1-iframe') {
+    var disc = document.getElementById('sel-disciplina').value;
+    var curso = document.getElementById('sel-curso').value;
+    var wantSrc = iframe.dataset.src + '?disc=' + disc + '&curso=' + curso + '&embed=1';
+    if (iframe.src === 'about:blank' || iframe.getAttribute('data-disc') !== disc) {
+      iframe.removeAttribute('data-loaded');
+      iframe.src = wantSrc;
+      iframe.setAttribute('data-disc', disc);
+      iframe.addEventListener('load', function() { iframe.setAttribute('data-loaded', '1'); }, { once: true });
+    }
+  } else if (!iframe.getAttribute('src') || iframe.src === 'about:blank') {
+    iframe.src = iframe.dataset.src;
+  }
+}
+
+function navOnda1(secId, btn) {
+  var tabs = document.querySelectorAll('#onda1-nav .tab');
+  tabs.forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  var iframe = document.getElementById('onda1-iframe');
+  lazyLoadIframe('onda1-iframe');
+  function sendNav() {
+    try {
+      iframe.contentWindow.postMessage({ type: 'navSecao', secId: secId }, '*');
+    } catch(e) {}
+  }
+  if (iframe.contentWindow && iframe.getAttribute('data-loaded')) {
+    sendNav();
+  } else {
+    iframe.addEventListener('load', function() {
+      iframe.setAttribute('data-loaded', '1');
+      sendNav();
+    }, { once: true });
+  }
+}
+
+var EPIGRAFE_PATHS = {
+  fc1: '../FC1-citacoes-v2.html',
+  fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html'
+};
+
+function loadEpigrafe() {
+  var disc = document.getElementById('sel-epigrafe-disc').value;
+  var iframe = document.getElementById('epigrafe-iframe');
+  var status = document.getElementById('epigrafe-status');
+  var path = EPIGRAFE_PATHS[disc];
+  if (path) {
+    iframe.src = path;
+    status.innerHTML = '&#10003; ' + disc.toUpperCase() + ' carregado';
+    status.style.color = 'var(--verde-claro)';
+  } else {
+    iframe.src = 'about:blank';
+    status.innerHTML = '&#9203; ' + disc.toUpperCase() + ' &mdash; ainda n&atilde;o produzido';
+    status.style.color = 'var(--ouro)';
+  }
+}
+
+function showTrilha(code) {
+  document.querySelectorAll('.rail-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  closePanel();
+  showTab('visao');
+}
+
+function togglePanel(id, btn) {
+  var panels = document.querySelectorAll('.rail-panel');
+  var btns = document.querySelectorAll('.rail-btn');
+  var target = document.getElementById('panel-' + id);
+  var isOpen = target.classList.contains('open');
+  panels.forEach(function(p) { p.classList.remove('open'); });
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  if (!isOpen) {
+    target.classList.add('open');
+    btn.classList.add('active');
+  }
+}
+
+function closePanel() {
+  document.querySelectorAll('.rail-panel').forEach(function(p) { p.classList.remove('open'); });
+  document.querySelectorAll('.rail-btn').forEach(function(b) { b.classList.remove('active'); });
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.rail-panel') && !e.target.closest('.rail-btn') && !e.target.closest('.rail-item')) {
+    closePanel();
+  }
+});
+
+/* ── CHIPS TRILHA (Onda 1) ── */
+
+function renderOnda1Chips() {
+  var disc = document.getElementById('sel-disciplina').value;
+  var d = DISC_DATA[disc];
+  var ct = document.getElementById('onda1-chips');
+  if (!d || !ct) return;
+  ct.innerHTML = '';
+  var orientacao = [];
+  var numericas = [];
+  if (d.type === 'fc') {
+    orientacao = ['T0A','T0B','T0C'];
+    for (var i = 1; i <= d.nTrilhas; i++) numericas.push('T' + String(i).padStart(2, '0'));
+  } else {
+    d.statusTrilhas.forEach(function(c) {
+      if (c.charAt(1) === '0' && isNaN(c.charAt(2))) orientacao.push(c);
+      else numericas.push(c);
+    });
+  }
+  orientacao.concat(numericas).forEach(function(code) {
+    var el = document.createElement('div');
+    el.className = 'onda1-chip' + (orientacao.indexOf(code) >= 0 ? ' orient' : '');
+    el.textContent = code;
+    el.onclick = function() { selectTrilhaPainel(code); };
+    ct.appendChild(el);
+  });
+}
+
+function postToOnda1(action) {
+  var iframe = document.getElementById('onda1-iframe');
+  if (iframe && iframe.contentWindow) {
+    try { iframe.contentWindow.postMessage({ type: action }, '*'); } catch(e) {}
+  }
+}
+
+
+function selectTrilhaPainel(code) {
+  document.querySelectorAll('#onda1-chips .onda1-chip').forEach(function(c) { c.classList.remove('sel'); });
+  var chips = document.querySelectorAll('#onda1-chips .onda1-chip');
+  for (var i = 0; i < chips.length; i++) {
+    if (chips[i].textContent === code) { chips[i].classList.add('sel'); break; }
+  }
+  var iframe = document.getElementById('onda1-iframe');
+  if (iframe && iframe.contentWindow) {
+    try { iframe.contentWindow.postMessage({ type: 'selectTrilha', trilha: code }, '*'); } catch(e) {}
+  }
+}
+
+/* ── DISCIPLINA × CURSO ── */
+
+var FC_ONDAS = [
+  { titulo:'Onda 1 — Plano', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
+  { titulo:'Onda 2 — Pré-Aula', items:['TT','TT Digital','IT (Gemini)','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico → /imagem-tematica-manual → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico' },
+  { titulo:'Onda 3 — Aula', items:['FA + DX','AP','PR'], tempo:'~30 min/trilha', skills:'/folha-de-atividades → /apresentacao-trilha → /provinha' },
+  { titulo:'Onda 4 — Pós-Aula', items:['TM','TC','TR (A/B/C)'], tempo:'~40 min/trilha', skills:'/tarefa-minima → /tarefa-complementar → /trabalho' }
+];
+var FE_ONDAS = [
+  { titulo:'Onda 1 — Plano', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
+  { titulo:'Onda 2 — Pré-Laboratório', items:['TT','IP (Gemini)','CS','IE','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico-fe → /imagem-tematica-fe → /checklist-seguranca → /inventario-equipamento → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico-bancada' },
+  { titulo:'Onda 3 — Laboratório', items:['RB','AP','PR'], tempo:'~30 min/trilha', skills:'/roteiro-bancada → /apresentacao-trilha → /provinha' },
+  { titulo:'Onda 4 — Pós-Laboratório', items:['RM','RC','DX','PI (A/B/C)'], tempo:'~40 min/trilha', skills:'/relatorio-minimo → /relatorio-completo → /desafio-pedagogico → /projeto-investigativo' }
+];
+
+var FC_FLUXO = 'TT (Texto Temático) ─────────────────── ÂNCORA DE TUDO\n .md + .html (digital) + .pdf\n  │\n  ├─→ TT Digital (.html interativo)\n  ├─→ IT (.html digital, 12 imagens — Gemini manual)\n  ├─→ MD (.html digital, Resumo em Áudio — NotebookLM)\n  ├─→ MC (Mapa Conceitual) ──→ CD (Cartões)\n  ├─→ PP (Ponto de Partida) ──→ TN (Testinho 3 versões)\n  ├─→ IG (Infográfico interativo)\n  │\n  ├─→ FA (.html digital + .html impressa) ──→ DX (Desafio opcional)\n  ├─→ AP (Apresentação .html)\n  ├─→ PR (Provinha .html digital)\n  │\n  └─→ TM (Tarefa Mínima) ──→ TC (Complementar) ──→ TR (Trabalho A/B/C)\n       └── lê fragmento FI automaticamente';
+
+var FE_FLUXO = 'TT (Texto Temático) ─────────────────── ÂNCORA DE TUDO\n .md + .html (digital) + .pdf\n  │\n  ├─→ IP (Imagens da Prática, 12 PNGs — Gemini manual)\n  ├─→ CS (Checklist de Segurança — NR-22 + EPI)\n  ├─→ IE (Inventário de Equipamento)\n  ├─→ MD (.html digital, Resumo em Áudio — NotebookLM)\n  ├─→ MC (Mapa Conceitual) ──→ CD (Cartões Didáticos)\n  ├─→ PP (Ponto de Partida) ──→ TN (Testinho 3 versões)\n  ├─→ IG (Infográfico de Bancada)\n  │\n  ├─→ RB (Roteiro de Bancada, prof + est)\n  ├─→ AP (Apresentação briefing 5 min)\n  ├─→ PR (Provinha de Fechamento)\n  │\n  └─→ RM (Relatório Mínimo) ──→ RC (Relatório Completo)\n       ├─→ DX (Desafio Pedagógico, opcional)\n       └─→ PI (Projeto Investigativo A/B/C)';
+
+var FC_OAS = ['TT (Texto Temático)','IT (Imagens Temáticas)','MD (Resumo em Áudio)','MC (Mapa Conceitual)','CD (Cartões Didáticos)','PP (Ponto de Partida)','TN (Testinho)','IG (Infográfico)','FA (Folha de Atividades)','AP (Apresentação)','PR (Provinha)','DX (Desafio)','TM (Tarefa Mínima)','TC (Tarefa Complementar)','TR (Trabalho)','PE (Prova Escrita)'];
+var FE_OAS = ['TT (Texto Temático)','IP (Imagens da Prática)','CS (Checklist de Segurança)','IE (Inventário de Equipamento)','MD (Resumo em Áudio)','MC (Mapa Conceitual)','CD (Cartões Didáticos)','PP (Ponto de Partida)','TN (Testinho)','IG (Infográfico de Bancada)','RB (Roteiro de Bancada)','AP (Apresentação)','PR (Provinha)','RM (Relatório Mínimo)','RC (Relatório Completo)','DX (Desafio Pedagógico)','PI (Projeto Investigativo)','PP-AVA (Prova Prática)'];
+
+var DISC_DATA = {
+  fc1: {
+    label:'FC1', type:'fc', nTemas:9, nTrilhas:60, nOAs:1020, oasProduzidos:80, oasPorTrilha:17,
+    temasCompletos:1, temasCompletosSub:'A Régua do Mundo', trilhasProd:'T01–T06', trilhasProdN:6,
+    temas: [
+      { n:1, nome:'A Régua do Mundo', trilhas:'T01–T06', meta:'Mai 2026', status:'done', statusTxt:'COMPLETO', wave:'done' },
+      { n:2, nome:'O Ritmo das Máquinas', trilhas:'T07–T12', meta:'Mai–Jun 2026', status:'overdue', statusTxt:'ATRASADO', wave:'empty' },
+      { n:3, nome:'A Força que Move o Minério', trilhas:'T13–T18', meta:'Jun 2026', status:'overdue', statusTxt:'ATRASADO', wave:'empty' },
+      { n:4, nome:'A Direção do Movimento', trilhas:'T19–T24', meta:'Jul 2026', status:'current', statusTxt:'CORRENTE', wave:'empty' },
+      { n:5, nome:'O Diálogo das Forças', trilhas:'T25–T34', meta:'Jul–Ago 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:6, nome:'A Ciência do Repouso', trilhas:'T35–T40', meta:'Ago 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:7, nome:'Energia em Transformação', trilhas:'T41–T48', meta:'Ago 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:8, nome:'O Peso das Águas', trilhas:'T49–T54', meta:'Set 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:9, nome:'Os Movimentos Celestes', trilhas:'T55–T60', meta:'Set 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' }
+    ],
+    nav: [
+      { label:'Tema 1 — A Régua do Mundo', items:[
+        {code:'T01',nome:'T01 Introdução',count:'17/17',dot:'done'},
+        {code:'T02',nome:'T02 Unidades de Medida',count:'15/17',dot:'done'},
+        {code:'T03',nome:'T03 Base 10',count:'15/17',dot:'done'},
+        {code:'T04',nome:'T04 SI e Metrologia',count:'15/17',dot:'done'},
+        {code:'T05',nome:'T05 Notação Científica',count:'15/17',dot:'done'},
+        {code:'T06',nome:'T06 Ordem de Grandeza',count:'15/17',dot:'done'}
+      ]},
+      { label:'Tema 2 — O Ritmo das Máquinas', items:[
+        {code:'T07',nome:'T07 Movimento',count:'0/17',dot:'empty'},
+        {code:null,nome:'T08–T12',count:'—',dot:'empty'}
+      ]},
+      { label:'Orientação', items:[
+        {code:'T0A',nome:'T0A Apresentação',count:'11/17',dot:'partial'},
+        {code:'T0B',nome:'T0B Tecnologias',count:'4/17',dot:'partial'}
+      ]}
+    ],
+    statusTrilhas:['T01','T02','T03','T04','T05','T06']
+  },
+  fe1: {
+    label:'FE1', type:'fe', nTemas:4, nTrilhas:16, nOAs:288, oasProduzidos:0, oasPorTrilha:18,
+    temasCompletos:0, temasCompletosSub:'—', trilhasProd:'—', trilhasProdN:0,
+    temas: [
+      { n:1, nome:'Fundamentos da Medida', trilhas:'T01–T05', meta:'Ago 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:2, nome:'Forças, Equilíbrio e Energia', trilhas:'T06–T11', meta:'Set 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:3, nome:'Conservação', trilhas:'T12–T13', meta:'Out 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:4, nome:'Fluidos', trilhas:'T14–T15', meta:'Out 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' }
+    ],
+    nav: [
+      { label:'Tema 1 — Fundamentos da Medida', items:[
+        {code:'T01',nome:'T01 Comprimento',count:'0/18',dot:'empty'},
+        {code:'T02',nome:'T02 Massa',count:'0/18',dot:'empty'},
+        {code:'T03',nome:'T03 Tempo',count:'0/18',dot:'empty'},
+        {code:'T04',nome:'T04 MRU',count:'0/18',dot:'empty'},
+        {code:'T05',nome:'T05 MRUV e Queda Livre',count:'0/18',dot:'empty'}
+      ]},
+      { label:'Tema 2 — Forças, Equilíbrio e Energia', items:[
+        {code:'T06',nome:'T06 Lei de Hooke',count:'0/18',dot:'empty'},
+        {code:'T07',nome:'T07 Atrito',count:'0/18',dot:'empty'},
+        {code:'T08',nome:'T08 Plano Inclinado',count:'0/18',dot:'empty'},
+        {code:'T09',nome:'T09 Equilíbrio de Ponto',count:'0/18',dot:'empty'},
+        {code:'T10',nome:'T10 Centro de Gravidade',count:'0/18',dot:'empty'},
+        {code:'T11',nome:'T11 Máquinas Simples',count:'0/18',dot:'empty'}
+      ]},
+      { label:'Tema 3 — Conservação', items:[
+        {code:'T12',nome:'T12 Energia Mecânica',count:'0/18',dot:'empty'},
+        {code:'T13',nome:'T13 Colisões',count:'0/18',dot:'empty'}
+      ]},
+      { label:'Tema 4 — Fluidos', items:[
+        {code:'T14',nome:'T14 Hidrostática',count:'0/18',dot:'empty'},
+        {code:'T15',nome:'T15 Densidade de Minérios',count:'0/18',dot:'empty'}
+      ]},
+      { label:'Orientação', items:[
+        {code:'T0A',nome:'T0A Metodologia Experimental',count:'0/18',dot:'empty'}
+      ]}
+    ],
+    statusTrilhas:['T0A','T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','T11','T12','T13','T14','T15']
+  }
+};
+
+/* Snapshot FC1 originals on load */
+var FC1_STATUS_HTML = document.getElementById('status-table-wrap').innerHTML;
+var FC1_LEGENDA_HTML = document.getElementById('status-legenda').innerHTML;
+
+function buildEmptyStatusTable(d, oas) {
+  var cols = d.statusTrilhas;
+  var h = '<table class="status-table"><thead><tr><th></th>';
+  cols.forEach(function(c) { h += '<th>' + c + '</th>'; });
+  h += '</tr></thead><tbody>';
+  oas.forEach(function(oa) {
+    h += '<tr><td>' + oa + '</td>';
+    cols.forEach(function() { h += '<td><span class="pill pill-empty">—</span></td>'; });
+    h += '</tr>';
+  });
+  h += '</tbody></table>';
+  return h;
+}
+
+function buildOndasHTML(ondas) {
+  var h = '';
+  ondas.forEach(function(o) {
+    h += '<div class="onda-col"><div class="onda-header">' + o.titulo + '</div><div class="onda-body">';
+    o.items.forEach(function(it) {
+      h += '<div class="onda-item"><span class="dot" style="background:var(--ok)"></span> ' + it + '</div>';
+    });
+    h += '<div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">' + o.tempo + '</div>';
+    h += '<div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;"><strong>Skills:</strong> ' + o.skills + '</div>';
+    h += '</div></div>';
+  });
+  return h;
+}
+
+function buildTemaMap(d, ondaLabels) {
+  var h = '<table><thead><tr><th>Tema</th>';
+  ondaLabels.forEach(function(l) { h += '<th>' + l + '</th>'; });
+  h += '<th>Trilhas</th></tr></thead><tbody>';
+  d.temas.forEach(function(t) {
+    var cls = t.wave === 'done' ? 'tema-done' : 'tema-pending';
+    h += '<tr class="' + cls + '"><td>' + t.n + ' — ' + t.nome + '</td>';
+    for (var i = 0; i < 4; i++) {
+      h += '<td><span class="wave-dot ' + (t.wave === 'done' ? 'done' : 'empty') + '"></span></td>';
+    }
+    h += '<td>' + t.trilhas + '</td></tr>';
+  });
+  h += '</tbody></table>';
+  return h;
+}
+
+/* Snapshot FC1 ondas/fluxo originals */
+var FC1_ONDAS_HTML = document.getElementById('ondas-visual').innerHTML;
+
+function loadDisciplina() {
+  var disc = document.getElementById('sel-disciplina').value;
+  var curso = document.getElementById('sel-curso').value;
+  var d = DISC_DATA[disc];
+  if (!d) return;
+  var isFE = d.type === 'fe';
+  var ondas = isFE ? FE_ONDAS : FC_ONDAS;
+  var ondaLabels = isFE ? ['O1','O2','O3','O4'] : ['O1','O2','O3','O4'];
+  var ondaLegenda = isFE
+    ? 'O1=Plano · O2=Pré-Lab · O3=Lab · O4=Pós-Lab'
+    : 'O1=Plano · O2=Conteúdo · O3=Aula · O4=Pós-Aula';
+  var oas = isFE ? FE_OAS : FC_OAS;
+
+  /* 1. Calendário */
+  var statusColors = { done:'var(--ok)', overdue:'var(--erro)', current:'var(--ouro)', upcoming:'' };
+  var calCrono = document.getElementById('cal-body-cronograma');
+  var rows = '';
+  d.temas.forEach(function(t) {
+    var numColor = statusColors[t.status] ? ' style="color:' + statusColors[t.status] + ';"' : '';
+    rows += '<tr><td' + numColor + '>' + t.n + '</td>'
+      + '<td>' + t.nome + '</td><td>' + t.trilhas + '</td><td>' + t.meta + '</td>'
+      + '<td><span class="cal-status ' + t.status + '">' + t.statusTxt + '</span></td></tr>';
+  });
+  if (calCrono) calCrono.innerHTML = rows;
+
+  renderOnda1Chips();
+
+  /* 2. Temas panel */
+  var temasEl = document.getElementById('temas-content');
+  var html = '';
+  d.nav.forEach(function(sec) {
+    html += '<div class="rail-section"><div class="rail-label">' + sec.label + '</div>';
+    sec.items.forEach(function(it) {
+      var onclick = it.code ? ' onclick="showTrilha(\'' + it.code + '\')"' : '';
+      html += '<div class="rail-item"' + onclick + '><span class="rail-dot ' + it.dot + '"></span>'
+        + '<span>' + it.nome + '</span><span class="rail-count">' + it.count + '</span></div>';
+    });
+    html += '</div>';
+  });
+  temasEl.innerHTML = html;
+
+  /* 3. Status de Produção */
+  var tema1 = d.temas[0];
+  document.getElementById('status-titulo').textContent = 'Status de Produção — Tema ' + tema1.n + ' — ' + tema1.nome;
+  var wrap = document.getElementById('status-table-wrap');
+  if (disc === 'fc1') {
+    wrap.innerHTML = FC1_STATUS_HTML;
+  } else {
+    wrap.innerHTML = buildEmptyStatusTable(d, oas);
+  }
+
+  /* 3b. Legenda de versionamento */
+  var legenda = document.getElementById('status-legenda');
+  if (disc === 'fc1') {
+    legenda.innerHTML = FC1_LEGENDA_HTML;
+  } else {
+    legenda.innerHTML = '<strong style="color:var(--texto);">Regra de Versionamento:</strong> O TT é a âncora — todo OA da trilha é ancorado pela versão do TT.<br>'
+      + '<span style="color:var(--texto-sub);font-size:12px;margin-top:4px;display:inline-block;">'
+      + 'Nenhum OA produzido para ' + d.label + '. A legenda de versões será exibida quando a produção iniciar.</span>';
+  }
+
+  /* 4. Progresso Global */
+  var pct = d.nOAs > 0 ? Math.round(d.oasProduzidos / d.nOAs * 100) : 0;
+  document.getElementById('pg-stats').innerHTML =
+    '<div class="pg-stat ' + (d.temasCompletos > 0 ? 's-done' : 's-partial') + '">'
+    + '<div class="pg-stat-num">' + d.temasCompletos + ' <span class="frac">/ ' + d.nTemas + '</span></div>'
+    + '<div class="pg-stat-label">Temas completos</div>'
+    + '<div class="pg-stat-sub">' + d.temasCompletosSub + '</div></div>'
+    + '<div class="pg-stat s-partial"><div class="pg-stat-num">' + d.trilhasProdN + ' <span class="frac">/ ' + d.nTrilhas + '</span></div>'
+    + '<div class="pg-stat-label">Trilhas produzidas</div><div class="pg-stat-sub">' + d.trilhasProd + '</div></div>'
+    + '<div class="pg-stat s-partial"><div class="pg-stat-num"><span class="frac">~</span>' + d.oasProduzidos + ' <span class="frac">/ ' + d.nOAs + '</span></div>'
+    + '<div class="pg-stat-label">OAs produzidos</div><div class="pg-stat-sub">' + d.oasPorTrilha + ' tipos × ' + d.trilhasProdN + ' trilhas</div></div>'
+    + '<div class="pg-stat s-done"><div class="pg-stat-num">15 <span class="frac">+ 3</span></div>'
+    + '<div class="pg-stat-label">Skills Cowork</div><div class="pg-stat-sub">15 ativas · 3 congeladas</div></div>';
+
+  document.getElementById('pg-bar').innerHTML = '<div class="pg-bar-fill" style="width:' + pct + '%"></div>';
+  document.getElementById('pg-bar-label').textContent = '~' + pct + '% do escopo total — ' + d.oasProduzidos + ' de ' + d.nOAs + ' OAs';
+
+  document.getElementById('tema-map').innerHTML = buildTemaMap(d, ondaLabels);
+
+  document.getElementById('pg-legenda').innerHTML =
+    '<div class="pg-legenda-item"><span class="wave-dot done"></span> Completo</div>'
+    + '<div class="pg-legenda-item"><span class="wave-dot partial"></span> Parcial</div>'
+    + '<div class="pg-legenda-item"><span class="wave-dot empty"></span> Pendente</div>'
+    + '<span style="margin-left:auto;font-family:var(--mono);font-size:11px;opacity:.6;">' + ondaLegenda + '</span>';
+
+  /* 5. Ondas (Produção tab) */
+  if (disc === 'fc1') {
+    document.getElementById('ondas-visual').innerHTML = FC1_ONDAS_HTML;
+  } else {
+    document.getElementById('ondas-visual').innerHTML = buildOndasHTML(ondas);
+  }
+
+  /* 6. Fluxo */
+  document.getElementById('fluxo-content').textContent = isFE ? FE_FLUXO : FC_FLUXO;
+
+  /* 7. Status label */
+  var lbl = d.label.toUpperCase() + '-' + curso.toUpperCase();
+  document.getElementById('disc-status').innerHTML = '&#10003; ' + lbl + ' carregado';
+
+  var onda1Iframe = document.getElementById('onda1-iframe');
+  if (onda1Iframe && onda1Iframe.src !== 'about:blank') lazyLoadIframe('onda1-iframe');
+}
+
+document.getElementById('sel-disciplina').addEventListener('change', loadDisciplina);
+document.getElementById('sel-curso').addEventListener('change', loadDisciplina);
+loadDisciplina();
+
+/* ── CITAÇÕES: iframe oculto + relay para Onda 1 ── */
+var CITACOES_PATHS = {
+  fc1: '../FC1-citacoes-v2.html',
+  fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html'
+};
+function loadCitacoesIframe() {
+  var disc = document.getElementById('sel-disciplina').value;
+  var iframe = document.getElementById('citacoes-hidden-iframe');
+  if (!iframe) return;
+  var path = CITACOES_PATHS[disc];
+  if (path && (iframe.src === 'about:blank' || iframe.getAttribute('data-disc') !== disc)) {
+    iframe.src = path;
+    iframe.setAttribute('data-disc', disc);
+  }
+}
+function pedirCitacoes(trilhaCode) {
+  var iframe = document.getElementById('citacoes-hidden-iframe');
+  if (iframe && iframe.contentWindow) {
+    try { iframe.contentWindow.postMessage({ type: 'getCitacoes', trilha: trilhaCode }, '*'); } catch(e) {}
+  }
+}
+window.addEventListener('message', function(ev) {
+  if (!ev.data || !ev.data.type) return;
+  if (ev.data.type === 'trilhaSelecionada') {
+    var btn = document.getElementById('btn-painel-export');
+    if (btn) btn.style.display = '';
+    loadCitacoesIframe();
+    setTimeout(function() { pedirCitacoes(ev.data.trilha); }, 500);
+  }
+  if (ev.data.type === 'trilhaLimpa') {
+    var btn = document.getElementById('btn-painel-export');
+    if (btn) btn.style.display = 'none';
+    document.querySelectorAll('#onda1-chips .onda1-chip').forEach(function(c) { c.classList.remove('sel'); });
+  }
+  if (ev.data.type === 'citacoesData') {
+    var onda1 = document.getElementById('onda1-iframe');
+    if (onda1 && onda1.contentWindow) {
+      try { onda1.contentWindow.postMessage({ type: 'citacoesData', trilha: ev.data.trilha, citacoes: ev.data.citacoes }, '*'); } catch(e) {}
+    }
+  }
+});
+
+/* ── QUALIDADE ── */
+var _problemasData = null;
+var _problemasResolvidos = {};
+
+function initQualidade() {
+  if (!_problemasData) {
+    fetch('_dados/problemas-pendentes.json')
+      .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(data) {
+        _problemasData = data;
+        populaFiltroTipo(data);
+        renderProblemas();
+        document.getElementById('problemas-erro').style.display = 'none';
+      })
+      .catch(function() {
+        document.getElementById('problemas-erro').style.display = 'block';
+        document.getElementById('problemas-container').innerHTML = '';
+      });
+  }
+}
+
+function showQualidadeSubtab(id) {
+  document.querySelectorAll('.qualidade-subtab').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('#qualidade-subtabs .tab').forEach(function(el) { el.classList.remove('active'); });
+  var target = document.getElementById('subtab-' + id);
+  if (target) target.classList.add('active');
+  var subtabs = document.querySelectorAll('#qualidade-subtabs .tab');
+  var smap = { problemas: 0, criterios: 1, loops: 2 };
+  if (smap[id] !== undefined && subtabs[smap[id]]) subtabs[smap[id]].classList.add('active');
+  if (id === 'criterios') lazyLoadIframe('criterios-iframe');
+  if (id === 'loops') lazyLoadIframe('loops-iframe');
+  if (id === 'problemas' && _problemasData) renderProblemas();
+}
+
+function populaFiltroTipo(data) {
+  var tipos = {};
+  data.categorias.forEach(function(cat) {
+    cat.problemas.forEach(function(p) { tipos[p.tipo] = true; });
+  });
+  var sel = document.getElementById('filtro-tipo');
+  sel.innerHTML = '<option value="todos">Todos os tipos</option>';
+  Object.keys(tipos).sort().forEach(function(t) {
+    var opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t.replace(/_/g, ' ');
+    sel.appendChild(opt);
+  });
+}
+
+function renderProblemas() {
+  if (!_problemasData) return;
+  var filtroSev = document.getElementById('filtro-severidade').value;
+  var filtroTipo = document.getElementById('filtro-tipo').value;
+  var mostrarResolvidos = document.getElementById('filtro-resolvidos').checked;
+  var container = document.getElementById('problemas-container');
+  var html = '';
+  var totalVisiveis = 0;
+  var totalResolvidos = 0;
+  var totalGeral = 0;
+
+  _problemasData.categorias.forEach(function(cat) {
+    var items = cat.problemas.filter(function(p) {
+      var resolvido = p.resolvido || _problemasResolvidos[p.id];
+      if (resolvido) totalResolvidos++;
+      totalGeral++;
+      if (!mostrarResolvidos && resolvido) return false;
+      if (filtroSev !== 'todas' && p.severidade !== filtroSev) return false;
+      if (filtroTipo !== 'todos' && p.tipo !== filtroTipo) return false;
+      return true;
+    });
+    if (items.length === 0) return;
+
+    html += '<div class="problema-categoria-header">';
+    html += '<span class="cat-icone">' + cat.icone + '</span>';
+    html += '<span class="cat-titulo">' + cat.titulo + '</span>';
+    html += '<span class="cat-count">' + items.length + ' problema' + (items.length !== 1 ? 's' : '') + '</span>';
+    html += '</div>';
+
+    items.forEach(function(p) {
+      var resolvido = p.resolvido || _problemasResolvidos[p.id];
+      totalVisiveis++;
+      html += '<div class="problema-card' + (resolvido ? ' resolvido' : '') + '" id="card-' + p.id + '">';
+      html += '<div class="problema-header">';
+      html += '<span class="problema-id">' + p.id + '</span>';
+      html += '<span class="problema-trilha">' + p.trilha + '</span>';
+      html += '<span class="problema-oa">' + p.oa + '</span>';
+      html += '<span class="sev-' + p.severidade + '">' + p.severidade + '</span>';
+      html += '<span style="font-size:11px;color:var(--texto-sub);font-family:var(--mono);">' + p.tipo.replace(/_/g, ' ') + '</span>';
+      html += '</div>';
+      html += '<div class="problema-desc">' + p.descricao + '</div>';
+      html += '<div class="problema-resolucao"><strong>Como resolver:</strong> ' + p.resolucao + '</div>';
+      if (!resolvido) {
+        html += '<button class="btn-resolver" onclick="marcarResolvido(\'' + p.id + '\')">Marcar como resolvido</button>';
+      } else {
+        html += '<button class="btn-resolver done" disabled>Resolvido</button>';
+      }
+      html += '</div>';
+    });
+  });
+
+  container.innerHTML = html || '<p style="color:var(--texto-sub);font-size:13px;padding:20px 0;">Nenhum problema encontrado com os filtros atuais.</p>';
+  var resumo = document.getElementById('problemas-resumo');
+  resumo.textContent = totalResolvidos + '/' + totalGeral + ' resolvidos · ' + totalVisiveis + ' visíveis';
+}
+
+function marcarResolvido(id) {
+  _problemasResolvidos[id] = true;
+  try { localStorage.setItem('painel-problemas-resolvidos', JSON.stringify(_problemasResolvidos)); } catch(e) {}
+  renderProblemas();
+}
+
+(function() {
+  try {
+    var saved = localStorage.getItem('painel-problemas-resolvidos');
+    if (saved) _problemasResolvidos = JSON.parse(saved);
+  } catch(e) {}
+})();
+</script>
+<iframe id="citacoes-hidden-iframe" src="about:blank" style="display:none;width:0;height:0;border:none;"></iframe>
+</body>
+</html>
