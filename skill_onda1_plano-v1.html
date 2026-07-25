@@ -662,7 +662,7 @@ select option { background: var(--superficie); color: var(--texto); }
     <div class="prog-label" id="pl4" onclick="navegarSecao(4)">Contextualização</div>
     <div class="prog-label" id="pl5" onclick="navegarSecao(5)">Lacunas</div>
     <div class="prog-label" id="pl6" onclick="navegarSecao(6)">Finalização</div>
-    <div class="prog-label" id="pl7" onclick="navegarSecao(7)">Pós-Produção</div>
+    <div class="prog-label" id="pl7" onclick="navegarSecao(7)">Imagens Temáticas</div>
   </div>
 </div>
 
@@ -833,16 +833,31 @@ select option { background: var(--superficie); color: var(--texto); }
 
     <hr class="divider">
 
-    <!-- Professor(es) Autor(es) — bloco 03 -->
+    <!-- Autoria da Trilha (fixa, independente da narrativa) -->
     <div class="campo-grupo">
-      <div class="campo-label">Professor(es) Autor(es) <span class="campo-auto-badge">Carregamento automático</span></div>
+      <div class="campo-label">Autoria da Trilha <span class="campo-auto-badge">Fixa — independente da narrativa</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:6px;">
+        <div class="campo-readonly" style="font-size:12px;">✍️ Autor: <strong>Julio Azevedo</strong></div>
+        <div class="campo-readonly" style="font-size:12px;">📝 Co-Autor: <strong>Felipe Beato</strong></div>
+        <input type="text" id="colaborador-trilha" placeholder="🤝 Colaborador desta trilha (opcional) — ex.: Lázaro Souza Lima" style="font-size:12px;padding:8px 10px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+      </div>
+      <div class="nota-info" style="margin-top:6px;">O Colaborador é preenchido a cada trilha e entra na autoria do plano gerado.</div>
+    </div>
+    <hr class="divider">
+
+    <!-- Professor Personagem — bloco 03 (narrativa) -->
+    <div class="campo-grupo">
+      <div class="campo-label">Professor Personagem (participa da narrativa) <span class="campo-auto-badge">Automático — pares: Prof. Julio · ímpares: Prof. Felipe</span></div>
+      <div class="nota-info" style="margin:4px 0 8px;">Regra canônica: trilhas <strong>pares</strong> + T0A/T0B/T0C → <strong>Prof. Julio</strong> · trilhas <strong>ímpares</strong> → <strong>Prof. Felipe</strong> (ex.: T09 → Prof. Felipe). Clique em outro perfil apenas para exceções.</div>
       <div class="modo-toggle">
         <div class="modo-btn ativo" id="modo-prof-1-btn" onclick="setModoProfs(1)">👤 1 — Individual</div>
         <div class="modo-btn" id="modo-prof-2-btn" onclick="setModoProfs(2)">👥 2 — Dupla</div>
         <div class="modo-btn" id="modo-prof-3-btn" onclick="setModoProfs(3)">👤👤👤 3 — Trio</div>
       </div>
       <div class="nota-info" id="nota-modo-profs" style="margin-bottom:12px;margin-top:6px;">Modo Individual: um professor é o autor responsável pela trilha.</div>
-      <div style="margin-bottom:10px;">
+      <!-- Toggle de papel oculto (A4.6): autoria agora é fixa (Autor/Co-Autor/Colaborador acima);
+           o professor selecionado aqui é sempre o PERSONAGEM da narrativa -->
+      <div style="margin-bottom:10px;display:none;">
         <div class="campo-label" style="font-size:10px;margin-bottom:4px;">Papel de cada professor selecionado</div>
         <div class="modo-toggle" style="gap:4px;">
           <div class="modo-btn ativo" id="papel-autor-btn" onclick="setPapelProf('Autor')" style="font-size:10px;padding:3px 8px;">✍️ Autor</div>
@@ -854,7 +869,7 @@ select option { background: var(--superficie); color: var(--texto); }
     </div>
 
     <div class="equipe-preview" id="equipe-preview-profs">
-      <div class="equipe-preview-titulo" id="preview-profs-titulo">👨‍🏫 Professor(es) da trilha</div>
+      <div class="equipe-preview-titulo" id="preview-profs-titulo">👨‍🏫 Professor personagem da trilha</div>
       <div id="equipe-profs-membros"></div>
       <div class="equipe-tamanho-info" id="equipe-profs-info"></div>
     </div>
@@ -1204,15 +1219,7 @@ select option { background: var(--superficie); color: var(--texto); }
     <!-- /Formato -->
 
     <div class="btn-row" style="margin-top:14px;">
-      <button class="btn btn-verde btn-full" onclick="gerarCamada2()" style="flex:2;background:var(--verde-mina);">⚡ Finalizar</button>
-    </div>
-    <div style="margin-top:10px;">
-      <button class="btn btn-verde btn-full" style="font-size:13px;padding:12px;" onclick="copiarOutput()">
-        Copiar o Prompt do Texto Temático
-      </button>
-    </div>
-    <div class="nota-info" style="margin-top:8px;">
-      Para gerar o Texto Temático: Colar (Ctrl+V) no Claude Code ou no Cowork.
+      <button class="btn btn-verde btn-full" onclick="gerarCamada2()" style="flex:2;background:var(--verde-mina);">⚡ Finalizar — gerar o Prompt do Texto Temático</button>
     </div>
   </div>
 </div>
@@ -1220,10 +1227,14 @@ select option { background: var(--superficie); color: var(--texto); }
 <!-- ═══ OUTPUT ═══ -->
 <div class="output-section" id="output-section">
   <div class="output-header">
-    <span class="output-titulo">Plano Completo do Texto Temático Gerado — arquivo .md baixado</span>
+    <span class="output-titulo">Prompt Completo para gerar o Texto Temático</span>
     <div class="btn-row" style="margin-top:0;flex-wrap:wrap;">
       <button class="btn btn-outline" onclick="copiarOutput()">Copiar Prompt</button>
     </div>
+  </div>
+  <div class="nota-info" style="margin:6px 0 10px;">
+    Dica: para gerar o Texto Temático, colar (Ctrl+V) no Claude Code ou no Cowork.
+    O prompt já instrui o Claude a salvar o .md com versionamento correto (v{N+1}, anterior em xx/) na pasta da trilha.
   </div>
   <div class="output-body" id="output-body"></div>
 </div>
@@ -1232,8 +1243,8 @@ select option { background: var(--superficie); color: var(--texto); }
 <div class="secao" id="sec7" style="margin-top:20px;border-color:oklch(0.45 0.10 150);">
   <div class="secao-header" onclick="toggleSecaoGen('sec7')" style="cursor:pointer;">
     <span class="secao-num" style="background:var(--verde-bg);border-color:var(--verde-claro);color:var(--verde-claro);">07</span>
-    <span class="secao-titulo">Pós-Produção</span>
-    <span class="secao-campos">Pipeline de OAs · Exportar Tema · Guias</span>
+    <span class="secao-titulo">Imagens Temáticas &amp; Pipeline de OAs</span>
+    <span class="secao-campos">IT (Manual/Lote + Legendas) · Pipeline de OAs · Exportar Tema · Guias</span>
     <span class="secao-chevron" style="color:var(--verde-claro);" aria-hidden="true">▾</span>
   </div>
   <div class="secao-body" id="sec7-body" style="display:none;">
@@ -1273,10 +1284,19 @@ select option { background: var(--superficie); color: var(--texto); }
           <div class="orq-fase-fmt" style="font-size:9px;color:var(--ouro);font-family:'DM Mono',monospace;margin-top:2px;opacity:.7;">.html</div>
           <div style="display:flex;gap:8px;margin:6px 0 2px;font-size:10px;">
             <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
-              <input type="checkbox" id="orq-it-manual" style="accent-color:var(--ouro);"> Manual
+              <input type="checkbox" id="orq-it-manual" checked style="accent-color:var(--ouro);"> Manual
             </label>
             <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
               <input type="checkbox" id="orq-it-lote" style="accent-color:var(--ouro);"> Lote
+            </label>
+          </div>
+          <div style="display:flex;gap:8px;margin:2px 0;font-size:10px;align-items:center;">
+            <span style="color:var(--texto-sub);">Legendas:</span>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
+              <input type="checkbox" id="orq-it-leg-canonica" checked style="accent-color:var(--ouro);"> Canônica
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
+              <input type="checkbox" id="orq-it-leg-poetica" style="accent-color:var(--ouro);"> Poética
             </label>
           </div>
           <button class="orq-btn" id="orq-btn-it" onclick="gerarPromptIT()" disabled>🖼️ Gerar IT</button>
@@ -2731,7 +2751,7 @@ function selecionarTrilha(code, chipEl) {
     const profAuto = PROFESSORES_CANONICOS.find(p => p.id === profAutoId);
     if(profAuto) {
       setModoProfs(1);
-      estado.profsAtivos = [{ id: profAuto.id, nome: profAuto.nome, papel: 'Autor' }];
+      estado.profsAtivos = [{ id: profAuto.id, nome: profAuto.nome, papel: 'Personagem' }];
       renderPerfisProfs();
       atualizarEquipePreviewProfs();
       atualizarOutProfessores();
@@ -3832,8 +3852,9 @@ function gerarCamada2() {
   const d = new Date();
   const dataStr = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
 
-  const _profNomes = estado.profsAtivos.length ? estado.profsAtivos.map(p=>p.nome).join(', ') : '';
-  const autor = _profNomes || 'Julio Azevedo';
+  const colab = ((document.getElementById('colaborador-trilha') || {}).value || '').trim();
+  const personagemProf = estado.profsAtivos.length ? estado.profsAtivos.map(p=>p.nome).join(' · ') : '[a definir]';
+  const autor = 'Julio Azevedo (Autor) · Felipe Beato (Co-Autor)' + (colab ? ' · ' + colab + ' (Colaborador)' : '');
   const oa = 'Texto Tematico';
 
   let posText;
@@ -3849,8 +3870,10 @@ tema: ${t.tema} — ${temaObj.nome}
 OA: ${oa.toLowerCase().replace(/ /g,'_')}
 versao: 1
 modo_prots: ${['','individual','dualidade','trio'][estado.modoProts]}
-modo_profs: ${['','individual','dupla','trio'][estado.modoProfs]||'[a definir]'}
-professores: ${estado.profsAtivos.length ? estado.profsAtivos.map(p=>p.nome+' ('+( p.papel||'Autor')+')').join(' · ') : '[a definir]'}
+autor: Julio Azevedo
+coautor: Felipe Beato
+colaborador: ${colab || '[nenhum]'}
+professor_personagem: ${personagemProf}
 protagonistas: ${getProtagonistaMeta()}
 cenario_principal: "${estado.cenarioPrincipal||'[a definir]'}"
 cenario_google_maps: "${estado.cenarioPrincipal ? getGoogleMapsLink(estado.cenarioPrincipal) : ''}"
@@ -3868,6 +3891,11 @@ Trilha: ${estado.trilha} — "${t.nome}"
 Tema: ${t.tema} — ${temaObj.nome} · ${temaObj.sub}
 Posicao: ${posText}
 Foco do tema: ${temaObj.foco}
+
+Autor: Julio Azevedo
+Co-Autor: Felipe Beato
+Colaborador: ${colab || '[nenhum nesta trilha]'}
+Professor personagem (narrativa): ${personagemProf} — regra: trilhas pares e T0A/T0B/T0C → Prof. Julio · impares → Prof. Felipe
 Epigrafe da Apresentacao (Capa - Slide 1): "${_getEpigrafeAtiva().texto||'[a definir]'}" — ${_getEpigrafeAtiva().autor||'[a definir]'}
 Biografia do autor da citacao: ${_getEpigrafeAtiva().bio||'[a definir]'}
 
@@ -4643,13 +4671,17 @@ function gerarPromptIT() {
   const usarLote   = document.getElementById('orq-it-lote')?.checked   || false;
   if(!usarManual && !usarLote) { showToast('Selecione Manual e/ou Lote antes de gerar', 'erro'); return; }
 
+  const legCanonica = document.getElementById('orq-it-leg-canonica')?.checked || false;
+  const legPoetica  = document.getElementById('orq-it-leg-poetica')?.checked  || false;
+  const legendas = [legCanonica ? 'Canônica' : null, legPoetica ? 'Poética' : null].filter(Boolean).join(' + ') || 'Canônica';
+
   const modos = [];
-  if(usarManual) modos.push('Manual (`imagens-tematicas`)');
+  if(usarManual) modos.push('Manual (`imagem-tematica-manual`)');
   if(usarLote)   modos.push('Lote (`imagens-tematicas-lote`)');
 
   let saidas = '';
-  if(usarManual) saidas += `\n### Saída Manual (skill \`imagens-tematicas\`)\n- Arquivo \`${getFilePrefix()}${ctx.code}-IT-pt-v1.txt\` — roteiro com prompts individuais\n`;
-  if(usarLote)   saidas += `\n### Saída Lote (skill \`imagens-tematicas-lote\`)\n- Arquivo \`${getFilePrefix()}${ctx.code}-IT-pt-v1.txt\` — roteiro completo com metadados\n- Arquivo \`${getFilePrefix()}${ctx.code}-IT-pt-v1-Gemine.txt\` — versão limpa para colagem no Gemini\n`;
+  if(usarManual) saidas += `\n### Saída Manual (skill \`imagem-tematica-manual\` — recomendada)\n- Roteiro \`.md\` minimalista em _imagens/\n- \`${ctx.code}-IT-pt-v{N}-Gemine.txt\` — para colagem no Gemini\n- \`${ctx.code}-IT-pt-v{N}-Gemine.html\` — roteiro visual interativo com botões "Copiar" por imagem\n`;
+  if(usarLote)   saidas += `\n### Saída Lote (skill \`imagens-tematicas-lote\`)\n- \`${ctx.code}-IT-pt-v{N}.txt\` — roteiro completo com metadados\n- \`${ctx.code}-IT-pt-v{N}-Gemine.txt\` — versão limpa para colagem no Gemini\n`;
 
   const prompt =
 `# Gerar Imagens Temáticas (IT) — ${ctx.code}
@@ -4658,6 +4690,7 @@ Trilha: ${ctx.code} — "${ctx.nome}"
 Base:   ${getFilePrefix()}${ctx.code}-TT-v1.md (aprovado pelo autor)
 OA:     Imagens Temáticas (IT) · 12 imagens 1200×1200 px
 Modo:   ${modos.join(' + ')}
+Legendas: ${legendas}
 
 ## Instrução
 
@@ -4679,12 +4712,20 @@ IT-CAPA → IT-01 a IT-10 → IT-11 (símbolo, ÚLTIMO)
 - IT-09: infográfico C5 com perguntas acessíveis
 - IT-11: símbolo abstrato da trilha
 
+## Legendas das imagens
+
+Estilo selecionado: ${legendas}
+- Canônica: descrição objetiva (Fig. N — o que a imagem mostra)
+- Poética: frase curta evocativa, alinhada à narrativa da trilha
+
 ## Entrega
 
 Pasta: _imagens/ da trilha ${ctx.code}
-Formato de saída: .html (roteiro visual interativo)
+Formato principal: .html (roteiro visual interativo com botões Copiar)
 
-Após gerar, aguarde aprovação do autor.`;
+⏳ IMPORTANTE: a geração do arquivo .html leva alguns minutos — aguarde a
+confirmação do Claude Code de que o arquivo foi salvo em _imagens/ antes de
+abrir o roteiro e iniciar a produção no Gemini. Após gerar, aguarde aprovação do autor.`;
   _mostrarOrqPrompt('🖼️ Prompt — Gerar IT (copie e cole no Cowork)', prompt);
   showToast('Prompt IT gerado — modo: ' + modos.join(' + '), 'ouro');
 }
@@ -5189,6 +5230,19 @@ function atualizarLabelExportTema() {
 
 window.addEventListener('beforeunload', salvarEstado);
 document.addEventListener('DOMContentLoaded', init);
+</script>
+<script>
+/* Persistencia do Colaborador da trilha (campo da Autoria, secao Narrativa) */
+(function () {
+  try {
+    var el = document.getElementById('colaborador-trilha');
+    if (!el) return;
+    el.value = localStorage.getItem(LS + 'colaborador') || '';
+    el.addEventListener('input', function () {
+      try { localStorage.setItem(LS + 'colaborador', el.value); } catch (e) {}
+    });
+  } catch (e) {}
+})();
 </script>
 </body>
 </html>
