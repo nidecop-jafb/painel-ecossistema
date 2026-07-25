@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC1 — Citacoes por Trilha</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(0.12 0.02 260);
+  --surface: oklch(0.16 0.02 260);
+  --surface-alt: oklch(0.20 0.02 260);
+  --text: oklch(0.92 0.01 90);
+  --text-dim: oklch(0.72 0.02 90);
+  --text-faint: oklch(0.52 0.02 90);
+  --border: oklch(0.28 0.02 260);
+  --ouro: oklch(0.78 0.15 75);
+  --ouro-bg: oklch(0.22 0.06 75);
+  --verde: oklch(0.72 0.18 155);
+  --verde-bg: oklch(0.20 0.06 155);
+  --erro: oklch(0.70 0.20 25);
+  --erro-bg: oklch(0.20 0.08 25);
+  --azul: oklch(0.72 0.12 240);
+  --azul-bg: oklch(0.20 0.06 240);
+  --r: 0px;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: oklch(0.97 0.01 90); --surface: oklch(1.0 0 0); --surface-alt: oklch(0.95 0.01 90);
+    --text: oklch(0.15 0.02 260); --text-dim: oklch(0.40 0.02 260); --text-faint: oklch(0.60 0.02 260);
+    --border: oklch(0.85 0.01 90); --ouro: oklch(0.50 0.15 75); --ouro-bg: oklch(0.95 0.04 75);
+    --verde: oklch(0.45 0.15 155); --verde-bg: oklch(0.95 0.04 155);
+    --erro: oklch(0.50 0.18 25); --erro-bg: oklch(0.95 0.06 25);
+    --azul: oklch(0.45 0.12 240); --azul-bg: oklch(0.95 0.04 240);
+  }
+}
+:root[data-theme="light"] {
+  --bg: oklch(0.97 0.01 90); --surface: oklch(1.0 0 0); --surface-alt: oklch(0.95 0.01 90);
+  --text: oklch(0.15 0.02 260); --text-dim: oklch(0.40 0.02 260); --text-faint: oklch(0.60 0.02 260);
+  --border: oklch(0.85 0.01 90); --ouro: oklch(0.50 0.15 75); --ouro-bg: oklch(0.95 0.04 75);
+  --verde: oklch(0.45 0.15 155); --verde-bg: oklch(0.95 0.04 155);
+  --erro: oklch(0.50 0.18 25); --erro-bg: oklch(0.95 0.06 25);
+  --azul: oklch(0.45 0.12 240); --azul-bg: oklch(0.95 0.04 240);
+}
+:root[data-theme="dark"] {
+  --bg: oklch(0.12 0.02 260); --surface: oklch(0.16 0.02 260); --surface-alt: oklch(0.20 0.02 260);
+  --text: oklch(0.92 0.01 90); --text-dim: oklch(0.72 0.02 90); --text-faint: oklch(0.52 0.02 90);
+  --border: oklch(0.28 0.02 260); --ouro: oklch(0.78 0.15 75); --ouro-bg: oklch(0.22 0.06 75);
+  --verde: oklch(0.72 0.18 155); --verde-bg: oklch(0.20 0.06 155);
+  --erro: oklch(0.70 0.20 25); --erro-bg: oklch(0.20 0.08 25);
+  --azul: oklch(0.72 0.12 240); --azul-bg: oklch(0.20 0.06 240);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.5; padding: 20px; }
+.header { background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.header-title { font-family: var(--display); font-size: 24px; font-weight: 800; color: var(--ouro); }
+.header-sub { font-size: 14px; color: var(--text-dim); margin-top: 4px; }
+.stats { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+.stat { background: var(--surface-alt); border: 1px solid var(--border); padding: 12px 16px; font-family: var(--mono); font-size: 13px; }
+.stat-n { font-size: 22px; font-weight: 700; color: var(--ouro); }
+.regra { background: var(--erro-bg); border: 1px solid var(--erro); padding: 16px; margin-bottom: 24px; }
+.regra-title { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--erro); margin-bottom: 8px; }
+.regra p { font-size: 14px; color: var(--text-dim); }
+.regra code { font-family: var(--mono); background: var(--surface-alt); padding: 2px 6px; font-size: 13px; }
+.tema-section { margin-bottom: 32px; }
+.tema-header { font-family: var(--display); font-size: 18px; font-weight: 700; color: var(--azul); padding: 12px 0; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
+.trilha-group { margin-bottom: 20px; }
+.trilha-label { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--verde); margin-bottom: 8px; padding: 4px 8px; background: var(--verde-bg); display: inline-block; }
+.citacao-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+.citacao-card.repeated { border-color: var(--erro); background: var(--erro-bg); }
+.citacao-text { font-size: 14px; font-style: italic; color: var(--text); }
+.citacao-autor { font-family: var(--mono); font-size: 12px; color: var(--ouro); white-space: nowrap; text-align: right; }
+.citacao-autor .badge-rep { display: inline-block; font-size: 10px; background: var(--erro); color: var(--bg); padding: 1px 6px; margin-left: 6px; font-style: normal; }
+.citacao-bio { font-size: 12px; color: var(--text-faint); margin-top: 6px; grid-column: 1 / -1; }
+.filtro { margin-bottom: 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.filtro label { font-size: 13px; color: var(--text-dim); }
+.filtro select, .filtro input { font-family: var(--mono); font-size: 13px; background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; }
+.btn-theme { position: fixed; top: 12px; right: 12px; font-family: var(--mono); font-size: 11px; background: var(--surface-alt); border: 1px solid var(--border); color: var(--text-dim); padding: 4px 10px; cursor: pointer; z-index: 99; }
+.legend { display: flex; gap: 16px; margin-bottom: 16px; font-size: 12px; color: var(--text-dim); align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-swatch { width: 14px; height: 14px; border: 1px solid var(--border); }
+.legend-swatch.ok { background: var(--surface); }
+.legend-swatch.rep { background: var(--erro-bg); border-color: var(--erro); }
+@media (max-width: 700px) {
+  .citacao-card { grid-template-columns: 1fr; }
+  .citacao-autor { text-align: left; }
+  .stats { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<button class="btn-theme" onclick="toggleTheme()">tema</button>
+<div class="header">
+  <div class="header-title">FC1 — Citacoes por Trilha</div>
+  <div class="header-sub">Fisica Conceitual 1 · Tecnico em Mineracao · IFMG-OP · v2</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">189</div>citacoes</div>
+    <div class="stat"><div class="stat-n">63</div>trilhas</div>
+    <div class="stat"><div class="stat-n">177</div>autores</div>
+    <div class="stat"><div class="stat-n">0</div>repetidos</div>
+  </div>
+</div>
+<div class="regra">
+  <div class="regra-title">REGRA DE NAO-REPETICAO</div>
+  <p>Cada autor pode aparecer em <strong>no maximo 1 trilha</strong>. Citacoes destacadas em vermelho violam esta regra e devem ser substituidas.</p>
+  <p style="margin-top:8px;"><strong>Excecao:</strong> um autor pode ter ate 3 citacoes <em>dentro da mesma trilha</em> (posicoes 1, 2, 3). A restricao e <em>entre</em> trilhas distintas.</p>
+  <p style="margin-top:8px;"><code>Criterio: len(set(trilhas_do_autor)) &lt;= 1</code></p>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch ok"></div> Autor unico</div>
+  <div class="legend-item"><div class="legend-swatch rep"></div> Autor repetido (viola regra)</div>
+</div>
+<div class="filtro">
+  <label>Filtrar:</label>
+  <select id="filtro-tema" onchange="filtrar()">
+    <option value="">Todos os temas</option>
+    <option value="TEMA 0 — Trilhas e Inteligência">TEMA 0 — Trilhas e Inteligência</option>
+    <option value="TEMA 1 — A Régua do Mundo">TEMA 1 — A Régua do Mundo</option>
+    <option value="TEMA 2 — O Ritmo das Máquinas">TEMA 2 — O Ritmo das Máquinas</option>
+    <option value="TEMA 3 — A Força que Move o Minério">TEMA 3 — A Força que Move o Minério</option>
+    <option value="TEMA 4 — A Direção do Movimento">TEMA 4 — A Direção do Movimento</option>
+    <option value="TEMA 5 — O Diálogo das Forças">TEMA 5 — O Diálogo das Forças</option>
+    <option value="TEMA 6 — A Ciência do Repouso">TEMA 6 — A Ciência do Repouso</option>
+    <option value="TEMA 7 — Energia: a Moeda da Transformação">TEMA 7 — Energia: a Moeda da Transformação</option>
+    <option value="TEMA 8 — O Peso das Águas">TEMA 8 — O Peso das Águas</option>
+    <option value="TEMA 9 — Os Movimentos Celestes">TEMA 9 — Os Movimentos Celestes</option>
+  </select>
+  <label><input type="checkbox" id="filtro-rep" onchange="filtrar()"> So repetidos</label>
+</div>
+<div id="content">
+<div class="tema-section" data-tema="TEMA 0 — Trilhas e Inteligência">
+  <div class="tema-header">TEMA 0 — Trilhas e Inteligência</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T0A — Trilhas de Aprendizagem</div>
+    <div class="citacao-card" data-autor="John Dewey">
+      <div class="citacao-text">&quot;A educação não é preparação para a vida; a educação é a própria vida.&quot;</div>
+      <div class="citacao-autor">John Dewey<br><span style="font-size:10px;color:var(--text-faint)">20/10/1859 — 01/06/1952</span></div>
+      <div class="citacao-bio">Americano. Filósofo e pedagogo. Pai do pragmatismo educacional. Defendeu aprendizagem pela experiência e educação democrática. Influenciou profundamente a pedagogia ativa do séc. XX.</div>
+    </div>
+    <div class="citacao-card" data-autor="Benjamin Franklin">
+      <div class="citacao-text">&quot;Diga-me e eu esquecerei, ensina-me e eu lembrarei, envolva-me e eu aprenderei.&quot;</div>
+      <div class="citacao-autor">Benjamin Franklin<br><span style="font-size:10px;color:var(--text-faint)">17/01/1706 — 17/04/1790</span></div>
+      <div class="citacao-bio">Americano. Cientista, inventor e político. Inventou o para-raios, estudou eletricidade. Um dos Pais Fundadores dos EUA. Autor de aforismos célebres sobre educação, trabalho e engenho prático.</div>
+    </div>
+    <div class="citacao-card" data-autor="Paulo Freire">
+      <div class="citacao-text">&quot;Ensinar não é transferir conhecimento, mas criar as possibilidades para a sua produção.&quot;</div>
+      <div class="citacao-autor">Paulo Freire<br><span style="font-size:10px;color:var(--text-faint)">19/09/1921 — 02/05/1997</span></div>
+      <div class="citacao-bio">Brasileiro. Educador e filósofo. Autor de Pedagogia do Oprimido (1968). Criador da educação libertadora. Defendeu o diálogo como base do ensino e a autonomia do aprendiz.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T0B — Uso de Tecnologias Digitais</div>
+    <div class="citacao-card" data-autor="Gilberto Gil">
+      <div class="citacao-text">&quot;Criar meu web site, fazer minha home page, com quantos gigabytes se faz uma jangada, um barco que veleje...&quot;</div>
+      <div class="citacao-autor">Gilberto Gil<br><span style="font-size:10px;color:var(--text-faint)">26/06/1942 — vivo</span></div>
+      <div class="citacao-bio">Brasileiro. Músico, compositor e político. Tropicalista, ministro da Cultura (2003-2008). Uniu arte e tecnologia em canções como Pela Internet, integrando cultura digital e brasileira.</div>
+    </div>
+    <div class="citacao-card" data-autor="Bill Gates">
+      <div class="citacao-text">&quot;A tecnologia é apenas uma ferramenta. No que se refere a motivar as crianças e fazê-las trabalharem juntas, o professor é o mais importante.&quot;</div>
+      <div class="citacao-autor">Bill Gates<br><span style="font-size:10px;color:var(--text-faint)">28/10/1955 — vivo</span></div>
+      <div class="citacao-bio">Americano. Cofundador da Microsoft (1975). Filantropo e defensor da tecnologia na educação. Transformou a computação pessoal e hoje atua em saúde global e inovação tecnológica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Bill Gates">
+      <div class="citacao-text">&quot;O computador nasceu para resolver problemas que antes não existiam.&quot;</div>
+      <div class="citacao-autor">Bill Gates<br><span style="font-size:10px;color:var(--text-faint)">28/10/1955 — vivo</span></div>
+      <div class="citacao-bio">Americano. Cofundador da Microsoft (1975). Filantropo e defensor da tecnologia na educação. Transformou a computação pessoal e hoje atua em saúde global e inovação tecnológica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T0C — Aprendendo Inteligência</div>
+    <div class="citacao-card" data-autor="Jean Piaget">
+      <div class="citacao-text">&quot;O principal objetivo da educação é criar indivíduos capazes de fazer coisas novas, não simplesmente repetir o que outras gerações fizeram.&quot;</div>
+      <div class="citacao-autor">Jean Piaget<br><span style="font-size:10px;color:var(--text-faint)">09/08/1896 — 16/09/1980</span></div>
+      <div class="citacao-bio">Suíço. Psicólogo e epistemólogo. Criador da teoria do desenvolvimento cognitivo. Descreveu os estágios da inteligência infantil. Revolucionou a compreensão de como crianças aprendem.</div>
+    </div>
+    <div class="citacao-card" data-autor="Lev Vygotsky">
+      <div class="citacao-text">&quot;A aprendizagem humana pressupõe uma natureza social específica e um processo pelo qual as crianças penetram na vida intelectual dos que as cercam.&quot;</div>
+      <div class="citacao-autor">Lev Vygotsky<br><span style="font-size:10px;color:var(--text-faint)">17/11/1896 — 11/06/1934</span></div>
+      <div class="citacao-bio">Russo. Psicólogo e teórico da educação. Criador do conceito de zona de desenvolvimento proximal. Mostrou que a aprendizagem é social antes de ser individual.</div>
+    </div>
+    <div class="citacao-card" data-autor="Sócrates">
+      <div class="citacao-text">&quot;Conhece-te a ti mesmo.&quot;</div>
+      <div class="citacao-autor">Sócrates<br><span style="font-size:10px;color:var(--text-faint)">c. 470 a.C. — 399 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. V a.C. Filósofo. Pai da maiêutica (arte de fazer perguntas). Não deixou escritos; seu pensamento foi registrado por Platão. Sua frase &#x27;Só sei que nada sei&#x27; é base da inteligência crítica.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 1 — A Régua do Mundo">
+  <div class="tema-header">TEMA 1 — A Régua do Mundo</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T01 — Física, uma linguagem básica da ciência</div>
+    <div class="citacao-card" data-autor="Michael Faraday">
+      <div class="citacao-text">&quot;Nada é demasiado maravilhoso para ser verdadeiro, se for coerente com as leis da natureza.&quot;</div>
+      <div class="citacao-autor">Michael Faraday<br><span style="font-size:10px;color:var(--text-faint)">22/09/1791 — 25/08/1867</span></div>
+      <div class="citacao-bio">Britânico. Físico e químico experimental. Descobriu a indução eletromagnética e as leis da eletrólise. Autodidata, demonstrou que a ciência nasce da observação cuidadosa e do experimento.</div>
+    </div>
+    <div class="citacao-card" data-autor="William Lawrence Bragg">
+      <div class="citacao-text">&quot;O importante na ciência não é tanto obter novos fatos, mas sim descobrir novas formas de pensar sobre eles.&quot;</div>
+      <div class="citacao-autor">William Lawrence Bragg<br><span style="font-size:10px;color:var(--text-faint)">31/03/1890 — 01/07/1971</span></div>
+      <div class="citacao-bio">Australiano-britânico. Físico, Nobel mais jovem (1915, aos 25 anos). Desenvolveu a difração de raios X em cristais (lei de Bragg). Demonstrou como a física revela a estrutura íntima da matéria.</div>
+    </div>
+    <div class="citacao-card" data-autor="Max Planck">
+      <div class="citacao-text">&quot;Uma nova verdade científica não triunfa convencendo seus oponentes, mas sim porque seus oponentes morrem e surge uma nova geração familiarizada com ela.&quot;</div>
+      <div class="citacao-autor">Max Planck<br><span style="font-size:10px;color:var(--text-faint)">23/04/1858 — 04/10/1947</span></div>
+      <div class="citacao-bio">Alemão. Físico teórico. Pai da mecânica quântica (Nobel 1918). Introduziu o conceito de quantum de energia. Sua constante h é uma das grandezas fundamentais da física.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T02 — Sistemas de Numeração</div>
+    <div class="citacao-card" data-autor="Pitágoras de Samos">
+      <div class="citacao-text">&quot;Os números governam o mundo.&quot;</div>
+      <div class="citacao-autor">Pitágoras de Samos<br><span style="font-size:10px;color:var(--text-faint)">c. 570 a.C. — c. 495 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. VI a.C. Matemático e filósofo. Fundador da escola pitagórica. Descobriu relações numéricas na música e na geometria. Seu teorema é base da medição e dos sistemas numéricos.</div>
+    </div>
+    <div class="citacao-card" data-autor="Nikola Tesla">
+      <div class="citacao-text">&quot;O presente é deles, mas o futuro, pelo qual eu realmente trabalhei, é meu.&quot;</div>
+      <div class="citacao-autor">Nikola Tesla<br><span style="font-size:10px;color:var(--text-faint)">10/07/1856 — 07/01/1943</span></div>
+      <div class="citacao-bio">Sérvio-americano. Engenheiro e inventor. Desenvolveu o sistema de corrente alternada, motor de indução e bobina de Tesla. Visionário da eletricidade sem fio e da energia renovável.</div>
+    </div>
+    <div class="citacao-card" data-autor="Rosalind Franklin">
+      <div class="citacao-text">&quot;A natureza usa apenas os fios mais longos para tecer seus padrões, de modo que cada pequeno pedaço do tecido revela a organização de toda a tapeçaria.&quot;</div>
+      <div class="citacao-autor">Rosalind Franklin<br><span style="font-size:10px;color:var(--text-faint)">25/07/1920 — 16/04/1958</span></div>
+      <div class="citacao-bio">Britânica. Química e cristalógrafa. Sua Foto 51 (difração de raios X do DNA) foi decisiva para a descoberta da dupla hélice. Contribuições fundamentais em virologia e estrutura do carvão.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T03 — Escalas de Observação</div>
+    <div class="citacao-card" data-autor="James Clerk Maxwell">
+      <div class="citacao-text">&quot;Onde há matéria, há geometria.&quot;</div>
+      <div class="citacao-autor">James Clerk Maxwell<br><span style="font-size:10px;color:var(--text-faint)">13/06/1831 — 05/11/1879</span></div>
+      <div class="citacao-bio">Escocês. Físico e matemático. Unificou eletricidade, magnetismo e óptica nas equações de Maxwell. Previu as ondas eletromagnéticas. Sua teoria é um dos pilares da física moderna.</div>
+    </div>
+    <div class="citacao-card" data-autor="Lise Meitner">
+      <div class="citacao-text">&quot;A ciência é construída com fatos, assim como uma casa é construída com tijolos — mas uma coleção de fatos não é ciência, assim como uma pilha de tijolos não é uma casa.&quot;</div>
+      <div class="citacao-autor">Lise Meitner<br><span style="font-size:10px;color:var(--text-faint)">07/11/1878 — 27/10/1968</span></div>
+      <div class="citacao-bio">Austríaca-sueca. Física nuclear. Explicou a fissão nuclear (1939) com seu sobrinho Otto Frisch. Ignorada pelo Nobel concedido a Hahn. O elemento meitnério (Mt) homenageia sua contribuição à ciência.</div>
+    </div>
+    <div class="citacao-card" data-autor="William Shakespeare">
+      <div class="citacao-text">&quot;Há mais coisas entre o céu e a terra do que sonha a nossa vã filosofia.&quot;</div>
+      <div class="citacao-autor">William Shakespeare<br><span style="font-size:10px;color:var(--text-faint)">26/04/1564 — 23/04/1616</span></div>
+      <div class="citacao-bio">Inglês. Dramaturgo e poeta (séc. XVI-XVII). Autor de Hamlet, Romeu e Julieta e 37 peças. Mestre da escala humana: do microscópico ao cósmico, do átomo de sentimento ao universo da tragédia.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T04 — O SI e a Metrologia no Brasil</div>
+    <div class="citacao-card" data-autor="Lord Kelvin (William Thomson)">
+      <div class="citacao-text">&quot;Medir é saber.&quot;</div>
+      <div class="citacao-autor">Lord Kelvin (William Thomson)<br><span style="font-size:10px;color:var(--text-faint)">26/06/1824 — 17/12/1907</span></div>
+      <div class="citacao-bio">Britânico. Físico e engenheiro (séc. XIX). Formulou a escala absoluta de temperatura. Contribuições em termodinâmica, eletromagnetismo e metrologia. A unidade kelvin (K) leva seu nome.</div>
+    </div>
+    <div class="citacao-card" data-autor="Lord Kelvin (William Thomson)">
+      <div class="citacao-text">&quot;Quando você pode medir aquilo de que está falando e expressá-lo em números, sabe algo a respeito.&quot;</div>
+      <div class="citacao-autor">Lord Kelvin (William Thomson)<br><span style="font-size:10px;color:var(--text-faint)">26/06/1824 — 17/12/1907</span></div>
+      <div class="citacao-bio">Britânico. Físico e engenheiro (séc. XIX). Formulou a escala absoluta de temperatura. Contribuições em termodinâmica, eletromagnetismo e metrologia. A unidade kelvin (K) leva seu nome.</div>
+    </div>
+    <div class="citacao-card" data-autor="Leopold Kronecker">
+      <div class="citacao-text">&quot;Deus fez os números inteiros; todo o resto é obra do homem.&quot;</div>
+      <div class="citacao-autor">Leopold Kronecker<br><span style="font-size:10px;color:var(--text-faint)">07/12/1823 — 29/12/1891</span></div>
+      <div class="citacao-bio">Alemão. Matemático (séc. XIX). Especialista em teoria dos números e álgebra. Célebre pela frase &#x27;Deus fez os inteiros; todo o resto é obra do homem&#x27;, central ao debate sobre sistemas de medida.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T05 — Notação Científica</div>
+    <div class="citacao-card" data-autor="Joseph Fourier">
+      <div class="citacao-text">&quot;A natureza utiliza tão poucos princípios para abranger tão diversos fenômenos.&quot;</div>
+      <div class="citacao-autor">Joseph Fourier<br><span style="font-size:10px;color:var(--text-faint)">21/03/1768 — 16/05/1830</span></div>
+      <div class="citacao-bio">Francês. Matemático e físico (séc. XVIII-XIX). Desenvolveu a análise de Fourier (séries e transformadas). Estudou condução de calor. Suas ferramentas são essenciais para representar grandezas em escalas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Carl Friedrich Gauss">
+      <div class="citacao-text">&quot;A matemática é a rainha das ciências e a teoria dos números é a rainha da matemática.&quot;</div>
+      <div class="citacao-autor">Carl Friedrich Gauss<br><span style="font-size:10px;color:var(--text-faint)">30/04/1777 — 23/02/1855</span></div>
+      <div class="citacao-bio">Alemão. Matemático e físico, &#x27;príncipe dos matemáticos&#x27;. Contribuições fundamentais em teoria dos números, estatística, magnetismo e geodésia. Trabalhou com ordens de grandeza e notação científica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Georg Cantor">
+      <div class="citacao-text">&quot;A essência da matemática reside na sua liberdade.&quot;</div>
+      <div class="citacao-autor">Georg Cantor<br><span style="font-size:10px;color:var(--text-faint)">03/03/1845 — 06/01/1918</span></div>
+      <div class="citacao-bio">Alemão de origem russa. Matemático. Criador da teoria dos conjuntos e dos números transfinitos. Demonstrou que existem diferentes &#x27;tamanhos&#x27; de infinito, revolucionando a notação matemática.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T06 — Ordem de Grandeza</div>
+    <div class="citacao-card" data-autor="Erwin Schrödinger">
+      <div class="citacao-text">&quot;A ciência não pode resolver o mistério último da natureza porque, em última análise, nós mesmos somos parte do mistério que estamos tentando resolver.&quot;</div>
+      <div class="citacao-autor">Erwin Schrödinger<br><span style="font-size:10px;color:var(--text-faint)">12/08/1887 — 04/01/1961</span></div>
+      <div class="citacao-bio">Austríaco. Físico teórico (Nobel 1933). Formulou a equação de Schrödinger, base da mecânica quântica ondulatória. Seu paradoxo do gato ilustra a estranheza do mundo quântico.</div>
+    </div>
+    <div class="citacao-card" data-autor="Madre Teresa de Calcutá">
+      <div class="citacao-text">&quot;Nunca se preocupe com números. Ajude uma pessoa de cada vez e comece sempre pela que está mais perto de você.&quot;</div>
+      <div class="citacao-autor">Madre Teresa de Calcutá<br><span style="font-size:10px;color:var(--text-faint)">26/08/1910 — 05/09/1997</span></div>
+      <div class="citacao-bio">Albanesa-indiana. Religiosa e missionária, prêmio Nobel da Paz (1979). Fundadora das Missionárias da Caridade. Suas reflexões sobre o pequeno e o grandioso dialogam com ordem de grandeza.</div>
+    </div>
+    <div class="citacao-card" data-autor="Arthur C. Clarke">
+      <div class="citacao-text">&quot;Há duas possibilidades: ou estamos sozinhos no universo ou não estamos. Ambas são igualmente assustadoras.&quot;</div>
+      <div class="citacao-autor">Arthur C. Clarke<br><span style="font-size:10px;color:var(--text-faint)">16/12/1917 — 19/03/2008</span></div>
+      <div class="citacao-bio">Britânico. Escritor e inventor. Autor de 2001: Uma Odisseia no Espaço. Propôs o satélite geoestacionário. Explorou em ficção científica as escalas cósmicas do universo.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 2 — O Ritmo das Máquinas">
+  <div class="tema-header">TEMA 2 — O Ritmo das Máquinas</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T07 — Referencial, Posição e Tempo</div>
+    <div class="citacao-card" data-autor="William Penn">
+      <div class="citacao-text">&quot;O tempo é o que existe de mais precioso e, no entanto, de mais efêmero.&quot;</div>
+      <div class="citacao-autor">William Penn<br><span style="font-size:10px;color:var(--text-faint)">24/10/1644 — 10/08/1718</span></div>
+      <div class="citacao-bio">Inglês. Quaker e fundador da Pensilvânia (1681). Defendeu liberdade religiosa e governo justo. Suas reflexões sobre posição, tempo e referencial moral ecoam no pensamento científico.</div>
+    </div>
+    <div class="citacao-card" data-autor="Heráclito de Éfeso">
+      <div class="citacao-text">&quot;Tudo se move, nada permanece e nada dura. Nós não podemos entrar no mesmo rio duas vezes.&quot;</div>
+      <div class="citacao-autor">Heráclito de Éfeso<br><span style="font-size:10px;color:var(--text-faint)">c. 535 a.C. — c. 475 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. VI-V a.C. Filósofo pré-socrático. Propôs que tudo flui (panta rhei) e que a mudança é a essência do real. Seus conceitos de fluxo e harmonia dos opostos dialogam com movimento e rotação.</div>
+    </div>
+    <div class="citacao-card" data-autor="Chien-Shiung Wu">
+      <div class="citacao-text">&quot;A energia não pode ser criada nem destruída, apenas transformada.&quot;</div>
+      <div class="citacao-autor">Chien-Shiung Wu<br><span style="font-size:10px;color:var(--text-faint)">31/05/1912 — 16/02/1997</span></div>
+      <div class="citacao-bio">Chinesa-americana. Física experimental (séc. XX). Refutou a conservação da paridade (1957), confirmando a previsão de Lee e Yang. Chamada de &#x27;Primeira Dama da Física&#x27;. Contribuições em desintegração beta.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T08 — Velocidade Média e Instantânea</div>
+    <div class="citacao-card" data-autor="Heinrich Hertz">
+      <div class="citacao-text">&quot;As equações de Maxwell são mais sábias do que nós e mais sábias até do que seus descobridores.&quot;</div>
+      <div class="citacao-autor">Heinrich Hertz<br><span style="font-size:10px;color:var(--text-faint)">22/02/1857 — 01/01/1894</span></div>
+      <div class="citacao-bio">Alemão. Físico. Confirmou experimentalmente as ondas eletromagnéticas previstas por Maxwell (1887). A unidade de frequência hertz leva seu nome. Demonstrou que luz e rádio são a mesma natureza.</div>
+    </div>
+    <div class="citacao-card" data-autor="Francis Bacon">
+      <div class="citacao-text">&quot;A natureza, para ser comandada, deve ser obedecida.&quot;</div>
+      <div class="citacao-autor">Francis Bacon<br><span style="font-size:10px;color:var(--text-faint)">22/01/1561 — 09/04/1626</span></div>
+      <div class="citacao-bio">Inglês. Filósofo, estadista e cientista. Pai do empirismo e do método indutivo. Autor de Novum Organum. Defendeu que o conhecimento da natureza vem da observação sistemática.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio popular (atribuído a Rui Barbosa)">
+      <div class="citacao-text">&quot;A pressa é inimiga da perfeição.&quot;</div>
+      <div class="citacao-autor">Provérbio popular (atribuído a Rui Barbosa)<br><span style="font-size:10px;color:var(--text-faint)">05/11/1849 — 01/03/1923</span></div>
+      <div class="citacao-bio">Brasileiro. Jurista, político e orador (séc. XIX-XX). Patrono dos advogados brasileiros. Defensor da precisão da linguagem, análoga à precisão na medição de velocidade e grandezas.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T09 — Aceleração Média e Instantânea</div>
+    <div class="citacao-card" data-autor="Charles Darwin">
+      <div class="citacao-text">&quot;Não é a espécie mais forte que sobrevive, nem a mais inteligente, mas a que melhor se adapta à mudança.&quot;</div>
+      <div class="citacao-autor">Charles Darwin<br><span style="font-size:10px;color:var(--text-faint)">12/02/1809 — 19/04/1882</span></div>
+      <div class="citacao-bio">Britânico. Naturalista. Formulou a teoria da evolução por seleção natural em A Origem das Espécies (1859). Transformou a biologia e o pensamento sobre variação e adaptação na natureza.</div>
+    </div>
+    <div class="citacao-card" data-autor="Charles Chaplin">
+      <div class="citacao-text">&quot;A persistência é o caminho do êxito.&quot;</div>
+      <div class="citacao-autor">Charles Chaplin<br><span style="font-size:10px;color:var(--text-faint)">16/04/1889 — 25/12/1977</span></div>
+      <div class="citacao-bio">Britânico. Ator, diretor e roteirista de cinema. Criador do personagem Carlitos. Mestre em explorar aceleração, inércia e movimento em cenas cômicas de cinema mudo.</div>
+    </div>
+    <div class="citacao-card" data-autor="John F. Kennedy">
+      <div class="citacao-text">&quot;A mudança é a lei da vida. E aqueles que apenas olham para o passado ou o presente certamente perderão o futuro.&quot;</div>
+      <div class="citacao-autor">John F. Kennedy<br><span style="font-size:10px;color:var(--text-faint)">29/05/1917 — 22/11/1963</span></div>
+      <div class="citacao-bio">Americano. 35.º presidente dos EUA (1961-1963). Impulsionou o programa espacial Apollo. Seu discurso sobre ir à Lua é marco da aceleração tecnológica e da corrida espacial.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T10 — O Movimento Uniforme (MU)</div>
+    <div class="citacao-card" data-autor="Oscar Wilde">
+      <div class="citacao-text">&quot;A experiência é simplesmente o nome que damos aos nossos erros.&quot;</div>
+      <div class="citacao-autor">Oscar Wilde<br><span style="font-size:10px;color:var(--text-faint)">16/10/1854 — 30/11/1900</span></div>
+      <div class="citacao-bio">Irlandês. Escritor e dramaturgo. Autor de O Retrato de Dorian Gray e A Importância de Ser Prudente. Mestre do aforismo. Sua inteligência verbal transformou observações comuns em paradoxos memoráveis.</div>
+    </div>
+    <div class="citacao-card" data-autor="Mark Twain">
+      <div class="citacao-text">&quot;O segredo de progredir é começar.&quot;</div>
+      <div class="citacao-autor">Mark Twain<br><span style="font-size:10px;color:var(--text-faint)">30/11/1835 — 21/04/1910</span></div>
+      <div class="citacao-bio">Americano. Escritor e humorista. Autor de As Aventuras de Tom Sawyer e Huckleberry Finn. Cronista sagaz da condição humana. Usou humor para iluminar verdades sobre o mundo e a ciência.</div>
+    </div>
+    <div class="citacao-card" data-autor="Marie Curie">
+      <div class="citacao-text">&quot;A constância é a virtude por excelência dos que tentam.&quot;</div>
+      <div class="citacao-autor">Marie Curie<br><span style="font-size:10px;color:var(--text-faint)">07/11/1867 — 04/07/1934</span></div>
+      <div class="citacao-bio">Polonesa-francesa. Física e química. Primeira pessoa a ganhar dois prêmios Nobel (Física 1903, Química 1911). Pesquisou radioatividade, movimento de partículas e decaimento nuclear.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T11 — O Movimento Variado (MUV)</div>
+    <div class="citacao-card" data-autor="Voltaire">
+      <div class="citacao-text">&quot;Julga-se um homem mais pelas perguntas que faz do que pelas respostas que dá.&quot;</div>
+      <div class="citacao-autor">Voltaire<br><span style="font-size:10px;color:var(--text-faint)">21/11/1694 — 30/05/1778</span></div>
+      <div class="citacao-bio">Francês. Filósofo e escritor iluminista. Autor de Cândido. Defensor da razão, da ciência e da tolerância. Sua ironia e clareza influenciaram todo o pensamento moderno.</div>
+    </div>
+    <div class="citacao-card" data-autor="André Gide">
+      <div class="citacao-text">&quot;Não existem problemas; existem apenas soluções.&quot;</div>
+      <div class="citacao-autor">André Gide<br><span style="font-size:10px;color:var(--text-faint)">22/11/1869 — 19/02/1951</span></div>
+      <div class="citacao-bio">Francês. Escritor e prêmio Nobel de Literatura (1947). Autor de Os Moedeiros Falsos. Explorou tensões entre liberdade individual e normas sociais, reflexão pertinente ao movimento variado.</div>
+    </div>
+    <div class="citacao-card" data-autor="Victor Hugo">
+      <div class="citacao-text">&quot;Nada é mais poderoso do que uma ideia cujo tempo chegou.&quot;</div>
+      <div class="citacao-autor">Victor Hugo<br><span style="font-size:10px;color:var(--text-faint)">26/02/1802 — 22/05/1885</span></div>
+      <div class="citacao-bio">Francês. Escritor e poeta. Autor de Os Miseráveis e O Corcunda de Notre-Dame. Visionário social e humanista. Acreditava que o progresso humano nasce da combinação entre ciência e consciência.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T12 — Análise Gráfica do Movimento</div>
+    <div class="citacao-card" data-autor="Frederick R. Barnard">
+      <div class="citacao-text">&quot;Um gráfico vale mais que dez mil palavras.&quot;</div>
+      <div class="citacao-autor">Frederick R. Barnard<br><span style="font-size:10px;color:var(--text-faint)">— — vivo</span></div>
+      <div class="citacao-bio">Americano. Publicitário do início do séc. XX. Creditado pela popularização da frase &#x27;Uma imagem vale mais que mil palavras&#x27; (1921), relevante à análise e representação gráfica de dados.</div>
+    </div>
+    <div class="citacao-card" data-autor="David Hume">
+      <div class="citacao-text">&quot;A beleza das coisas existe na mente de quem as observa.&quot;</div>
+      <div class="citacao-autor">David Hume<br><span style="font-size:10px;color:var(--text-faint)">07/05/1711 — 25/08/1776</span></div>
+      <div class="citacao-bio">Escocês. Filósofo empirista do séc. XVIII. Questionou a causalidade e defendeu que o conhecimento vem da experiência sensorial. Influenciou profundamente a epistemologia da ciência moderna.</div>
+    </div>
+    <div class="citacao-card" data-autor="W. Edwards Deming">
+      <div class="citacao-text">&quot;Sem dados, você é apenas mais uma pessoa com uma opinião.&quot;</div>
+      <div class="citacao-autor">W. Edwards Deming<br><span style="font-size:10px;color:var(--text-faint)">14/10/1900 — 20/12/1993</span></div>
+      <div class="citacao-bio">Americano. Estatístico e consultor de qualidade. Pai do controle estatístico de processos. Seus ciclos PDCA e uso de gráficos para análise de dados são referência em gestão industrial.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 3 — A Força que Move o Minério">
+  <div class="tema-header">TEMA 3 — A Força que Move o Minério</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T13 — Massa e Inércia</div>
+    <div class="citacao-card" data-autor="Isaac Newton">
+      <div class="citacao-text">&quot;Todo corpo permanece em repouso ou em movimento uniforme em linha reta, a menos que seja obrigado a mudar por forças aplicadas.&quot;</div>
+      <div class="citacao-autor">Isaac Newton<br><span style="font-size:10px;color:var(--text-faint)">04/01/1643 — 31/03/1727</span></div>
+      <div class="citacao-bio">Inglês. Físico e matemático (séc. XVII-XVIII). Formulou as três leis do movimento e a lei da gravitação universal. Coinventor do cálculo. Obra Principia é marco fundador da mecânica clássica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Claude Lévi-Strauss">
+      <div class="citacao-text">&quot;O que move o mundo não são as respostas, mas as perguntas.&quot;</div>
+      <div class="citacao-autor">Claude Lévi-Strauss<br><span style="font-size:10px;color:var(--text-faint)">28/11/1908 — 30/10/2009</span></div>
+      <div class="citacao-bio">Franco-belga. Antropólogo, pai do estruturalismo. Autor de Tristes Trópicos. Estudou os mitos como estruturas invariantes. Sua obra no Brasil (anos 1930) conecta-o ao contexto cultural brasileiro.</div>
+    </div>
+    <div class="citacao-card" data-autor="Leonhard Euler">
+      <div class="citacao-text">&quot;A resistência ao movimento é a primeira propriedade da matéria.&quot;</div>
+      <div class="citacao-autor">Leonhard Euler<br><span style="font-size:10px;color:var(--text-faint)">15/04/1707 — 18/09/1783</span></div>
+      <div class="citacao-bio">Suíço. Matemático e físico (séc. XVIII). Um dos mais prolíficos da história. Contribuições em mecânica, cálculo, teoria dos grafos e notação matemática. Introduziu conceitos de inércia rotacional.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T14 — A Quantidade de Movimento</div>
+    <div class="citacao-card" data-autor="Joan Baez">
+      <div class="citacao-text">&quot;A ação é o antídoto para o desespero.&quot;</div>
+      <div class="citacao-autor">Joan Baez<br><span style="font-size:10px;color:var(--text-faint)">09/01/1941 — vivo</span></div>
+      <div class="citacao-bio">Americana. Cantora folk e ativista pelos direitos civis. Voz do movimento pacifista nos anos 1960. Sua música transmite impulso, quantidade de movimento emocional e resistência não violenta.</div>
+    </div>
+    <div class="citacao-card" data-autor="Cecilia Payne-Gaposchkin">
+      <div class="citacao-text">&quot;A verdade só pode ser encontrada na simplicidade, e não na multiplicidade e confusão das coisas.&quot;</div>
+      <div class="citacao-autor">Cecilia Payne-Gaposchkin<br><span style="font-size:10px;color:var(--text-faint)">10/05/1900 — 07/12/1979</span></div>
+      <div class="citacao-bio">Britânica-americana. Astrônoma. Sua tese de doutorado (1925) provou que o hidrogênio é o elemento mais abundante das estrelas — uma das descobertas mais importantes da astrofísica do século XX.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio chinês (atribuído a Confúcio)">
+      <div class="citacao-text">&quot;É mais fácil alterar o curso de um rio do que o caráter de um homem.&quot;</div>
+      <div class="citacao-autor">Provérbio chinês (atribuído a Confúcio)<br><span style="font-size:10px;color:var(--text-faint)">551 a.C. — 479 a.C.</span></div>
+      <div class="citacao-bio">Tradição filosófica chinesa, séc. VI-V a.C. Confúcio é o mais citado pensador oriental, com máximas sobre equilíbrio, quantidade e justa medida nas relações humanas.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T15 — O Teorema do Impulso</div>
+    <div class="citacao-card" data-autor="Gottfried Wilhelm Leibniz">
+      <div class="citacao-text">&quot;A natureza não dá saltos.&quot;</div>
+      <div class="citacao-autor">Gottfried Wilhelm Leibniz<br><span style="font-size:10px;color:var(--text-faint)">01/07/1646 — 14/11/1716</span></div>
+      <div class="citacao-bio">Alemão. Filósofo e matemático (séc. XVII-XVIII). Coinventor do cálculo infinitesimal, criador do sistema binário. Definiu vis viva (força viva), precursora do conceito de energia cinética e impulso.</div>
+    </div>
+    <div class="citacao-card" data-autor="Isaac Asimov">
+      <div class="citacao-text">&quot;A violência é o último recurso do incompetente.&quot;</div>
+      <div class="citacao-autor">Isaac Asimov<br><span style="font-size:10px;color:var(--text-faint)">02/01/1920 — 06/04/1992</span></div>
+      <div class="citacao-bio">Russo-americano. Bioquímico e escritor de ficção científica. Autor da série Fundação e das Leis da Robótica. Popularizou conceitos de impulso, colisão e mecânica em narrativas futuristas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Mahatma Gandhi">
+      <div class="citacao-text">&quot;A força não provém da capacidade física. Provém de uma vontade indomável.&quot;</div>
+      <div class="citacao-autor">Mahatma Gandhi<br><span style="font-size:10px;color:var(--text-faint)">02/10/1869 — 30/01/1948</span></div>
+      <div class="citacao-bio">Indiano. Líder político e espiritual. Conduziu a independência da Índia pela não violência (ahimsa). Suas ideias sobre equilíbrio de forças e resistência pacífica dialogam com estática e impulso.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T16 — As Interações Fundamentais</div>
+    <div class="citacao-card" data-autor="Richard Feynman">
+      <div class="citacao-text">&quot;A natureza usa apenas os fios mais longos para tecer seus padrões, de modo que cada pequeno pedaço revela a organização de toda a tapeçaria.&quot;</div>
+      <div class="citacao-autor">Richard Feynman<br><span style="font-size:10px;color:var(--text-faint)">11/05/1918 — 15/02/1988</span></div>
+      <div class="citacao-bio">Americano. Físico teórico, Nobel (1965). Contribuições em eletrodinâmica quântica, diagramas de Feynman. Célebre divulgador científico, explicou atrito e interações fundamentais com clareza ímpar.</div>
+    </div>
+    <div class="citacao-card" data-autor="Alan Turing">
+      <div class="citacao-text">&quot;Só podemos ver um pouco à frente, mas podemos ver que há muito a fazer.&quot;</div>
+      <div class="citacao-autor">Alan Turing<br><span style="font-size:10px;color:var(--text-faint)">23/06/1912 — 07/06/1954</span></div>
+      <div class="citacao-bio">Britânico. Matemático e cientista da computação. Pai da computação moderna e da inteligência artificial. Decifrou códigos nazistas na Segunda Guerra. Propôs o teste de Turing para medir inteligência de máquinas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Freeman Dyson">
+      <div class="citacao-text">&quot;No coração de toda grande ciência está uma ideia simples.&quot;</div>
+      <div class="citacao-autor">Freeman Dyson<br><span style="font-size:10px;color:var(--text-faint)">15/12/1923 — 28/02/2020</span></div>
+      <div class="citacao-bio">Anglo-americano. Físico e matemático. Trabalhou em eletrodinâmica quântica, engenharia nuclear e astrofísica. Propôs a esfera de Dyson. Pensador visionário sobre interações fundamentais da natureza.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T17 — Colisões e Conservação</div>
+    <div class="citacao-card" data-autor="Antoine Lavoisier">
+      <div class="citacao-text">&quot;Nada se perde, nada se cria, tudo se transforma.&quot;</div>
+      <div class="citacao-autor">Antoine Lavoisier<br><span style="font-size:10px;color:var(--text-faint)">26/08/1743 — 08/05/1794</span></div>
+      <div class="citacao-bio">Francês. Químico, pai da Química moderna. Formulou a lei de conservação da massa (&#x27;Na natureza nada se cria, nada se perde, tudo se transforma&#x27;). Guilhotinado durante a Revolução Francesa (1794).</div>
+    </div>
+    <div class="citacao-card" data-autor="Julius Robert von Mayer">
+      <div class="citacao-text">&quot;A energia não pode ser criada nem destruída, apenas transformada.&quot;</div>
+      <div class="citacao-autor">Julius Robert von Mayer<br><span style="font-size:10px;color:var(--text-faint)">25/11/1814 — 20/03/1878</span></div>
+      <div class="citacao-bio">Alemão. Médico e físico. Um dos primeiros a formular a conservação da energia (1842). Calculou o equivalente mecânico do calor independentemente de Joule. Pioneiro da termodinâmica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Lucrécio (Tito Lucrécio Caro)">
+      <div class="citacao-text">&quot;Na natureza nada se cria, nada se perde, tudo muda.&quot;</div>
+      <div class="citacao-autor">Lucrécio (Tito Lucrécio Caro)<br><span style="font-size:10px;color:var(--text-faint)">c. 99 a.C. — c. 55 a.C.</span></div>
+      <div class="citacao-bio">Romano, séc. I a.C. Poeta e filósofo epicurista. Autor de De Rerum Natura, onde descreveu átomos em colisão perpétua no vazio, antecipando conceitos de conservação e interação de partículas.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T18 — O Coeficiente de Euler</div>
+    <div class="citacao-card" data-autor="Pierre-Simon Laplace">
+      <div class="citacao-text">&quot;Leiam Euler, leiam Euler, ele é o mestre de todos nós.&quot;</div>
+      <div class="citacao-autor">Pierre-Simon Laplace<br><span style="font-size:10px;color:var(--text-faint)">23/03/1749 — 05/03/1827</span></div>
+      <div class="citacao-bio">Francês. Matemático e astrônomo (séc. XVIII-XIX). Autor de Mécanique Céleste. Desenvolveu a teoria da probabilidade e estudou a estabilidade do sistema solar. Mestre do determinismo mecânico.</div>
+    </div>
+    <div class="citacao-card" data-autor="Vince Lombardi">
+      <div class="citacao-text">&quot;A perfeição não é atingível, mas se perseguirmos a perfeição, podemos alcançar a excelência.&quot;</div>
+      <div class="citacao-autor">Vince Lombardi<br><span style="font-size:10px;color:var(--text-faint)">11/06/1913 — 03/09/1970</span></div>
+      <div class="citacao-bio">Americano. Treinador de futebol americano (Green Bay Packers). Cinco títulos da NFL. Suas máximas sobre resistência, coeficiente de atrito competitivo e perseverança são referência motivacional.</div>
+    </div>
+    <div class="citacao-card" data-autor="João Guimarães Rosa">
+      <div class="citacao-text">&quot;O real não está na saída nem na chegada: ele se dispõe para a gente é no meio da travessia.&quot;</div>
+      <div class="citacao-autor">João Guimarães Rosa<br><span style="font-size:10px;color:var(--text-faint)">27/06/1908 — 19/11/1967</span></div>
+      <div class="citacao-bio">Brasileiro, Minas Gerais. Escritor. Autor de Grande Sertão: Veredas (1956). Reinventou a língua portuguesa com neologismos e ritmos do sertão mineiro. Sua prosa explora coeficientes de transformação.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 4 — A Direção do Movimento">
+  <div class="tema-header">TEMA 4 — A Direção do Movimento</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T19 — A Orientação no Espaço</div>
+    <div class="citacao-card" data-autor="Fernando Pessoa">
+      <div class="citacao-text">&quot;Navegar é preciso; viver não é preciso.&quot;</div>
+      <div class="citacao-autor">Fernando Pessoa<br><span style="font-size:10px;color:var(--text-faint)">13/06/1888 — 30/11/1935</span></div>
+      <div class="citacao-bio">Português. Poeta modernista, criador de heterônimos (Álvaro de Campos, Ricardo Reis, Alberto Caeiro). Explorou múltiplas perspectivas e orientações do ser, análogo à noção de referencial.</div>
+    </div>
+    <div class="citacao-card" data-autor="William Bruce Cameron">
+      <div class="citacao-text">&quot;Nem tudo que pode ser contado conta, e nem tudo que conta pode ser contado.&quot;</div>
+      <div class="citacao-autor">William Bruce Cameron<br><span style="font-size:10px;color:var(--text-faint)">— — vivo</span></div>
+      <div class="citacao-bio">Americano. Sociólogo (séc. XX). Creditado pela frase &#x27;Nem tudo que conta pode ser contado, e nem tudo que pode ser contado conta&#x27;, central à discussão sobre medição e orientação espacial.</div>
+    </div>
+    <div class="citacao-card" data-autor="Henri Poincaré">
+      <div class="citacao-text">&quot;A geometria é a arte de raciocinar bem sobre figuras malfeitas.&quot;</div>
+      <div class="citacao-autor">Henri Poincaré<br><span style="font-size:10px;color:var(--text-faint)">29/04/1854 — 17/07/1912</span></div>
+      <div class="citacao-bio">Francês. Matemático e físico teórico. Contribuições fundamentais em topologia, sistemas dinâmicos e relatividade. Refletiu sobre espaço, orientação e a natureza convencional da geometria.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T20 — Adição e Subtração Vetorial</div>
+    <div class="citacao-card" data-autor="Esopo">
+      <div class="citacao-text">&quot;A união faz a força.&quot;</div>
+      <div class="citacao-autor">Esopo<br><span style="font-size:10px;color:var(--text-faint)">c. 620 a.C. — c. 564 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. VI a.C. Fabulista. Autor de fábulas morais com animais (A Raposa e as Uvas, A Lebre e a Tartaruga). Suas histórias ilustram princípios de força, estratégia e composição de esforços.</div>
+    </div>
+    <div class="citacao-card" data-autor="Aristóteles">
+      <div class="citacao-text">&quot;O todo é mais do que a simples soma de suas partes.&quot;</div>
+      <div class="citacao-autor">Aristóteles<br><span style="font-size:10px;color:var(--text-faint)">384 a.C. — 322 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. IV a.C. Filósofo e naturalista. Fundador da lógica formal, sistematizou o conhecimento de sua época. Sua física dos &#x27;lugares naturais&#x27; dominou o pensamento ocidental por quase dois milênios.</div>
+    </div>
+    <div class="citacao-card" data-autor="Bertrand Russell">
+      <div class="citacao-text">&quot;A ciência é o que você sabe. A filosofia é o que você não sabe.&quot;</div>
+      <div class="citacao-autor">Bertrand Russell<br><span style="font-size:10px;color:var(--text-faint)">18/05/1872 — 02/02/1970</span></div>
+      <div class="citacao-bio">Britânico. Filósofo, lógico e matemático. Nobel de Literatura (1950). Autor de Principia Mathematica (com Whitehead). Defensor da razão, do pacifismo e da educação científica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T21 — Decompondo Esforços</div>
+    <div class="citacao-card" data-autor="René Descartes">
+      <div class="citacao-text">&quot;Dividir cada dificuldade em tantas partes quantas necessárias para melhor resolvê-las.&quot;</div>
+      <div class="citacao-autor">René Descartes<br><span style="font-size:10px;color:var(--text-faint)">31/03/1596 — 11/02/1650</span></div>
+      <div class="citacao-bio">Francês. Filósofo e matemático (séc. XVII). Pai da geometria analítica e do plano cartesiano. A decomposição de coordenadas em eixos x e y é base da decomposição vetorial de forças.</div>
+    </div>
+    <div class="citacao-card" data-autor="René Descartes">
+      <div class="citacao-text">&quot;Penso, logo existo.&quot;</div>
+      <div class="citacao-autor">René Descartes<br><span style="font-size:10px;color:var(--text-faint)">31/03/1596 — 11/02/1650</span></div>
+      <div class="citacao-bio">Francês. Filósofo e matemático (séc. XVII). Pai da geometria analítica e do plano cartesiano. A decomposição de coordenadas em eixos x e y é base da decomposição vetorial de forças.</div>
+    </div>
+    <div class="citacao-card" data-autor="Peter Drucker">
+      <div class="citacao-text">&quot;A melhor maneira de prever o futuro é criá-lo.&quot;</div>
+      <div class="citacao-autor">Peter Drucker<br><span style="font-size:10px;color:var(--text-faint)">19/11/1909 — 11/11/2005</span></div>
+      <div class="citacao-bio">Austríaco-americano. Consultor e teórico da administração moderna. Pai da gestão por objetivos. Suas ideias sobre eficiência, decomposição de tarefas e potência organizacional são referência.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T22 — Velocidade e Rotação</div>
+    <div class="citacao-card" data-autor="Ernest Rutherford">
+      <div class="citacao-text">&quot;A natureza é um livro aberto àqueles que sabem lê-lo.&quot;</div>
+      <div class="citacao-autor">Ernest Rutherford<br><span style="font-size:10px;color:var(--text-faint)">30/08/1871 — 19/10/1937</span></div>
+      <div class="citacao-bio">Neozelandês-britânico. Físico experimental. Pai da física nuclear (Nobel 1908). Descobriu o núcleo atômico e a radiação alfa/beta. Demonstrou que a matéria é sobretudo espaço vazio.</div>
+    </div>
+    <div class="citacao-card" data-autor="Robert Goddard">
+      <div class="citacao-text">&quot;É difícil dizer o que é impossível, pois o sonho de ontem é a esperança de hoje e a realidade de amanhã.&quot;</div>
+      <div class="citacao-autor">Robert Goddard<br><span style="font-size:10px;color:var(--text-faint)">05/10/1882 — 10/08/1945</span></div>
+      <div class="citacao-bio">Americano. Engenheiro e físico. Pai da astronáutica moderna. Construiu e lançou o primeiro foguete de combustível líquido (1926). Visionário da exploração espacial décadas antes da corrida espacial.</div>
+    </div>
+    <div class="citacao-card" data-autor="Ernest Rutherford">
+      <div class="citacao-text">&quot;Toda a ciência é ou física ou coleção de selos.&quot;</div>
+      <div class="citacao-autor">Ernest Rutherford<br><span style="font-size:10px;color:var(--text-faint)">30/08/1871 — 19/10/1937</span></div>
+      <div class="citacao-bio">Neozelandês-britânico. Físico experimental. Pai da física nuclear (Nobel 1908). Descobriu o núcleo atômico e a radiação alfa/beta. Demonstrou que a matéria é sobretudo espaço vazio.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T23 — O Ritmo das Engrenagens</div>
+    <div class="citacao-card" data-autor="Ada Lovelace">
+      <div class="citacao-text">&quot;A imaginação é mais importante que o conhecimento, pois o conhecimento é limitado, ao passo que a imaginação abraça o mundo inteiro.&quot;</div>
+      <div class="citacao-autor">Ada Lovelace<br><span style="font-size:10px;color:var(--text-faint)">10/12/1815 — 27/11/1852</span></div>
+      <div class="citacao-bio">Britânica. Matemática. Primeira programadora da história. Escreveu o primeiro algoritmo para a Máquina Analítica de Babbage. Visionária que previu que máquinas poderiam manipular símbolos além de números.</div>
+    </div>
+    <div class="citacao-card" data-autor="Aldous Huxley">
+      <div class="citacao-text">&quot;A medida do homem é o que ele faz com o que tem.&quot;</div>
+      <div class="citacao-autor">Aldous Huxley<br><span style="font-size:10px;color:var(--text-faint)">26/07/1894 — 22/11/1963</span></div>
+      <div class="citacao-bio">Britânico. Escritor e filósofo. Autor de Admirável Mundo Novo (1932). Explorou as fronteiras entre ciência, tecnologia e condição humana. Questionou o impacto da técnica sobre a liberdade.</div>
+    </div>
+    <div class="citacao-card" data-autor="Leonardo da Vinci">
+      <div class="citacao-text">&quot;Os detalhes fazem a perfeição, e a perfeição não é um detalhe.&quot;</div>
+      <div class="citacao-autor">Leonardo da Vinci<br><span style="font-size:10px;color:var(--text-faint)">15/04/1452 — 02/05/1519</span></div>
+      <div class="citacao-bio">Italiano. Artista, engenheiro e cientista (séc. XV-XVI). Polímata do Renascimento. Projetou máquinas, estudou anatomia, voo, hidráulica e mecânica. Pioneiro no desenho de roldanas e alavancas.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T24 — Tangentes e Centros</div>
+    <div class="citacao-card" data-autor="Antoni Gaudí">
+      <div class="citacao-text">&quot;Não existem linhas retas na natureza.&quot;</div>
+      <div class="citacao-autor">Antoni Gaudí<br><span style="font-size:10px;color:var(--text-faint)">25/06/1852 — 10/06/1926</span></div>
+      <div class="citacao-bio">Espanhol. Arquiteto. Criador da Sagrada Família em Barcelona. Mestre das formas orgânicas e da geometria inspirada na natureza. Seus projetos integram engenharia, arte e matemática.</div>
+    </div>
+    <div class="citacao-card" data-autor="Ayrton Senna">
+      <div class="citacao-text">&quot;A curva mais perigosa é aquela que não se vê.&quot;</div>
+      <div class="citacao-autor">Ayrton Senna<br><span style="font-size:10px;color:var(--text-faint)">21/03/1960 — 01/05/1994</span></div>
+      <div class="citacao-bio">Brasileiro. Piloto de Fórmula 1, tricampeão mundial (1988, 1990, 1991). Mestre em trajetórias tangenciais e curvas de alta velocidade. Faleceu em acidente no GP de Ímola (1994).</div>
+    </div>
+    <div class="citacao-card" data-autor="Benoit Mandelbrot">
+      <div class="citacao-text">&quot;A geometria é a arte de raciocinar bem sobre figuras mal feitas.&quot;</div>
+      <div class="citacao-autor">Benoit Mandelbrot<br><span style="font-size:10px;color:var(--text-faint)">20/11/1924 — 14/10/2010</span></div>
+      <div class="citacao-bio">Polonês-francês-americano. Matemático. Pai da geometria fractal. Demonstrou que formas irregulares da natureza (costas, nuvens, montanhas) seguem padrões matemáticos ocultos e auto-similares.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 5 — O Diálogo das Forças">
+  <div class="tema-header">TEMA 5 — O Diálogo das Forças</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T25 — A Inércia Vetorial</div>
+    <div class="citacao-card" data-autor="Dmitri Mendeleev">
+      <div class="citacao-text">&quot;Uma lei pode fazer mais pela ciência do que cem experimentos. Mas cem experimentos podem fazer mais pela ciência do que mil especulações.&quot;</div>
+      <div class="citacao-autor">Dmitri Mendeleev<br><span style="font-size:10px;color:var(--text-faint)">08/02/1834 — 02/02/1907</span></div>
+      <div class="citacao-bio">Russo. Químico e inventor. Criador da tabela periódica dos elementos (1869). Previu propriedades de elementos ainda não descobertos. Demonstrou a ordem oculta na diversidade da matéria.</div>
+    </div>
+    <div class="citacao-card" data-autor="Paulo Coelho">
+      <div class="citacao-text">&quot;A liberdade não é a ausência de compromissos, mas a capacidade de escolher.&quot;</div>
+      <div class="citacao-autor">Paulo Coelho<br><span style="font-size:10px;color:var(--text-faint)">24/08/1947 — vivo</span></div>
+      <div class="citacao-bio">Brasileiro. Escritor. Autor de O Alquimista (1988), traduzido para 80 idiomas. Suas narrativas sobre jornada, resistência e inércia interior dialogam com a persistência do movimento.</div>
+    </div>
+    <div class="citacao-card" data-autor="Rabindranath Tagore">
+      <div class="citacao-text">&quot;A verdade não se revela pelas tochas, mas pela claridade.&quot;</div>
+      <div class="citacao-autor">Rabindranath Tagore<br><span style="font-size:10px;color:var(--text-faint)">07/05/1861 — 07/08/1941</span></div>
+      <div class="citacao-bio">Indiano. Poeta, músico e filósofo. Nobel de Literatura (1913). Autor de Gitanjali. Primeiro não europeu a receber o Nobel. Uniu ciência e espiritualidade em uma visão universal da educação.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T26 — Causa e Efeito</div>
+    <div class="citacao-card" data-autor="Paul Dirac">
+      <div class="citacao-text">&quot;Na ciência, tenta-se dizer às pessoas o que ninguém sabia antes, de formas que todos possam entender.&quot;</div>
+      <div class="citacao-autor">Paul Dirac<br><span style="font-size:10px;color:var(--text-faint)">08/08/1902 — 20/10/1984</span></div>
+      <div class="citacao-bio">Britânico. Físico teórico (Nobel 1933). Formulou a equação de Dirac, previu a existência do pósitron (antimatéria). Contribuição fundamental à mecânica quântica e à física de partículas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Ralph Waldo Emerson">
+      <div class="citacao-text">&quot;Causa e efeito é a lei das leis.&quot;</div>
+      <div class="citacao-autor">Ralph Waldo Emerson<br><span style="font-size:10px;color:var(--text-faint)">25/05/1803 — 27/04/1882</span></div>
+      <div class="citacao-bio">Americano. Filósofo e ensaísta transcendentalista (séc. XIX). Autor de Autoconfiança. Suas reflexões sobre causa, efeito e natureza como mestra influenciaram o pensamento científico americano.</div>
+    </div>
+    <div class="citacao-card" data-autor="Baruch Spinoza">
+      <div class="citacao-text">&quot;Não há efeito sem causa, nem causa sem efeito.&quot;</div>
+      <div class="citacao-autor">Baruch Spinoza<br><span style="font-size:10px;color:var(--text-faint)">24/11/1632 — 21/02/1677</span></div>
+      <div class="citacao-bio">Holandês de origem portuguesa. Filósofo racionalista do séc. XVII. Autor da Ética. Propôs que causa e efeito são nexos necessários da natureza, antecipando o determinismo científico.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T27 — Ações e Reações</div>
+    <div class="citacao-card" data-autor="Confúcio">
+      <div class="citacao-text">&quot;A nossa maior glória não reside no facto de nunca cairmos, mas sim em levantarmo-nos sempre após cada queda.&quot;</div>
+      <div class="citacao-autor">Confúcio<br><span style="font-size:10px;color:var(--text-faint)">551 a.C. — 479 a.C.</span></div>
+      <div class="citacao-bio">Chinês, séc. VI-V a.C. Filósofo e educador. Fundador do confucionismo. Suas máximas sobre ação, reação e reciprocidade moldaram a ética oriental por mais de dois milênios.</div>
+    </div>
+    <div class="citacao-card" data-autor="Max Born">
+      <div class="citacao-text">&quot;O intelecto distingue entre o possível e o impossível; a razão distingue entre o sensato e o insensato.&quot;</div>
+      <div class="citacao-autor">Max Born<br><span style="font-size:10px;color:var(--text-faint)">11/12/1882 — 05/01/1970</span></div>
+      <div class="citacao-bio">Alemão-britânico. Físico teórico (Nobel 1954). Interpretou a função de onda como probabilidade. Mentor de Heisenberg e Pauli. Contribuiu para unir a matemática abstrata à física experimental.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio bíblico (Mateus 26:52)">
+      <div class="citacao-text">&quot;Quem com ferro fere, com ferro será ferido.&quot;</div>
+      <div class="citacao-autor">Provérbio bíblico (Mateus 26:52)<br><span style="font-size:10px;color:var(--text-faint)">— — vivo</span></div>
+      <div class="citacao-bio">Texto do Novo Testamento cristão. A passagem &#x27;quem pela espada vive, pela espada morrerá&#x27; ilustra o princípio de ação e reação nas consequências das escolhas humanas.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T28 — Peso, Gravidade e Massa</div>
+    <div class="citacao-card" data-autor="Machado de Assis">
+      <div class="citacao-text">&quot;Não tenhamos pressa, mas não percamos tempo.&quot;</div>
+      <div class="citacao-autor">Machado de Assis<br><span style="font-size:10px;color:var(--text-faint)">21/06/1839 — 29/09/1908</span></div>
+      <div class="citacao-bio">Brasileiro. Escritor e poeta. Fundador da Academia Brasileira de Letras. Autor de Dom Casmurro e Memórias Póstumas de Brás Cubas. Mestre da ironia e da observação precisa da condição humana.</div>
+    </div>
+    <div class="citacao-card" data-autor="Primo Levi">
+      <div class="citacao-text">&quot;Se compreender é impossível, conhecer é necessário.&quot;</div>
+      <div class="citacao-autor">Primo Levi<br><span style="font-size:10px;color:var(--text-faint)">31/07/1919 — 11/04/1987</span></div>
+      <div class="citacao-bio">Italiano. Químico e escritor. Sobrevivente de Auschwitz. Autor de É Isto um Homem? e A Tabela Periódica. Uniu a precisão do cientista à profundidade do testemunho humano.</div>
+    </div>
+    <div class="citacao-card" data-autor="Allen Ginsberg">
+      <div class="citacao-text">&quot;O peso do mundo é o amor. Sob o fardo da solidão, sob o fardo da insatisfação.&quot;</div>
+      <div class="citacao-autor">Allen Ginsberg<br><span style="font-size:10px;color:var(--text-faint)">03/06/1926 — 05/04/1997</span></div>
+      <div class="citacao-bio">Americano. Poeta da Geração Beat. Autor de Howl (1956). Voz contracultural que questionou convenções sociais e científicas, dialogando com temas de força, gravidade e peso existencial.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T29 — Força Elástica, Molas e Suportes</div>
+    <div class="citacao-card" data-autor="Robert Hooke">
+      <div class="citacao-text">&quot;Ut tensio, sic vis — como é a extensão, assim é a força.&quot;</div>
+      <div class="citacao-autor">Robert Hooke<br><span style="font-size:10px;color:var(--text-faint)">18/07/1635 — 03/03/1703</span></div>
+      <div class="citacao-bio">Inglês. Físico e polímata (séc. XVII). Formulou a lei de Hooke (força proporcional à deformação elástica). Contribuições em microscopia, astronomia e teoria da elasticidade.</div>
+    </div>
+    <div class="citacao-card" data-autor="John Wooden">
+      <div class="citacao-text">&quot;A flexibilidade é a chave da estabilidade.&quot;</div>
+      <div class="citacao-autor">John Wooden<br><span style="font-size:10px;color:var(--text-faint)">14/10/1910 — 04/06/2010</span></div>
+      <div class="citacao-bio">Americano. Treinador de basquete (UCLA), 10 títulos nacionais. Educador e filósofo do esporte. Célebre por máximas sobre resiliência e flexibilidade, análogas à força elástica e suporte.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio japonês (atribuído a Lao Tsé)">
+      <div class="citacao-text">&quot;O bambu que se curva é mais forte que o carvalho que resiste.&quot;</div>
+      <div class="citacao-autor">Provérbio japonês (atribuído a Lao Tsé)<br><span style="font-size:10px;color:var(--text-faint)">c. 601 a.C. — c. 531 a.C.</span></div>
+      <div class="citacao-bio">Chinês, séc. VI a.C. Filósofo fundador do taoísmo. Autor do Tao Te Ching. Suas reflexões sobre flexibilidade e resistência dialogam com elasticidade, molas e suportes.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T30 — Força de Tração e Roldanas</div>
+    <div class="citacao-card" data-autor="Gustave Flaubert">
+      <div class="citacao-text">&quot;Toda grande obra de engenharia é uma conversa entre o homem e a natureza.&quot;</div>
+      <div class="citacao-autor">Gustave Flaubert<br><span style="font-size:10px;color:var(--text-faint)">12/12/1821 — 08/05/1880</span></div>
+      <div class="citacao-bio">Francês. Escritor. Autor de Madame Bovary. Mestre do realismo literário. Buscou a precisão absoluta na palavra como um cientista busca a exatidão na medida.</div>
+    </div>
+    <div class="citacao-card" data-autor="Arthur Wellington">
+      <div class="citacao-text">&quot;A engenharia é a arte de fazer com um real o que qualquer tolo faz com dois.&quot;</div>
+      <div class="citacao-autor">Arthur Wellington<br><span style="font-size:10px;color:var(--text-faint)">01/05/1769 — 14/09/1852</span></div>
+      <div class="citacao-bio">Britânico. Engenheiro civil ferroviário do séc. XIX. Autor de The Economic Theory of Railway Location (1877). Conhecido pela máxima sobre a importância da engenharia de custos em grandes obras.</div>
+    </div>
+    <div class="citacao-card" data-autor="Kurt Lewin">
+      <div class="citacao-text">&quot;Nada é mais prático do que uma boa teoria.&quot;</div>
+      <div class="citacao-autor">Kurt Lewin<br><span style="font-size:10px;color:var(--text-faint)">09/09/1890 — 12/02/1947</span></div>
+      <div class="citacao-bio">Alemão-americano. Psicólogo social. Pai da dinâmica de grupo e da pesquisa-ação. Demonstrou que teoria e prática são inseparáveis na solução de problemas reais.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T31 — Normal e Atrito</div>
+    <div class="citacao-card" data-autor="Thomas Kuhn">
+      <div class="citacao-text">&quot;O conhecimento é poder.&quot;</div>
+      <div class="citacao-autor">Thomas Kuhn<br><span style="font-size:10px;color:var(--text-faint)">18/07/1922 — 17/06/1996</span></div>
+      <div class="citacao-bio">Americano. Filósofo e historiador da ciência. Autor de A Estrutura das Revoluções Científicas (1962). Introduziu o conceito de paradigma. Mostrou que a ciência avança por rupturas, não só por acúmulo.</div>
+    </div>
+    <div class="citacao-card" data-autor="Carl Gustav Jung">
+      <div class="citacao-text">&quot;O que resiste, persiste.&quot;</div>
+      <div class="citacao-autor">Carl Gustav Jung<br><span style="font-size:10px;color:var(--text-faint)">26/07/1875 — 06/06/1961</span></div>
+      <div class="citacao-bio">Suíço. Psiquiatra e psicoanalista. Fundador da psicologia analítica. Desenvolveu conceitos de inconsciente coletivo, arquétipos e sincronicidade. Suas ideias sobre ritmo e ciclos dialogam com o pendular.</div>
+    </div>
+    <div class="citacao-card" data-autor="John Maynard Keynes">
+      <div class="citacao-text">&quot;A dificuldade não está em aceitar novas ideias, mas em escapar das antigas.&quot;</div>
+      <div class="citacao-autor">John Maynard Keynes<br><span style="font-size:10px;color:var(--text-faint)">05/06/1883 — 21/04/1946</span></div>
+      <div class="citacao-bio">Britânico. Economista. Fundador da macroeconomia moderna. Autor da Teoria Geral do Emprego, do Juro e da Moeda (1936). Suas reflexões sobre atrito e fricção econômica ecoam na física.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T32 — Arrasto e Sustentação</div>
+    <div class="citacao-card" data-autor="Provérbio náutico (atribuído a Sêneca)">
+      <div class="citacao-text">&quot;O vento não sopra para mover os navios; sopra porque sopra. Cabe ao navegador saber usar as velas.&quot;</div>
+      <div class="citacao-autor">Provérbio náutico (atribuído a Sêneca)<br><span style="font-size:10px;color:var(--text-faint)">c. 4 a.C. — 65 d.C.</span></div>
+      <div class="citacao-bio">Romano, séc. I d.C. Filósofo estoico, tutor de Nero. Autor de Cartas a Lucílio. A máxima &#x27;não há vento favorável para quem não sabe aonde ir&#x27; conecta-se a arrasto e navegação.</div>
+    </div>
+    <div class="citacao-card" data-autor="Amelia Earhart">
+      <div class="citacao-text">&quot;Não é possível voar sem resistência.&quot;</div>
+      <div class="citacao-autor">Amelia Earhart<br><span style="font-size:10px;color:var(--text-faint)">24/07/1897 — 02/07/1937</span></div>
+      <div class="citacao-bio">Americana. Aviadora pioneira. Primeira mulher a cruzar o Atlântico solo em avião (1932). Desapareceu sobre o Pacífico em 1937. Símbolo de arrasto, sustentação e coragem aeronáutica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Santos Dumont">
+      <div class="citacao-text">&quot;Os pássaros não temem o vento; é o vento que os sustenta.&quot;</div>
+      <div class="citacao-autor">Santos Dumont<br><span style="font-size:10px;color:var(--text-faint)">20/07/1873 — 23/07/1932</span></div>
+      <div class="citacao-bio">Brasileiro. Inventor e aeronauta. Projetou e pilotou o 14-Bis (1906), primeiro voo público de avião autopropulsado. Pioneiro da aviação, estudou sustentação, arrasto e aerodinâmica na prática.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T33 — A Dinâmica das Rotações</div>
+    <div class="citacao-card" data-autor="George Santayana">
+      <div class="citacao-text">&quot;Os que não conseguem lembrar o passado estão condenados a repeti-lo.&quot;</div>
+      <div class="citacao-autor">George Santayana<br><span style="font-size:10px;color:var(--text-faint)">16/12/1863 — 26/09/1952</span></div>
+      <div class="citacao-bio">Espanhol-americano. Filósofo, poeta e ensaísta. Autor de &#x27;Aqueles que não lembram o passado estão condenados a repeti-lo&#x27;. Refletiu sobre ciclos, rotação e dinâmica da história.</div>
+    </div>
+    <div class="citacao-card" data-autor="Walter Elliot">
+      <div class="citacao-text">&quot;A perseverança não é uma corrida longa; são muitas corridas curtas, uma após a outra.&quot;</div>
+      <div class="citacao-autor">Walter Elliot<br><span style="font-size:10px;color:var(--text-faint)">1842 — 1928</span></div>
+      <div class="citacao-bio">Britânico. Botânico e político. Escritor de aforismos sobre perseverança e método. Sua frase sobre corridas curtas ilustra o ritmo do progresso científico: avanços constantes, não saltos únicos.</div>
+    </div>
+    <div class="citacao-card" data-autor="Henry Ford">
+      <div class="citacao-text">&quot;A roda que gira é a que produz; a que para é a que enferruja.&quot;</div>
+      <div class="citacao-autor">Henry Ford<br><span style="font-size:10px;color:var(--text-faint)">30/07/1863 — 07/04/1947</span></div>
+      <div class="citacao-bio">Americano. Industrialista. Fundador da Ford Motor Company. Popularizou a linha de montagem e a produção em massa. Transformou máquinas simples e rotação em revolução industrial.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T34 — O Ritmo dos Pêndulos</div>
+    <div class="citacao-card" data-autor="Rachel Carson">
+      <div class="citacao-text">&quot;Na natureza nada existe sozinho.&quot;</div>
+      <div class="citacao-autor">Rachel Carson<br><span style="font-size:10px;color:var(--text-faint)">27/05/1907 — 14/04/1964</span></div>
+      <div class="citacao-bio">Americana. Bióloga marinha e escritora. Autora de Primavera Silenciosa (1962). Pioneira do ambientalismo moderno. Demonstrou com rigor científico os impactos dos pesticidas nos ecossistemas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Clarice Lispector">
+      <div class="citacao-text">&quot;A pergunta é o começo da sabedoria.&quot;</div>
+      <div class="citacao-autor">Clarice Lispector<br><span style="font-size:10px;color:var(--text-faint)">10/12/1920 — 09/12/1977</span></div>
+      <div class="citacao-bio">Ucraniana-brasileira. Escritora e jornalista. Autora de A Hora da Estrela e A Paixão Segundo G.H. Mestra da introspecção literária. Transformou a linguagem portuguesa com sua escrita filosófica e sensorial.</div>
+    </div>
+    <div class="citacao-card" data-autor="Louis Pasteur">
+      <div class="citacao-text">&quot;O acaso favorece a mente preparada.&quot;</div>
+      <div class="citacao-autor">Louis Pasteur<br><span style="font-size:10px;color:var(--text-faint)">27/12/1822 — 28/09/1895</span></div>
+      <div class="citacao-bio">Francês. Químico e microbiologista. Pai da pasteurização e da vacinação moderna. Refutou a geração espontânea. Demonstrou que a preparação científica transforma o inesperado em descoberta.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 6 — A Ciência do Repouso">
+  <div class="tema-header">TEMA 6 — A Ciência do Repouso</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T35 — A Estática da Partícula</div>
+    <div class="citacao-card" data-autor="Nelson Mandela">
+      <div class="citacao-text">&quot;A educação é a arma mais poderosa que você pode usar para mudar o mundo.&quot;</div>
+      <div class="citacao-autor">Nelson Mandela<br><span style="font-size:10px;color:var(--text-faint)">18/07/1918 — 05/12/2013</span></div>
+      <div class="citacao-bio">Sul-africano. Líder político e ativista. Nobel da Paz (1993). Presidente da África do Sul (1994-1999). Símbolo mundial da resistência pacífica e da transformação social pela educação.</div>
+    </div>
+    <div class="citacao-card" data-autor="Vitrúvio (Marcus Vitruvius Pollio)">
+      <div class="citacao-text">&quot;O equilíbrio é a chave de toda boa construção.&quot;</div>
+      <div class="citacao-autor">Vitrúvio (Marcus Vitruvius Pollio)<br><span style="font-size:10px;color:var(--text-faint)">c. 80 a.C. — c. 15 a.C.</span></div>
+      <div class="citacao-bio">Romano, séc. I a.C. Arquiteto e engenheiro. Autor de De Architectura, tratado sobre firmitas (solidez), utilitas (utilidade) e venustas (beleza) — os três pilares da estática estrutural.</div>
+    </div>
+    <div class="citacao-card" data-autor="Vitrúvio (Marcus Vitruvius Pollio)">
+      <div class="citacao-text">&quot;Firmeza, comodidade e beleza.&quot;</div>
+      <div class="citacao-autor">Vitrúvio (Marcus Vitruvius Pollio)<br><span style="font-size:10px;color:var(--text-faint)">c. 80 a.C. — c. 15 a.C.</span></div>
+      <div class="citacao-bio">Romano, séc. I a.C. Arquiteto e engenheiro. Autor de De Architectura, tratado sobre firmitas (solidez), utilitas (utilidade) e venustas (beleza) — os três pilares da estática estrutural.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T36 — Cabos e Estais</div>
+    <div class="citacao-card" data-autor="Thomas Reid">
+      <div class="citacao-text">&quot;Uma corrente é tão forte quanto seu elo mais fraco.&quot;</div>
+      <div class="citacao-autor">Thomas Reid<br><span style="font-size:10px;color:var(--text-faint)">26/04/1710 — 07/10/1796</span></div>
+      <div class="citacao-bio">Escocês. Filósofo do senso comum (séc. XVIII). Fundador da Escola Escocesa. Suas reflexões sobre percepção direta e forças reais dialogam com tração, tensão e cabos em equilíbrio.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio de engenharia (atribuído a Robert Stephenson)">
+      <div class="citacao-text">&quot;A força de uma ponte não está nos pilares, mas nos arcos que os unem.&quot;</div>
+      <div class="citacao-autor">Provérbio de engenharia (atribuído a Robert Stephenson)<br><span style="font-size:10px;color:var(--text-faint)">16/10/1803 — 12/10/1859</span></div>
+      <div class="citacao-bio">Britânico. Engenheiro civil e ferroviário (séc. XIX). Filho de George Stephenson. Projetou pontes estaiadas e ferrovias pioneiras. Símbolo da engenharia de cabos e estruturas tensionadas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Karl Popper">
+      <div class="citacao-text">&quot;A ciência é talvez a única atividade humana na qual os erros são sistematicamente criticados e corrigidos.&quot;</div>
+      <div class="citacao-autor">Karl Popper<br><span style="font-size:10px;color:var(--text-faint)">28/07/1902 — 17/09/1994</span></div>
+      <div class="citacao-bio">Austríaco-britânico. Filósofo da ciência. Criador do falsificacionismo. Autor de A Lógica da Descoberta Científica. Mostrou que uma teoria científica se define pela possibilidade de ser refutada.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T37 — O Giro das Coisas</div>
+    <div class="citacao-card" data-autor="Arthur Mellen Wellington">
+      <div class="citacao-text">&quot;O engenheiro é aquele que pode fazer por um dólar o que qualquer tolo pode fazer por dois.&quot;</div>
+      <div class="citacao-autor">Arthur Mellen Wellington<br><span style="font-size:10px;color:var(--text-faint)">20/12/1847 — 17/05/1895</span></div>
+      <div class="citacao-bio">Americano. Engenheiro civil. Pioneiro da engenharia econômica. Autor de The Economic Theory of Railway Location. Definiu a engenharia como a arte de otimizar recursos com ciência.</div>
+    </div>
+    <div class="citacao-card" data-autor="Horácio (Quintus Horatius Flaccus)">
+      <div class="citacao-text">&quot;A força sem inteligência desmorona sob seu próprio peso.&quot;</div>
+      <div class="citacao-autor">Horácio (Quintus Horatius Flaccus)<br><span style="font-size:10px;color:var(--text-faint)">08/12/65 a.C. — 27/11/8 a.C.</span></div>
+      <div class="citacao-bio">Romano, séc. I a.C. Poeta lírico e satirista. Autor de Odes e Sátiras. Celebrizou o carpe diem e a moderação. Suas reflexões sobre permanência e mudança ecoam em equilíbrio e torque.</div>
+    </div>
+    <div class="citacao-card" data-autor="Gustave Eiffel">
+      <div class="citacao-text">&quot;Toda grande obra de engenharia é uma equação entre força e equilíbrio.&quot;</div>
+      <div class="citacao-autor">Gustave Eiffel<br><span style="font-size:10px;color:var(--text-faint)">15/12/1832 — 27/12/1923</span></div>
+      <div class="citacao-bio">Francês. Engenheiro civil. Projetou a Torre Eiffel (1889), viadutos ferroviários e a estrutura interna da Estátua da Liberdade. Mestre em torque, momento fletor e resistência estrutural.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T38 — O Equilíbrio do Corpo Extenso</div>
+    <div class="citacao-card" data-autor="Friedrich von Schelling">
+      <div class="citacao-text">&quot;A arquitetura é a música petrificada.&quot;</div>
+      <div class="citacao-autor">Friedrich von Schelling<br><span style="font-size:10px;color:var(--text-faint)">27/01/1775 — 20/08/1854</span></div>
+      <div class="citacao-bio">Alemão. Filósofo idealista do séc. XIX. Desenvolveu a filosofia da natureza, buscando unidade entre forças opostas. Suas reflexões sobre equilíbrio influenciaram a Naturphilosophie.</div>
+    </div>
+    <div class="citacao-card" data-autor="Louis Sullivan">
+      <div class="citacao-text">&quot;A forma segue a função.&quot;</div>
+      <div class="citacao-autor">Louis Sullivan<br><span style="font-size:10px;color:var(--text-faint)">03/09/1856 — 14/04/1924</span></div>
+      <div class="citacao-bio">Americano. Arquiteto, pai do arranha-céu moderno. Autor da máxima &#x27;A forma segue a função&#x27;. Suas obras em Chicago e St. Louis são marcos de equilíbrio estrutural e estética funcional.</div>
+    </div>
+    <div class="citacao-card" data-autor="Antônio Francisco Lisboa (Aleijadinho)">
+      <div class="citacao-text">&quot;A estabilidade é filha do equilíbrio.&quot;</div>
+      <div class="citacao-autor">Antônio Francisco Lisboa (Aleijadinho)<br><span style="font-size:10px;color:var(--text-faint)">29/08/1738 — 18/11/1814</span></div>
+      <div class="citacao-bio">Brasileiro, Ouro Preto. Escultor e arquiteto do Barroco mineiro (séc. XVIII). Criou obras-primas em igrejas de Minas Gerais apesar de doença degenerativa. Mestre do equilíbrio estético em pedra-sabão.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T39 — Multiplicando Forças, o Segredo das Alavancas</div>
+    <div class="citacao-card" data-autor="Sêneca">
+      <div class="citacao-text">&quot;Nada no mundo é permanente, e somos tolos quando pedimos que algo dure.&quot;</div>
+      <div class="citacao-autor">Sêneca<br><span style="font-size:10px;color:var(--text-faint)">04 a.C. — 65 d.C.</span></div>
+      <div class="citacao-bio">Romano. Filósofo estoico e dramaturgo. Tutor do imperador Nero. Autor de Cartas a Lucílio. Explorou a relação entre natureza, razão e equilíbrio interior com rigor filosófico.</div>
+    </div>
+    <div class="citacao-card" data-autor="Marcel Proust">
+      <div class="citacao-text">&quot;A verdadeira descoberta não consiste em buscar novas paisagens, mas em ter novos olhos.&quot;</div>
+      <div class="citacao-autor">Marcel Proust<br><span style="font-size:10px;color:var(--text-faint)">10/07/1871 — 18/11/1922</span></div>
+      <div class="citacao-bio">Francês. Escritor. Autor de Em Busca do Tempo Perdido (1913-1927), obra monumental sobre memória e percepção. Suas metáforas sobre alavancas do pensamento conectam-se à multiplicação de forças.</div>
+    </div>
+    <div class="citacao-card" data-autor="Vera Rubin">
+      <div class="citacao-text">&quot;O universo não é apenas mais estranho do que supomos, é mais estranho do que podemos supor.&quot;</div>
+      <div class="citacao-autor">Vera Rubin<br><span style="font-size:10px;color:var(--text-faint)">23/07/1928 — 25/12/2016</span></div>
+      <div class="citacao-bio">Americana. Astrônoma. Descobriu evidências observacionais da matéria escura ao medir curvas de rotação de galáxias. Demonstrou que a matéria visível é apenas uma fração do universo.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T40 — Máquinas Simples, Alavancas na Indústria</div>
+    <div class="citacao-card" data-autor="Oliver Goldsmith">
+      <div class="citacao-text">&quot;A maior glória não é nunca cair, mas levantar-se sempre.&quot;</div>
+      <div class="citacao-autor">Oliver Goldsmith<br><span style="font-size:10px;color:var(--text-faint)">10/11/1728 — 04/04/1774</span></div>
+      <div class="citacao-bio">Irlandês-britânico. Escritor, poeta e médico. Autor de O Vigário de Wakefield. Conhecido por aforismos sobre perseverança e dignidade. Sua prosa límpida influenciou gerações de escritores de língua inglesa.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio oriental">
+      <div class="citacao-text">&quot;Quem move montanhas começa carregando pequenas pedras.&quot;</div>
+      <div class="citacao-autor">Provérbio oriental<br><span style="font-size:10px;color:var(--text-faint)">— —</span></div>
+      <div class="citacao-bio">Sabedoria milenar oriental. Ensina que toda grande obra começa com o primeiro passo e que a paciência é a virtude do construtor. Amplamente citado em contextos educacionais e de engenharia.</div>
+    </div>
+    <div class="citacao-card" data-autor="Clare Boothe Luce">
+      <div class="citacao-text">&quot;A simplicidade é a sofisticação suprema.&quot;</div>
+      <div class="citacao-autor">Clare Boothe Luce<br><span style="font-size:10px;color:var(--text-faint)">10/03/1903 — 09/10/1987</span></div>
+      <div class="citacao-bio">Americana. Escritora, política e diplomadora. Congressista e embaixadora dos EUA na Itália. Conhecida por aforismos incisivos que sintetizam ideias complexas em frases memoráveis.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 7 — Energia: a Moeda da Transformação">
+  <div class="tema-header">TEMA 7 — Energia: a Moeda da Transformação</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T41 — O Trabalho de uma Força</div>
+    <div class="citacao-card" data-autor="Thomas Edison">
+      <div class="citacao-text">&quot;O gênio é um por cento de inspiração e noventa e nove por cento de transpiração.&quot;</div>
+      <div class="citacao-autor">Thomas Edison<br><span style="font-size:10px;color:var(--text-faint)">11/02/1847 — 18/10/1931</span></div>
+      <div class="citacao-bio">Americano. Inventor e empresário. Deteve mais de mil patentes: lâmpada incandescente, fonógrafo, distribuição elétrica. Célebre pela frase &#x27;Gênio é 1% inspiração e 99% transpiração&#x27; — trabalho de uma força.</div>
+    </div>
+    <div class="citacao-card" data-autor="Khalil Gibran">
+      <div class="citacao-text">&quot;Trabalho é amor tornado visível.&quot;</div>
+      <div class="citacao-autor">Khalil Gibran<br><span style="font-size:10px;color:var(--text-faint)">06/01/1883 — 10/04/1931</span></div>
+      <div class="citacao-bio">Libanês-americano. Poeta e filósofo. Autor de O Profeta (1923). Suas reflexões sobre trabalho como expressão do amor conectam-se ao conceito físico de trabalho de uma força.</div>
+    </div>
+    <div class="citacao-card" data-autor="Thomas Edison">
+      <div class="citacao-text">&quot;Não existe substituto para o trabalho duro.&quot;</div>
+      <div class="citacao-autor">Thomas Edison<br><span style="font-size:10px;color:var(--text-faint)">11/02/1847 — 18/10/1931</span></div>
+      <div class="citacao-bio">Americano. Inventor e empresário. Deteve mais de mil patentes: lâmpada incandescente, fonógrafo, distribuição elétrica. Célebre pela frase &#x27;Gênio é 1% inspiração e 99% transpiração&#x27; — trabalho de uma força.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T42 — O Teorema da Energia Cinética</div>
+    <div class="citacao-card" data-autor="Guglielmo Marconi">
+      <div class="citacao-text">&quot;O gênio é um por cento de inspiração e noventa e nove por cento de transpiração.&quot;</div>
+      <div class="citacao-autor">Guglielmo Marconi<br><span style="font-size:10px;color:var(--text-faint)">25/04/1874 — 20/07/1937</span></div>
+      <div class="citacao-bio">Italiano. Inventor e engenheiro (Nobel 1909). Pioneiro da telegrafia sem fio. Realizou a primeira transmissão transatlântica (1901). Transformou as comunicações globais com a radiotelegrafia.</div>
+    </div>
+    <div class="citacao-card" data-autor="Milan Kundera">
+      <div class="citacao-text">&quot;A velocidade é a forma de êxtase que a revolução técnica concedeu ao homem.&quot;</div>
+      <div class="citacao-autor">Milan Kundera<br><span style="font-size:10px;color:var(--text-faint)">01/04/1929 — 11/07/2023</span></div>
+      <div class="citacao-bio">Tcheco-francês. Escritor. Autor de A Insustentável Leveza do Ser (1984). Explorou peso, leveza e energia cinética como metáforas existenciais sobre liberdade e determinação.</div>
+    </div>
+    <div class="citacao-card" data-autor="Joseph Joubert">
+      <div class="citacao-text">&quot;A imaginação é o olho da alma.&quot;</div>
+      <div class="citacao-autor">Joseph Joubert<br><span style="font-size:10px;color:var(--text-faint)">07/05/1754 — 04/05/1824</span></div>
+      <div class="citacao-bio">Francês. Moralista e ensaísta. Pensador do Iluminismo. Seus cadernos póstumos contêm reflexões sobre educação, linguagem e conhecimento. Influenciou Chateaubriand e a tradição ensaística francesa.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T43 — O Conceito Geral de Energia</div>
+    <div class="citacao-card" data-autor="Albert Einstein">
+      <div class="citacao-text">&quot;A termodinâmica é a única teoria física de conteúdo universal da qual estou convicto de que nunca será derrubada.&quot;</div>
+      <div class="citacao-autor">Albert Einstein<br><span style="font-size:10px;color:var(--text-faint)">14/03/1879 — 18/04/1955</span></div>
+      <div class="citacao-bio">Alemão/suíço/americano. Físico teórico. Formulou a relatividade restrita e geral, explicou o efeito fotoelétrico (Nobel 1921). Revolucionou os conceitos de espaço, tempo, massa e energia com E = mc².</div>
+    </div>
+    <div class="citacao-card" data-autor="Rudolf Clausius">
+      <div class="citacao-text">&quot;A energia do universo é constante; a entropia do universo tende a um máximo.&quot;</div>
+      <div class="citacao-autor">Rudolf Clausius<br><span style="font-size:10px;color:var(--text-faint)">02/01/1822 — 24/08/1888</span></div>
+      <div class="citacao-bio">Alemão. Físico e matemático (séc. XIX). Formulou a segunda lei da termodinâmica e cunhou o conceito de entropia. Pioneiro na formalização do conceito geral de energia e suas transformações.</div>
+    </div>
+    <div class="citacao-card" data-autor="Albert Einstein">
+      <div class="citacao-text">&quot;A termodinâmica é a única teoria que eu estou convencido de que nunca será derrubada.&quot;</div>
+      <div class="citacao-autor">Albert Einstein<br><span style="font-size:10px;color:var(--text-faint)">14/03/1879 — 18/04/1955</span></div>
+      <div class="citacao-bio">Alemão/suíço/americano. Físico teórico. Formulou a relatividade restrita e geral, explicou o efeito fotoelétrico (Nobel 1921). Revolucionou os conceitos de espaço, tempo, massa e energia com E = mc².</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T44 — Rapidez e Eficiência, Potência e Rendimento</div>
+    <div class="citacao-card" data-autor="Elbert Hubbard">
+      <div class="citacao-text">&quot;Uma máquina pode fazer o trabalho de cinquenta homens comuns, mas nenhuma máquina pode fazer o trabalho de um homem extraordinário.&quot;</div>
+      <div class="citacao-autor">Elbert Hubbard<br><span style="font-size:10px;color:var(--text-faint)">19/06/1856 — 07/05/1915</span></div>
+      <div class="citacao-bio">Americano. Escritor, editor e filósofo. Fundador da comunidade artesanal Roycroft. Autor de Uma Mensagem a Garcia. Popularizou ideias sobre trabalho, criatividade e iniciativa individual.</div>
+    </div>
+    <div class="citacao-card" data-autor="Alan Kay">
+      <div class="citacao-text">&quot;A melhor maneira de prever o futuro é inventá-lo.&quot;</div>
+      <div class="citacao-autor">Alan Kay<br><span style="font-size:10px;color:var(--text-faint)">17/05/1940 — vivo</span></div>
+      <div class="citacao-bio">Americano. Cientista da computação. Pai da programação orientada a objetos e do conceito de computador pessoal. Visionário da tecnologia educacional. Prêmio Turing (2003).</div>
+    </div>
+    <div class="citacao-card" data-autor="Pirelli (atribuído a Marco Tronchetti Provera)">
+      <div class="citacao-text">&quot;A potência sem controle não tem significado.&quot;</div>
+      <div class="citacao-autor">Pirelli (atribuído a Marco Tronchetti Provera)<br><span style="font-size:10px;color:var(--text-faint)">27/01/1948 — vivo</span></div>
+      <div class="citacao-bio">Italiano. Empresário, presidente da Pirelli. A frase &#x27;Potência é nada sem controle&#x27; tornou-se slogan icônico, conectando eficiência, rendimento e potência ao cotidiano automotivo.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T45 — Energia Armazenada I — O Potencial da Altura</div>
+    <div class="citacao-card" data-autor="Robert Mayer">
+      <div class="citacao-text">&quot;A energia é a moeda universal que mede a capacidade de provocar mudanças.&quot;</div>
+      <div class="citacao-autor">Robert Mayer<br><span style="font-size:10px;color:var(--text-faint)">25/11/1814 — 20/03/1878</span></div>
+      <div class="citacao-bio">Alemão. Médico e físico. Formulou independentemente a conservação de energia (1842). Calculou o equivalente mecânico do calor. Pioneiro da termodinâmica antes de Joule e Helmholtz.</div>
+    </div>
+    <div class="citacao-card" data-autor="Stephen Hawking">
+      <div class="citacao-text">&quot;A gravidade é a cola que mantém o universo unido.&quot;</div>
+      <div class="citacao-autor">Stephen Hawking<br><span style="font-size:10px;color:var(--text-faint)">08/01/1942 — 14/03/2018</span></div>
+      <div class="citacao-bio">Britânico. Físico teórico e cosmólogo. Autor de Uma Breve História do Tempo (1988). Pesquisou buracos negros e radiação Hawking. Trabalhou com esclerosis lateral amiotrófica por décadas.</div>
+    </div>
+    <div class="citacao-card" data-autor="James Prescott Joule">
+      <div class="citacao-text">&quot;A queda é apenas energia esperando para ser usada.&quot;</div>
+      <div class="citacao-autor">James Prescott Joule<br><span style="font-size:10px;color:var(--text-faint)">24/12/1818 — 11/10/1889</span></div>
+      <div class="citacao-bio">Inglês. Físico (séc. XIX). Determinou o equivalente mecânico do calor, demonstrando que energia mecânica pode se converter em térmica. A unidade joule (J) leva seu nome.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T46 — Energia Armazenada II — O Potencial da Deformação</div>
+    <div class="citacao-card" data-autor="James Watt">
+      <div class="citacao-text">&quot;Dê-me uma alavanca e um ponto de apoio e moverei o mundo.&quot;</div>
+      <div class="citacao-autor">James Watt<br><span style="font-size:10px;color:var(--text-faint)">30/01/1736 — 25/08/1819</span></div>
+      <div class="citacao-bio">Escocês. Engenheiro e inventor. Aperfeiçoou a máquina a vapor (condensador separado, 1769). A unidade de potência watt leva seu nome. Transformou a Revolução Industrial com sua engenharia.</div>
+    </div>
+    <div class="citacao-card" data-autor="Thomas Fuller">
+      <div class="citacao-text">&quot;A ação é o fruto próprio do conhecimento.&quot;</div>
+      <div class="citacao-autor">Thomas Fuller<br><span style="font-size:10px;color:var(--text-faint)">19/06/1608 — 16/08/1661</span></div>
+      <div class="citacao-bio">Inglês. Clérigo, historiador e escritor. Autor de Gnomologia, compilação de provérbios e máximas. Mestre do aforismo inglês. Suas sentenças sobre prudência e saber circulam até hoje.</div>
+    </div>
+    <div class="citacao-card" data-autor="Thomas Carlyle">
+      <div class="citacao-text">&quot;Sob pressão, o diamante nasce.&quot;</div>
+      <div class="citacao-autor">Thomas Carlyle<br><span style="font-size:10px;color:var(--text-faint)">04/12/1795 — 05/02/1881</span></div>
+      <div class="citacao-bio">Escocês. Historiador e ensaísta (séc. XIX). Autor de Os Heróis. Suas reflexões sobre trabalho, energia armazenada na sociedade e potencial transformador dialogam com energia potencial elástica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T47 — Nada se Perde — A Conservação da Energia Mecânica</div>
+    <div class="citacao-card" data-autor="Jean-Jacques Rousseau">
+      <div class="citacao-text">&quot;A natureza nunca nos engana; somos sempre nós que nos enganamos.&quot;</div>
+      <div class="citacao-autor">Jean-Jacques Rousseau<br><span style="font-size:10px;color:var(--text-faint)">28/06/1712 — 02/07/1778</span></div>
+      <div class="citacao-bio">Suíço-francês. Filósofo iluminista (séc. XVIII). Autor de O Contrato Social e Emílio. Defendeu a educação pela natureza e a liberdade como estado natural, conectando-se à conservação e equilíbrio.</div>
+    </div>
+    <div class="citacao-card" data-autor="Werner Heisenberg">
+      <div class="citacao-text">&quot;No fundo, os cientistas são construtores de pontes entre o visível e o invisível.&quot;</div>
+      <div class="citacao-autor">Werner Heisenberg<br><span style="font-size:10px;color:var(--text-faint)">05/12/1901 — 01/02/1976</span></div>
+      <div class="citacao-bio">Alemão. Físico teórico, Nobel (1932). Formulou o princípio da incerteza e a mecânica matricial. Suas reflexões sobre limites do conhecimento dialogam com conservação e transformação de energia.</div>
+    </div>
+    <div class="citacao-card" data-autor="Hermann von Helmholtz">
+      <div class="citacao-text">&quot;A energia do universo permanece constante.&quot;</div>
+      <div class="citacao-autor">Hermann von Helmholtz<br><span style="font-size:10px;color:var(--text-faint)">31/08/1821 — 08/09/1894</span></div>
+      <div class="citacao-bio">Alemão. Físico e médico. Formulou a lei de conservação da energia (1847). Contribuições em acústica, óptica, eletrodinâmica e fisiologia da percepção sensorial.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T48 — O Futuro da Mina — Energias Renováveis</div>
+    <div class="citacao-card" data-autor="Provérbio indígena (atribuído ao Cacique Seattle)">
+      <div class="citacao-text">&quot;A Terra não é herança de nossos pais, mas empréstimo de nossos filhos.&quot;</div>
+      <div class="citacao-autor">Provérbio indígena (atribuído ao Cacique Seattle)<br><span style="font-size:10px;color:var(--text-faint)">c. 1786 — 07/06/1866</span></div>
+      <div class="citacao-bio">Líder Suquamish e Duwamish (séc. XIX), noroeste dos EUA. Seu discurso sobre a Terra como herança conecta sustentabilidade ambiental à transição energética renovável.</div>
+    </div>
+    <div class="citacao-card" data-autor="Hermann Scheer">
+      <div class="citacao-text">&quot;O sol, o vento e a água são fontes de energia que nunca enviam conta.&quot;</div>
+      <div class="citacao-autor">Hermann Scheer<br><span style="font-size:10px;color:var(--text-faint)">29/04/1944 — 14/10/2010</span></div>
+      <div class="citacao-bio">Alemão. Político e economista. Autor de A Era Solar e defensor mundial das energias renováveis. Prêmio Nobel Alternativo (1999). Advogou pela descentralização energética e transição solar.</div>
+    </div>
+    <div class="citacao-card" data-autor="Barack Obama">
+      <div class="citacao-text">&quot;Somos a primeira geração a sentir o impacto da mudança climática e a última que pode fazer algo a respeito.&quot;</div>
+      <div class="citacao-autor">Barack Obama<br><span style="font-size:10px;color:var(--text-faint)">04/08/1961 — vivo</span></div>
+      <div class="citacao-bio">Americano. 44.º presidente dos EUA (2009-2017), prêmio Nobel da Paz (2009). Incentivou investimentos em energias renováveis e políticas de transição energética.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 8 — O Peso das Águas">
+  <div class="tema-header">TEMA 8 — O Peso das Águas</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T49 — Pressão, o Efeito da Força Distribuída</div>
+    <div class="citacao-card" data-autor="George S. Patton">
+      <div class="citacao-text">&quot;A pressão faz diamantes.&quot;</div>
+      <div class="citacao-autor">George S. Patton<br><span style="font-size:10px;color:var(--text-faint)">11/11/1885 — 21/12/1945</span></div>
+      <div class="citacao-bio">Americano. General do Exército na 2ª Guerra Mundial. Comandante do 3.º Exército na Europa. Conhecido por liderança agressiva e frases sobre pressão, força e determinação estratégica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio popular (atribuído a Ovídio)">
+      <div class="citacao-text">&quot;A água mole em pedra dura, tanto bate até que fura.&quot;</div>
+      <div class="citacao-autor">Provérbio popular (atribuído a Ovídio)<br><span style="font-size:10px;color:var(--text-faint)">20/03/43 a.C. — 17/d.C.</span></div>
+      <div class="citacao-bio">Romano, séc. I a.C.-I d.C. Poeta. Autor de Metamorfoses. Seus versos sobre a gota que fura a pedra ilustram pressão contínua e efeito de forças distribuídas ao longo do tempo.</div>
+    </div>
+    <div class="citacao-card" data-autor="Tales de Mileto">
+      <div class="citacao-text">&quot;A água é a força motriz de toda a natureza.&quot;</div>
+      <div class="citacao-autor">Tales de Mileto<br><span style="font-size:10px;color:var(--text-faint)">c. 624 a.C. — c. 546 a.C.</span></div>
+      <div class="citacao-bio">Grego. Filósofo e matemático. Primeiro filósofo ocidental. Propôs que a água é o princípio de todas as coisas. Pai da filosofia natural. Previu um eclipse solar e mediu a altura das pirâmides.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T50 — Identidade da Matéria, a Densidade e Massa Específica</div>
+    <div class="citacao-card" data-autor="Grace Hopper">
+      <div class="citacao-text">&quot;Um navio no porto é seguro, mas não foi para isso que navios foram construídos.&quot;</div>
+      <div class="citacao-autor">Grace Hopper<br><span style="font-size:10px;color:var(--text-faint)">09/12/1906 — 01/01/1992</span></div>
+      <div class="citacao-bio">Americana. Contra-almirante e cientista da computação. Pioneira da programação de computadores. Inventou o primeiro compilador. Popularizou a ideia de que navios devem zarpar, não ficar ancorados.</div>
+    </div>
+    <div class="citacao-card" data-autor="Antoine de Saint-Exupéry">
+      <div class="citacao-text">&quot;O essencial é invisível aos olhos.&quot;</div>
+      <div class="citacao-autor">Antoine de Saint-Exupéry<br><span style="font-size:10px;color:var(--text-faint)">29/06/1900 — 31/07/1944</span></div>
+      <div class="citacao-bio">Francês. Aviador e escritor. Autor de O Pequeno Príncipe (1943). Piloto de reconhecimento na 2ª Guerra, desapareceu em voo sobre o Mediterrâneo. Uniu poesia e engenharia aeronáutica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Demócrito de Abdera">
+      <div class="citacao-text">&quot;A matéria é o que importa.&quot;</div>
+      <div class="citacao-autor">Demócrito de Abdera<br><span style="font-size:10px;color:var(--text-faint)">c. 460 a.C. — c. 370 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. V-IV a.C. Filósofo pré-socrático. Pai do atomismo: propôs que toda matéria é composta de átomos indivisíveis movendo-se no vazio. Precursor da noção de densidade e massa.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T51 — Força Multiplicada, o Princípio de Pascal</div>
+    <div class="citacao-card" data-autor="Blaise Pascal">
+      <div class="citacao-text">&quot;O coração tem razões que a própria razão desconhece.&quot;</div>
+      <div class="citacao-autor">Blaise Pascal<br><span style="font-size:10px;color:var(--text-faint)">19/06/1623 — 19/08/1662</span></div>
+      <div class="citacao-bio">Francês. Matemático, físico e filósofo (séc. XVII). Formulou o princípio de Pascal (transmissão de pressão em fluidos), inventou a calculadora mecânica e contribuiu para a teoria da probabilidade.</div>
+    </div>
+    <div class="citacao-card" data-autor="Blaise Pascal">
+      <div class="citacao-text">&quot;O homem é apenas um caniço, o mais fraco da natureza; mas é um caniço pensante.&quot;</div>
+      <div class="citacao-autor">Blaise Pascal<br><span style="font-size:10px;color:var(--text-faint)">19/06/1623 — 19/08/1662</span></div>
+      <div class="citacao-bio">Francês. Matemático, físico e filósofo (séc. XVII). Formulou o princípio de Pascal (transmissão de pressão em fluidos), inventou a calculadora mecânica e contribuiu para a teoria da probabilidade.</div>
+    </div>
+    <div class="citacao-card" data-autor="Blaise Pascal">
+      <div class="citacao-text">&quot;A força dos fluidos é a força da multiplicação.&quot;</div>
+      <div class="citacao-autor">Blaise Pascal<br><span style="font-size:10px;color:var(--text-faint)">19/06/1623 — 19/08/1662</span></div>
+      <div class="citacao-bio">Francês. Matemático, físico e filósofo (séc. XVII). Formulou o princípio de Pascal (transmissão de pressão em fluidos), inventou a calculadora mecânica e contribuiu para a teoria da probabilidade.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T52 — A Coluna de Peso, A Lei de Stevin</div>
+    <div class="citacao-card" data-autor="Robert Oppenheimer">
+      <div class="citacao-text">&quot;A maneira mais fácil de resolver um problema é negar que ele exista.&quot;</div>
+      <div class="citacao-autor">Robert Oppenheimer<br><span style="font-size:10px;color:var(--text-faint)">22/04/1904 — 18/02/1967</span></div>
+      <div class="citacao-bio">Americano. Físico teórico. Diretor científico do Projeto Manhattan. Contribuições em astrofísica (estrelas de nêutrons) e mecânica quântica. Refletiu profundamente sobre a responsabilidade da ciência.</div>
+    </div>
+    <div class="citacao-card" data-autor="Provérbio africano">
+      <div class="citacao-text">&quot;A profundidade do rio não se mede pela superfície.&quot;</div>
+      <div class="citacao-autor">Provérbio africano<br><span style="font-size:10px;color:var(--text-faint)">— — vivo</span></div>
+      <div class="citacao-bio">Tradição oral africana. Sabedoria coletiva transmitida entre gerações. Provérbios africanos frequentemente exploram peso, suporte mútuo e pressão da comunidade sobre o indivíduo.</div>
+    </div>
+    <div class="citacao-card" data-autor="Simon Stevin">
+      <div class="citacao-text">&quot;O peso de uma coluna de líquido depende apenas da altura e da densidade, não da forma.&quot;</div>
+      <div class="citacao-autor">Simon Stevin<br><span style="font-size:10px;color:var(--text-faint)">1548 — 1620</span></div>
+      <div class="citacao-bio">Flamengo (atual Bélgica). Matemático e engenheiro (séc. XVI-XVII). Demonstrou o paradoxo hidrostático e a lei dos vasos comunicantes. Introduziu frações decimais na Europa.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T53 — O Oceano de Ar, Pressão Atmosférica</div>
+    <div class="citacao-card" data-autor="Evangelista Torricelli">
+      <div class="citacao-text">&quot;Vivemos no fundo de um oceano de ar.&quot;</div>
+      <div class="citacao-autor">Evangelista Torricelli<br><span style="font-size:10px;color:var(--text-faint)">15/10/1608 — 25/10/1647</span></div>
+      <div class="citacao-bio">Italiano. Físico e matemático, discípulo de Galileu. Inventou o barômetro de mercúrio (1643), demonstrando a existência da pressão atmosférica. Formulou o teorema de Torricelli para escoamento.</div>
+    </div>
+    <div class="citacao-card" data-autor="Montesquieu">
+      <div class="citacao-text">&quot;A dúvida é o princípio da sabedoria.&quot;</div>
+      <div class="citacao-autor">Montesquieu<br><span style="font-size:10px;color:var(--text-faint)">18/01/1689 — 10/02/1755</span></div>
+      <div class="citacao-bio">Francês. Filósofo e jurista iluminista. Autor de O Espírito das Leis. Formulou a separação dos poderes. Aplicou o método experimental à política, buscando leis naturais na organização social.</div>
+    </div>
+    <div class="citacao-card" data-autor="Alessandro Volta">
+      <div class="citacao-text">&quot;A ciência começa com a observação. Termina com a experiência.&quot;</div>
+      <div class="citacao-autor">Alessandro Volta<br><span style="font-size:10px;color:var(--text-faint)">18/02/1745 — 05/03/1827</span></div>
+      <div class="citacao-bio">Italiano. Físico e químico. Inventou a pilha voltaica (1800), primeira fonte contínua de eletricidade. A unidade volt leva seu nome. Abriu caminho para a eletroquímica e a eletrônica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T54 — Banho de Arquimedes, Empuxo e Flutuação</div>
+    <div class="citacao-card" data-autor="Arquimedes de Siracusa">
+      <div class="citacao-text">&quot;Eureka!&quot;</div>
+      <div class="citacao-autor">Arquimedes de Siracusa<br><span style="font-size:10px;color:var(--text-faint)">c. 287 a.C. — c. 212 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. III a.C. Matemático, físico e engenheiro. Descobriu o princípio do empuxo, formulou leis de alavancas e roldanas. Pioneiro da estática e da hidrostática aplicada.</div>
+    </div>
+    <div class="citacao-card" data-autor="Arquimedes de Siracusa">
+      <div class="citacao-text">&quot;Todo corpo mergulhado num fluido recebe um empuxo de baixo para cima igual ao peso do fluido deslocado.&quot;</div>
+      <div class="citacao-autor">Arquimedes de Siracusa<br><span style="font-size:10px;color:var(--text-faint)">c. 287 a.C. — c. 212 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. III a.C. Matemático, físico e engenheiro. Descobriu o princípio do empuxo, formulou leis de alavancas e roldanas. Pioneiro da estática e da hidrostática aplicada.</div>
+    </div>
+    <div class="citacao-card" data-autor="John A. Shedd">
+      <div class="citacao-text">&quot;Os navios são seguros no porto, mas não foi para isso que foram construídos.&quot;</div>
+      <div class="citacao-autor">John A. Shedd<br><span style="font-size:10px;color:var(--text-faint)">1859 — 1928</span></div>
+      <div class="citacao-bio">Americano. Professor e autor do início do séc. XX. Autor de Salt from My Attic (1928), de onde vem a frase &#x27;Um navio no porto está seguro, mas não é para isso que os navios são construídos.&#x27;</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 9 — Os Movimentos Celestes">
+  <div class="tema-header">TEMA 9 — Os Movimentos Celestes</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T55 — Duas Visões de Mundo</div>
+    <div class="citacao-card" data-autor="Galileu Galilei">
+      <div class="citacao-text">&quot;E, no entanto, ela se move.&quot;</div>
+      <div class="citacao-autor">Galileu Galilei<br><span style="font-size:10px;color:var(--text-faint)">15/02/1564 — 08/01/1642</span></div>
+      <div class="citacao-bio">Italiano. Físico, astrônomo e matemático (séc. XVI-XVII). Pai da ciência experimental moderna. Estudou queda livre, pêndulos, movimento uniformemente acelerado e observou as luas de Júpiter.</div>
+    </div>
+    <div class="citacao-card" data-autor="Tycho Brahe">
+      <div class="citacao-text">&quot;A astronomia obriga a alma a olhar para cima e nos conduz deste mundo a outro.&quot;</div>
+      <div class="citacao-autor">Tycho Brahe<br><span style="font-size:10px;color:var(--text-faint)">14/12/1546 — 24/10/1601</span></div>
+      <div class="citacao-bio">Dinamarquês. Astrônomo. Realizou as observações astronômicas mais precisas da era pré-telescópica. Seus dados permitiram a Kepler formular as três leis do movimento planetário.</div>
+    </div>
+    <div class="citacao-card" data-autor="Aristarco de Samos">
+      <div class="citacao-text">&quot;O cosmos é tudo o que é, tudo o que foi e tudo o que será.&quot;</div>
+      <div class="citacao-autor">Aristarco de Samos<br><span style="font-size:10px;color:var(--text-faint)">c. 310 a.C. — c. 230 a.C.</span></div>
+      <div class="citacao-bio">Grego. Astrônomo e matemático. Primeiro a propor o modelo heliocêntrico (séc. III a.C.), antecipando Copérnico em 1.800 anos. Calculou a distância relativa entre Sol e Lua com geometria.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T56 — As Órbitas Elípticas — 1ª Lei de Kepler</div>
+    <div class="citacao-card" data-autor="Johannes Kepler">
+      <div class="citacao-text">&quot;A natureza usa a geometria.&quot;</div>
+      <div class="citacao-autor">Johannes Kepler<br><span style="font-size:10px;color:var(--text-faint)">27/12/1571 — 15/11/1630</span></div>
+      <div class="citacao-bio">Alemão. Astrônomo e matemático (séc. XVI-XVII). Formulou as três leis do movimento planetário (órbitas elípticas, áreas iguais, harmonia dos períodos), fundamentando a mecânica celeste.</div>
+    </div>
+    <div class="citacao-card" data-autor="Johannes Kepler">
+      <div class="citacao-text">&quot;Eu medi os céus; agora meço as sombras da Terra.&quot;</div>
+      <div class="citacao-autor">Johannes Kepler<br><span style="font-size:10px;color:var(--text-faint)">27/12/1571 — 15/11/1630</span></div>
+      <div class="citacao-bio">Alemão. Astrônomo e matemático (séc. XVI-XVII). Formulou as três leis do movimento planetário (órbitas elípticas, áreas iguais, harmonia dos períodos), fundamentando a mecânica celeste.</div>
+    </div>
+    <div class="citacao-card" data-autor="Platão">
+      <div class="citacao-text">&quot;A astronomia nos obriga a olhar para cima e nos conduz de um mundo a outro.&quot;</div>
+      <div class="citacao-autor">Platão<br><span style="font-size:10px;color:var(--text-faint)">c. 428 a.C. — c. 348 a.C.</span></div>
+      <div class="citacao-bio">Grego, séc. V-IV a.C. Filósofo. Fundador da Academia de Atenas, discípulo de Sócrates. Propôs que os movimentos celestes devem ser circulares e perfeitos, influenciando a astronomia por séculos.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T57 — O Ritmo das Áreas — 2ª Lei de Kepler</div>
+    <div class="citacao-card" data-autor="Boécio">
+      <div class="citacao-text">&quot;A música das esferas é inaudível para ouvidos mortais, mas governa o movimento dos planetas.&quot;</div>
+      <div class="citacao-autor">Boécio<br><span style="font-size:10px;color:var(--text-faint)">c. 480 — c. 524</span></div>
+      <div class="citacao-bio">Romano. Filósofo e matemático. Autor de A Consolação da Filosofia. Transmitiu o saber grego à Idade Média. Sistematizou a teoria musical e a relação entre matemática e harmonia cósmica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Jorge Luis Borges">
+      <div class="citacao-text">&quot;O tempo é a substância de que sou feito. O tempo é um rio que me arrasta, mas eu sou o rio.&quot;</div>
+      <div class="citacao-autor">Jorge Luis Borges<br><span style="font-size:10px;color:var(--text-faint)">24/08/1899 — 14/06/1986</span></div>
+      <div class="citacao-bio">Argentino. Escritor e poeta. Autor de Ficções e O Aleph. Mestre do conto fantástico. Explorou o infinito, o tempo circular e os paradoxos do universo com a precisão de um matemático.</div>
+    </div>
+    <div class="citacao-card" data-autor="Giacomo Leopardi">
+      <div class="citacao-text">&quot;O silêncio eterno desses espaços infinitos me apavora.&quot;</div>
+      <div class="citacao-autor">Giacomo Leopardi<br><span style="font-size:10px;color:var(--text-faint)">29/06/1798 — 14/06/1837</span></div>
+      <div class="citacao-bio">Italiano. Poeta e filósofo. Autor de Cantos e Operetas Morais. Refletiu sobre o infinito, a natureza e o cosmos com a sensibilidade de um astrônomo-poeta. Sua obra antecipa o existencialismo moderno.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T58 — A Harmonia dos Tempos — 3ª Lei de Kepler</div>
+    <div class="citacao-card" data-autor="Hypatia de Alexandria">
+      <div class="citacao-text">&quot;Nenhuma grande descoberta foi feita sem um palpite ousado.&quot;</div>
+      <div class="citacao-autor">Hypatia de Alexandria<br><span style="font-size:10px;color:var(--text-faint)">c. 360 — 415</span></div>
+      <div class="citacao-bio">Grega (Alexandria). Matemática, astrônoma e filósofa. Última grande pensadora da Biblioteca de Alexandria. Ensinou Ptolomeu e geometria cônica. Primeira mulher matemática documentada da história.</div>
+    </div>
+    <div class="citacao-card" data-autor="Nicolau Copérnico">
+      <div class="citacao-text">&quot;Há uma geometria no zumbido das cordas. Há uma música no espaçamento das esferas.&quot;</div>
+      <div class="citacao-autor">Nicolau Copérnico<br><span style="font-size:10px;color:var(--text-faint)">19/02/1473 — 24/05/1543</span></div>
+      <div class="citacao-bio">Polonês. Astrônomo e matemático. Formulou o modelo heliocêntrico do sistema solar. Sua obra De Revolutionibus (1543) iniciou a revolução científica. Demonstrou que a Terra orbita o Sol.</div>
+    </div>
+    <div class="citacao-card" data-autor="Giordano Bruno">
+      <div class="citacao-text">&quot;O universo não foi feito por nenhum deus nem por nenhum homem, mas foi, é e será um fogo eternamente vivo.&quot;</div>
+      <div class="citacao-autor">Giordano Bruno<br><span style="font-size:10px;color:var(--text-faint)">01/01/1548 — 17/02/1600</span></div>
+      <div class="citacao-bio">Italiano. Filósofo e astrônomo. Defendeu o universo infinito e a pluralidade dos mundos. Queimado pela Inquisição por suas ideias cosmológicas. Mártir da liberdade de pensamento científico.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T59 — O Puxão Universal I — A Lei da Gravitação</div>
+    <div class="citacao-card" data-autor="Ibn al-Haytham">
+      <div class="citacao-text">&quot;A gravitação não é responsável pelas pessoas que se apaixonam.&quot;</div>
+      <div class="citacao-autor">Ibn al-Haytham<br><span style="font-size:10px;color:var(--text-faint)">c. 965 — c. 1040</span></div>
+      <div class="citacao-bio">Iraquiano. Físico e matemático. Pai da óptica moderna e do método científico experimental. Autor do Livro da Óptica. Demonstrou que a luz viaja em linha reta e formulou leis da reflexão e refração.</div>
+    </div>
+    <div class="citacao-card" data-autor="Alexander Pope">
+      <div class="citacao-text">&quot;A natureza e as leis da natureza estavam ocultas na noite. Deus disse: Faça-se Newton! E tudo se iluminou.&quot;</div>
+      <div class="citacao-autor">Alexander Pope<br><span style="font-size:10px;color:var(--text-faint)">21/05/1688 — 30/05/1744</span></div>
+      <div class="citacao-bio">Inglês. Poeta e satirista do séc. XVIII. Autor de An Essay on Man, tradutor de Homero. Célebre pela frase sobre Newton: &#x27;Nature and Nature&#x27;s laws lay hid in night; God said, Let Newton be! and all was light.&#x27;</div>
+    </div>
+    <div class="citacao-card" data-autor="Subrahmanyan Chandrasekhar">
+      <div class="citacao-text">&quot;Olhamos o passado e vemos o futuro.&quot;</div>
+      <div class="citacao-autor">Subrahmanyan Chandrasekhar<br><span style="font-size:10px;color:var(--text-faint)">19/10/1910 — 21/08/1995</span></div>
+      <div class="citacao-bio">Indiano-americano. Astrofísico (Nobel 1983). Determinou o limite de massa para anãs brancas (limite de Chandrasekhar). Contribuições fundamentais em estrutura estelar, relatividade e buracos negros.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T60 — O Puxão Universal II — A Gravidade Local</div>
+    <div class="citacao-card" data-autor="Carl Sagan">
+      <div class="citacao-text">&quot;Em algum lugar, algo incrível está esperando para ser descoberto.&quot;</div>
+      <div class="citacao-autor">Carl Sagan<br><span style="font-size:10px;color:var(--text-faint)">09/11/1934 — 20/12/1996</span></div>
+      <div class="citacao-bio">Americano. Astrônomo e divulgador científico. Autor de Cosmos (1980) e apresentador da série homônima. Popularizou a ciência, estudou atmosferas planetárias e buscou vida extraterrestre.</div>
+    </div>
+    <div class="citacao-card" data-autor="Neil deGrasse Tyson">
+      <div class="citacao-text">&quot;O universo não tem obrigação de fazer sentido para você.&quot;</div>
+      <div class="citacao-autor">Neil deGrasse Tyson<br><span style="font-size:10px;color:var(--text-faint)">05/10/1958 — vivo</span></div>
+      <div class="citacao-bio">Americano. Astrofísico e divulgador científico. Diretor do Planetário Hayden, apresentador de Cosmos (2014). Popularizou conceitos de gravitação, ação-reação e forças cósmicas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Carl Sagan">
+      <div class="citacao-text">&quot;A ciência é uma vela na escuridão.&quot;</div>
+      <div class="citacao-autor">Carl Sagan<br><span style="font-size:10px;color:var(--text-faint)">09/11/1934 — 20/12/1996</span></div>
+      <div class="citacao-bio">Americano. Astrônomo e divulgador científico. Autor de Cosmos (1980) e apresentador da série homônima. Popularizou a ciência, estudou atmosferas planetárias e buscou vida extraterrestre.</div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+function toggleTheme() {
+  const root = document.documentElement;
+  const current = root.getAttribute('data-theme');
+  root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+}
+function filtrar() {
+  const tema = document.getElementById('filtro-tema').value;
+  const soRep = document.getElementById('filtro-rep').checked;
+  document.querySelectorAll('.tema-section').forEach(s => {
+    s.style.display = (!tema || s.dataset.tema === tema) ? '' : 'none';
+  });
+  document.querySelectorAll('.citacao-card').forEach(c => {
+    c.style.display = (soRep && !c.classList.contains('repeated')) ? 'none' : '';
+  });
+}
+window.addEventListener('message', function(ev) {
+  if (!ev.data || ev.data.type !== 'getCitacoes') return;
+  var code = ev.data.trilha;
+  var result = [];
+  document.querySelectorAll('.trilha-group').forEach(function(g) {
+    var label = g.querySelector('.trilha-label');
+    if (label && label.textContent.trim().indexOf(code + ' ') === 0) {
+      g.querySelectorAll('.citacao-card').forEach(function(c) {
+        var rep = c.classList.contains('repeated');
+        result.push({
+          texto: c.querySelector('.citacao-text') ? c.querySelector('.citacao-text').textContent.trim() : '',
+          autor: c.getAttribute('data-autor') || '',
+          bio: c.querySelector('.citacao-bio') ? c.querySelector('.citacao-bio').textContent.trim() : '',
+          repetida: rep
+        });
+      });
+    }
+  });
+  ev.source.postMessage({ type: 'citacoesData', trilha: code, citacoes: result }, '*');
+});
+</script>
+</body>
+</html>

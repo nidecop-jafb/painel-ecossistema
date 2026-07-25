@@ -2532,9 +2532,14 @@ function navOnda1(secId, btn) {
   }
 }
 
-var EPIGRAFE_PATHS = {
+/* Local (file://): usa os arquivos do repositorio. Web (painel-ecossistema):
+   usa as copias publicadas em epigrafes/ pelo publicar_painel.py. */
+var EPIGRAFE_PATHS = (location.protocol === 'file:') ? {
   fc1: '../FC1-citacoes-v2.html',
   fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html'
+} : {
+  fc1: 'epigrafes/FC1-citacoes-v2.html',
+  fe1: 'epigrafes/FE1-citacoes-v2.html'
 };
 
 function loadEpigrafe() {

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE1 — Citacoes por Trilha</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(0.12 0.02 260);
+  --surface: oklch(0.16 0.02 260);
+  --surface-alt: oklch(0.20 0.02 260);
+  --text: oklch(0.92 0.01 90);
+  --text-dim: oklch(0.72 0.02 90);
+  --text-faint: oklch(0.52 0.02 90);
+  --border: oklch(0.28 0.02 260);
+  --ouro: oklch(0.78 0.15 75);
+  --ouro-bg: oklch(0.22 0.06 75);
+  --verde: oklch(0.72 0.18 155);
+  --verde-bg: oklch(0.20 0.06 155);
+  --erro: oklch(0.70 0.20 25);
+  --erro-bg: oklch(0.20 0.08 25);
+  --azul: oklch(0.72 0.12 240);
+  --azul-bg: oklch(0.20 0.06 240);
+  --r: 0px;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: oklch(0.97 0.01 90); --surface: oklch(1.0 0 0); --surface-alt: oklch(0.95 0.01 90);
+    --text: oklch(0.15 0.02 260); --text-dim: oklch(0.40 0.02 260); --text-faint: oklch(0.60 0.02 260);
+    --border: oklch(0.85 0.01 90); --ouro: oklch(0.50 0.15 75); --ouro-bg: oklch(0.95 0.04 75);
+    --verde: oklch(0.45 0.15 155); --verde-bg: oklch(0.95 0.04 155);
+    --erro: oklch(0.50 0.18 25); --erro-bg: oklch(0.95 0.06 25);
+    --azul: oklch(0.45 0.12 240); --azul-bg: oklch(0.95 0.04 240);
+  }
+}
+:root[data-theme="light"] {
+  --bg: oklch(0.97 0.01 90); --surface: oklch(1.0 0 0); --surface-alt: oklch(0.95 0.01 90);
+  --text: oklch(0.15 0.02 260); --text-dim: oklch(0.40 0.02 260); --text-faint: oklch(0.60 0.02 260);
+  --border: oklch(0.85 0.01 90); --ouro: oklch(0.50 0.15 75); --ouro-bg: oklch(0.95 0.04 75);
+  --verde: oklch(0.45 0.15 155); --verde-bg: oklch(0.95 0.04 155);
+  --erro: oklch(0.50 0.18 25); --erro-bg: oklch(0.95 0.06 25);
+  --azul: oklch(0.45 0.12 240); --azul-bg: oklch(0.95 0.04 240);
+}
+:root[data-theme="dark"] {
+  --bg: oklch(0.12 0.02 260); --surface: oklch(0.16 0.02 260); --surface-alt: oklch(0.20 0.02 260);
+  --text: oklch(0.92 0.01 90); --text-dim: oklch(0.72 0.02 90); --text-faint: oklch(0.52 0.02 90);
+  --border: oklch(0.28 0.02 260); --ouro: oklch(0.78 0.15 75); --ouro-bg: oklch(0.22 0.06 75);
+  --verde: oklch(0.72 0.18 155); --verde-bg: oklch(0.20 0.06 155);
+  --erro: oklch(0.70 0.20 25); --erro-bg: oklch(0.20 0.08 25);
+  --azul: oklch(0.72 0.12 240); --azul-bg: oklch(0.20 0.06 240);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.5; padding: 20px; }
+.header { background: var(--surface); border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.header-title { font-family: var(--display); font-size: 24px; font-weight: 800; color: var(--ouro); }
+.header-sub { font-size: 14px; color: var(--text-dim); margin-top: 4px; }
+.stats { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+.stat { background: var(--surface-alt); border: 1px solid var(--border); padding: 12px 16px; font-family: var(--mono); font-size: 13px; }
+.stat-n { font-size: 22px; font-weight: 700; color: var(--ouro); }
+.regra { background: var(--erro-bg); border: 1px solid var(--erro); padding: 16px; margin-bottom: 24px; }
+.regra-title { font-family: var(--display); font-size: 16px; font-weight: 700; color: var(--erro); margin-bottom: 8px; }
+.regra p { font-size: 14px; color: var(--text-dim); }
+.regra code { font-family: var(--mono); background: var(--surface-alt); padding: 2px 6px; font-size: 13px; }
+.tema-section { margin-bottom: 32px; }
+.tema-header { font-family: var(--display); font-size: 18px; font-weight: 700; color: var(--azul); padding: 12px 0; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
+.trilha-group { margin-bottom: 20px; }
+.trilha-label { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--verde); margin-bottom: 8px; padding: 4px 8px; background: var(--verde-bg); display: inline-block; }
+.citacao-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+.citacao-card.repeated { border-color: var(--erro); background: var(--erro-bg); }
+.citacao-text { font-size: 14px; font-style: italic; color: var(--text); }
+.citacao-autor { font-family: var(--mono); font-size: 12px; color: var(--ouro); white-space: nowrap; text-align: right; }
+.citacao-autor .badge-rep { display: inline-block; font-size: 10px; background: var(--erro); color: var(--bg); padding: 1px 6px; margin-left: 6px; font-style: normal; }
+.citacao-bio { font-size: 12px; color: var(--text-faint); margin-top: 6px; grid-column: 1 / -1; }
+.filtro { margin-bottom: 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.filtro label { font-size: 13px; color: var(--text-dim); }
+.filtro select, .filtro input { font-family: var(--mono); font-size: 13px; background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 6px 10px; }
+.btn-theme { position: fixed; top: 12px; right: 12px; font-family: var(--mono); font-size: 11px; background: var(--surface-alt); border: 1px solid var(--border); color: var(--text-dim); padding: 4px 10px; cursor: pointer; z-index: 99; }
+.legend { display: flex; gap: 16px; margin-bottom: 16px; font-size: 12px; color: var(--text-dim); align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-swatch { width: 14px; height: 14px; border: 1px solid var(--border); }
+.legend-swatch.ok { background: var(--surface); }
+.legend-swatch.rep { background: var(--erro-bg); border-color: var(--erro); }
+@media (max-width: 700px) {
+  .citacao-card { grid-template-columns: 1fr; }
+  .citacao-autor { text-align: left; }
+  .stats { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<button class="btn-theme" onclick="toggleTheme()">tema</button>
+<div class="header">
+  <div class="header-title">FE1 — Citacoes por Trilha</div>
+  <div class="header-sub">Fisica Experimental 1 · Tecnico em Mineracao · IFMG-OP · v2</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">51</div>citacoes</div>
+    <div class="stat"><div class="stat-n">17</div>trilhas</div>
+    <div class="stat"><div class="stat-n">44</div>autores</div>
+    <div class="stat"><div class="stat-n">0</div>repetidos</div>
+  </div>
+</div>
+<div class="regra">
+  <div class="regra-title">REGRA DE NAO-REPETICAO</div>
+  <p>Cada autor pode aparecer em <strong>no maximo 1 trilha</strong>. Citacoes destacadas em vermelho violam esta regra e devem ser substituidas.</p>
+  <p style="margin-top:8px;"><strong>Excecao:</strong> um autor pode ter ate 3 citacoes <em>dentro da mesma trilha</em> (posicoes 1, 2, 3). A restricao e <em>entre</em> trilhas distintas.</p>
+  <p style="margin-top:8px;"><code>Criterio: len(set(trilhas_do_autor)) &lt;= 1</code></p>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch ok"></div> Autor unico</div>
+  <div class="legend-item"><div class="legend-swatch rep"></div> Autor repetido (viola regra)</div>
+</div>
+<div class="filtro">
+  <label>Filtrar:</label>
+  <select id="filtro-tema" onchange="filtrar()">
+    <option value="">Todos os temas</option>
+    <option value="TEMA 0 — Orientacao">TEMA 0 — Orientacao</option>
+    <option value="TEMA 1 — Metrologia">TEMA 1 — Metrologia</option>
+    <option value="TEMA 2 — Cinematica">TEMA 2 — Cinematica</option>
+    <option value="TEMA 3 — Dinamica">TEMA 3 — Dinamica</option>
+    <option value="TEMA 4 — Energia e Momento">TEMA 4 — Energia e Momento</option>
+    <option value="TEMA 5 — Estatica e Fluidos">TEMA 5 — Estatica e Fluidos</option>
+  </select>
+  <label><input type="checkbox" id="filtro-rep" onchange="filtrar()"> So repetidos</label>
+</div>
+<div id="content">
+<div class="tema-section" data-tema="TEMA 0 — Orientacao">
+  <div class="tema-header">TEMA 0 — Orientacao</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T0A — Apresentacao do Laboratorio</div>
+    <div class="citacao-card" data-autor="Miguel de Cervantes">
+      <div class="citacao-text">&quot;A experiencia e a mae da ciencia.&quot;</div>
+      <div class="citacao-autor">Miguel de Cervantes<br><span style="font-size:10px;color:var(--text-faint)">29/09/1547 — 22/04/1616</span></div>
+      <div class="citacao-bio">Espanhol. Escritor. Autor de Dom Quixote, obra-prima da literatura universal. Criou personagens que encarnam o idealismo frente a realidade empirica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Claude Bernard">
+      <div class="citacao-text">&quot;A ciencia experimental comeca pela observacao e termina pela observacao.&quot;</div>
+      <div class="citacao-autor">Claude Bernard<br><span style="font-size:10px;color:var(--text-faint)">12/07/1813 — 10/02/1878</span></div>
+      <div class="citacao-bio">Frances. Medico e fisiologista. Pai da medicina experimental moderna. Definiu o metodo experimental como ciclo observacao-hipotese-verificacao.</div>
+    </div>
+    <div class="citacao-card" data-autor="Roger Bacon">
+      <div class="citacao-text">&quot;A ciência experimental é a rainha das ciências, e a matemática é a rainha das ciências experimentais.&quot;</div>
+      <div class="citacao-autor">Roger Bacon<br><span style="font-size:10px;color:var(--text-faint)">c. 1214 — c. 1292</span></div>
+      <div class="citacao-bio">Inglês. Frade franciscano e filósofo natural. Precursor do método experimental na Idade Média. Defendeu a observação e a verificação empírica como caminhos para o conhecimento.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T0B — Seguranca e Normas</div>
+    <div class="citacao-card" data-autor="Eleanor Everet">
+      <div class="citacao-text">&quot;A seguranca nao e um gadget, e um estado de espirito.&quot;</div>
+      <div class="citacao-autor">Eleanor Everet<br><span style="font-size:10px;color:var(--text-faint)">— — vivo</span></div>
+      <div class="citacao-bio">Especialista em seguranca industrial. Pioneira em cultura de seguranca no trabalho. Frase amplamente citada em treinamentos de NR e gestao de riscos.</div>
+    </div>
+    <div class="citacao-card" data-autor="Heinrich W. Herbert">
+      <div class="citacao-text">&quot;O acidente nao e o preco inevitavel do progresso.&quot;</div>
+      <div class="citacao-autor">Heinrich W. Herbert<br><span style="font-size:10px;color:var(--text-faint)">1886 — 1962</span></div>
+      <div class="citacao-bio">Americano. Engenheiro de seguranca. Criou a piramide de Heinrich (1:29:300) que relaciona incidentes menores a acidentes graves. Fundador da seguranca industrial moderna.</div>
+    </div>
+    <div class="citacao-card" data-autor="Erasmo de Roterdao">
+      <div class="citacao-text">&quot;Prevenir e melhor que remediar.&quot;</div>
+      <div class="citacao-autor">Erasmo de Roterdao<br><span style="font-size:10px;color:var(--text-faint)">28/10/1466 — 12/07/1536</span></div>
+      <div class="citacao-bio">Holandes. Humanista, teologo e filosofo. Maior erudito do Renascimento do Norte. Aforismo atribuido a ele, base da cultura de prevencao.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 1 — Metrologia">
+  <div class="tema-header">TEMA 1 — Metrologia</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T01 — Instrumentos de Medida</div>
+    <div class="citacao-card" data-autor="William Thomson, Lord Kelvin">
+      <div class="citacao-text">&quot;Medir e saber.&quot;</div>
+      <div class="citacao-autor">William Thomson, Lord Kelvin<br><span style="font-size:10px;color:var(--text-faint)">26/06/1824 — 17/12/1907</span></div>
+      <div class="citacao-bio">Britanico. Fisico e engenheiro. Formulou a escala absoluta de temperatura. Pioneiro da termodinamica e da telegrafia transatlantica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Gaston Bachelard">
+      <div class="citacao-text">&quot;O instrumento e o prolongamento da mao que investiga.&quot;</div>
+      <div class="citacao-autor">Gaston Bachelard<br><span style="font-size:10px;color:var(--text-faint)">27/06/1884 — 16/10/1962</span></div>
+      <div class="citacao-bio">Frances. Filosofo da ciencia e da poetica. Teoria do obstaculo epistemologico. Defendeu que o instrumento cientifico e teoria materializada.</div>
+    </div>
+    <div class="citacao-card" data-autor="Georg Simon Ohm">
+      <div class="citacao-text">&quot;Medir o que é mensurável e tornar mensurável o que ainda não é — eis a tarefa da ciência.&quot;</div>
+      <div class="citacao-autor">Georg Simon Ohm<br><span style="font-size:10px;color:var(--text-faint)">16/03/1789 — 06/07/1854</span></div>
+      <div class="citacao-bio">Alemão. Físico e matemático. Formulou a lei de Ohm (V = R × I), relação fundamental entre tensão, resistência e corrente. A unidade ohm leva seu nome. Demonstrou que a precisão da medida revela a lei.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T02 — Incerteza e Algarismos Significativos</div>
+    <div class="citacao-card" data-autor="Niels Bohr">
+      <div class="citacao-text">&quot;A incerteza não é uma imperfeição do nosso conhecimento, mas uma propriedade fundamental da natureza.&quot;</div>
+      <div class="citacao-autor">Niels Bohr<br><span style="font-size:10px;color:var(--text-faint)">07/10/1885 — 18/11/1962</span></div>
+      <div class="citacao-bio">Dinamarquês. Físico (Nobel 1922). Propôs o modelo atômico quântico e o princípio da complementaridade. Fundou o Instituto de Física Teórica de Copenhague. Mestre de toda uma geração de físicos.</div>
+    </div>
+    <div class="citacao-card" data-autor="Niels Bohr">
+      <div class="citacao-text">&quot;A incerteza e o preco da precisao.&quot;</div>
+      <div class="citacao-autor">Niels Bohr<br><span style="font-size:10px;color:var(--text-faint)">07/10/1885 — 18/11/1962</span></div>
+      <div class="citacao-bio">Dinamarques. Fisico. Modelo atomico de Bohr. Principio da complementaridade. Nobel de Fisica 1922. Fundou o instituto que leva seu nome.</div>
+    </div>
+    <div class="citacao-card" data-autor="Maria Montessori">
+      <div class="citacao-text">&quot;Errar e a essencia de aprender.&quot;</div>
+      <div class="citacao-autor">Maria Montessori<br><span style="font-size:10px;color:var(--text-faint)">31/08/1870 — 06/05/1952</span></div>
+      <div class="citacao-bio">Italiana. Medica e educadora. Criadora do metodo Montessori. Revolucionou a pedagogia ao valorizar o erro como ferramenta de aprendizagem autonoma.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T03 — Graficos e Linearizacao</div>
+    <div class="citacao-card" data-autor="Edward Tufte">
+      <div class="citacao-text">&quot;Um grafico vale mais que mil numeros.&quot;</div>
+      <div class="citacao-autor">Edward Tufte<br><span style="font-size:10px;color:var(--text-faint)">1942 — vivo</span></div>
+      <div class="citacao-bio">Americano. Estatistico e designer de informacao. Autor de The Visual Display of Quantitative Information. Referencia mundial em visualizacao de dados.</div>
+    </div>
+    <div class="citacao-card" data-autor="Edward Tufte">
+      <div class="citacao-text">&quot;Um bom gráfico vale mais do que mil palavras.&quot;</div>
+      <div class="citacao-autor">Edward Tufte<br><span style="font-size:10px;color:var(--text-faint)">14/03/1942 — vivo</span></div>
+      <div class="citacao-bio">Americano. Estatístico e professor de Yale. Pioneiro da visualização de dados. Autor de The Visual Display of Quantitative Information. Defende que a clareza gráfica é essencial à análise científica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Clive Humby">
+      <div class="citacao-text">&quot;Os dados sao o novo petroleo.&quot;</div>
+      <div class="citacao-autor">Clive Humby<br><span style="font-size:10px;color:var(--text-faint)">1954 — vivo</span></div>
+      <div class="citacao-bio">Britanico. Matematico e empreendedor. Criador do Tesco Clubcard. Cunhou a frase que define a era da ciencia de dados.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 2 — Cinematica">
+  <div class="tema-header">TEMA 2 — Cinematica</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T04 — Movimento Retilineo Uniforme</div>
+    <div class="citacao-card" data-autor="Aristoteles">
+      <div class="citacao-text">&quot;O movimento e a vida.&quot;</div>
+      <div class="citacao-autor">Aristoteles<br><span style="font-size:10px;color:var(--text-faint)">384 a.C. — 322 a.C.</span></div>
+      <div class="citacao-bio">Grego. Filosofo. Fundador do Liceu. Sistematizou a logica, a biologia e a fisica. Sua teoria do movimento dominou por 2000 anos ate Galileu e Newton.</div>
+    </div>
+    <div class="citacao-card" data-autor="André-Marie Ampère">
+      <div class="citacao-text">&quot;A melhor maneira de aprender sobre o mundo é observá-lo com as mãos.&quot;</div>
+      <div class="citacao-autor">André-Marie Ampère<br><span style="font-size:10px;color:var(--text-faint)">20/01/1775 — 10/06/1836</span></div>
+      <div class="citacao-bio">Francês. Físico e matemático. Fundador da eletrodinâmica. Formulou a lei de Ampère para campos magnéticos gerados por correntes. A unidade ampère (A) leva seu nome. Uniu experimento e teoria com elegância.</div>
+    </div>
+    <div class="citacao-card" data-autor="John Archibald Wheeler">
+      <div class="citacao-text">&quot;O tempo e o que impede que tudo aconteca de uma vez.&quot;</div>
+      <div class="citacao-autor">John Archibald Wheeler<br><span style="font-size:10px;color:var(--text-faint)">09/07/1911 — 13/04/2008</span></div>
+      <div class="citacao-bio">Americano. Fisico teorico. Cunhou o termo &quot;buraco negro&quot;. Contribuiu para a fissao nuclear e a interpretacao da mecanica quantica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T05 — Movimento Retilineo Uniformemente Variado</div>
+    <div class="citacao-card" data-autor="Enrico Fermi">
+      <div class="citacao-text">&quot;A ciência é a crença na ignorância dos especialistas.&quot;</div>
+      <div class="citacao-autor">Enrico Fermi<br><span style="font-size:10px;color:var(--text-faint)">29/09/1901 — 28/11/1954</span></div>
+      <div class="citacao-bio">Italiano-americano. Físico (Nobel 1938). Construiu o primeiro reator nuclear. Mestre da estimativa rápida (problemas de Fermi). Contribuições em física nuclear, estatística quântica e astrofísica.</div>
+    </div>
+    <div class="citacao-card" data-autor="J.B.S. Haldane">
+      <div class="citacao-text">&quot;O universo nao e apenas mais estranho do que supomos — e mais estranho do que podemos supor.&quot;</div>
+      <div class="citacao-autor">J.B.S. Haldane<br><span style="font-size:10px;color:var(--text-faint)">05/11/1892 — 01/12/1964</span></div>
+      <div class="citacao-bio">Britanico/indiano. Biologo e geneticista. Pioneiro da genetica de populacoes. Contribuiu para a sintese evolutiva moderna.</div>
+    </div>
+    <div class="citacao-card" data-autor="Stillman Drake">
+      <div class="citacao-text">&quot;A queda dos corpos e o teatro onde a gravidade se revela.&quot;</div>
+      <div class="citacao-autor">Stillman Drake<br><span style="font-size:10px;color:var(--text-faint)">24/12/1910 — 01/01/1993</span></div>
+      <div class="citacao-bio">Canadense. Historiador da ciencia. Maior especialista em Galileu. Traduziu e analisou os manuscritos galileanos, reconstruiu os experimentos de queda livre.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T06 — Queda Livre e Lancamento</div>
+    <div class="citacao-card" data-autor="Democrito de Abdera">
+      <div class="citacao-text">&quot;Dar-me-ei por satisfeito se conseguir erguer-me a apenas uma pequena fracao da verdade.&quot;</div>
+      <div class="citacao-autor">Democrito de Abdera<br><span style="font-size:10px;color:var(--text-faint)">c. 460 a.C. — c. 370 a.C.</span></div>
+      <div class="citacao-bio">Grego. Filosofo atomista. Propos que toda materia e feita de atomos indivisiveis. Precursor conceitual da fisica de particulas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Niccolo Tartaglia">
+      <div class="citacao-text">&quot;A bala de canhao descreve uma parabola.&quot;</div>
+      <div class="citacao-autor">Niccolo Tartaglia<br><span style="font-size:10px;color:var(--text-faint)">1499 — 13/12/1557</span></div>
+      <div class="citacao-bio">Italiano. Matematico. Primeiro a aplicar matematica a balistica. Publicou Nova Scientia (1537), antecipando a cinematica de projeteis.</div>
+    </div>
+    <div class="citacao-card" data-autor="Douglas Adams">
+      <div class="citacao-text">&quot;O voo e a arte de cair sem atingir o chao.&quot;</div>
+      <div class="citacao-autor">Douglas Adams<br><span style="font-size:10px;color:var(--text-faint)">11/03/1952 — 11/05/2001</span></div>
+      <div class="citacao-bio">Britanico. Escritor. Autor de O Guia do Mochileiro das Galaxias. Humorista cientifico cuja frase ironiza a mecanica do lancamento obliquo.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 3 — Dinamica">
+  <div class="tema-header">TEMA 3 — Dinamica</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T07 — Leis de Newton (Plano Horizontal)</div>
+    <div class="citacao-card" data-autor="Joseph-Louis Lagrange">
+      <div class="citacao-text">&quot;As leis da mecânica são o alfabeto com o qual Deus escreveu a natureza.&quot;</div>
+      <div class="citacao-autor">Joseph-Louis Lagrange<br><span style="font-size:10px;color:var(--text-faint)">25/01/1736 — 10/04/1813</span></div>
+      <div class="citacao-bio">Italiano-francês. Matemático e astrônomo. Reformulou a mecânica de Newton com o cálculo variacional (Mecânica Analítica, 1788). Unificou as leis do movimento em um formalismo elegante e universal.</div>
+    </div>
+    <div class="citacao-card" data-autor="Jean le Rond d&#x27;Alembert">
+      <div class="citacao-text">&quot;O equilibrio entre acao e reacao sustenta toda estrutura.&quot;</div>
+      <div class="citacao-autor">Jean le Rond d&#x27;Alembert<br><span style="font-size:10px;color:var(--text-faint)">16/11/1717 — 29/10/1783</span></div>
+      <div class="citacao-bio">Frances. Matematico e fisico. Principio de d&#x27;Alembert (dinamica como equilibrio). Co-editor da Encyclopedie. Contribuiu para mecanica de fluidos e vibracoes.</div>
+    </div>
+    <div class="citacao-card" data-autor="Albert Abraham Michelson">
+      <div class="citacao-text">&quot;Em física, basta medir uma única grandeza com precisão suficiente para abrir as portas de um novo mundo.&quot;</div>
+      <div class="citacao-autor">Albert Abraham Michelson<br><span style="font-size:10px;color:var(--text-faint)">19/12/1852 — 09/05/1931</span></div>
+      <div class="citacao-bio">Alemão-americano. Físico (Nobel 1907). Mediu a velocidade da luz com precisão recorde. Seu interferômetro (com Morley) refutou o éter luminífero, abrindo caminho para a relatividade.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T08 — Plano Inclinado e Atrito</div>
+    <div class="citacao-card" data-autor="Charles-Augustin de Coulomb">
+      <div class="citacao-text">&quot;A mecânica é a rainha das artes.&quot;</div>
+      <div class="citacao-autor">Charles-Augustin de Coulomb<br><span style="font-size:10px;color:var(--text-faint)">14/06/1736 — 23/08/1806</span></div>
+      <div class="citacao-bio">Francês. Físico e engenheiro. Formulou a lei de Coulomb para forças elétricas. Estudou atrito, torção e elasticidade. Pioneiro da engenharia estrutural e da física experimental aplicada.</div>
+    </div>
+    <div class="citacao-card" data-autor="Charles-Augustin de Coulomb">
+      <div class="citacao-text">&quot;O atrito pode ser inimigo ou aliado — depende do engenheiro.&quot;</div>
+      <div class="citacao-autor">Charles-Augustin de Coulomb<br><span style="font-size:10px;color:var(--text-faint)">14/06/1736 — 23/08/1806</span></div>
+      <div class="citacao-bio">Frances. Fisico e engenheiro. Formulou as leis do atrito seco e da eletrostatica. A unidade coulomb de carga eletrica leva seu nome.</div>
+    </div>
+    <div class="citacao-card" data-autor="Lazare Carnot">
+      <div class="citacao-text">&quot;A rampa e o artificio que transforma forca em distancia.&quot;</div>
+      <div class="citacao-autor">Lazare Carnot<br><span style="font-size:10px;color:var(--text-faint)">13/05/1753 — 02/08/1823</span></div>
+      <div class="citacao-bio">Frances. Matematico, fisico e politico. Pai da mecanica das maquinas. Principio de Carnot (eficiencia). Organizador dos exercitos revolucionarios.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T09 — Forca Centripeta</div>
+    <div class="citacao-card" data-autor="Christiaan Huygens">
+      <div class="citacao-text">&quot;Todo corpo em movimento circular busca escapar pelo tangente.&quot;</div>
+      <div class="citacao-autor">Christiaan Huygens<br><span style="font-size:10px;color:var(--text-faint)">14/04/1629 — 08/07/1695</span></div>
+      <div class="citacao-bio">Holandes. Fisico e matematico. Formulou a forca centripeta, inventou o relogio de pendulo, propos a teoria ondulatoria da luz.</div>
+    </div>
+    <div class="citacao-card" data-autor="Edmond Halley">
+      <div class="citacao-text">&quot;O movimento circular uniforme é o movimento natural dos corpos celestes.&quot;</div>
+      <div class="citacao-autor">Edmond Halley<br><span style="font-size:10px;color:var(--text-faint)">08/11/1656 — 25/01/1742</span></div>
+      <div class="citacao-bio">Inglês. Astrônomo e matemático. Previu o retorno do cometa que leva seu nome (1758). Financiou a publicação do Principia de Newton. Mapeou estrelas do hemisfério sul e estudou magnetismo terrestre.</div>
+    </div>
+    <div class="citacao-card" data-autor="Ernst Mach">
+      <div class="citacao-text">&quot;O carrossel e a aula de fisica mais divertida do parque.&quot;</div>
+      <div class="citacao-autor">Ernst Mach<br><span style="font-size:10px;color:var(--text-faint)">18/02/1838 — 19/02/1916</span></div>
+      <div class="citacao-bio">Austriaco. Fisico e filosofo. Critica ao espaco absoluto influenciou Einstein. Numero de Mach na aerodinamica. Empirismo radical.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 4 — Energia e Momento">
+  <div class="tema-header">TEMA 4 — Energia e Momento</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T10 — Trabalho e Energia Cinetica</div>
+    <div class="citacao-card" data-autor="Gaspard-Gustave de Coriolis">
+      <div class="citacao-text">&quot;Trabalho e forca vezes deslocamento — nada mais, nada menos.&quot;</div>
+      <div class="citacao-autor">Gaspard-Gustave de Coriolis<br><span style="font-size:10px;color:var(--text-faint)">21/05/1792 — 19/09/1843</span></div>
+      <div class="citacao-bio">Frances. Matematico e engenheiro. Definiu trabalho mecanico (1829). Efeito Coriolis na rotacao terrestre. Base da engenharia energetica.</div>
+    </div>
+    <div class="citacao-card" data-autor="Gaspard-Gustave de Coriolis">
+      <div class="citacao-text">&quot;O trabalho é a medida da energia transferida.&quot;</div>
+      <div class="citacao-autor">Gaspard-Gustave de Coriolis<br><span style="font-size:10px;color:var(--text-faint)">21/05/1792 — 19/09/1843</span></div>
+      <div class="citacao-bio">Francês. Matemático e engenheiro. Definiu formalmente o conceito de trabalho mecânico (1829). Estudou o efeito da rotação da Terra sobre os movimentos (força de Coriolis). Contribuiu para a engenharia de máquinas.</div>
+    </div>
+    <div class="citacao-card" data-autor="Thomas Young">
+      <div class="citacao-text">&quot;O trabalho dignifica o homem — e a energia dignifica o trabalho.&quot;</div>
+      <div class="citacao-autor">Thomas Young<br><span style="font-size:10px;color:var(--text-faint)">13/06/1773 — 10/05/1829</span></div>
+      <div class="citacao-bio">Britanico. Polimata. Introduziu o conceito moderno de energia. Experiencia da fenda dupla (onda luminosa). Decifrou hieroglifos (Pedra de Roseta).</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T11 — Conservacao de Energia</div>
+    <div class="citacao-card" data-autor="Emmy Noether">
+      <div class="citacao-text">&quot;A energia não pode ser criada nem destruída — apenas mudar de forma.&quot;</div>
+      <div class="citacao-autor">Emmy Noether<br><span style="font-size:10px;color:var(--text-faint)">23/03/1882 — 14/04/1935</span></div>
+      <div class="citacao-bio">Alemã. Matemática. Formulou o teorema de Noether (1915): toda simetria na natureza corresponde a uma lei de conservação. Einstein a chamou de &#x27;o gênio mais importante da história da matemática&#x27;.</div>
+    </div>
+    <div class="citacao-card" data-autor="Emmy Noether">
+      <div class="citacao-text">&quot;Conservacao e o principio mais fertil da fisica.&quot;</div>
+      <div class="citacao-autor">Emmy Noether<br><span style="font-size:10px;color:var(--text-faint)">23/03/1882 — 14/04/1935</span></div>
+      <div class="citacao-bio">Alema. Matematica. Teorema de Noether: toda simetria implica uma lei de conservacao. Revolucionou a algebra abstrata e a fisica teorica.</div>
+    </div>
+    <div class="citacao-card" data-autor="William Rankine">
+      <div class="citacao-text">&quot;A montanha-russa e o laboratorio perfeito de conservacao de energia.&quot;</div>
+      <div class="citacao-autor">William Rankine<br><span style="font-size:10px;color:var(--text-faint)">05/07/1820 — 24/12/1872</span></div>
+      <div class="citacao-bio">Britanico. Engenheiro e fisico. Introduziu os termos energia potencial e energia cinetica. Ciclo de Rankine na termodinamica aplicada.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T12 — Momento Linear e Colisoes</div>
+    <div class="citacao-card" data-autor="Rene Descartes">
+      <div class="citacao-text">&quot;O momento e a quantidade de movimento — massa vezes velocidade.&quot;</div>
+      <div class="citacao-autor">Rene Descartes<br><span style="font-size:10px;color:var(--text-faint)">31/03/1596 — 11/02/1650</span></div>
+      <div class="citacao-bio">Frances. Filosofo, matematico e fisico. Introduziu o conceito de quantidade de movimento. Geometria analitica (plano cartesiano). Cogito ergo sum.</div>
+    </div>
+    <div class="citacao-card" data-autor="Willem 's Gravesande">
+      <div class="citacao-text">&quot;A vis viva — a força viva — é a verdadeira medida do movimento.&quot;</div>
+      <div class="citacao-autor">Willem 's Gravesande<br><span style="font-size:10px;color:var(--text-faint)">26/09/1688 — 28/02/1742</span></div>
+      <div class="citacao-bio">Holandês. Físico e matemático. Demonstrou experimentalmente a vis viva de Leibniz com esferas caindo em argila. Professor em Leiden. Introduziu a física newtoniana no continente europeu.</div>
+    </div>
+    <div class="citacao-card" data-autor="Benjamin Robins">
+      <div class="citacao-text">&quot;A probabilidade é em parte resultado da ignorância e em parte resultado do conhecimento.&quot;</div>
+      <div class="citacao-autor">Benjamin Robins<br><span style="font-size:10px;color:var(--text-faint)">1707 — 29/07/1751</span></div>
+      <div class="citacao-bio">Inglês. Matemático e engenheiro militar. Inventou o pêndulo balístico para medir velocidade de projéteis. Autor de New Principles of Gunnery. Pioneiro da balística experimental e da mecânica do impacto.</div>
+    </div>
+  </div>
+</div>
+<div class="tema-section" data-tema="TEMA 5 — Estatica e Fluidos">
+  <div class="tema-header">TEMA 5 — Estatica e Fluidos</div>
+  <div class="trilha-group">
+    <div class="trilha-label">T13 — Equilibrio e Torque</div>
+    <div class="citacao-card" data-autor="Simeon Denis Poisson">
+      <div class="citacao-text">&quot;Não perturbe meus círculos.&quot;</div>
+      <div class="citacao-autor">Simeon Denis Poisson<br><span style="font-size:10px;color:var(--text-faint)">21/06/1781 — 25/04/1840</span></div>
+      <div class="citacao-bio">Francês. Matemático e físico. Contribuições em mecânica, eletrostática e teoria da elasticidade. Formulou a equação de Poisson e a distribuição de probabilidade que leva seu nome.</div>
+    </div>
+    <div class="citacao-card" data-autor="Daniel Bernoulli">
+      <div class="citacao-text">&quot;O equilibrio e a condicao da estabilidade.&quot;</div>
+      <div class="citacao-autor">Daniel Bernoulli<br><span style="font-size:10px;color:var(--text-faint)">08/02/1700 — 17/03/1782</span></div>
+      <div class="citacao-bio">Suico. Matematico e fisico. Equacao de Bernoulli (fluidos). Contribuiu para elasticidade, estatica e teoria cinetica dos gases.</div>
+    </div>
+    <div class="citacao-card" data-autor="Simeon Denis Poisson">
+      <div class="citacao-text">&quot;O torque e a rotacao do forca.&quot;</div>
+      <div class="citacao-autor">Simeon Denis Poisson<br><span style="font-size:10px;color:var(--text-faint)">21/06/1781 — 25/04/1840</span></div>
+      <div class="citacao-bio">Frances. Matematico e fisico. Coeficiente de Poisson (elasticidade). Equacao de Poisson (eletrostatica). Sistematizou a mecanica analitica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T14 — Pressao e Empuxo</div>
+    <div class="citacao-card" data-autor="Otto von Guericke">
+      <div class="citacao-text">&quot;A pressão aplicada a um fluido confinado é transmitida integralmente a todos os pontos do fluido.&quot;</div>
+      <div class="citacao-autor">Otto von Guericke<br><span style="font-size:10px;color:var(--text-faint)">20/11/1602 — 11/05/1686</span></div>
+      <div class="citacao-bio">Alemão. Físico e engenheiro. Inventor da bomba de vácuo. Famoso pelo experimento dos hemisférios de Magdeburgo (1654), demonstrando a força da pressão atmosférica com cavalos.</div>
+    </div>
+    <div class="citacao-card" data-autor="Robert Boyle">
+      <div class="citacao-text">&quot;Vivemos submersos no fundo de um oceano de ar.&quot;</div>
+      <div class="citacao-autor">Robert Boyle<br><span style="font-size:10px;color:var(--text-faint)">25/01/1627 — 31/12/1691</span></div>
+      <div class="citacao-bio">Irlandês-britânico. Químico e físico. Formulou a lei de Boyle (pressão × volume). Pai da química moderna. Pioneiro do método experimental, da pneumática e do conceito de elemento químico.</div>
+    </div>
+    <div class="citacao-card" data-autor="Otto von Guericke">
+      <div class="citacao-text">&quot;O vacuo existe — e a natureza nao o teme.&quot;</div>
+      <div class="citacao-autor">Otto von Guericke<br><span style="font-size:10px;color:var(--text-faint)">30/11/1602 — 21/05/1686</span></div>
+      <div class="citacao-bio">Alemao. Fisico e politico. Experiencia dos hemisferios de Magdeburgo (1654): 16 cavalos nao separaram hemisferios evacuados. Provou a existencia do vacuo e a forca da pressao atmosferica.</div>
+    </div>
+  </div>
+  <div class="trilha-group">
+    <div class="trilha-label">T15 — Viscosidade e Escoamento</div>
+    <div class="citacao-card" data-autor="George Gabriel Stokes">
+      <div class="citacao-text">&quot;A viscosidade e o atrito interno dos fluidos.&quot;</div>
+      <div class="citacao-autor">George Gabriel Stokes<br><span style="font-size:10px;color:var(--text-faint)">13/08/1819 — 01/02/1903</span></div>
+      <div class="citacao-bio">Irlandes/britanico. Matematico e fisico. Lei de Stokes (arrasto viscoso em esferas). Equacoes de Navier-Stokes. Fluorescencia.</div>
+    </div>
+    <div class="citacao-card" data-autor="Osborne Reynolds">
+      <div class="citacao-text">&quot;O escoamento pode ser laminar ou turbulento — o numero de Reynolds decide.&quot;</div>
+      <div class="citacao-autor">Osborne Reynolds<br><span style="font-size:10px;color:var(--text-faint)">23/08/1842 — 21/02/1912</span></div>
+      <div class="citacao-bio">Irlandes/britanico. Engenheiro e fisico. Numero de Reynolds (transicao laminar-turbulento). Experiencia classica com corante em tubos (1883).</div>
+    </div>
+    <div class="citacao-card" data-autor="Henri Navier">
+      <div class="citacao-text">&quot;A agua encontra seu caminho — e o engenheiro deve respeitar esse caminho.&quot;</div>
+      <div class="citacao-autor">Henri Navier<br><span style="font-size:10px;color:var(--text-faint)">10/02/1785 — 21/08/1836</span></div>
+      <div class="citacao-bio">Frances. Engenheiro e fisico. Co-autor das equacoes de Navier-Stokes (mecanica dos fluidos). Projetou pontes e contribuiu para a elasticidade.</div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+function toggleTheme() {
+  const root = document.documentElement;
+  const current = root.getAttribute('data-theme');
+  root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+}
+function filtrar() {
+  const tema = document.getElementById('filtro-tema').value;
+  const soRep = document.getElementById('filtro-rep').checked;
+  document.querySelectorAll('.tema-section').forEach(s => {
+    s.style.display = (!tema || s.dataset.tema === tema) ? '' : 'none';
+  });
+  document.querySelectorAll('.citacao-card').forEach(c => {
+    c.style.display = (soRep && !c.classList.contains('repeated')) ? 'none' : '';
+  });
+}
+window.addEventListener('message', function(ev) {
+  if (!ev.data || ev.data.type !== 'getCitacoes') return;
+  var code = ev.data.trilha;
+  var result = [];
+  document.querySelectorAll('.trilha-group').forEach(function(g) {
+    var label = g.querySelector('.trilha-label');
+    if (label && label.textContent.trim().indexOf(code + ' ') === 0) {
+      g.querySelectorAll('.citacao-card').forEach(function(c) {
+        var rep = c.classList.contains('repeated');
+        result.push({
+          texto: c.querySelector('.citacao-text') ? c.querySelector('.citacao-text').textContent.trim() : '',
+          autor: c.getAttribute('data-autor') || '',
+          bio: c.querySelector('.citacao-bio') ? c.querySelector('.citacao-bio').textContent.trim() : '',
+          repetida: rep
+        });
+      });
+    }
+  });
+  ev.source.postMessage({ type: 'citacoesData', trilha: code, citacoes: result }, '*');
+});
+</script>
+</body>
+</html>
