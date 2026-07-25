@@ -1833,7 +1833,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
         </p>
         <div class="ondas-visual" id="ondas-visual">
           <div class="onda-col">
-            <div class="onda-header">Onda 1 — Plano</div>
+            <div class="onda-header">Onda 1 — Texto Temático</div>
             <div class="onda-body">
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> Camada 2</div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~30 min/trilha</div>
@@ -1909,28 +1909,40 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
         <h2 class="section-title">Como Usar o Claude (Passo a Passo)</h2>
         <div style="display:grid;gap:10px;">
           <div class="card s-done" style="border-left:3px solid var(--ouro);">
-            <div class="card-sigla">1. Elaborar o Plano (Onda 1)</div>
-            <div class="card-name">Protocolo 1: antes de qualquer OA, preencha o formulário digital
-              <a href="skill_onda1_plano-v1.html" target="_blank" style="color:var(--ouro);text-decoration:underline;">Onda 1 — Plano</a>
-              (~30 min/trilha). Ele define os assuntos dos 5 tópicos, protagonistas, epígrafe e contextualizações que ancoram todos os OAs da trilha.</div>
+            <div class="card-sigla">1. Planejar a trilha (aba Texto Tem&aacute;tico)</div>
+            <div class="card-name">Antes de qualquer OA, preencha o formul&aacute;rio digital da aba
+              <a href="skill_onda1_plano-v1.html" target="_blank" style="color:var(--ouro);text-decoration:underline;">Texto Tem&aacute;tico</a>
+              (~30 min/trilha). Ele define os 5 t&oacute;picos, protagonista, ep&iacute;grafe e contextualiza&ccedil;&otilde;es que ancoram todos os OAs, e gera o prompt da Camada 2 para colar no Claude Code.</div>
           </div>
           <div class="card s-partial">
-            <div class="card-sigla">2. Abrir sessão no Claude</div>
-            <div class="card-name">Diga: &ldquo;Estamos na Onda [N] do Tema [M], trilhas T[XX]&ndash;T[YY]&rdquo;. Cole o bloco gerado pelo Plano.</div>
+            <div class="card-sigla">2. Abrir sess&atilde;o no Claude Code</div>
+            <div class="card-name">Diga: &ldquo;Estamos na Onda [N] do Tema [M], trilhas T[XX]&ndash;T[YY]&rdquo; e cole o bloco gerado pelo plano.</div>
           </div>
           <div class="card s-partial">
-            <div class="card-sigla">3. Acionar skill</div>
-            <div class="card-name">Uma <em>skill</em> &eacute; um conjunto de instru&ccedil;&otilde;es que o Claude segue para gerar um OA completo de forma padronizada. Digite: <code style="color:var(--ouro);">/texto-tematico</code>, <code style="color:var(--ouro);">/apresentacao-trilha</code>, etc. Cada skill produz um OA pronto para revis&atilde;o.</div>
+            <div class="card-sigla">3. Acionar a skill do OA</div>
+            <div class="card-name">Uma <em>skill</em> &eacute; um conjunto de instru&ccedil;&otilde;es que o Claude segue para gerar um OA completo e padronizado. Digite: <code style="color:var(--ouro);">/texto-tematico</code>, <code style="color:var(--ouro);">/apresentacao-trilha</code>, etc.</div>
           </div>
           <div class="card s-partial">
             <div class="card-sigla">4. Revisar e aprovar</div>
-            <div class="card-name">Abra cada OA e digite ou fale &ldquo;aprovado&rdquo; para salvar, ou descreva ajustes para nova versão.</div>
+            <div class="card-name">Abra o OA e diga &ldquo;aprovado&rdquo; para salvar a vers&atilde;o final, ou descreva ajustes para gerar v{N+1} (nunca se sobrescreve vers&atilde;o aprovada).</div>
           </div>
           <div class="card s-partial">
-            <div class="card-sigla">5. Próximo OA</div>
-            <div class="card-name">Claude sugere o próximo da sequência, ou peça diretamente.</div>
+            <div class="card-sigla">5. Publicar e distribuir</div>
+            <div class="card-name">Pe&ccedil;a: &ldquo;Publique a trilha T{NN}&rdquo; &mdash; o coletor &eacute; injetado, o site &eacute; atualizado e os QR codes gerados. Links e fluxo na aba <strong>Distribui&ccedil;&atilde;o</strong>.</div>
+          </div>
+          <div class="card s-partial">
+            <div class="card-sigla">6. Acompanhar e intervir</div>
+            <div class="card-name">Na aba <strong>An&aacute;lise</strong>: entregas por turma, pendentes nominais e itens cr&iacute;ticos por @ID. Pe&ccedil;a ao Claude o relat&oacute;rio pedag&oacute;gico da trilha para preparar a pr&oacute;xima aula.</div>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">Prompts prontos &mdash; copiar e colar no Claude Code</h2>
+        <p style="font-size:12.5px;color:var(--texto-sub);margin-bottom:12px;">
+          Clique para copiar. Cole no Claude Code (Cowork), ajuste o que estiver entre { } e envie.
+        </p>
+        <div id="prompts-guias" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-bottom:8px;"></div>
       </section>
     </div>
 
@@ -2072,6 +2084,26 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       </section>
 
       <section>
+        <h2 class="section-title">Camada de Dados &mdash; Distribui&ccedil;&atilde;o &middot; Coleta &middot; An&aacute;lise (ATIVA)</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-bottom:24px;">
+          <div class="card s-done">
+            <div class="card-sigla">Site dos alunos</div>
+            <div class="card-name"><a href="https://nidecop-jafb.github.io/fc1-oa/" target="_blank" style="color:var(--ouro);">fc1-oa</a> (GitHub Pages) &mdash; 15 OAs de T01&ndash;T06 com login por RA, sem senha. 1 repo por disciplina (fe1-oa na onda E3).</div>
+          </div>
+          <div class="card s-done">
+            <div class="card-sigla">Coleta (Apps Script + Sheets)</div>
+            <div class="card-name">Planilha FC1-Respostas-2026 recebe envios em tempo real (abas envios/itens/sugestoes). Turma EQUIPE e linhas TESTE ficam fora das m&eacute;tricas. 1 planilha por disciplina.</div>
+          </div>
+          <div class="card s-done">
+            <div class="card-sigla">Painel na web (equipe)</div>
+            <div class="card-name"><a href="https://nidecop-jafb.github.io/painel-ecossistema/" target="_blank" style="color:var(--ouro);">painel-ecossistema</a> &mdash; este painel, publicado sem a chave (digitada 1x por membro). Publicar: <code style="color:var(--ouro);">publicar_painel.py</code>.</div>
+          </div>
+          <div class="card s-done">
+            <div class="card-sigla">Automa&ccedil;&atilde;o</div>
+            <div class="card-name"><code style="color:var(--ouro);">publicar_trilha.py</code> (coletor + site) &middot; <code style="color:var(--ouro);">gerar_qrcodes.py</code> (PNG/HTML/PDF) &middot; <code style="color:var(--ouro);">injetar_coletor.py</code>. Design completo em <span style="font-family:var(--mono);">_painel/arquitetura-dados-oa-v1.md</span>.</div>
+          </div>
+        </div>
+
         <h2 class="section-title">Pipelines de Compilação</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
           <div class="card s-done"><div class="card-sigla">LaTeX/Tectonic</div><div class="card-name">TT &rarr; PDF 14&times;21 (~35s)</div><div class="card-ver">compilar.ps1 + _templates_tex/</div></div>
@@ -2108,7 +2140,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       <section style="padding:0;display:flex;flex-direction:column;height:calc(100vh - var(--header-h) - 48px);">
         <div id="onda1-sticky-header" style="flex-shrink:0;z-index:10;background:var(--superficie);">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--cinza-borda);gap:8px;">
-          <h2 class="section-title" style="margin:0;font-size:16px;white-space:nowrap;">Onda 1 &mdash; Plano de Produ&ccedil;&atilde;o de uma Trilha de Aprendizagem</h2>
+          <h2 class="section-title" style="margin:0;font-size:16px;white-space:nowrap;">Texto Tem&aacute;tico &mdash; Plano de Produ&ccedil;&atilde;o da Trilha (Onda 1)</h2>
           <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
             <button onclick="postToOnda1('limparEstado')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:transparent;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.75);cursor:pointer;" title="Apagar campos e come&ccedil;ar nova trilha">&#10005; Nova Trilha</button>
             <button id="btn-painel-export" onclick="postToOnda1('exportRascunho')" style="display:none;font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px dashed var(--verde-claro);color:var(--verde-claro);cursor:pointer;">&#128190; Exportar rascunho (.md)</button>
@@ -2258,7 +2290,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
               <li><strong>Primeiro dia:</strong> abra um OA no site, digite seu RA de equipe, responda e envie</li>
               <li>Teste cada OA novo publicado e registre achados em "Sugest&otilde;es" (abaixo)</li>
               <li>Seus envios N&Atilde;O contaminam as m&eacute;tricas das turmas (turma EQUIPE &eacute; filtrada)</li>
-              <li>Use os prompts prontos para executar tarefas via Claude Code</li>
+              <li>Use os prompts prontos da aba <strong>Produ&ccedil;&atilde;o</strong> para executar tarefas via Claude Code</li>
             </ol>
           </div>
           <div style="border:1px solid var(--cinza-borda);padding:16px;background:var(--cinza-card);">
@@ -2274,12 +2306,6 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </ol>
           </div>
         </div>
-
-        <h2 class="section-title">Prompts prontos &mdash; copiar e colar no Claude Code</h2>
-        <p style="font-size:12.5px;color:var(--texto-sub);margin-bottom:12px;">
-          Clique para copiar. Cole no Claude Code (Cowork), ajuste o que estiver entre { } e envie.
-        </p>
-        <div id="prompts-guias" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-bottom:28px;"></div>
 
         <h2 class="section-title">Sugest&otilde;es de Aprimoramento</h2>
         <p style="font-size:12.5px;color:var(--texto-sub);margin-bottom:12px;">
@@ -2410,7 +2436,7 @@ function showTab(id) {
   if (main) main.scrollTop = 0;
   if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); }
   if (id === 'dados') lazyLoadIframe('dados-iframe');
-  if (id === 'guias') renderPromptsGuias();
+  if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
   if (id === 'qualidade') initQualidade();
 }
@@ -2640,13 +2666,13 @@ function selectTrilhaPainel(code) {
 /* ── DISCIPLINA × CURSO ── */
 
 var FC_ONDAS = [
-  { titulo:'Onda 1 — Plano', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
+  { titulo:'Onda 1 — Texto Temático', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
   { titulo:'Onda 2 — Pré-Aula', items:['TT','TT Digital','IT (Gemini)','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico → /imagem-tematica-manual → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico' },
   { titulo:'Onda 3 — Aula', items:['FA + DX','AP','PR'], tempo:'~30 min/trilha', skills:'/folha-de-atividades → /apresentacao-trilha → /provinha' },
   { titulo:'Onda 4 — Pós-Aula', items:['TM','TC','TR (A/B/C)'], tempo:'~40 min/trilha', skills:'/tarefa-minima → /tarefa-complementar → /trabalho' }
 ];
 var FE_ONDAS = [
-  { titulo:'Onda 1 — Plano', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
+  { titulo:'Onda 1 — Texto Temático', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
   { titulo:'Onda 2 — Pré-Laboratório', items:['TT','IP (Gemini)','CS','IE','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico-fe → /imagem-tematica-fe → /checklist-seguranca → /inventario-equipamento → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico-bancada' },
   { titulo:'Onda 3 — Laboratório', items:['RB','AP','PR'], tempo:'~30 min/trilha', skills:'/roteiro-bancada → /apresentacao-trilha → /provinha' },
   { titulo:'Onda 4 — Pós-Laboratório', items:['RM','RC','DX','PI (A/B/C)'], tempo:'~40 min/trilha', skills:'/relatorio-minimo → /relatorio-completo → /desafio-pedagogico → /projeto-investigativo' }
