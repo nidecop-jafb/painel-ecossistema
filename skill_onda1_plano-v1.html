@@ -1280,7 +1280,7 @@ select option { background: var(--superficie); color: var(--texto); }
         <div class="orq-fase" id="orq-fase-it">
           <div class="orq-fase-label">🖼️ Imagens</div>
           <div class="orq-fase-titulo">Imagens Temáticas</div>
-          <div class="orq-fase-oas">IT-CAPA · IT-01 a IT-10 · IT-11</div>
+          <div class="orq-fase-oas">IT-00 (capa) a IT-12 · 13 imagens · Protocolo v8</div>
           <div class="orq-fase-fmt" style="font-size:9px;color:var(--ouro);font-family:'DM Mono',monospace;margin-top:2px;opacity:.7;">.html</div>
           <div style="display:flex;gap:8px;margin:6px 0 2px;font-size:10px;">
             <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
@@ -4688,29 +4688,34 @@ function gerarPromptIT() {
 
 Trilha: ${ctx.code} — "${ctx.nome}"
 Base:   ${getFilePrefix()}${ctx.code}-TT-v1.md (aprovado pelo autor)
-OA:     Imagens Temáticas (IT) · 12 imagens 1200×1200 px
+OA:     Imagens Temáticas (IT) · 13 imagens 1200×1200 px (IT-00 capa + Figuras 1-12)
 Modo:   ${modos.join(' + ')}
 Legendas: ${legendas}
 
 ## Instrução
 
-Com base no TT aprovado da ${ctx.code}, gere os prompts das 12 Imagens Temáticas.
-Protocolo IT v6.2.
+Com base no TT aprovado da ${ctx.code}, gere os prompts das 13 Imagens Temáticas.
+**Protocolo IT v8** — tabela canônica: _skill_cowork/tabela-it-canonica-v8.md (ler antes de gerar).
 
 ## Saídas esperadas
 ${saidas}
-## Sequência das 12 imagens
+## Sequência das 13 imagens (v8)
 
-IT-CAPA → IT-01 a IT-10 → IT-11 (símbolo, ÚLTIMO)
+IT-00 Capa (SEM legenda) → IT-01 Símbolo da trilha (3D, após a epígrafe) →
+IT-02 Ato I/Gancho → IT-03 Explore Google Maps (Desenho) →
+IT-04 a IT-08 Tópicos 1-5 → IT-09 Ato III/Fechamento →
+IT-10 Conexões Interdisciplinares (Desenho técnico) →
+IT-11 Protocolo C5/RCP (antes do box) → IT-12 Ciência e Arte (dentro do box)
 
-## Regras obrigatórias
+## Regras obrigatórias (v8)
 
 - Todas 1200×1200 px (1:1 quadrado)
+- Arco narrativo: IT-00 → IT-02 (chegada DE COSTAS) → IT-09 (retorno DE COSTAS) — mesmo cenário e mesma referência anexada
+- Referência real anexada no Gemini: IT-00, IT-02, IT-03, IT-09 ("Anexe imagem real de referência.")
+- Parágrafo-âncora: o 1º parágrafo de cada seção do TT contextualiza e ancora a imagem, em diálogo com a legenda poética
 - Descritores físicos completos (~60 palavras) com roupa fixa por trilha
 - "jovem estudante universitário" (sem idade — filtro Gemini)
-- Estilo: fotorrealismo cinematográfico (IT-CAPA a IT-08)
-- IT-09: infográfico C5 com perguntas acessíveis
-- IT-11: símbolo abstrato da trilha
+- Estilos: Cinematográfico (default) · 3D (IT-01) · Desenho (IT-03) · Desenho técnico (IT-10)
 
 ## Legendas das imagens
 
