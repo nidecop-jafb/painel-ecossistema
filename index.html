@@ -2039,7 +2039,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
               <tr><td>/trabalho</td><td>Gera TR LaTeX &rarr; 3 PDFs A/B/C</td><td>TT + fragmento FI</td></tr>
               <tr><td>/prova-de-etapa</td><td>Monta PE do banco central</td><td>6-10 trilhas com itens</td></tr>
               <tr><td>/ponto-de-partida</td><td>Gera PP digital (PP-v4): Parte I autoavalia&ccedil;&atilde;o + Parte II 5 MC auto-corrigidas &rarr; .md + .html + publica&ccedil;&atilde;o/QR</td><td>TT aprovado</td></tr>
-              <tr><td>/testinho</td><td>Gera TN 3 versões A/B/C</td><td>TT aprovado</td></tr>
+              <tr><td>/testinho</td><td>Gera TN digital (TN-v4): 3 vers&otilde;es A/B/C &times; 5 quest&otilde;es mistas (10 pts, erros E#) &rarr; .md + .html + publica&ccedil;&atilde;o/QR</td><td>TT + MD + MC aprovados</td></tr>
               <tr><td>/mapa-conceitual</td><td>Gera MC interativo</td><td>TT aprovado</td></tr>
               <tr><td>/cartoes-didaticos</td><td>Gera CD flashcards</td><td>TT + MC</td></tr>
               <tr><td>/infografico</td><td>Gera IG interativo (3 versões)</td><td>TT aprovado</td></tr>
@@ -2435,6 +2435,8 @@ function showTab(id) {
 var PROMPTS_GUIAS = [
   { t: 'Gerar Ponto de Partida (PP) de uma trilha',
     p: 'Acione a skill /ponto-de-partida e gere o PP da T{NN} pelo Protocolo PP-v4 (Digital): Parte I com 5 autoavaliacoes (uma por topico do TT: Domino / Facil / Dificil + justificativa opcional) e Parte II com 5 MC A-D auto-corrigidas (Q1 Terminologia, Q2 Relacional, Q3 Transferencia, Q4 Teoria x Pratica, Q5 Formalizacao com dado da resolucao C5). Saidas: T{NN}-PP-v{N}.md (banco @ + Retorno Coletivo) + T{NN}-PP-v{N}-estudante.html (template T07-PP-v4). O PP nasce na mesma v{N} do TT aprovado. Depois publique no site e gere os QR codes.' },
+  { t: 'Gerar Testinho (TN) de uma trilha',
+    p: 'Acione a skill /testinho e gere o TN da T{NN} pelo Protocolo TN-v4 (Digital): 3 versoes equanimes A/B/C x 5 questoes de tipologia mista (Q1 MC 1pt Terminologia e Q2 MM 2pt Relacao e Q3 VF 3pt Transferencia com dados novos, fonte MD; Q4 MC 1pt Teoria x Pratica e Q5 MATRIZ 3pt Formalizacao, fonte MC) = 10 pts, erros E# + feedback 3 niveis. Saidas: T{NN}-TN-v{N}.md (banco 15 itens @ + Retorno Coletivo PP-TN) + T{NN}-TN-v{N}-estudante.html (template T07-TN-v3). O TN nasce na mesma v{N} do TT aprovado. Depois publique no site e gere os QR codes.' },
   { t: 'Publicar uma trilha no site',
     p: 'Publique a trilha T{NN} no site de OAs: rode _scripts/publicar_trilha.py T{NN}, faca commit e push no repositorio G:\\JA2026\\_publicacao\\fc1-oa e gere os QR codes com _scripts/gerar_qrcodes.py T{NN}.' },
   { t: 'Analisar dados de uma trilha',
