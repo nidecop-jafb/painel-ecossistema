@@ -2038,7 +2038,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
               <tr><td>/tarefa-complementar</td><td>Gera TC ENEM-style</td><td>TT + fragmento FI</td></tr>
               <tr><td>/trabalho</td><td>Gera TR LaTeX &rarr; 3 PDFs A/B/C</td><td>TT + fragmento FI</td></tr>
               <tr><td>/prova-de-etapa</td><td>Monta PE do banco central</td><td>6-10 trilhas com itens</td></tr>
-              <tr><td>/ponto-de-partida</td><td>Gera PP diagnóstico</td><td>TT aprovado</td></tr>
+              <tr><td>/ponto-de-partida</td><td>Gera PP digital (PP-v4): Parte I autoavalia&ccedil;&atilde;o + Parte II 5 MC auto-corrigidas &rarr; .md + .html + publica&ccedil;&atilde;o/QR</td><td>TT aprovado</td></tr>
               <tr><td>/testinho</td><td>Gera TN 3 versões A/B/C</td><td>TT aprovado</td></tr>
               <tr><td>/mapa-conceitual</td><td>Gera MC interativo</td><td>TT aprovado</td></tr>
               <tr><td>/cartoes-didaticos</td><td>Gera CD flashcards</td><td>TT + MC</td></tr>
@@ -2332,7 +2332,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
           <table class="cal-table">
             <tbody>
               <tr><td style="font-family:var(--mono);white-space:nowrap;">OA</td><td>Objeto de Aprendizagem &mdash; cada material da trilha (TT, TN, FA...)</td></tr>
-              <tr><td style="font-family:var(--mono);">TT / TN / PP</td><td>Texto Tem&aacute;tico (leitura pr&eacute;-aula) &middot; Testinho (10 min, 10 pts) &middot; Ponto de Partida (diagn&oacute;stico)</td></tr>
+              <tr><td style="font-family:var(--mono);">TT / TN / PP</td><td>Texto Tem&aacute;tico (leitura pr&eacute;-aula) &middot; Testinho (10 min, 10 pts) &middot; Ponto de Partida (autoavalia&ccedil;&atilde;o + diagn&oacute;stico digital, nota pelo envio)</td></tr>
               <tr><td style="font-family:var(--mono);">PR / TM / TC / TR</td><td>Provinha (aula) &middot; Tarefa M&iacute;nima &middot; Tarefa Complementar &middot; Trabalho (p&oacute;s-aula)</td></tr>
               <tr><td style="font-family:var(--mono);">C5</td><td>Protocolo de modelagem cient&iacute;fica em 8 etapas (interpretar &rarr; responder o que foi pedido)</td></tr>
               <tr><td style="font-family:var(--mono);">@ID</td><td>Identificador &uacute;nico de cada quest&atilde;o no Banco Central de Itens (ex.: T01-TN-B1-A)</td></tr>
@@ -2433,6 +2433,8 @@ function showTab(id) {
 
 /* ── GUIAS: prompts prontos para o Claude Code ── */
 var PROMPTS_GUIAS = [
+  { t: 'Gerar Ponto de Partida (PP) de uma trilha',
+    p: 'Acione a skill /ponto-de-partida e gere o PP da T{NN} pelo Protocolo PP-v4 (Digital): Parte I com 5 autoavaliacoes (uma por topico do TT: Domino / Facil / Dificil + justificativa opcional) e Parte II com 5 MC A-D auto-corrigidas (Q1 Terminologia, Q2 Relacional, Q3 Transferencia, Q4 Teoria x Pratica, Q5 Formalizacao com dado da resolucao C5). Saidas: T{NN}-PP-v{N}.md (banco @ + Retorno Coletivo) + T{NN}-PP-v{N}-estudante.html (template T07-PP-v4). O PP nasce na mesma v{N} do TT aprovado. Depois publique no site e gere os QR codes.' },
   { t: 'Publicar uma trilha no site',
     p: 'Publique a trilha T{NN} no site de OAs: rode _scripts/publicar_trilha.py T{NN}, faca commit e push no repositorio G:\\JA2026\\_publicacao\\fc1-oa e gere os QR codes com _scripts/gerar_qrcodes.py T{NN}.' },
   { t: 'Analisar dados de uma trilha',
