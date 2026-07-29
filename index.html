@@ -2347,6 +2347,47 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
           </div>
         </div>
 
+        <h2 class="section-title">Guia &mdash; Bot&atilde;o "Exportar JSON" dos OAs (plano B da coleta)</h2>
+        <p style="font-size:13px;color:var(--texto-sub);margin-bottom:12px;">
+          Presente em <strong>todos os OAs digitais</strong> (PP &middot; TN &middot; PR &middot; TM &middot; TC).
+          &Eacute; o <strong>comprovante de respostas em forma de arquivo</strong>: um <span style="font-family:var(--mono);">.json</span>
+          com nome, turma, data, vers&atilde;o A/B/C, tentativa, respostas, gabarito, pontos por quest&atilde;o e nota final &mdash;
+          o mesmo pacote que o OA envia automaticamente &agrave; planilha FC1-Respostas-2026, s&oacute; que gravado no aparelho.
+        </p>
+        <div style="border:1px solid var(--cinza-borda);background:var(--cinza-card);padding:14px 16px;margin-bottom:12px;">
+          <div style="font-size:12.5px;font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">Quando o bot&atilde;o aparece (e quando N&Atilde;O)</div>
+          <ul style="font-size:12.5px;line-height:1.7;padding-left:18px;color:var(--texto);">
+            <li><strong>Uso normal (site fc1-oa):</strong> o bot&atilde;o fica <strong>OCULTO</strong>. Ao enviar, o OA transmite tudo sozinho e mostra "&#10003; Respostas registradas &mdash; comprovante XXXX". Deu certo, n&atilde;o h&aacute; o que exportar.</li>
+            <li><strong>Falha no envio</strong> (internet caiu, servidor n&atilde;o respondeu): o OA avisa e o bot&atilde;o aparece. As respostas ficam salvas no aparelho &mdash; o estudante pode "Tentar novamente" ou exportar o arquivo como garantia.</li>
+            <li><strong>Uso sem coletor (offline):</strong> ao abrir o .html fora do site (professor revisando, aplica&ccedil;&atilde;o sem internet), o bot&atilde;o aparece ap&oacute;s o envio &mdash; o arquivo &eacute; a &uacute;nica forma de registrar o resultado.</li>
+          </ul>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:14px;">
+          <div style="border:1px solid var(--cinza-borda);background:var(--cinza-card);padding:14px 16px;">
+            <div style="font-size:12.5px;font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">Para o ESTUDANTE &mdash; rede de seguran&ccedil;a</div>
+            <p style="font-size:12.5px;line-height:1.7;color:var(--texto);">
+              Se o envio falhar, ele exporta o arquivo (baixa com nome, turma e data &mdash; ex.:
+              <span style="font-family:var(--mono);font-size:11px;">T07-TN-vC-MIN1A-Maria_Silva-....json</span>)
+              e entrega ao professor por e-mail ou pen drive. Nenhuma resposta se perde por sinal ruim.
+              <strong>Quem viu "Respostas registradas" com comprovante n&atilde;o precisa fazer nada</strong> &mdash; o bot&atilde;o nem estar&aacute; l&aacute;.
+            </p>
+          </div>
+          <div style="border:1px solid var(--cinza-borda);background:var(--cinza-card);padding:14px 16px;">
+            <div style="font-size:12.5px;font-weight:700;color:var(--ouro-claro);margin-bottom:8px;">Para o PROFESSOR &mdash; recupera&ccedil;&atilde;o e confer&ecirc;ncia</div>
+            <p style="font-size:12.5px;line-height:1.7;color:var(--texto);">
+              (1) <strong>Canal de recupera&ccedil;&atilde;o:</strong> o arquivo recebido de um aluno traz respostas, pontos e gabarito prontos
+              para lan&ccedil;ar a nota manualmente &mdash; a mesma informa&ccedil;&atilde;o que chegaria pela planilha.
+              (2) <strong>Confer&ecirc;ncia:</strong> ao testar um OA offline, exporte o JSON e verifique exatamente o que seria
+              coletado (estrutura, pontua&ccedil;&atilde;o, tentativa), sem poluir a planilha real.
+            </p>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--texto-sub);margin-bottom:24px;">
+          Resumo: <strong>"Exportar JSON" = comprovante em arquivo para quando o envio autom&aacute;tico n&atilde;o &eacute; poss&iacute;vel.</strong>
+          Se estiver invis&iacute;vel, &eacute; sinal de que tudo funcionou. Regra t&eacute;cnica: Protocolo CFG-OA v1
+          (<span style="font-family:var(--mono);">_skill_cowork/protocolo-cfg-oa-v1.md</span>) e SKILL.md de cada OA (comportamento "Exportar JSON = plano B").
+        </p>
+
         <h2 class="section-title">Sugest&otilde;es de Aprimoramento</h2>
         <p style="font-size:12.5px;color:var(--texto-sub);margin-bottom:12px;">
           Achou um problema, teve uma ideia ou algo ficou confuso? Registre aqui &mdash; a sugest&atilde;o
