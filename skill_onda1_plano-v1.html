@@ -3940,10 +3940,29 @@ Lacunas previstas: ${document.getElementById('lacunas-edit').value || '[a defini
 Competencia-sintese: ${document.getElementById('comp-edit').value || '[a definir]'}
 OA solicitado: ${oa}
 Formatos solicitados: ${getFormatos()}
-Versao: v1
+Versao: v{N} — definida pela regra de versionamento da secao 7
 Observacoes especificas: ${document.getElementById('obs-edit').value || '[a definir]'}${guiasOutput}
 
-Aguarde minha solicitacao do primeiro OA antes de gerar qualquer conteudo.
+## 7 · Entrega — salvar e gerar (versionamento CLAUDE.md secao 4)
+
+> A secao 7 e instrucao operacional para o Claude Code — NAO deve ser gravada no arquivo .md.
+
+### Passo 1 — Salvar esta Camada 2 (.md, raiz da pasta da trilha)
+
+1. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-Camada2-v*.md em Trilhas_de_Aprendizagem/${_pastaTriha()}/
+2. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/ · se nao existir, salvar como v1 · NUNCA sobrescrever versao existente
+3. Nome: ${getFilePrefix()}${estado.trilha}-Camada2-v{N}.md · ajustar o campo "versao:" do YAML para o v{N} salvo
+4. Conteudo do arquivo: do YAML inicial ate o fim da secao 6 (excluir esta secao 7)
+
+### Passo 2 — Gerar o Texto Tematico (TT) em .md
+
+1. Acionar a skill texto-tematico e ler o SKILL.md antes de gerar
+2. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-TT-v*.md em Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+3. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/ · se nao existir, salvar como v1
+4. Nome: ${getFilePrefix()}${estado.trilha}-TT-v{N}.md · Pasta destino: Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+5. Demais formatos selecionados (${getFormatos()}) somente apos aprovacao do .md pelo autor
+
+Apos entregar o TT .md, aguarde aprovacao do autor antes de gerar outros OAs.
 
 ---
 Gerado em: ${dataStr}
@@ -3961,7 +3980,7 @@ Skill: Camada 2 — Abertura de Trilha v4.0 (elenco canônico · Protocolo v1) |
   if(orqLabel) orqLabel.textContent = estado.trilha + ' — "' + t.nome + '" · Gere o TT âncora primeiro';
   atualizarFases();
   document.getElementById('output-section').scrollIntoView({behavior:'smooth'});
-  showToast('Camada 2 gerada — use "Copiar Camada 2" para salvar via Claude Code', 'ouro');
+  showToast('Prompt do Texto Tematico gerado — use "Copiar Prompt" e cole no Claude Code', 'ouro');
 }
 
 function copiarOutput() {
@@ -4258,16 +4277,8 @@ function executarNoClaudeCode() {
   }
   if (!c2Txt || c2Txt.length < 10) { showToast('Nenhum conteúdo. Verifique os campos.', 'erro'); return; }
   var pasta = _pastaTriha();
-  var cmd = '# Salvar Camada 2 — ' + estado.trilha + '\n\n'
-    + 'Salve o conteúdo abaixo como arquivo Markdown na pasta da trilha.\n\n'
-    + '## Regras de versionamento (CLAUDE.md seção 4)\n\n'
-    + '1. Verificar se já existe ' + estado.trilha + '-Camada2-v*.md em Trilhas_de_Aprendizagem/' + pasta + '/\n'
-    + '2. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/\n'
-    + '3. Se não existir, salvar como v1\n'
-    + '4. Pasta destino: Trilhas_de_Aprendizagem/' + pasta + '/\n\n'
-    + '## Conteúdo do arquivo\n\n'
-    + c2Txt;
-  _copiarTexto(cmd).then(function() {
+  // O prompt do Finalizar ja embute a secao "7 · Entrega" (versionamento + pastas) — copiar como esta
+  _copiarTexto(c2Txt).then(function() {
     showToast('✓ Camada 2 copiada — cole no Claude Code (Ctrl+V)', 'ouro');
     _mostrarComandoClaude('Camada 2', pasta);
   }).catch(function() {
