@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Critérios de Sucesso por OA — FC1 &amp; FE1</title>
+</head>
+<body>
+
+<style>
+  @font-face {
+    font-family: 'Display';
+    src: local('Georgia'), local('Times New Roman');
+  }
+
+  :root {
+    --bg: #FAFAF7;
+    --bg-card: #FFFFFF;
+    --bg-card-alt: #F5F4F0;
+    --text: #1A1A1A;
+    --text-muted: #5C5A54;
+    --accent-fc1: #1B6B4A;
+    --accent-fc1-light: #E8F5EE;
+    --accent-fe1: #8B4513;
+    --accent-fe1-light: #FDF0E6;
+    --border: #D9D6CE;
+    --border-light: #EDEAE3;
+    --pass: #2D8659;
+    --pass-bg: #E8F5EE;
+    --warn: #B8860B;
+    --warn-bg: #FFF8E7;
+    --tip-bg: #F0F4FF;
+    --tip-border: #7B8EC2;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --tag-auto: #1B6B4A;
+    --tag-auto-bg: #E8F5EE;
+    --tag-manual: #6B5B1B;
+    --tag-manual-bg: #FFF8E7;
+    --tag-script: #4A1B6B;
+    --tag-script-bg: #F3E8FF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1A1917;
+      --bg-card: #242320;
+      --bg-card-alt: #2A2926;
+      --text: #E8E6E0;
+      --text-muted: #9B9890;
+      --accent-fc1: #4ABA82;
+      --accent-fc1-light: #1A2E23;
+      --accent-fe1: #D4935A;
+      --accent-fe1-light: #2E2118;
+      --border: #3A3830;
+      --border-light: #2E2D28;
+      --pass: #4ABA82;
+      --pass-bg: #1A2E23;
+      --warn: #D4A832;
+      --warn-bg: #2E2818;
+      --tip-bg: #1E2130;
+      --tip-border: #5A6A9A;
+      --shadow: 0 1px 3px rgba(0,0,0,0.3);
+      --tag-auto: #4ABA82;
+      --tag-auto-bg: #1A2E23;
+      --tag-manual: #D4A832;
+      --tag-manual-bg: #2E2818;
+      --tag-script: #B07AE0;
+      --tag-script-bg: #251A30;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1917;
+    --bg-card: #242320;
+    --bg-card-alt: #2A2926;
+    --text: #E8E6E0;
+    --text-muted: #9B9890;
+    --accent-fc1: #4ABA82;
+    --accent-fc1-light: #1A2E23;
+    --accent-fe1: #D4935A;
+    --accent-fe1-light: #2E2118;
+    --border: #3A3830;
+    --border-light: #2E2D28;
+    --pass: #4ABA82;
+    --pass-bg: #1A2E23;
+    --warn: #D4A832;
+    --warn-bg: #2E2818;
+    --tip-bg: #1E2130;
+    --tip-border: #5A6A9A;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --tag-auto: #4ABA82;
+    --tag-auto-bg: #1A2E23;
+    --tag-manual: #D4A832;
+    --tag-manual-bg: #2E2818;
+    --tag-script: #B07AE0;
+    --tag-script-bg: #251A30;
+  }
+  :root[data-theme="light"] {
+    --bg: #FAFAF7;
+    --bg-card: #FFFFFF;
+    --bg-card-alt: #F5F4F0;
+    --text: #1A1A1A;
+    --text-muted: #5C5A54;
+    --accent-fc1: #1B6B4A;
+    --accent-fc1-light: #E8F5EE;
+    --accent-fe1: #8B4513;
+    --accent-fe1-light: #FDF0E6;
+    --border: #D9D6CE;
+    --border-light: #EDEAE3;
+    --pass: #2D8659;
+    --pass-bg: #E8F5EE;
+    --warn: #B8860B;
+    --warn-bg: #FFF8E7;
+    --tip-bg: #F0F4FF;
+    --tip-border: #7B8EC2;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --tag-auto: #1B6B4A;
+    --tag-auto-bg: #E8F5EE;
+    --tag-manual: #6B5B1B;
+    --tag-manual-bg: #FFF8E7;
+    --tag-script: #4A1B6B;
+    --tag-script-bg: #F3E8FF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  h1 {
+    font-family: Georgia, 'Display', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin-bottom: 0.35rem;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .section-label.fc1 {
+    background: var(--accent-fc1-light);
+    color: var(--accent-fc1);
+  }
+
+  .section-label.fe1 {
+    background: var(--accent-fe1-light);
+    color: var(--accent-fe1);
+  }
+
+  .section-title {
+    font-family: Georgia, 'Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    background: var(--bg-card);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.87rem;
+  }
+
+  thead th {
+    background: var(--bg-card-alt);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr:hover { background: var(--bg-card-alt); }
+
+  .oa-sig {
+    font-weight: 700;
+    font-size: 0.82rem;
+    font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .oa-sig.fc1 { color: var(--accent-fc1); }
+  .oa-sig.fe1 { color: var(--accent-fe1); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .tag-auto { background: var(--tag-auto-bg); color: var(--tag-auto); }
+  .tag-manual { background: var(--tag-manual-bg); color: var(--tag-manual); }
+  .tag-script { background: var(--tag-script-bg); color: var(--tag-script); }
+
+  .meta-row {
+    background: var(--bg-card-alt);
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+  .meta-row td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 2px solid var(--border);
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .tip-box {
+    background: var(--tip-bg);
+    border-left: 3px solid var(--tip-border);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .tip-box h3 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--tip-border);
+    margin-bottom: 0.6rem;
+  }
+
+  .tip-box ol {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .tip-box li {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .tip-box li strong {
+    font-weight: 600;
+  }
+
+  .pass-target {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    background: var(--pass-bg);
+    color: var(--pass);
+    margin-top: 0.5rem;
+  }
+
+  .legend {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .criteria-cell {
+    max-width: 320px;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 1.25rem 1rem 3rem; }
+    h1 { font-size: 1.4rem; }
+    table { font-size: 0.82rem; }
+    thead th, tbody td { padding: 0.45rem 0.5rem; }
+    .criteria-cell { max-width: 200px; }
+  }
+</style>
+
+<div class="container">
+  <header>
+    <h1>Critérios de Sucesso por OA</h1>
+    <p class="subtitle">Diretrizes Karpathy §16 · Projeto Trilhas FC1 &amp; FE1 · atualizado em 2026-08-04 para os protocolos vigentes (FC1 A4.23 · raiz A4.14 · FE1 A5.1)</p>
+  </header>
+
+  <div class="legend">
+    <span class="legend-item"><span class="tag tag-auto">AUTO</span> validador roda sozinho</span>
+    <span class="legend-item"><span class="tag tag-script">SCRIPT</span> script dedicado / compilação</span>
+    <span class="legend-item"><span class="tag tag-manual">MANUAL</span> verificação pelo Claude</span>
+  </div>
+
+  <div class="tip-box" style="margin-top:0; margin-bottom:2rem;">
+    <h3>Gates disponíveis hoje — números reais</h3>
+    <ol>
+      <li><code>checklist_pre_entrega.py T{NN} {SIGLA}</code> — <strong>10 checks</strong>, vale para qualquer OA de FC1. É o gate genérico: nome, pasta, versão anterior em <code>xx/</code>, par de arquivos, pós-processamento, 2 versões, 3 versões, Moodle, contextualização tripla, C5 no Tipo 7.</li>
+      <li><code>validar_banco.py {caminho}.md</code> — <strong>11 checks</strong> sobre os 16 campos @ de PP, TN, PR, TM e TC. Recebe caminho de arquivo, não sigla de trilha.</li>
+      <li><code>validar_tt_fe.py {caminho}.tex</code> — <strong>10 checks</strong> do TT-FE, mais <code>--check-it</code> para a progressão de EPI nas imagens.</li>
+      <li><code>validar_tt.py</code> — valida <strong>.docx</strong> de TT. O pipeline .docx está congelado desde A4.2, então ele só alcança o legado T01-T06; TT novo é LaTeX/Tectonic ou digital e passa pelo <code>checklist_pre_entrega.py</code>.</li>
+      <li>Compilação Tectonic (<code>compilar.ps1</code>) é o gate de FA, TR, TT-FE, RB e PI: exit 0 e PDF válido.</li>
+    </ol>
+  </div>
+
+  <!-- ======================== TABELA 1 — FC1 ======================== -->
+  <section>
+    <div class="section-label fc1">Tabela 1</div>
+    <h2 class="section-title">Física Conceitual 1 (FC1)</h2>
+    <p class="section-desc">17 OAs · 60 trilhas (T01–T60) · Contextualização tripla: mineração + Ouro Preto + cotidiano</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>OA</th>
+            <th>Checks</th>
+            <th class="criteria-cell">Critérios de sucesso (verificáveis)</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- PRE-AULA -->
+          <tr class="meta-row"><td colspan="4">Pré-Aula</td></tr>
+          <tr>
+            <td><span class="oa-sig fc1">TT</span></td>
+            <td>10/10</td>
+            <td class="criteria-cell">3 Atos + 5 Tópicos no Ato II + epígrafe com atribuição + Ciência e Arte (5 elementos, obra e epígrafe inéditas no registro) + marcadores IT conforme a tabela canônica v8 + bloco EXPLORE + <strong>C5 de 8 etapas</strong> no Tipo 7 (tabela + resolução modelo) + sequência de equações (verbal→qualitativa→LaTeX→SI) + contextualização tripla por Tópico + protagonista da rotação + Autor/Co-Autor + nota de IA + INEDITISMO + compilação Tectonic exit 0 + par .md/.pdf na mesma v{N}</td>
+            <td><span class="tag tag-script">SCRIPT</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">TT-DIG</span></td>
+            <td>13/13</td>
+            <td class="criteria-cell">HTML self-contained (Brutalismo Científico, dark-first, oklch) + 5 sidebars com exclusão mútua (MÚSICA, INEDITISMO, SUMÁRIO, CRÉDITOS, FIGURAS) + C5 de 8 etapas + toda seção abre com parágrafo antes de figura ou box + <strong>sem</strong> barra do Piazzi e sem Tecnologias Digitais + print CSS oculta interativos + herda a mesma v{N} do TT fonte. Template: <code>T05-TT-v8-digital.html</code></td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">IT</span></td>
+            <td>7/7</td>
+            <td class="criteria-cell"><strong>Protocolo v8: 13 imagens</strong> (IT-00 capa sem legenda + Figuras 1–12 = IT-01 a IT-12), todas 1200×1200 + IT-01 símbolo 3D com fundo transparente + arco de costas IT-00→IT-02→IT-09 na mesma referência + estilos fixos (IT-03 Desenho, IT-10 Desenho técnico, demais Cinematográfico) + legenda poética + regra do parágrafo-âncora + roteiro coerente com as fotos reais de <code>_imagens_referencias/</code> + <strong>pós-geração</strong>: analisar cada imagem em <code>_imagens_download/</code>, mover só as aprovadas e arquivar a anterior em <code>xx/</code></td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">MD</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell"><strong>3 arquivos</strong> (<code>.txt</code> fonte do Gemini Notebook + <code>.md</code> legível com YAML de rastreio + <code>.html</code> guia/players) + narração em 7 seções (Contexto Geral + 5 Tópicos + Síntese) com <strong>950–1.400 palavras</strong> (alvo ~1.100) + exatamente 6 marcadores <code>[PPP]</code> + apêndices (Conexões, Equações, Prompt) após o encerramento e fora da contagem + dicionário fonético + nasce na v{N} do TT. Os 2 <code>.m4a</code> são passo manual do autor</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">MC</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell">5 tópicos interligados + hierarquia conceitual correta + termos-chave do TT</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">CD</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell">Flashcards cobrindo os 5 tópicos + glossário com termos do TT + formato exportável</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">PP</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell"><strong>PP-v4 digital</strong>: Parte I com 5 autoavaliações (uma por Tópico, Domino/Fácil/Difícil + justificativa opcional que nunca bloqueia o envio) + Parte II com 5 MC A-D auto-corrigidas (Terminologia, Relacional, Transferência, Teoria×Prática, Formalização com o dado do C5) + pareamento A<sub>n</sub>↔Q<sub>n</sub>↔C<sub>n</sub> + banco .md com 16 campos @ e <code>validar_banco.py</code> PASS 11/11 + <code>-estudante.html</code> (template <code>T07-PP-v6-estudante.html</code>) + publicação no fc1-oa + QR + nasce na v{N} do TT</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">TN</span></td>
+            <td>7/7</td>
+            <td class="criteria-cell"><strong>TN-v4 digital</strong>: 3 versões equânimes A/B/C × 5 questões auto-corrigíveis — MC 1 pt + MM 2 pt + VF 3 pt + MC 1 pt + MATRIZ 3 pt = 10 pts + blocos B1-B5 pareados 1:1 com C1-C5 + Q1-Q3 do MD e Q4-Q5 do MC + dados novos em Q3/Q5 + erros E# e feedback em 3 níveis em todo item + <strong>banco de 15 itens</strong> (não mais 20) + <code>-estudante.html</code> (template <code>T07-TN-v5-estudante.html</code>) + contrato do injetor respeitado + publicação no fc1-oa + QR + nasce na v{N} do TT. As saídas <code>-sistema.txt</code> e <code>-guia-professor.md</code> saíram de cena</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+
+          <!-- AULA -->
+          <tr class="meta-row"><td colspan="4">Aula</td></tr>
+          <tr>
+            <td><span class="oa-sig fc1">IG</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">3 HTMLs (estudante + professor + A4-PB) + 5 tópicos interativos + verificação automática funcional</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">FA</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">2 PDFs A4 compilam sem erro (professor + estudante) + 5 blocos do FA-Mini v10 + Tectonic exit 0 + <code>checklist_pre_entrega.py T{NN} FA</code> PASS</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">AP</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell"><strong>AP digital (HTML, 17 slides)</strong> — o deck de 13 slides em .pptx é legado. Modo palco dark-first + 6 sidebars + cronômetro por slide + revelação progressiva com conclusões dos Tópicos nascendo ocultas + <strong>as 4 camadas de ajuste de tela</strong> (C5 em 2 colunas nos slides 8-13; rolagem em todos os slides com a barra oculta; espaçamento por altura sem <code>!important</code> no nível base; capa e despedida nunca redefinem <code>position</code>) + <strong>varredura de transbordo vazia em 1366×768 E 1920×1080</strong>, com todas as etapas reveladas. Template: <code>T01-AP-v21-digital-cronometro.html</code></td>
+            <td><span class="tag tag-script">SCRIPT</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">PR</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell"><strong>PR-v2 digital</strong>: 3 versões A/B/C × 2 questões auto-corrigíveis — Q1 MC "Pense e Use" (4 pt, L3, aplicação direta de equação numerada do TT) + Q2 VF de 5 afirmações (6 pt, L4, etapas do C5 simplificado) = 10 pts + <strong>a afirmação de Plausibilidade é sempre FALSA</strong> e enuncia o erro intuitivo + dados diferentes dos exemplos do TT + banco de 6 itens com 16 campos @ + <code>-estudante.html</code> (template <code>T08-PR-v1-estudante.html</code>) + <strong>versão própria, não ancorada no TT</strong> + teste no navegador antes de entregar (10/10 nas 3 versões e 3,6/10 no caso Q1 errada + 2 VF trocadas). GIFT/XML saiu de cena</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">DX</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell">2 HTMLs (estudante + professor) + tipo correto entre os 12 disponíveis + vinculado ao OA pai</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+
+          <!-- POS-AULA -->
+          <tr class="meta-row"><td colspan="4">Pós-Aula</td></tr>
+          <tr>
+            <td><span class="oa-sig fc1">TM</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">Banco de 12 questões + 3 XML Moodle + fragmento FI lido automaticamente + 16 campos @ com <code>validar_banco.py</code> PASS</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">TC</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">TC-v3 ENEM-style: 5 MC com estímulo rico (texto-base 3-8 linhas) + 5 alternativas A-E + Bloom L4-L5 + XML Moodle + 16 campos @</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fc1">TR</span></td>
+            <td>5/5</td>
+            <td class="criteria-cell">3 PDFs de 4 páginas (versaoA Sofia + versaoB Pedro + versaoC Ana) + <strong>C5 de 8 etapas</strong> na Parte 2 + <code>\tridentificacao</code> no topo da pág. 3 (a página fotografada) + Tectonic exit 0 + <code>checklist_pre_entrega.py</code> PASS</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+
+          <!-- AVALIACAO -->
+          <tr class="meta-row"><td colspan="4">Avaliação</td></tr>
+          <tr>
+            <td><span class="oa-sig fc1">PE</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell"><strong>PE-v2</strong>: 15-20 itens de 6-10 trilhas (@Status ≥ aprovado, @Instrumentos contém PE) + balanceamento Bloom/Competência/Dificuldade + rastreabilidade PE-TRACE por @ID + <strong>2 cadernos</strong> com 3 versões anti-cópia A/B/C do Caderno 1 + correção automática por ZipGrade (Caderno 1) e manual (Caderno 2) + <code>gerar_pe_docx.py</code> produz os 5 .docx (caderno1 A/B/C + caderno2 + regente) sem erro</td>
+            <td><span class="tag tag-script">SCRIPT</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pass-target">Meta: 100% PASS antes de entregar ao autor</div>
+
+    <div class="tip-box">
+      <h3>Critérios transversais a todo OA digital</h3>
+      <ol>
+        <li><strong>CFG-OA v1:</strong> PP, TN e PR embutem <code>OA_ID</code> e <code>OA_CFG {versao_precarga, tentativas}</code>. Padrão: pré-carga <code>auto</code> (versão A/B/C por RA % 3, com as demais travadas) e <strong>1 envio</strong> — Restaurar não existe, e Descartar só aparece antes do envio. TM e TC entram no rollout na próxima revisão de <code>.html</code>.</li>
+        <li><strong>Contrato do injetor:</strong> <code>injetar_coletor.py</code> aborta se o HTML violar o contrato — options MIN1A/B/C, <code>toastContainer</code>, <code>.actions</code> com <code>#btnSubmit</code>, PREFIX correto, <code>exportJSON</code> canônico e toast final único.</li>
+        <li><strong>Exportar JSON é plano B:</strong> fica oculto e só aparece sem coletor (offline/professor) ou em falha de envio.</li>
+        <li><strong>O OA canônico nunca é alterado na publicação</strong> — o coletor entra só na cópia do repo <code>fc1-oa</code>.</li>
+        <li><strong>Publicação:</strong> <code>publicar_trilha.py T{NN}</code> → push no fc1-oa → <code>gerar_qrcodes.py T{NN}</code>. O áudio do MD é reencodado para AAC 40 kbps mono; áudio bruto nunca vai para o repo do site.</li>
+        <li><strong>Cabeçalho, encerramento e barra do Piazzi</strong> seguem o padrão canônico do FC1, e a música da barra é da própria trilha — nunca a que veio do template.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ======================== TABELA 2 — FE1 ======================== -->
+  <section>
+    <div class="section-label fe1">Tabela 2</div>
+    <h2 class="section-title">Física Experimental 1 (FE1)</h2>
+    <p class="section-desc">18 OAs · 17 trilhas (T0A + T01–T16) · Lab de Mecânica · prefixo FE- · EPI progressivo</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>OA</th>
+            <th>Checks</th>
+            <th class="criteria-cell">Critérios de sucesso (verificáveis)</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="meta-row"><td colspan="4">Pré-Lab</td></tr>
+          <tr>
+            <td><span class="oa-sig fe1">TT</span></td>
+            <td>10/10</td>
+            <td class="criteria-cell">Esqueleto v8 + <strong>C5 no Tópico 4</strong> (não no Tipo 7) + bibliografia manual + Explore em tcolorbox manual + prefixo FE- em todos os identificadores + armadilhas A14-A18 OK + Lab de Mecânica como eixo técnico + INEDITISMO + Tectonic exit 0 + par .tex/.pdf na mesma v{N}. Gate: <code>validar_tt_fe.py</code></td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">IP</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell"><strong>Imagens da Prática</strong> — 12 IT do Lab de Mecânica, 1200×1200 + prefixo FE- + <strong>progressão de EPI</strong> (IT-00/01 sem EPI → IT-02 óculos → IT-03 óculos+luvas → IT-04+ óculos+luvas+jaleco) + arco do lab (vazio → entra → sai) + IT-09 com C5 e conexões + descritores completos. Gate: <code>validar_tt_fe.py --check-it</code></td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">CS</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell"><strong>Checklist de Segurança</strong> (.md + .pdf A4) — NR-22 + normas do Lab de Mecânica + EPI da trilha conforme <code>progressao-epi.md</code> + assinável pelo estudante</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">IE</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell"><strong>Inventário de Equipamento</strong> (.md + .xlsx) — equipamentos extraídos do TT e do RB + quantidades por bancada + consumíveis</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">MD</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">Mesmo protocolo do FC1, adaptado ao contexto experimental (segurança + procedimento). Saídas <code>.txt</code> + <code>.html</code>; áudio é passo manual do autor</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">MC</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell">Mapa <strong>conceito → aparato</strong> (não apenas conceito → conceito) + termos-chave do TT-FE</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">CD</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell">Flashcards com <strong>equipamento + função</strong>, além dos conceitos + glossário do Lab</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">PP</span></td>
+            <td>6/6</td>
+            <td class="criteria-cell">Mesmo protocolo PP-v4 do FC1, com Parte II cobrindo segurança + conhecimento prévio e Q5 usando dados de <code>dados-experimentais-fe1.json</code> (nunca inventados) + <code>validar_banco.py</code> PASS. Publicação aguarda repo e planilha próprios da FE1; até lá o HTML funciona offline</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">TN</span></td>
+            <td>7/7</td>
+            <td class="criteria-cell">Mesmo protocolo TN-v4 do FC1, com foco em segurança e procedimento (não só conceito teórico) + dados de Q3/Q5 do banco experimental canônico + <code>validar_banco.py</code> PASS 11/11</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+
+          <tr class="meta-row"><td colspan="4">Lab</td></tr>
+          <tr>
+            <td><span class="oa-sig fe1">RB</span></td>
+            <td>5/5</td>
+            <td class="criteria-cell"><strong>Roteiro de Bancada</strong> — a folha de execução dos 90 min. 2 PDFs (estudante + professor) + procedimento passo a passo + checklist de segurança assinável + tabelas de coleta + valores de <code>dados-experimentais-fe1.json</code> + Tectonic exit 0. <strong>Substituiu a FA-FE</strong>: a FE1 não tem Folha de Atividades</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">AP</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">Briefing de 5 min do professor — <strong>5-7 slides</strong> (não os 17 do FC1) + objetivo do experimento + segurança destacada + fotos do equipamento</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">IG</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell">Infográfico de bancada — 3 HTMLs (estudante + professor + A4-PB) com layout de bancada</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">PR</span></td>
+            <td>5/5</td>
+            <td class="criteria-cell">Provinha de fechamento — Q1 de segurança + Q2 sobre os dados coletados na própria aula + 3 versões A/B/C equânimes</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+
+          <tr class="meta-row"><td colspan="4">Pós-Lab</td></tr>
+          <tr>
+            <td><span class="oa-sig fe1">RM</span></td>
+            <td>4/4</td>
+            <td class="criteria-cell"><strong>Relatório Mínimo</strong> — template de 1 página, peso 5% + dados coerentes com o RB da mesma trilha + incertezas e algarismos significativos do banco canônico + XML Moodle</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">RC</span></td>
+            <td>5/5</td>
+            <td class="criteria-cell"><strong>Relatório Completo</strong> — 4-6 páginas, peso 5% + seções ENEM-style + análise com incertezas e gráficos + conclusão baseada em evidência + <strong>coerência de dados RM ↔ RC</strong> na mesma trilha + XML Moodle</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">DX</span></td>
+            <td>3/3</td>
+            <td class="criteria-cell">2 HTMLs (estudante + professor) + tipo vinculado ao Lab + encadeado após o RB aprovado</td>
+            <td><span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+          <tr>
+            <td><span class="oa-sig fe1">PI</span></td>
+            <td>5/5</td>
+            <td class="criteria-cell"><strong>Projeto Investigativo</strong> — o equivalente do TR na FE1. 3 PDFs A/B/C, peso 20% + <strong>C5 ampliado</strong> na Parte 2 + <code>\tridentificacao</code> na pág. 3 + Tectonic exit 0</td>
+            <td><span class="tag tag-auto">AUTO</span> <span class="tag tag-script">SCRIPT</span></td>
+          </tr>
+
+          <tr class="meta-row"><td colspan="4">Avaliação</td></tr>
+          <tr>
+            <td><span class="oa-sig fe1">PP*</span></td>
+            <td>5/5</td>
+            <td class="criteria-cell"><strong>Prova Prática</strong> — reutiliza o Banco Central como a PE do FC1, mas com foco em execução laboratorial. Itens de 5+ trilhas + balanceamento Bloom L4+ + checklist de segurança + .pdf A4 pronto para impressão</td>
+            <td><span class="tag tag-script">SCRIPT</span> <span class="tag tag-manual">MANUAL</span></td>
+          </tr>
+
+          <tr class="meta-row"><td colspan="4">Diferenças-chave vs FC1</td></tr>
+          <tr>
+            <td colspan="4" style="font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; padding: 0.75rem;">
+              C5 no Tópico 4 (FC1: Tipo 7) · Bibliografia manual, sem script de injeção · Explore em tcolorbox manual · Prefixo FE- em todos os identificadores · Armadilhas A14-A18 específicas · Lab de Mecânica substitui a mineração como eixo técnico · EPI progressivo nas imagens · Arco narrativo lab vazio → entra → sai · Fases chamadas Pré-Lab / Lab / Pós-Lab · <strong>RB no lugar da FA</strong> e <strong>RM + RC no lugar do antigo RL</strong> · <strong>PI no lugar do TR</strong> · Coleta de dados terá repo e planilha próprios, separados do fc1-oa
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pass-target">Meta: 100% PASS antes de entregar ao autor</div>
+
+    <div class="tip-box">
+      <h3>O que ainda não tem gate automático</h3>
+      <ol>
+        <li><strong>IT / IP não têm validador de imagem.</strong> A conferência de 1200×1200, estilo por slot, arco de costas e coerência com a foto de referência é feita pelo Claude, olhando cada arquivo. Um <code>validar_it.py</code> resolveria a parte mensurável (contagem, dimensão, presença de descritor).</li>
+        <li><strong>Bloom declarado não é conferido contra o enunciado.</strong> O <code>validar_banco.py</code> valida o formato dos 16 campos @, não a coerência: um item marcado L4 com enunciado "defina" passa.</li>
+        <li><strong>A varredura de transbordo da AP é manual</strong> — roda-se o script da seção 3.4 do SKILL.md nas duas resoluções. Vale virar gate executável, porque é o defeito que mais reaparece no deck.</li>
+        <li><strong>Cross-check TT-FE ↔ RB</strong> continua sem verificação: equipamentos e procedimentos citados nos dois OAs deveriam bater termo a termo.</li>
+        <li><strong>Alcance do <code>validar_tt.py</code>:</strong> ele valida <code>.docx</code>, e o pipeline .docx está congelado desde A4.2 — hoje só cobre o legado T01-T06. O TT em LaTeX/Tectonic e o TT digital não têm validador de conteúdo próprio; passam pelo <code>checklist_pre_entrega.py</code>, que não olha dentro do PDF nem do HTML.</li>
+        <li><strong>Meta Karpathy:</strong> ≥70% dos OAs de FC1 e ≥80% dos de FE1 aprovados em v1 ou v2. A métrica em si ainda não é coletada.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+</body></html>

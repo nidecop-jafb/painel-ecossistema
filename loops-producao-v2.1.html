@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loops Claude Code — Produção de OAs FC1 &amp; FE1</title>
+</head>
+<body>
+
+<style>
+  :root {
+    --bg: #F8F7F4;
+    --bg-card: #FFFFFF;
+    --bg-code: #1E293B;
+    --text: #1a1f36;
+    --text-muted: #64748B;
+    --text-code: #E2E8F0;
+    --accent: #C8860A;
+    --accent-soft: #FEF3C7;
+    --border: #E2E0DB;
+    --fc1: #1E6B45;
+    --fc1-soft: #ECFDF5;
+    --fe1: #7C3AED;
+    --fe1-soft: #F5F3FF;
+    --loop-fixed: #0369A1;
+    --loop-dynamic: #C8860A;
+    --loop-goal: #DC2626;
+    --loop-maint: #4B5563;
+    --shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F1219;
+      --bg-card: #1A1F2E;
+      --bg-code: #0D1117;
+      --text: #E2E8F0;
+      --text-muted: #94A3B8;
+      --text-code: #C9D1D9;
+      --accent: #E8A830;
+      --accent-soft: #352A10;
+      --border: #2D3348;
+      --fc1: #34D399;
+      --fc1-soft: #0D2818;
+      --fe1: #A78BFA;
+      --fe1-soft: #1E1538;
+      --loop-fixed: #38BDF8;
+      --loop-dynamic: #E8A830;
+      --loop-goal: #F87171;
+      --loop-maint: #9CA3AF;
+      --shadow: 0 1px 3px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0F1219;
+    --bg-card: #1A1F2E;
+    --bg-code: #0D1117;
+    --text: #E2E8F0;
+    --text-muted: #94A3B8;
+    --text-code: #C9D1D9;
+    --accent: #E8A830;
+    --accent-soft: #352A10;
+    --border: #2D3348;
+    --fc1: #34D399;
+    --fc1-soft: #0D2818;
+    --fe1: #A78BFA;
+    --fe1-soft: #1E1538;
+    --loop-fixed: #38BDF8;
+    --loop-dynamic: #E8A830;
+    --loop-goal: #F87171;
+    --loop-maint: #9CA3AF;
+    --shadow: 0 1px 3px rgba(0,0,0,.3);
+  }
+  :root[data-theme="light"] {
+    --bg: #F8F7F4;
+    --bg-card: #FFFFFF;
+    --bg-code: #1E293B;
+    --text: #1a1f36;
+    --text-muted: #64748B;
+    --text-code: #E2E8F0;
+    --accent: #C8860A;
+    --accent-soft: #FEF3C7;
+    --border: #E2E0DB;
+    --fc1: #1E6B45;
+    --fc1-soft: #ECFDF5;
+    --fe1: #7C3AED;
+    --fe1-soft: #F5F3FF;
+    --loop-fixed: #0369A1;
+    --loop-dynamic: #C8860A;
+    --loop-goal: #DC2626;
+    --loop-maint: #4B5563;
+    --shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: .25rem; text-wrap: balance; }
+  .subtitle { color: var(--text-muted); font-size: .95rem; margin-bottom: 2rem; }
+
+  h2 { font-size: 1.25rem; font-weight: 700; margin: 2.5rem 0 1rem; letter-spacing: .01em; }
+  h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 .5rem; }
+
+  .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .mode-card {
+    background: var(--bg-card); border: 1px solid var(--border); padding: 1.25rem;
+    box-shadow: var(--shadow); border-top: 3px solid var(--accent);
+  }
+  .mode-card h3 { margin: 0 0 .5rem; font-size: 1rem; }
+  .mode-card p { font-size: .85rem; color: var(--text-muted); margin: 0; }
+  .mode-card code { font-size: .8rem; background: var(--bg-code); color: var(--text-code); padding: .15em .4em; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+  .mode-card.fixed { border-top-color: var(--loop-fixed); }
+  .mode-card.dynamic { border-top-color: var(--loop-dynamic); }
+  .mode-card.goal { border-top-color: var(--loop-goal); }
+  .mode-card.maint { border-top-color: var(--loop-maint); }
+  .mode-tag { display: inline-block; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: .15em .5em; margin-bottom: .5rem; color: #fff; }
+  .mode-tag.fixed { background: var(--loop-fixed); }
+  .mode-tag.dynamic { background: var(--loop-dynamic); }
+  .mode-tag.goal { background: var(--loop-goal); }
+  .mode-tag.maint { background: var(--loop-maint); }
+
+  .comparison { width: 100%; border-collapse: collapse; margin: 1rem 0 2rem; font-size: .85rem; }
+  .comparison th, .comparison td { padding: .6rem .75rem; text-align: left; border-bottom: 1px solid var(--border); }
+  .comparison th { font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); background: var(--bg); position: sticky; top: 0; }
+  .comparison td:first-child { font-weight: 600; white-space: nowrap; }
+  .comparison tr:hover td { background: var(--accent-soft); }
+
+  .disc-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: .2em .5em; display: inline-block; margin-bottom: .75rem; }
+  .disc-fc1 { background: var(--fc1-soft); color: var(--fc1); border: 1px solid var(--fc1); }
+  .disc-fe1 { background: var(--fe1-soft); color: var(--fe1); border: 1px solid var(--fe1); }
+
+  .oa-section { background: var(--bg-card); border: 1px solid var(--border); margin-bottom: 1rem; box-shadow: var(--shadow); }
+  .oa-header { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; cursor: pointer; user-select: none; }
+  .oa-header:hover { background: var(--accent-soft); }
+  .oa-sigla { font-weight: 700; font-size: .95rem; min-width: 2.5rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+  .oa-nome { flex: 1; font-size: .85rem; }
+  .oa-modo { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: .15em .4em; }
+  .oa-modo.fixed { background: color-mix(in srgb, var(--loop-fixed) 15%, transparent); color: var(--loop-fixed); }
+  .oa-modo.dynamic { background: color-mix(in srgb, var(--loop-dynamic) 15%, transparent); color: var(--loop-dynamic); }
+  .oa-modo.goal { background: color-mix(in srgb, var(--loop-goal) 15%, transparent); color: var(--loop-goal); }
+  .oa-modo.maint { background: color-mix(in srgb, var(--loop-maint) 15%, transparent); color: var(--loop-maint); }
+  .oa-chevron { font-size: .8rem; color: var(--text-muted); transition: transform .2s; }
+  .oa-section.open .oa-chevron { transform: rotate(90deg); }
+  .oa-body { display: none; padding: 0 1rem 1rem; font-size: .85rem; }
+  .oa-section.open .oa-body { display: block; }
+  .oa-body pre { background: var(--bg-code); color: var(--text-code); padding: .75rem 1rem; overflow-x: auto; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: .8rem; margin: .5rem 0; line-height: 1.5; }
+  .oa-body .rationale { color: var(--text-muted); font-size: .8rem; margin-top: .5rem; font-style: italic; }
+  .oa-body .criteria { margin: .5rem 0; padding-left: 1.25rem; }
+  .oa-body .criteria li { margin-bottom: .25rem; }
+
+  .recom { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: .9rem; }
+  .recom strong { color: var(--accent); }
+
+  .footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: .75rem; color: var(--text-muted); text-align: center; }
+
+  .toc { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .toc a { font-size: .8rem; color: var(--accent); text-decoration: none; padding: .3em .6em; border: 1px solid var(--border); background: var(--bg-card); }
+  .toc a:hover { background: var(--accent-soft); border-color: var(--accent); }
+</style>
+
+<div class="container">
+  <h1>Loops Claude Code para Produção de OAs</h1>
+  <p class="subtitle">4 modos oficiais mapeados aos 16 OAs de FC1 e 18 OAs de FE1 — Projeto Trilhas IFMG-OP</p>
+
+  <nav class="toc">
+    <a href="#modos">4 Modos</a>
+    <a href="#comparacao">Comparação</a>
+    <a href="#fluxo">Fluxo recomendado</a>
+    <a href="#fc1">FC1 — 16 OAs</a>
+    <a href="#fe1">FE1 — 18 OAs</a>
+    <a href="#loopmd">loop.md</a>
+  </nav>
+
+  <!-- ═══ MODOS ═══ -->
+  <h2 id="modos">4 Modos Oficiais</h2>
+  <div class="modes">
+    <div class="mode-card fixed">
+      <span class="mode-tag fixed">Intervalo fixo</span>
+      <h3>/loop INTERVALO PROMPT</h3>
+      <p>Executa o prompt em intervalos regulares (cron). Ideal para <strong>polling</strong> de CI, builds e deploys.</p>
+      <p style="margin-top:.5rem"><code>/loop 5m verificar build</code></p>
+    </div>
+    <div class="mode-card dynamic">
+      <span class="mode-tag dynamic">Dinâmico</span>
+      <h3>/loop PROMPT</h3>
+      <p>Claude decide o intervalo (1–60 min) com base no estado observado. Para em <code>stop: true</code>.</p>
+      <p style="margin-top:.5rem"><code>/loop gerar TT de T07-T12</code></p>
+    </div>
+    <div class="mode-card goal">
+      <span class="mode-tag goal">Objetivo</span>
+      <h3>/goal CONDIÇÃO</h3>
+      <p>Trabalha <strong>turno a turno</strong> até a condição ser verificada por modelo rápido. Sem timer.</p>
+      <p style="margin-top:.5rem"><code>/goal validar_tt.py PASS 15/15</code></p>
+    </div>
+    <div class="mode-card maint">
+      <span class="mode-tag maint">Manutenção</span>
+      <h3>/loop (bare)</h3>
+      <p>Continua trabalho pendente, tende PRs, faz cleanup. Customizável via <code>.claude/loop.md</code>.</p>
+      <p style="margin-top:.5rem"><code>/loop</code> ou <code>/loop 15m</code></p>
+    </div>
+  </div>
+
+  <!-- ═══ COMPARAÇÃO ═══ -->
+  <h2 id="comparacao">Comparação entre Modos</h2>
+  <div style="overflow-x:auto">
+  <table class="comparison">
+    <thead>
+      <tr><th>Critério</th><th>Intervalo fixo</th><th>Dinâmico</th><th>/goal</th><th>Manutenção</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Cadência</td><td>Fixa (cron)</td><td>Claude decide</td><td>Turno a turno</td><td>Dinâmica ou fixa</td></tr>
+      <tr><td>Parada</td><td>Esc / 7 dias</td><td>ScheduleWakeup stop</td><td>Condição atendida</td><td>Esc / 7 dias</td></tr>
+      <tr><td>Tokens/hora</td><td>Baixo (polling)</td><td>Médio</td><td>Alto (contínuo)</td><td>Baixo</td></tr>
+      <tr><td>Caso ideal</td><td>Monitorar CI/Moodle</td><td>Produção em lote</td><td>Corrigir até PASS</td><td>Cleanup + PR</td></tr>
+      <tr><td>Supervisão</td><td>Mínima</td><td>Periódica</td><td>Nenhuma até /goal</td><td>Nenhuma</td></tr>
+      <tr><td>Requer auto mode</td><td>Recomendado</td><td>Recomendado</td><td>Sim</td><td>Recomendado</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- ═══ FLUXO ═══ -->
+  <h2 id="fluxo">Fluxo Recomendado por Onda</h2>
+  <div class="recom">
+    <strong>Regra geral:</strong> Use <code>/goal</code> para OAs individuais que precisam de gate (TT, FA, TR) — o loop para quando o critério é atingido. Use <code>/loop PROMPT</code> (dinâmico) para produção em lote de OAs leves dentro de uma onda (MC, CD, PP, TN, IT). Use <code>/loop</code> (manutenção) entre sessões para cleanup e PR. Use <code>/loop INTERVALO</code> (fixo) para monitorar processos externos (compilação Tectonic, importação Moodle).
+  </div>
+
+  <!-- ═══ FC1 ═══ -->
+  <h2 id="fc1"><span class="disc-label disc-fc1">Física Conceitual 1</span> 16 OAs</h2>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">C2</span>
+      <span class="oa-nome">Camada 2 (Briefing)</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar Camada 2 para T07-T12. Ler temas-trilhas-topicos-v3.docx, acionar skill abertura-trilha para cada trilha. Salvar cada C2 e seguir para a próxima. Parar após T12.</pre>
+      <p class="rationale">Dinâmico porque o Claude gera 6 C2 em sequência, decidindo o ritmo. Cada C2 demora ~5 min — sem necessidade de timer fixo.</p>
+      <ul class="criteria"><li>6 arquivos T07-Camada2-v1.md a T12-Camada2-v1.md criados</li></ul>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TT</span>
+      <span class="oa-nome">Texto Temático</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal python _scripts/validar_tt.py T07 retorna PASS 15/15 e python _scripts/checklist_pre_entrega.py T07 TT retorna 10/10 PASS</pre>
+      <p class="rationale">O TT é o OA mais complexo (15 checks). /goal garante que o Claude itera até todos os checks passarem — sem entrega prematura.</p>
+      <ul class="criteria"><li>validar_tt.py PASS 15/15</li><li>checklist_pre_entrega.py PASS 10/10</li><li>Par .md/.docx com mesma v{N}</li></ul>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">IT</span>
+      <span class="oa-nome">Imagens Temáticas</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar IT para T07-T12 em lote. Acionar skill imagens-tematicas-lote para cada trilha. Produzir 2 arquivos por trilha (-pt- e -Gemine). Parar após gerar 12 arquivos (6 trilhas x 2).</pre>
+      <p class="rationale">Dinâmico porque IT é geração de texto (prompts), não compilação. O Claude avança trilha por trilha e para sozinho.</p>
+      <ul class="criteria"><li>12 arquivos .txt criados (6x -pt- + 6x -Gemine)</li><li>12 IT por trilha (IT-00 a IT-11) em cada arquivo</li></ul>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">MD</span>
+      <span class="oa-nome">Resumo em Áudio</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar MD (resumo em áudio) para T07-T12. Acionar skill resumo-em-audio, ler TT aprovado de cada trilha. Produzir .docx + NotebookLM-fonte .txt. Parar após T12.</pre>
+      <p class="rationale">OA leve, ~10 min/trilha. O loop dinâmico processa as 6 trilhas em sequência sem intervenção.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">MC</span>
+      <span class="oa-nome">Mapa Conceitual</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar MC para T07-T12. Acionar skill mapa-conceitual, ler TT de cada trilha. Salvar .md na Pre_Aula/. Parar após T12.</pre>
+      <p class="rationale">Lote de OAs leves — dinâmico é ideal. Claude gera e avança sem polling.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">CD</span>
+      <span class="oa-nome">Cartões Didáticos</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar CD para T07-T12. Acionar skill cartoes-didaticos, extrair conceitos-chave do MC e TT. Salvar .md + .xml. Parar após T12.</pre>
+      <p class="rationale">Depende do MC (gerado no passo anterior). Mesmo padrão dinâmico de lote.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PP</span>
+      <span class="oa-nome">Ponto de Partida</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar PP para T07-T12. Acionar skill ponto-de-partida. Produzir .md + 3 variantes GIFT/XML Moodle. Validar com validar_banco.py. Parar após T12.</pre>
+      <p class="rationale">Quiz diagnóstico — geração + exportação Moodle em lote. Dinâmico com validação integrada.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TN</span>
+      <span class="oa-nome">Testinho</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal python _scripts/validar_banco.py T07 retorna PASS 11/11 para TN com 20 questões em 5 blocos e 3 saídas (.md + -sistema.txt + -guia-professor.md)</pre>
+      <p class="rationale">TN é complexo (20 questões, 5 blocos, 4 
+variantes, codificação E#). /goal garante que o banco passa na validação
+ antes de entregar.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">IG</span>
+      <span class="oa-nome">Infográfico</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar IG para T07-T12. Acionar skill infografico. Produzir 3 HTMLs por trilha (estudante + professor + A4-PB). Parar após 18 arquivos.</pre>
+      <p class="rationale">3 versões HTML por trilha — dinâmico processa todas sem timer fixo.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">FA</span>
+      <span class="oa-nome">Folha de Atividades</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal compilar.ps1 para T07-FA gera 2 PDFs (professor + estudante) sem erro e checklist_pre_entrega.py T07 FA retorna PASS</pre>
+      <p class="rationale">Pipeline LaTeX/Tectonic precisa compilar sem erro. /goal itera até os 2 PDFs serem gerados com sucesso.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">DX</span>
+      <span class="oa-nome">Desafio Pedagógico</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar DX para T07-T12. Após cada FA aprovada, gerar 1 DX do tipo sugerido (2 HTMLs: estudante + professor). Parar após 6 DX gerados.</pre>
+      <p class="rationale">DX é opcional e leve. Dinâmico encadeia após a FA de cada trilha.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">AP</span>
+      <span class="oa-nome">Apresentação</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal T07-AP-v{N}.pptx gerado com 13 slides, epigrafe no Slide 1, Bibliografia no Slide 12, paleta correta e FA alinhada na mesma v{N}</pre>
+      <p class="rationale">AP tem 13 slides com regras rígidas (Protocolo AP-v11/v12). /goal verifica estrutura antes de entregar.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PR</span>
+      <span class="oa-nome">Provinha</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar PR para T07-T12. 3 versões A/B/C equânimes + GIFT + XML Moodle por trilha. Validar banco. Parar após T12.</pre>
+      <p class="rationale">Provinha é mais leve que TN — dinâmico com validação automática integrada.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TM</span>
+      <span class="oa-nome">Tarefa Mínima</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar TM para T07-T12. Ler fragmento FI automaticamente. Produzir banco .md + 3 XML Moodle. Validar com validar_banco.py. Parar após T12.</pre>
+      <p class="rationale">TM lê o livro PNLD e gera 12 questões. Dinâmico com leitura automática de FI.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TC</span>
+      <span class="oa-nome">Tarefa Complementar</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar TC para T07-T12. Protocolo TC-v3 ENEM-style: 5 MC com estímulo rico, Bloom L4-L5. Exportar XML Moodle. Parar após T12.</pre>
+      <p class="rationale">TC ENEM-style é formulaico — dinâmico processa em lote sem supervisão.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TR</span>
+      <span class="oa-nome">Trabalho</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal compilar.ps1 gera 3 PDFs (versaoA Sofia + versaoB Pedro + versaoC Ana) de 4 páginas cada sem erro de compilação Tectonic e checklist_pre_entrega.py T07 TR retorna PASS</pre>
+      <p class="rationale">TR tem estrutura fixa de 4 páginas, 17 macros LaTeX e C5 na Parte 2. /goal itera até compilação limpa.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PE</span>
+      <span class="oa-nome">Prova de Etapa</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal montar_pe.py seleciona 15-20 itens com balanceamento Bloom/Competência/Dificuldade e gerar_pe_docx.py produz 5 .docx (caderno1 A/B/C + caderno2 + regente) sem erro</pre>
+      <p class="rationale">PE reutiliza banco central — precisa de balanceamento verificável. /goal garante qualidade antes da impressão.</p>
+    </div>
+  </div>
+
+  <!-- ═══ FE1 ═══ -->
+  <h2 id="fe1"><span class="disc-label disc-fe1">Física Experimental 1</span> 18 OAs</h2>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TT</span>
+      <span class="oa-nome">Texto Temático (livreto experimental)</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal python _scripts/validar_tt_fe.py FE-T01-TT-v1.tex retorna PASS 10/10 e compilar.ps1 produz PDF 14x21 sem erro</pre>
+      <p class="rationale">TT-FE tem 10 checks específicos (A14-A18, C5 no Tópico 4, prefixo FE-, tcolorbox Explore). /goal itera até tudo PASS.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">IP</span>
+      <span class="oa-nome">Imagens da Prática</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal python _scripts/validar_tt_fe.py --check-it FE-T01-IT-v1-Gemine.txt retorna PASS (progressão EPI OK) com 12 IT (IT-00 a IT-11)</pre>
+      <p class="rationale">IP-FE exige progressão EPI validável (óculos → luvas → jaleco). /goal garante que o arco canônico é respeitado.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">CS</span>
+      <span class="oa-nome">Checklist de Segurança</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar CS para FE-T01 a FE-T05. Incluir NR-22 + normas Lab de Mecânica + EPI por trilha (consultar progressao-epi.md). Parar após 5 CS.</pre>
+      <p class="rationale">CS é formulaico (checklist assinável). Dinâmico gera em lote referenciando a progressão EPI do tema.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">IE</span>
+      <span class="oa-nome">Inventário de Equipamento</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar IE para FE-T01 a FE-T05. Ler TT e RB para extrair equipamentos. Produzir .md + .xlsx com quantidades e consumíveis. Parar após 5 IE.</pre>
+      <p class="rationale">IE depende do TT e do RB. Dinâmico processa em sequência, extraindo dados dos OAs já aprovados.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">MD</span>
+      <span class="oa-nome">Resumo em Áudio</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar MD para FE-T01 a FE-T05. Acionar skill resumo-em-audio, adaptar para contexto experimental (segurança + procedimento). Parar após 5 MD.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">MC</span>
+      <span class="oa-nome">Mapa Conceitual</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar MC para FE-T01 a FE-T05. Incluir conceito → aparato (não apenas conceito → conceito). Parar após 5 MC.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">CD</span>
+      <span class="oa-nome">Cartões Didáticos</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar CD para FE-T01 a FE-T05. Incluir equipamento + função (além de conceitos). Parar após 5 CD.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PP</span>
+      <span class="oa-nome">Ponto de Partida</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar PP para FE-T01 a FE-T05. Quiz diagnóstico com segurança + conhecimento prévio. 3 variantes GIFT. Parar após 5 PP.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">TN</span>
+      <span class="oa-nome">Testinho</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal validar_banco.py FE-T01 retorna PASS 11/11 para TN com foco em segurança + procedimento (não apenas conceitos teóricos)</pre>
+      <p class="rationale">TN-FE inclui questões de segurança no Lab — /goal valida o banco antes de gerar Forms.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">RB</span>
+      <span class="oa-nome">Roteiro de Bancada</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal FE-T01-RB-v1-estudante.pdf e FE-T01-RB-v1-professor.pdf gerados com checklist de segurança assinável, dados experimentais de dados-experimentais-fe1.json e compilação Tectonic sem erro</pre>
+      <p class="rationale">RB é a folha de execução do Lab (90 min). 
+Precisa ser reprodutível — /goal garante compilação e dados plausíveis 
+do banco canônico.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">AP</span>
+      <span class="oa-nome">Apresentação (briefing 5 min)</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar AP para FE-T01 a FE-T05. 5-7 slides com foco em segurança + objetivo do experimento. Parar após 5 AP.</pre>
+      <p class="rationale">AP-FE é mais curta (5-7 slides vs 13 da FC1). Dinâmico é suficiente.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">IG</span>
+      <span class="oa-nome">Infográfico de Bancada</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar IG para FE-T01 a FE-T05. 3 HTMLs (estudante + professor + A4-PB) com layout de bancada. Parar após 15 HTMLs.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PR</span>
+      <span class="oa-nome">Provinha de Fechamento</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar PR para FE-T01 a FE-T05. Q1 segurança + Q2 dados coletados. 3 versões A/B/C + GIFT + XML. Parar após 5 PR.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">RM</span>
+      <span class="oa-nome">Relatório Mínimo</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar RM para FE-T01 a FE-T05. Template 1 página com dados de dados-experimentais-fe1.json. Exportar XML Moodle. Parar após 5 RM.</pre>
+      <p class="rationale">RM é template curto (1 pág). Dinâmico com dados canônicos do banco experimental.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">RC</span>
+      <span class="oa-nome">Relatório Completo</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal FE-T01-RC-v1.pdf gerado com 4-6 páginas, seções ENEM-style, dados experimentais coerentes com o RM da mesma trilha e XML Moodle exportado</pre>
+      <p class="rationale">RC é complexo (4-6 pág, estilo ENEM). /goal verifica coerência dados RM↔RC e exportação Moodle.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">DX</span>
+      <span class="oa-nome">Desafio Pedagógico</span>
+      <span class="oa-modo dynamic">Dinâmico</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/loop Gerar DX para FE-T01 a FE-T05. Após cada RB aprovado, sugerir tipo DX vinculado ao Lab. Produzir 2 HTMLs. Parar após 5 DX.</pre>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PI</span>
+      <span class="oa-nome">Projeto Investigativo</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal compilar.ps1 gera 3 PDFs (versaoA + versaoB + versaoC) com C5 ampliado na Parte 2, \tridentificacao na pág 3 e sem erro de compilação Tectonic</pre>
+      <p class="rationale">PI é o equivalente do TR na FE1 — 3 versões, peso 20%, C5 ampliado. /goal garante qualidade antes da impressão.</p>
+    </div>
+  </div>
+
+  <div class="oa-section" onclick="this.classList.toggle('open')">
+    <div class="oa-header">
+      <span class="oa-sigla">PP*</span>
+      <span class="oa-nome">Prova Prática (avaliação)</span>
+      <span class="oa-modo goal">Objetivo</span>
+      <span class="oa-chevron">▶</span>
+    </div>
+    <div class="oa-body">
+      <pre>/goal FE-PP-2026-1bim gerada com itens de 5+ trilhas, balanceamento Bloom L4+, checklist segurança e .pdf A4 pronto para impressão</pre>
+      <p class="rationale">Prova Prática reutiliza banco central — mesmo padrão da PE de FC1 mas com foco em execução laboratorial.</p>
+    </div>
+  </div>
+
+  <!-- ═══ LOOP.MD ═══ -->
+  <h2 id="loopmd">Próximo passo: criar <code>.claude/loop.md</code></h2>
+  <div class="recom">
+    <strong>Recomendação:</strong> Criar um <code>.claude/loop.md</code> customizado que substitua o comportamento padrão do <code>/loop</code> (bare) por um workflow específico do projeto Trilhas:
+    <ol style="margin-top:.5rem; padding-left:1.5rem; font-size:.85rem">
+      <li>Verificar OAs pendentes no status de produção (<code>Citacoes_Trilhas_T0A-T60.xlsx</code>)</li>
+      <li>Rodar <code>checklist_pre_entrega.py --all</code> para detectar OAs com FAIL</li>
+      <li>Corrigir OAs com FAIL na ordem de prioridade da onda atual</li>
+      <li>Sugerir próximo OA da sequência da onda</li>
+      <li>Rodar <code>validar_banco.py --all</code> para verificar integridade do banco central</li>
+    </ol>
+  </div>
+
+  <div style="overflow-x:auto">
+  <table class="comparison">
+    <thead><tr><th>Modo</th><th>Quando usar</th><th>OAs recomendados</th><th>Tokens/sessão</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--loop-goal);font-weight:700">/goal</td><td>OA individual com gate verificável</td><td>TT, TN, FA, AP, TR, PE, RB, PI, RC, IP-FE</td><td>Alto (mas para quando PASS)</td></tr>
+      <tr><td style="color:var(--loop-dynamic);font-weight:700">/loop dinâmico</td><td>Lote de OAs leves em sequência</td><td>C2, IT, MD, MC, CD, PP, IG, PR, TM, TC, DX, CS, IE, RM</td><td>Médio</td></tr>
+      <tr><td style="color:var(--loop-fixed);font-weight:700">/loop fixo</td><td>Polling de processo externo</td><td>Compilação Tectonic, importação Moodle, CI</td><td>Baixo</td></tr>
+      <tr><td style="color:var(--loop-maint);font-weight:700">/loop bare</td><td>Entre sessões — cleanup e PR</td><td>Todos (via .claude/loop.md customizado)</td><td>Baixo</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="footer">
+    Projeto Trilhas IFMG-OP — FC1 + FE1 — Julio Azevedo · 2026-07-22 · Claude Code loops v2.1
+  </div>
+</div>
+
+</body></html>
