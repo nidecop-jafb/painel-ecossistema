@@ -958,6 +958,37 @@ select option { background: var(--superficie); color: var(--texto); }
         </div>
       </div>
     </div>
+
+    <!-- Instrumentos de Medição da Trilha -->
+    <div class="campo-grupo" style="margin-top:12px;">
+      <div class="campo-label">Instrumentos de Medição da Trilha <span class="campo-auto-badge">Opcional — grandezas e características</span></div>
+      <div class="nota-info" style="margin-bottom:10px;">Registre as grandezas e as características dos instrumentos de medição, dos sensores (catálogo CIDEPE) e das medições com celular que serão utilizados na Trilha de Aprendizagem. As informações entram na Camada 2 e orientam o Texto Temático.</div>
+
+      <!-- Instrumentos de medição -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--texto-sec);margin-bottom:6px;font-weight:600;">📏 Instrumentos de medição <span style="font-weight:400;">(Nome · Classe · Unidade · Resolução · Capacidade)</span></div>
+        <div id="instr-medicao-list"></div>
+        <button class="btn" style="font-size:10px;padding:4px 10px;margin-top:6px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);" onclick="adicionarInstrumentoMedicao()">+ Instrumento</button>
+      </div>
+
+      <!-- Sensores -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--texto-sec);margin-bottom:6px;font-weight:600;">📡 Sensores <span style="font-weight:400;">(Nome · Unidade · Resolução · Capacidade)</span> — catálogo CIDEPE ou outro</div>
+        <div id="instr-sensores-list"></div>
+        <button class="btn" style="font-size:10px;padding:4px 10px;margin-top:6px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);" onclick="adicionarSensor()">+ Sensor</button>
+      </div>
+
+      <!-- Celular -->
+      <div style="margin-bottom:8px;">
+        <div style="font-size:11px;color:var(--texto-sec);margin-bottom:6px;font-weight:600;">📱 Celular <span style="font-weight:400;">(Grandeza · Aplicativo · Unidade · Resolução · Capacidade)</span></div>
+        <div id="instr-celular-list"></div>
+        <button class="btn" style="font-size:10px;padding:4px 10px;margin-top:6px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);" onclick="adicionarCelular()">+ Medição com celular</button>
+      </div>
+
+      <!-- Outras características -->
+      <input type="text" id="instr-obs" placeholder="Outras características a registrar (ex.: incerteza, classe de exatidão, taxa de amostragem, condições de uso)…" style="width:100%;font-size:11px;padding:5px 8px;background:var(--input-bg);color:var(--texto);border:1px solid var(--cinza-borda);" onchange="salvarInstrumentos()">
+    </div>
+
     <div class="campo-grupo" style="margin-top:12px;">
       <div class="campo-label">Cenário Secundário — 3 opções geradas <span class="campo-auto-badge">Selecione ou edite</span></div>
       <div class="opcoes-geradas" id="opcoes-cenario-sec"></div>
@@ -2227,6 +2258,7 @@ function salvarEstado() {
       const el = document.getElementById(id);
       if(el) localStorage.setItem(LS+id, el.value || '');
     });
+    salvarInstrumentos();
     // Salvar estado do orquestrador
     const orqChks = ['orq-tt-aprovado','orq-pre-concluido','orq-aula-concluido','orq-pos-concluido'];
     const orqState = {};
@@ -2299,6 +2331,7 @@ function confirmarRestaurar() {
     const el = document.getElementById(id);
     if(el && val !== null) el.value = val;
   });
+  restaurarInstrumentos();
   // Restaurar seções concluídas
   try {
     const sc = JSON.parse(localStorage.getItem(LS+'secoesConcluidas') || '[]');
@@ -3410,6 +3443,183 @@ function adicionarParadaViagem() {
   list.appendChild(row);
 }
 
+// ─── Instrumentos de Medição da Trilha ─────────────────────
+// Catálogo de sensores CIDEPE (https://www.cidepe.com.br — produtos, tipo Aquisição/Sensores)
+// A página do fabricante informa faixa (capacidade) mas não a resolução — campo fica editável.
+const SENSORES_CIDEPE = [
+  {nome:'Sensor fotoelétrico de luz visível (CIDEPE CL010)', unidade:'—', capacidade:'—'},
+  {nome:'Sensor de força (CIDEPE CL011)', unidade:'N', capacidade:'0 a 10 N'},
+  {nome:'Sensor de pressão diferencial (CIDEPE CL012A)', unidade:'mmH2O', capacidade:'0 a 70 mmH2O'},
+  {nome:'Sensor de pressão absoluta (CIDEPE CL012B)', unidade:'kPa', capacidade:'20 a 250 kPa'},
+  {nome:'Sensor de pressão diferencial (CIDEPE CL012C)', unidade:'mmH2O', capacidade:'0 a 250 mmH2O'},
+  {nome:'Sensor de pressão diferencial (CIDEPE CL012E)', unidade:'mmH2O', capacidade:'0 a 3500 mmH2O'},
+  {nome:'Sensor ultrassônico de posição (CIDEPE CL013A)', unidade:'m', capacidade:'0,2 a 1,5 m'},
+  {nome:'Sensor de intensidade luminosa (CIDEPE CL014A)', unidade:'lux', capacidade:'0 a 5000 lux'},
+  {nome:'Sensor de temperatura — termopar (CIDEPE CL016B)', unidade:'°C', capacidade:'-50 a 150 °C'},
+  {nome:'Sensor de temperatura — termopar flexível (CIDEPE CL016D)', unidade:'°C', capacidade:'-50 a 150 °C'},
+  {nome:'Sensor de temperatura — bainha longa aço inox (CIDEPE CL016E)', unidade:'°C', capacidade:'-50 a 150 °C'},
+  {nome:'Sensor de temperatura — alta faixa (CIDEPE CL016F)', unidade:'°C', capacidade:'-100 a 1200 °C'},
+  {nome:'Sensor de tensão (CIDEPE CL019B)', unidade:'V', capacidade:'-20 a +20 V'},
+  {nome:'Sensor de tensão (CIDEPE CL019C)', unidade:'V', capacidade:'-5 a +5 V'},
+  {nome:'Sensor de corrente (CIDEPE CL020B)', unidade:'mA', capacidade:'-200 a +200 mA'},
+  {nome:'Sensor de corrente (CIDEPE CL020C)', unidade:'mA', capacidade:'-20 a +20 mA'},
+  {nome:'Sensor de campo magnético (CIDEPE CL021)', unidade:'G', capacidade:'-10 a +10 G'},
+];
+
+const _INSTR_INPUT_STYLE = 'font-size:11px;padding:5px 8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);min-width:0;';
+
+function _instrInput(cls, ph, flex, valor) {
+  return `<input type="text" class="${cls}" placeholder="${ph}" value="${(valor||'').replace(/"/g,'&quot;')}" style="flex:${flex};${_INSTR_INPUT_STYLE}" onchange="salvarInstrumentos()">`;
+}
+
+function _instrRemoveBtn() {
+  return `<button class="btn" style="font-size:9px;padding:3px 6px;background:transparent;border:1px solid var(--erro);color:var(--erro);" onclick="this.parentElement.remove();salvarInstrumentos();">✕</button>`;
+}
+
+function adicionarInstrumentoMedicao(d) {
+  d = d || {};
+  const list = document.getElementById('instr-medicao-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.className = 'instr-medicao-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center;';
+  row.innerHTML =
+    _instrInput('im-nome', 'Nome (ex.: Balança digital)', '2 1 120px', d.nome) +
+    _instrInput('im-classe', 'Classe (ex.: II)', '1 1 70px', d.classe) +
+    _instrInput('im-unidade', 'Unidade (ex.: g)', '1 1 70px', d.unidade) +
+    _instrInput('im-resolucao', 'Resolução (ex.: 0,1 g)', '1 1 90px', d.resolucao) +
+    _instrInput('im-capacidade', 'Capacidade (ex.: 5000 g)', '1 1 100px', d.capacidade) +
+    _instrRemoveBtn();
+  list.appendChild(row);
+}
+
+function adicionarSensor(d) {
+  d = d || {};
+  const list = document.getElementById('instr-sensores-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.className = 'instr-sensor-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center;';
+  const opts = ['<option value="">Selecione o sensor…</option>']
+    .concat(SENSORES_CIDEPE.map(s => `<option value="${s.nome.replace(/"/g,'&quot;')}"${d.nome===s.nome?' selected':''}>${s.nome}</option>`))
+    .concat([`<option value="__outro__"${d.nome && !SENSORES_CIDEPE.some(s=>s.nome===d.nome) ? ' selected' : ''}>Outro (digitar)…</option>`])
+    .join('');
+  const outroVisivel = d.nome && !SENSORES_CIDEPE.some(s => s.nome === d.nome);
+  row.innerHTML =
+    `<select class="sen-nome" style="flex:2 1 160px;${_INSTR_INPUT_STYLE}" onchange="_sensorSelecionado(this)">${opts}</select>` +
+    `<input type="text" class="sen-nome-outro" placeholder="Nome do sensor" value="${(outroVisivel?d.nome:'').replace(/"/g,'&quot;')}" style="flex:2 1 140px;${_INSTR_INPUT_STYLE}display:${outroVisivel?'block':'none'};" onchange="salvarInstrumentos()">` +
+    _instrInput('sen-unidade', 'Unidade (ex.: N)', '1 1 70px', d.unidade) +
+    _instrInput('sen-resolucao', 'Resolução (ex.: 0,01 N)', '1 1 90px', d.resolucao) +
+    _instrInput('sen-capacidade', 'Capacidade (ex.: 0 a 10 N)', '1 1 100px', d.capacidade) +
+    _instrRemoveBtn();
+  list.appendChild(row);
+}
+
+function _sensorSelecionado(sel) {
+  const row = sel.closest('.instr-sensor-row');
+  if (!row) return;
+  const outro = row.querySelector('.sen-nome-outro');
+  if (sel.value === '__outro__') {
+    if (outro) outro.style.display = 'block';
+  } else {
+    if (outro) { outro.style.display = 'none'; outro.value = ''; }
+    const cat = SENSORES_CIDEPE.find(s => s.nome === sel.value);
+    if (cat) {
+      const un = row.querySelector('.sen-unidade');
+      const cap = row.querySelector('.sen-capacidade');
+      if (un && !un.value.trim()) un.value = cat.unidade;
+      if (cap && !cap.value.trim()) cap.value = cat.capacidade;
+    }
+  }
+  salvarInstrumentos();
+}
+
+function adicionarCelular(d) {
+  d = d || {};
+  const list = document.getElementById('instr-celular-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.className = 'instr-celular-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center;';
+  row.innerHTML =
+    _instrInput('cel-grandeza', 'Grandeza (ex.: Aceleração)', '2 1 110px', d.grandeza) +
+    _instrInput('cel-app', 'Aplicativo (ex.: Phyphox)', '2 1 110px', d.aplicativo) +
+    _instrInput('cel-unidade', 'Unidade (ex.: m/s²)', '1 1 70px', d.unidade) +
+    _instrInput('cel-resolucao', 'Resolução', '1 1 80px', d.resolucao) +
+    _instrInput('cel-capacidade', 'Capacidade', '1 1 90px', d.capacidade) +
+    _instrRemoveBtn();
+  list.appendChild(row);
+}
+
+function coletarInstrumentos() {
+  const v = el => el ? el.value.trim() : '';
+  const dados = { medicao: [], sensores: [], celular: [], obs: v(document.getElementById('instr-obs')) };
+  document.querySelectorAll('#instr-medicao-list .instr-medicao-row').forEach(r => {
+    const item = { nome: v(r.querySelector('.im-nome')), classe: v(r.querySelector('.im-classe')), unidade: v(r.querySelector('.im-unidade')), resolucao: v(r.querySelector('.im-resolucao')), capacidade: v(r.querySelector('.im-capacidade')) };
+    if (item.nome || item.unidade || item.capacidade) dados.medicao.push(item);
+  });
+  document.querySelectorAll('#instr-sensores-list .instr-sensor-row').forEach(r => {
+    const sel = r.querySelector('.sen-nome');
+    let nome = sel ? sel.value : '';
+    if (nome === '__outro__') nome = v(r.querySelector('.sen-nome-outro'));
+    const item = { nome: nome, unidade: v(r.querySelector('.sen-unidade')), resolucao: v(r.querySelector('.sen-resolucao')), capacidade: v(r.querySelector('.sen-capacidade')) };
+    if (item.nome || item.unidade || item.capacidade) dados.sensores.push(item);
+  });
+  document.querySelectorAll('#instr-celular-list .instr-celular-row').forEach(r => {
+    const item = { grandeza: v(r.querySelector('.cel-grandeza')), aplicativo: v(r.querySelector('.cel-app')), unidade: v(r.querySelector('.cel-unidade')), resolucao: v(r.querySelector('.cel-resolucao')), capacidade: v(r.querySelector('.cel-capacidade')) };
+    if (item.grandeza || item.aplicativo) dados.celular.push(item);
+  });
+  return dados;
+}
+
+function salvarInstrumentos() {
+  try { localStorage.setItem(LS + 'instrumentos', JSON.stringify(coletarInstrumentos())); } catch (e) {}
+}
+
+function restaurarInstrumentos() {
+  let dados;
+  try { dados = JSON.parse(localStorage.getItem(LS + 'instrumentos') || 'null'); } catch (e) { return; }
+  if (!dados) return;
+  (dados.medicao || []).forEach(d => adicionarInstrumentoMedicao(d));
+  (dados.sensores || []).forEach(d => adicionarSensor(d));
+  (dados.celular || []).forEach(d => adicionarCelular(d));
+  const obs = document.getElementById('instr-obs');
+  if (obs && dados.obs) obs.value = dados.obs;
+}
+
+const _NV = s => s || '[a definir]';
+
+function getInstrumentosOutput() {
+  const d = coletarInstrumentos();
+  if (!d.medicao.length && !d.sensores.length && !d.celular.length && !d.obs) return '';
+  let out = '\nInstrumentos de medição da trilha:\n';
+  if (d.medicao.length) {
+    out += 'Instrumentos:\n' + d.medicao.map(i =>
+      `  - Nome: ${_NV(i.nome)} · Classe: ${_NV(i.classe)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}`).join('\n') + '\n';
+  }
+  if (d.sensores.length) {
+    out += 'Sensores:\n' + d.sensores.map(i =>
+      `  - Nome: ${_NV(i.nome)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}`).join('\n') + '\n';
+  }
+  if (d.celular.length) {
+    out += 'Celular:\n' + d.celular.map(i =>
+      `  - Grandeza: ${_NV(i.grandeza)} · Aplicativo: ${_NV(i.aplicativo)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}`).join('\n') + '\n';
+  }
+  if (d.obs) out += `Outras características: ${d.obs}\n`;
+  return out;
+}
+
+function getInstrumentosMd() {
+  const d = coletarInstrumentos();
+  if (!d.medicao.length && !d.sensores.length && !d.celular.length && !d.obs) return '';
+  let md = '- **Instrumentos de medição da trilha:**\n';
+  d.medicao.forEach(i => { md += `  - Instrumento — Nome: ${_NV(i.nome)} · Classe: ${_NV(i.classe)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}\n`; });
+  d.sensores.forEach(i => { md += `  - Sensor — Nome: ${_NV(i.nome)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}\n`; });
+  d.celular.forEach(i => { md += `  - Celular — Grandeza: ${_NV(i.grandeza)} · Aplicativo: ${_NV(i.aplicativo)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}\n`; });
+  if (d.obs) md += `  - Outras características: ${d.obs}\n`;
+  return md;
+}
+
 function adicionarCenarioPrincipal() {
   const cat = 'Outro';
   const nome = document.getElementById('novo-cenario-nome')?.value.trim();
@@ -3918,6 +4128,7 @@ Cenario principal: ${estado.cenarioPrincipal||'[a definir]'}${estado.cenarioPrin
 Cenario secundario: ${document.getElementById('cenario-sec-edit').value || '[a definir]'}
 Problema narrativo (Ato I): ${document.getElementById('ato1-edit').value || '[a definir]'}
 Resolucao esperada (Ato III): ${document.getElementById('ato3-edit').value || '[a definir]'}
+${getInstrumentosOutput()}
 Autores da trilha (para rodapé do TT): ${estado.profsAtivos.length ? estado.profsAtivos.map(p=>p.nome).join(', ') : (document.getElementById('inp-autor')?.value||'[a definir]')}
 
 ## 4 · Contextualizacao Tripla
@@ -4053,6 +4264,7 @@ function autoExportRascunho(gatilho) {
   md += `- **Cenario secundario:** ${val('cenario-sec-edit')}\n`;
   md += `- **Ato I (rascunho):** ${val('ato1-edit')}\n`;
   md += `- **Ato III (rascunho):** ${val('ato3-edit')}\n`;
+  md += getInstrumentosMd();
   md += `- **Professores:**\n`;
   if(estado.profsAtivos.length) {
     estado.profsAtivos.forEach(p => { md += `  - ${p.nome} (${p.papel||'Autor'})\n`; });
@@ -4975,6 +5187,7 @@ function exportarTemaParaCowork() {
     baseadoEm    : val('inp-baseado-em'),
     formatos     : getFormatos(),
     arteExtra    : getArteOutput(),
+    instrumentos : getInstrumentosOutput(),
   };
 
   // ── Data / hora ────────────────────────────────────────────
@@ -5155,6 +5368,7 @@ Cenário principal: ${cenarioPrinc}
 Cenário secundário: ${cenarioSec}
 Problema narrativo (Ato I): ${ato1}
 Resolução esperada (Ato III): ${ato3}
+${isAtual ? dadosForm.instrumentos : ''}
 Autores da trilha (para rodapé do TT): ${profNome}
 
 ## 4 · Contextualização Tripla
