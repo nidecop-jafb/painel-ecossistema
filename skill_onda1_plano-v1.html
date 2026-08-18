@@ -989,6 +989,17 @@ select option { background: var(--superficie); color: var(--texto); }
       <input type="text" id="instr-obs" placeholder="Outras características a registrar (ex.: incerteza, classe de exatidão, taxa de amostragem, condições de uso)…" style="width:100%;font-size:11px;padding:5px 8px;background:var(--input-bg);color:var(--texto);border:1px solid var(--cinza-borda);" onchange="salvarInstrumentos()">
     </div>
 
+    <!-- Simulações da Trilha (Protocolo SIM-v1) -->
+    <div class="campo-grupo" style="margin-top:12px;">
+      <div class="campo-label">Simulações da Trilha — PhET + Vascak <span class="campo-auto-badge">Protocolo SIM-v1 · pré-carga por trilha</span></div>
+      <div class="nota-info" style="margin-bottom:10px;">Bloco <strong>🎮 SIMULE</strong> por tópico do Texto Temático (máx. 1 simulação por tópico; todo bloco tem desafio de 3 minutos). Sugestões vêm do registro canônico <code>_dados/simulacoes-registro.json</code>; edite, remova ou acrescente. O prompt da Camada 2 leva o resultado.</div>
+      <div id="sim-list"></div>
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+        <button class="btn" style="font-size:10px;padding:4px 10px;background:var(--verde-bg);border:1px solid var(--verde-claro);color:var(--verde-claro);" onclick="carregarSimulacoesSugeridas(true)">⟳ Carregar sugestões SIM-v1</button>
+        <button class="btn" style="font-size:10px;padding:4px 10px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);" onclick="adicionarSimulacao()">+ Simulação</button>
+      </div>
+    </div>
+
     <div class="campo-grupo" style="margin-top:12px;">
       <div class="campo-label">Cenário Secundário — 3 opções geradas <span class="campo-auto-badge">Selecione ou edite</span></div>
       <div class="opcoes-geradas" id="opcoes-cenario-sec"></div>
@@ -2259,6 +2270,7 @@ function salvarEstado() {
       if(el) localStorage.setItem(LS+id, el.value || '');
     });
     salvarInstrumentos();
+    salvarSimulacoes();
     // Salvar estado do orquestrador
     const orqChks = ['orq-tt-aprovado','orq-pre-concluido','orq-aula-concluido','orq-pos-concluido'];
     const orqState = {};
@@ -2332,6 +2344,7 @@ function confirmarRestaurar() {
     if(el && val !== null) el.value = val;
   });
   restaurarInstrumentos();
+  restaurarSimulacoes();
   // Restaurar seções concluídas
   try {
     const sc = JSON.parse(localStorage.getItem(LS+'secoesConcluidas') || '[]');
@@ -3292,6 +3305,7 @@ function limparErroEquipe() {}
 
 // ─── Narrativa tipo ────────────────────────────────────────
 function gerarOpcoesNarrativa() {
+  carregarSimulacoesSugeridas(false); // pré-carga SIM-v1 se a lista estiver vazia
   if(!estado.trilha) return;
   const t = TRILHAS[estado.trilha];
   let sujeito;
@@ -3685,6 +3699,97 @@ function getInstrumentosMd() {
   d.sensores.forEach(i => { md += `  - Sensor — Código: ${_NV(i.codigo)} · ${_NV(i.nome)} · Faixa de medição/Escala: ${_NV(i.faixa)} · Resolução: ${_NV(i.resolucao)} · Classe: ${_NV(i.classe)}\n`; });
   d.celular.forEach(i => { md += `  - Celular — Grandeza: ${_NV(i.grandeza)} · Aplicativo: ${_NV(i.aplicativo)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}\n`; });
   if (d.obs) md += `  - Outras características: ${d.obs}\n`;
+  return md;
+}
+
+// ─── Simulações da Trilha (Protocolo SIM-v1) ───────────────
+// BLOCO GERADO — fonte de verdade: _dados/simulacoes-registro.json
+// Regenerar com: python _scripts/sincronizar_simulacoes_form.py (não editar à mão)
+// SIMULACOES:INICIO
+const SIM_URL_PHET = 'https://phet.colorado.edu/sims/html/{slug}/latest/{slug}_all.html?locale=pt_BR';
+const SIM_URL_VASCAK = 'https://www.vascak.cz/?id=1&language=pt#kapitoly';
+const SIMULACOES_MAPA = {"fc1":{"T01":[{"topicos":[2],"fonte":"P","nome":"Energia na Pista de Skate: Básico","slug":"energy-skate-park-basics"}],"T02":[{"topicos":[2],"fonte":"P","nome":"Laboratório do Pêndulo","slug":"pendulum-lab"},{"topicos":[5],"fonte":"V","capitulo":"II","nome":"Coordenadas geográficas"}],"T03":[{"topicos":[3],"fonte":"V","capitulo":"II","nome":"Sistema Solar"}],"T04":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Paquímetro · Micrômetro"},{"topicos":[2],"fonte":"V","capitulo":"IV","nome":"Escalas de temperatura"}],"T05":[{"topicos":[3],"fonte":"V","capitulo":"II","nome":"Sistema Solar"}],"T06":[{"topicos":[1],"fonte":"P","nome":"Lab Dados de Projéteis","slug":"projectile-data-lab"}],"T07":[{"topicos":[1],"fonte":"V","capitulo":"I","nome":"Referenciais"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T08":[{"topicos":[1],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"},{"topicos":[3],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T09":[{"topicos":[1,2],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"},{"topicos":[4],"fonte":"V","capitulo":"II","nome":"Queda livre · Tubo de Newton"}],"T10":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T11":[{"topicos":[2,3],"fonte":"V","capitulo":"II","nome":"Queda livre"},{"topicos":[4],"fonte":"P","nome":"Movimento de Projétil","slug":"projectile-motion"}],"T12":[{"topicos":[1,2,3],"fonte":"V","capitulo":"I","nome":"Movimento"},{"topicos":[2],"fonte":"P","nome":"Gráfico de Cálculo","slug":"calculus-grapher"}],"T13":[{"topicos":[1,2],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Leis de Newton"}],"T14":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"T15":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Colisões"}],"T16":[{"topicos":[1],"fonte":"P","nome":"Laboratório de Força Gravitacional","slug":"gravity-force-lab"},{"topicos":[2],"fonte":"P","nome":"Balões e Eletricidade Estática","slug":"balloons-and-static-electricity"},{"topicos":[3],"fonte":"P","nome":"Monte um Núcleo","slug":"build-a-nucleus"}],"T17":[{"topicos":[1,2,3,4,5],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"T18":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"T19":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[4],"fonte":"P","nome":"Ímã e Bússola","slug":"magnet-and-compass"}],"T20":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Paralelogramo de forças"}],"T21":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[3],"fonte":"V","capitulo":"I","nome":"Plano inclinado"}],"T22":[{"topicos":[1,2,3],"fonte":"V","capitulo":"I","nome":"Movimento circular uniforme"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Polias"}],"T23":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Polias"}],"T24":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Movimento circular uniforme"},{"topicos":[2],"fonte":"P","nome":"Gravidade e Órbitas","slug":"gravity-and-orbits"}],"T25":[{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Forças fictícias"}],"T26":[{"topicos":[1,2],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"}],"T27":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Leis de Newton"}],"T28":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Força Gravitacional","slug":"gravity-force-lab"},{"topicos":[5],"fonte":"V","capitulo":"II","nome":"Aceleração da gravidade"}],"T29":[{"topicos":[1,2],"fonte":"P","nome":"Lei de Hooke","slug":"hookes-law"},{"topicos":[3],"fonte":"P","nome":"Massas e Molas","slug":"masses-and-springs"}],"T30":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Polias"}],"T31":[{"topicos":[2,3],"fonte":"P","nome":"Atrito","slug":"friction"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Atrito"}],"T32":[{"topicos":[1,2],"fonte":"P","nome":"Movimento de Projétil (resistência do ar)","slug":"projectile-motion"}],"T33":[{"topicos":[1],"fonte":"V","capitulo":"I","nome":"Momento de inércia"},{"topicos":[2],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"T34":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório do Pêndulo","slug":"pendulum-lab"},{"topicos":[5],"fonte":"V","capitulo":"III","nome":"Ressonância"}],"T35":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Equilíbrio mecânico"}],"T36":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"}],"T37":[{"topicos":[1,2,3,4],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"T38":[{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Centro de gravidade"},{"topicos":[4],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"T39":[{"topicos":[1,2,3,5],"fonte":"P","nome":"Balançando","slug":"balancing-act"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Alavanca"}],"T40":[{"topicos":[2,5],"fonte":"V","capitulo":"I","nome":"Alavanca · Polias"}],"T41":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Trabalho"},{"topicos":[4],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"}],"T42":[{"topicos":[1,2],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"}],"T43":[{"topicos":[1,2],"fonte":"P","nome":"Formas de Energia e Transformações","slug":"energy-forms-and-changes"}],"T44":[{"topicos":[3,4],"fonte":"P","nome":"Formas de Energia e Transformações","slug":"energy-forms-and-changes"},{"topicos":[3],"fonte":"V","capitulo":"IV","nome":"Ciclo de Carnot"}],"T45":[{"topicos":[1,2],"fonte":"P","nome":"Energia na Pista de Skate: Básico","slug":"energy-skate-park-basics"}],"T46":[{"topicos":[1,2],"fonte":"P","nome":"Massas e Molas","slug":"masses-and-springs"}],"T47":[{"topicos":[1,2,4],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"},{"topicos":[5],"fonte":"V","capitulo":"I","nome":"Conservação de energia"}],"T48":[{"topicos":[1,3],"fonte":"P","nome":"Formas de Energia e Transformações","slug":"energy-forms-and-changes"}],"T49":[{"topicos":[1,2,3],"fonte":"P","nome":"Sob Pressão","slug":"under-pressure"}],"T50":[{"topicos":[1,2,3],"fonte":"P","nome":"Densidade","slug":"density"}],"T51":[{"topicos":[1,2,3],"fonte":"V","capitulo":"I","nome":"Lei de Pascal"}],"T52":[{"topicos":[1,2,4],"fonte":"P","nome":"Sob Pressão","slug":"under-pressure"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Pressão hidrostática"}],"T53":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Experiência de Torricelli (fluidos)"},{"topicos":[4],"fonte":"P","nome":"Propriedades dos Gases","slug":"gas-properties"}],"T54":[{"topicos":[1,2,3,5],"fonte":"P","nome":"Flutuabilidade","slug":"buoyancy"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Princípio de Arquimedes"}],"T55":[{"topicos":[1,2],"fonte":"P","nome":"Gravidade e Órbitas","slug":"gravity-and-orbits"},{"topicos":[3],"fonte":"V","capitulo":"II","nome":"Sistema Solar · Constelações"}],"T56":[{"topicos":[1,2],"fonte":"P","nome":"Leis de Kepler","slug":"keplers-laws"}],"T57":[{"topicos":[1,2,4],"fonte":"P","nome":"Leis de Kepler","slug":"keplers-laws"}],"T58":[{"topicos":[1,2],"fonte":"P","nome":"Leis de Kepler","slug":"keplers-laws"},{"topicos":[4],"fonte":"P","nome":"Meu Sistema Solar","slug":"my-solar-system"}],"T59":[{"topicos":[1,2,4],"fonte":"P","nome":"Laboratório de Força Gravitacional","slug":"gravity-force-lab"},{"topicos":[4],"fonte":"V","capitulo":"II","nome":"Experimento de Cavendish"}],"T60":[{"topicos":[1,2,5],"fonte":"P","nome":"Laboratório de Força Gravitacional: Básico","slug":"gravity-force-lab-basics"},{"topicos":[2,3],"fonte":"V","capitulo":"II","nome":"Intensidade do campo gravitacional · Aceleração da gravidade"}]},"fe1":{"T0A":[{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Paquímetro · Micrômetro"}],"T01":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Paquímetro · Micrômetro"}],"T02":[{"topicos":[5],"fonte":"P","nome":"Densidade","slug":"density"}],"T03":[{"topicos":[1,3],"fonte":"P","nome":"Laboratório do Pêndulo","slug":"pendulum-lab"}],"T04":[{"topicos":[2,3,4],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T05":[{"topicos":[2,3],"fonte":"V","capitulo":"II","nome":"Queda livre · Tubo de Newton"},{"topicos":[4],"fonte":"P","nome":"Lab Dados de Projéteis","slug":"projectile-data-lab"}],"T06":[{"topicos":[2,3,5],"fonte":"P","nome":"Lei de Hooke","slug":"hookes-law"},{"topicos":[3],"fonte":"P","nome":"Massas e Molas: Básico","slug":"masses-and-springs-basics"}],"T07":[{"topicos":[2,3],"fonte":"P","nome":"Atrito","slug":"friction"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Plano inclinado"}],"T08":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Plano inclinado"},{"topicos":[2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"}],"T09":[{"topicos":[2,3,4],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[3],"fonte":"V","capitulo":"I","nome":"Paralelogramo de forças"}],"T10":[{"topicos":[2,3,4],"fonte":"V","capitulo":"I","nome":"Centro de gravidade"},{"topicos":[4],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"T11":[{"topicos":[1,3],"fonte":"P","nome":"Balançando","slug":"balancing-act"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Alavanca · Polias"}],"T12":[{"topicos":[1,2,3,4],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"}],"T13":[{"topicos":[2,3,4,5],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"T14":[{"topicos":[1,2,4],"fonte":"P","nome":"Sob Pressão","slug":"under-pressure"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Pressão hidrostática"}],"T15":[{"topicos":[1,2],"fonte":"P","nome":"Densidade","slug":"density"},{"topicos":[4],"fonte":"P","nome":"Flutuabilidade","slug":"buoyancy"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Princípio de Arquimedes"}],"T16":[{"topicos":[1,2,3,4,5],"fonte":"P","nome":"catálogo inteiro — escolha justificada no relatório"}]}};
+// SIMULACOES:FIM
+
+function adicionarSimulacao(d) {
+  d = d || {};
+  const list = document.getElementById('sim-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.className = 'sim-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center;';
+  const fontes = ['PhET', 'Vascak', 'Outra'];
+  const opts = fontes.map(f => `<option value="${f}"${d.fonte === f ? ' selected' : ''}>${f}</option>`).join('');
+  row.innerHTML =
+    _instrInput('sim-topicos', 'Tópicos (ex.: 1, 2)', '0.7 1 80px', d.topicos) +
+    `<select class="sim-fonte" style="flex:0.7 1 80px;${_INSTR_INPUT_STYLE}" onchange="salvarSimulacoes()">${opts}</select>` +
+    _instrInput('sim-nome', 'Nome da simulação', '1.6 1 140px', d.nome) +
+    _instrInput('sim-url', 'URL', '1.6 1 140px', d.url) +
+    _instrInput('sim-desafio', 'Desafio de 3 minutos (ação → o que observar)', '2 1 160px', d.desafio) +
+    _instrRemoveBtn().replace('salvarInstrumentos()', 'salvarSimulacoes()');
+  list.appendChild(row);
+}
+
+function carregarSimulacoesSugeridas(forcar) {
+  const list = document.getElementById('sim-list');
+  if (!list || !estado.trilha) { if (forcar) showToast('Selecione a trilha primeiro', 'erro'); return; }
+  if (list.children.length && !forcar) return;
+  const disc = _disciplinaAtual.startsWith('fe') ? 'fe1' : 'fc1';
+  const mapa = (SIMULACOES_MAPA[disc] || {})[estado.trilha] || [];
+  if (!mapa.length) { if (forcar) showToast('Sem simulações mapeadas para ' + estado.trilha + ' no SIM-v1', 'erro'); return; }
+  list.innerHTML = '';
+  mapa.forEach(e => {
+    adicionarSimulacao({
+      topicos: (e.topicos || []).join(', '),
+      fonte: e.fonte === 'P' ? 'PhET' : 'Vascak',
+      nome: e.nome + (e.capitulo ? ' (cap. ' + e.capitulo + ')' : ''),
+      url: e.slug ? SIM_URL_PHET.replace(/\{slug\}/g, e.slug) : SIM_URL_VASCAK,
+      desafio: ''
+    });
+  });
+  salvarSimulacoes();
+  if (forcar) showToast(mapa.length + ' simulação(ões) carregada(s) do SIM-v1', 'ouro');
+}
+
+function coletarSimulacoes() {
+  const v = el => el ? el.value.trim() : '';
+  const sims = [];
+  document.querySelectorAll('#sim-list .sim-row').forEach(r => {
+    const sel = r.querySelector('.sim-fonte');
+    const item = { topicos: v(r.querySelector('.sim-topicos')), fonte: sel ? sel.value : '', nome: v(r.querySelector('.sim-nome')), url: v(r.querySelector('.sim-url')), desafio: v(r.querySelector('.sim-desafio')) };
+    if (item.nome || item.url) sims.push(item);
+  });
+  return sims;
+}
+
+function salvarSimulacoes() {
+  try { localStorage.setItem(LS + 'simulacoes', JSON.stringify(coletarSimulacoes())); } catch (e) {}
+}
+
+function restaurarSimulacoes() {
+  let sims;
+  try { sims = JSON.parse(localStorage.getItem(LS + 'simulacoes') || 'null'); } catch (e) { return; }
+  if (!sims || !sims.length) return;
+  const list = document.getElementById('sim-list');
+  if (list) list.innerHTML = '';
+  sims.forEach(d => adicionarSimulacao(d));
+}
+
+function getSimulacoesOutput() {
+  const sims = coletarSimulacoes();
+  if (!sims.length) return '';
+  let out = '\nSimulações da trilha (Protocolo SIM-v1 — inserir bloco 🎮 SIMULE no tópico indicado do TT):\n';
+  sims.forEach(s => {
+    out += `  - Tópico(s) ${_NV(s.topicos)} · ${_NV(s.fonte)} · ${_NV(s.nome)}\n    URL: ${_NV(s.url)}\n    Desafio de 3 minutos: ${s.desafio || '[a redigir no TT: ação concreta → o que observar]'}\n`;
+  });
+  return out;
+}
+
+function getSimulacoesMd() {
+  const sims = coletarSimulacoes();
+  if (!sims.length) return '';
+  let md = '- **Simulações da trilha (SIM-v1):**\n';
+  sims.forEach(s => { md += `  - Tópico(s) ${_NV(s.topicos)} · ${_NV(s.fonte)} · ${_NV(s.nome)} · ${_NV(s.url)}${s.desafio ? ' · Desafio: ' + s.desafio : ''}\n`; });
   return md;
 }
 
@@ -4196,7 +4301,7 @@ Cenario principal: ${estado.cenarioPrincipal||'[a definir]'}${estado.cenarioPrin
 Cenario secundario: ${document.getElementById('cenario-sec-edit').value || '[a definir]'}
 Problema narrativo (Ato I): ${document.getElementById('ato1-edit').value || '[a definir]'}
 Resolucao esperada (Ato III): ${document.getElementById('ato3-edit').value || '[a definir]'}
-${getInstrumentosOutput()}
+${getInstrumentosOutput()}${getSimulacoesOutput()}
 Autores da trilha (para rodapé do TT): ${estado.profsAtivos.length ? estado.profsAtivos.map(p=>p.nome).join(', ') : (document.getElementById('inp-autor')?.value||'[a definir]')}
 
 ## 4 · Contextualizacao Tripla
@@ -4333,6 +4438,7 @@ function autoExportRascunho(gatilho) {
   md += `- **Ato I (rascunho):** ${val('ato1-edit')}\n`;
   md += `- **Ato III (rascunho):** ${val('ato3-edit')}\n`;
   md += getInstrumentosMd();
+  md += getSimulacoesMd();
   md += `- **Professores:**\n`;
   if(estado.profsAtivos.length) {
     estado.profsAtivos.forEach(p => { md += `  - ${p.nome} (${p.papel||'Autor'})\n`; });
@@ -5256,6 +5362,7 @@ function exportarTemaParaCowork() {
     formatos     : getFormatos(),
     arteExtra    : getArteOutput(),
     instrumentos : getInstrumentosOutput(),
+    simulacoes   : getSimulacoesOutput(),
   };
 
   // ── Data / hora ────────────────────────────────────────────
@@ -5436,7 +5543,7 @@ Cenário principal: ${cenarioPrinc}
 Cenário secundário: ${cenarioSec}
 Problema narrativo (Ato I): ${ato1}
 Resolução esperada (Ato III): ${ato3}
-${isAtual ? dadosForm.instrumentos : ''}
+${isAtual ? dadosForm.instrumentos : ''}${isAtual ? dadosForm.simulacoes : ''}
 Autores da trilha (para rodapé do TT): ${profNome}
 
 ## 4 · Contextualização Tripla
