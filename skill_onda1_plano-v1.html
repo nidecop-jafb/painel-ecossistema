@@ -663,6 +663,7 @@ select option { background: var(--superficie); color: var(--texto); }
     <div class="prog-label" id="pl5" onclick="navegarSecao(5)">Lacunas</div>
     <div class="prog-label" id="pl6" onclick="navegarSecao(6)">Finalização</div>
     <div class="prog-label" id="pl7" onclick="navegarSecao(7)">Imagens Temáticas</div>
+    <div class="prog-label" id="pl8" onclick="navegarSecao(8)">Guias</div>
   </div>
 </div>
 
@@ -1214,8 +1215,8 @@ select option { background: var(--superficie); color: var(--texto); }
 <div class="secao" id="sec6">
   <div class="secao-header" onclick="toggleSecao(6)">
     <span class="secao-num">06</span>
-    <span class="secao-titulo">Finalização</span>
-    <span class="secao-campos">Competencia-sintese, OA, versao, observacoes</span>
+    <span class="secao-titulo">Finalização do Texto Temático — Plano de Produção da Trilha (Onda 1)</span>
+    <span class="secao-campos">Competencia-sintese · observacoes · dispara as Ondas 1-4 (matriz v2)</span>
     <span class="secao-chevron" aria-hidden="true">▾</span>
   </div>
   <div class="secao-body">
@@ -1232,36 +1233,20 @@ select option { background: var(--superficie); color: var(--texto); }
     </div>
     <!-- Baseado em + Autor/Data removidos (A4.5) -->
 
-    <!-- Formato de saída dos OAs -->
-    <div class="campo-grupo" style="margin-top:4px;">
-      <div class="campo-label" style="color:var(--ouro-claro);">
-        Formatos de Saída
-        <span class="campo-edit-badge" style="background:var(--ouro-bg);border-color:var(--cinza-borda);color:var(--ouro)">Selecione um ou mais</span>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;padding:7px 14px;border-radius:0;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);transition:all .18s;" id="fmt-md-wrap">
-          <input type="checkbox" id="fmt-md" checked style="accent-color:var(--ouro);width:14px;height:14px;">
-          Markdown (.md)
-        </label>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;padding:7px 14px;border-radius:0;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);transition:all .18s;" id="fmt-pdf-wrap">
-          <input type="checkbox" id="fmt-pdf" style="accent-color:var(--ouro);width:14px;height:14px;">
-          PDF (via LaTeX)
-        </label>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;padding:7px 14px;border-radius:0;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);transition:all .18s;" id="fmt-html-digital-wrap">
-          <input type="checkbox" id="fmt-html-digital" style="accent-color:var(--ouro);width:14px;height:14px;">
-          HTML Digital (-digital.html)
-        </label>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;padding:7px 14px;border-radius:0;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);transition:all .18s;" id="fmt-html-impresso-wrap">
-          <input type="checkbox" id="fmt-html-impresso" style="accent-color:var(--ouro);width:14px;height:14px;">
-          HTML Impresso (-impresso.html)
-        </label>
-      </div>
-      <div class="nota-info" style="margin-top:8px;">Os formatos selecionados serão indicados no prompt gerado. O Claude gerará os OAs no(s) formato(s) escolhido(s) em sequência.</div>
+    <!-- Formatos: canonicos por OA desde a matriz v2 (pos-Moodle) — o Painel nao pergunta mais -->
+    <div class="nota-info" style="margin-top:4px;">
+      <strong>Formatos canônicos por OA</strong> (matriz v2 · sem Moodle): <code>.md</code> fonte + OA digital <code>.html</code>;
+      impresso apenas onde o protocolo pede (FA e TR). Definidos pelas skills — nada a selecionar aqui.
     </div>
-    <!-- /Formato -->
+
+    <div class="nota-info" style="margin-top:8px;border-color:var(--verde-claro);background:var(--verde-bg);">
+      <strong>Execução automática (matriz v2):</strong> ao colar o prompt no Claude Code, a <strong>Onda 1</strong> roda
+      imediatamente (TT com Fable 5 + gates). Quando você disser <em>"TT aprovado"</em>, as <strong>Ondas 2-4</strong>
+      (Sonnet 5 → Opus 5 → Haiku 4.5) rodam em sequência, sem novos prompts.
+    </div>
 
     <div class="btn-row" style="margin-top:14px;">
-      <button class="btn btn-verde btn-full" onclick="gerarCamada2()" style="flex:2;background:var(--verde-mina);">⚡ Finalizar — gerar o Prompt do Texto Temático</button>
+      <button class="btn btn-verde btn-full" onclick="gerarCamada2()" style="flex:2;background:var(--verde-mina);">⚡ Finalizar — gerar o Plano de Produção da Trilha (Ondas 1-4)</button>
     </div>
   </div>
 </div>
@@ -1269,14 +1254,14 @@ select option { background: var(--superficie); color: var(--texto); }
 <!-- ═══ OUTPUT ═══ -->
 <div class="output-section" id="output-section">
   <div class="output-header">
-    <span class="output-titulo">Prompt Completo para gerar o Texto Temático</span>
+    <span class="output-titulo">Plano de Produção da Trilha — Prompt único (Ondas 1-4)</span>
     <div class="btn-row" style="margin-top:0;flex-wrap:wrap;">
       <button class="btn btn-outline" onclick="copiarOutput()">Copiar Prompt</button>
     </div>
   </div>
   <div class="nota-info" style="margin:6px 0 10px;">
-    Dica: para gerar o Texto Temático, colar (Ctrl+V) no Claude Code ou no Cowork.
-    O prompt já instrui o Claude a salvar o .md com versionamento correto (v{N+1}, anterior em xx/) na pasta da trilha.
+    Cole (Ctrl+V) no Claude Code: a Onda 1 (TT · Fable 5) roda na hora, com versionamento correto (v{N+1}, anterior em xx/).
+    Depois do seu "TT aprovado", as Ondas 2-4 (Sonnet 5 → Opus 5 → Haiku 4.5) rodam sozinhas — matriz v2.
   </div>
   <div class="output-body" id="output-body"></div>
 </div>
@@ -1286,7 +1271,7 @@ select option { background: var(--superficie); color: var(--texto); }
   <div class="secao-header" onclick="toggleSecaoGen('sec7')" style="cursor:pointer;">
     <span class="secao-num" style="background:var(--verde-bg);border-color:var(--verde-claro);color:var(--verde-claro);">07</span>
     <span class="secao-titulo">Imagens Temáticas &amp; Pipeline de OAs</span>
-    <span class="secao-campos">IT (Manual/Lote + Legendas) · Pipeline de OAs · Exportar Tema · Guias</span>
+    <span class="secao-campos">Pipeline por fase (fallback manual da matriz v2) · Exportar Tema</span>
     <span class="secao-chevron" style="color:var(--verde-claro);" aria-hidden="true">▾</span>
   </div>
   <div class="secao-body" id="sec7-body" style="display:none;">
@@ -1323,24 +1308,7 @@ select option { background: var(--superficie); color: var(--texto); }
           <div class="orq-fase-label">🖼️ Imagens</div>
           <div class="orq-fase-titulo">Imagens Temáticas</div>
           <div class="orq-fase-oas">IT-00 (capa) a IT-12 · 13 imagens · Protocolo v8</div>
-          <div class="orq-fase-fmt" style="font-size:9px;color:var(--ouro);font-family:'DM Mono',monospace;margin-top:2px;opacity:.7;">.html</div>
-          <div style="display:flex;gap:8px;margin:6px 0 2px;font-size:10px;">
-            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
-              <input type="checkbox" id="orq-it-manual" checked style="accent-color:var(--ouro);"> Manual
-            </label>
-            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
-              <input type="checkbox" id="orq-it-lote" style="accent-color:var(--ouro);"> Lote
-            </label>
-          </div>
-          <div style="display:flex;gap:8px;margin:2px 0;font-size:10px;align-items:center;">
-            <span style="color:var(--texto-sub);">Legendas:</span>
-            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
-              <input type="checkbox" id="orq-it-leg-canonica" checked style="accent-color:var(--ouro);"> Canônica
-            </label>
-            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:var(--texto);">
-              <input type="checkbox" id="orq-it-leg-poetica" style="accent-color:var(--ouro);"> Poética
-            </label>
-          </div>
+          <div class="orq-fase-fmt" style="font-size:9px;color:var(--ouro);font-family:'DM Mono',monospace;margin-top:2px;opacity:.7;">Onda 2 · Sonnet 5 · Manual (Gemini) · legenda poética</div>
           <button class="orq-btn" id="orq-btn-it" onclick="gerarPromptIT()" disabled>🖼️ Gerar IT</button>
           <label class="orq-check" title="Marque após gerar e aprovar as 12 imagens">
             <input type="checkbox" id="orq-it-concluido" onchange="atualizarFases()" disabled> IT concluídas ✓
@@ -1430,10 +1398,21 @@ select option { background: var(--superficie); color: var(--texto); }
       </div>
     </div>
 
-    <div style="margin-top:20px;border-top:1px dashed oklch(0.45 0.10 150);padding-top:14px;"></div>
+  </div>
+</div>
+
+<!-- ═══ SECAO 8 — GUIAS DA TRILHA (POS-PRODUCAO) ═══ -->
+<div class="secao" id="sec8" style="margin-top:20px;border-color:oklch(0.45 0.10 150);">
+  <div class="secao-header" onclick="toggleSecaoGen('sec8')" style="cursor:pointer;">
+    <span class="secao-num" style="background:var(--verde-bg);border-color:var(--verde-claro);color:var(--verde-claro);">08</span>
+    <span class="secao-titulo">Guias da Trilha (Pós-Produção)</span>
+    <span class="secao-campos">Professor · Monitor · Familiares · Pedagogo · NAPNEE</span>
+    <span class="secao-chevron" style="color:var(--verde-claro);" aria-hidden="true">▾</span>
+  </div>
+  <div class="secao-body" id="sec8-body" style="display:none;">
 
     <div class="nota-info" style="border-color:var(--verde-claro);background:var(--verde-bg);">
-      Esta seção é ativada <strong>após a geração de todos os OAs da trilha</strong>. Selecione os guias desejados e o modo de geração. O Claude produzirá documentos específicos para cada público, com orientações sobre como acompanhar o estudante ao longo da trilha.
+      Ativada <strong>após a geração de todos os OAs da trilha</strong> (fim da Onda 4). Selecione os guias e o modo de geração — o Claude produz um documento por público, com orientações para acompanhar o estudante ao longo da trilha.
       <div style="margin-top:8px;padding:8px 10px;border-radius:0;background:var(--verde-bg);border:1px solid oklch(0.45 0.10 150);font-size:11px;color:var(--texto-sub);">
         <strong style="color:var(--verde-claro);font-size:10px;letter-spacing:.04em;text-transform:uppercase;">Protocolos de referência disponíveis no repositório</strong><br>
         camada3_protocolo_texto_tematico.md &middot; camada4_protocolos_oas_pre_aula_aula_pos.md &middot; camada5_protocolos_avaliacao_somativa.md<br>
@@ -1474,6 +1453,14 @@ select option { background: var(--superficie); color: var(--texto); }
           <div>
             <div style="font-size:12px;font-weight:500;color:var(--texto);">Pedagogo(a)</div>
             <div style="font-size:11px;color:var(--texto-sub);margin-top:2px;">Indicadores de acompanhamento, alertas de risco de reprovação, estratégias de intervenção e articulação com a equipe docente.</div>
+          </div>
+        </label>
+
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:12px 14px;border-radius:var(--r);border:1px solid oklch(0.45 0.10 150);background:var(--input-bg);transition:all .18s;" id="guia-napnee-wrap">
+          <input type="checkbox" id="guia-napnee" style="accent-color:var(--verde-claro);width:15px;height:15px;margin-top:2px;flex-shrink:0;">
+          <div>
+            <div style="font-size:12px;font-weight:500;color:var(--texto);">NAPNEE</div>
+            <div style="font-size:11px;color:var(--texto-sub);margin-top:2px;">Núcleo de Atendimento às Pessoas com Necessidades Educacionais Específicas: adaptações razoáveis por OA (digital e impresso), acessibilidade, Desenho Universal para a Aprendizagem e articulação com professor e pedagogo.</div>
           </div>
         </label>
 
@@ -4319,17 +4306,19 @@ Trilhas ja cursadas: ${document.getElementById('out-trilhas-cursadas').textConte
 Conceitos-ancora disponiveis: ${document.getElementById('ancora-edit').value || '[a definir]'}
 Lacunas previstas: ${document.getElementById('lacunas-edit').value || '[a definir]'}
 
-## 6 · Finalização
+## 6 · Finalização — Plano de Produção da Trilha (Onda 1)
 
 Competencia-sintese: ${document.getElementById('comp-edit').value || '[a definir]'}
 OA solicitado: ${oa}
-Formatos solicitados: ${getFormatos()}
+Formatos: ${getFormatos()}
 Versao: v{N} — definida pela regra de versionamento da secao 7
 Observacoes especificas: ${document.getElementById('obs-edit').value || '[a definir]'}${guiasOutput}
 
-## 7 · Entrega — salvar e gerar (versionamento CLAUDE.md secao 4)
+## 7 · Execucao — salvar, gerar e disparar as Ondas (versionamento CLAUDE.md secao 4)
 
 > A secao 7 e instrucao operacional para o Claude Code — NAO deve ser gravada no arquivo .md.
+> Matriz de modelos: _skill_cowork/modelos-por-oa-v2.md · Loops: .claude/loops-modo-por-oa.md §5.
+> Explicacoes e relatorios: no maximo 2 linhas por OA (arquivo salvo + resultado do gate).
 
 ### Passo 1 — Salvar esta Camada 2 (.md, raiz da pasta da trilha)
 
@@ -4338,15 +4327,25 @@ Observacoes especificas: ${document.getElementById('obs-edit').value || '[a defi
 3. Nome: ${getFilePrefix()}${estado.trilha}-Camada2-v{N}.md · ajustar o campo "versao:" do YAML para o v{N} salvo
 4. Conteudo do arquivo: do YAML inicial ate o fim da secao 6 (excluir esta secao 7)
 
-### Passo 2 — Gerar o Texto Tematico (TT) em .md
+### Passo 2 — ONDA 1 · Texto Tematico (TT) com Fable 5
 
 1. Acionar a skill texto-tematico e ler o SKILL.md antes de gerar
 2. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-TT-v*.md em Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
 3. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/ · se nao existir, salvar como v1
-4. Nome: ${getFilePrefix()}${estado.trilha}-TT-v{N}.md · Pasta destino: Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
-5. Demais formatos selecionados (${getFormatos()}) somente apos aprovacao do .md pelo autor
+4. Nome: ${getFilePrefix()}${estado.trilha}-TT-v{N}.md · Pasta: Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+5. Gate (Karpathy): validar_tt.py PASS 15/15 + checklist_pre_entrega.py ${estado.trilha} TT PASS
+6. Entregar o TT .md e AGUARDAR a aprovacao do autor — nenhum outro OA antes disso (regra de ouro)
 
-Apos entregar o TT .md, aguarde aprovacao do autor antes de gerar outros OAs.
+### Passo 3 — ONDAS 2-4 · execucao automatica apos "TT aprovado"
+
+Quando o autor aprovar o TT, executar em sequencia, SEM novos prompts, um lote por onda
+(subagente com o modelo da onda; cada OA: acionar a skill, gerar, rodar o gate, arquivar anterior em xx/):
+
+- ONDA 2 · Sonnet 5 — IT (roteiro .md/.html) · MD (roteiro .md/.html) · TT digital · PP · IG · FA · AP
+- ONDA 3 · Opus 5 — TN · PR · TM · TC · TR
+- ONDA 4 · Haiku 4.5 — CD · MC · publicacao + QR (publicar_trilha.py + gerar_qrcodes.py; push = ato do autor)
+
+Ao final, resumo de ate 2 linhas por onda com os gates PASS/FAIL.
 
 ---
 Gerado em: ${dataStr}
@@ -4364,7 +4363,7 @@ Skill: Camada 2 — Abertura de Trilha v4.0 (elenco canônico · Protocolo v1) |
   if(orqLabel) orqLabel.textContent = estado.trilha + ' — "' + t.nome + '" · Gere o TT âncora primeiro';
   atualizarFases();
   document.getElementById('output-section').scrollIntoView({behavior:'smooth'});
-  showToast('Prompt do Texto Tematico gerado — use "Copiar Prompt" e cole no Claude Code', 'ouro');
+  showToast('Plano de Producao (Ondas 1-4) gerado — use "Copiar Prompt" e cole no Claude Code', 'ouro');
 }
 
 function copiarOutput() {
@@ -4554,30 +4553,9 @@ function gerarArteTexto() {
   document.getElementById('arte-preview').value = partes.join('\n\n');
 }
 
-// ─── Formatos selecionados ────────────────────────────────
+// ─── Formatos canonicos (matriz v2 — pos-Moodle, sem selecao no Painel) ───
 function getFormatos() {
-  const fmts=[];
-  if(document.getElementById('fmt-md')?.checked) fmts.push('Markdown (.md)');
-  if(document.getElementById('fmt-pdf')?.checked) fmts.push('PDF via LaTeX');
-  if(document.getElementById('fmt-docx')?.checked) fmts.push('Word (.docx)');
-  if(document.getElementById('fmt-tex')?.checked) fmts.push('LaTeX (.tex)');
-  if(document.getElementById('fmt-html-digital')?.checked) fmts.push('HTML Digital (-digital.html)');
-  if(document.getElementById('fmt-html-impresso')?.checked) fmts.push('HTML Impresso (-impresso.html)');
-  return fmts.length ? fmts.join(', ') : 'Markdown (.md)';
-}
-
-function getFormatosOA(sigla) {
-  const fmts = ['Markdown (.md)'];
-  if(document.getElementById('fmt-html-digital')?.checked) {
-    const comVariantes = ['FA','DX'];
-    if(comVariantes.includes(sigla)) {
-      fmts.push('-digital-estudante.html', '-digital-professor.html');
-    } else {
-      fmts.push('-digital.html');
-    }
-  }
-  if(document.getElementById('fmt-pdf')?.checked) fmts.push('PDF (.pdf)');
-  return fmts.join(', ');
+  return 'canonicos por OA (matriz v2): .md fonte + OA digital .html; impresso so FA e TR';
 }
 
 // ─── Arte no output ────────────────────────────────────────
@@ -4790,13 +4768,13 @@ function gerarSugestaoArte() {
 
 // ─── Guias: helper de output ──────────────────────────────
 function getGuiasOutput() {
-  const checks = ['prof','monitor','familia','pedagogo'];
-  const nomes  = ['Professor(a)','Monitor(a)','Familiares e Apoiadores','Pedagogo(a)'];
+  const checks = ['prof','monitor','familia','pedagogo','napnee'];
+  const nomes  = ['Professor(a)','Monitor(a)','Familiares e Apoiadores','Pedagogo(a)','NAPNEE'];
   const sel = checks.filter(id => document.getElementById('guia-'+id)?.checked);
   if(!sel.length) return '';
   const modo = document.querySelector('input[name="guia-modo"]:checked')?.value || 'separados';
   const nomesSel = sel.map(id => nomes[checks.indexOf(id)]);
-  return `\n\n## 7 · Guias Pos-Producao\n\nGuias solicitados: ${nomesSel.join(', ')}\nGeracao: ${modo === 'juntos' ? 'Documento unico consolidado' : 'Documentos separados por publico'}\n\nApos a geracao de todos os OAs desta trilha, gerar os guias para: ${nomesSel.join(', ')} — em formato ${modo}.`;
+  return `\n\n## 6b · Guias Pos-Producao (apos a Onda 4)\n\nGuias solicitados: ${nomesSel.join(', ')}\nGeracao: ${modo === 'juntos' ? 'Documento unico consolidado' : 'Documentos separados por publico'}\n\nApos a geracao de todos os OAs desta trilha, gerar os guias para: ${nomesSel.join(', ')} — em formato ${modo}.`;
 }
 
 // ─── Guias: toggle seção genérico ────────────────────────
@@ -4811,8 +4789,8 @@ function toggleSecaoGen(id) {
 
 // ─── Guias: gerar prompt ──────────────────────────────────
 function gerarPromptGuias() {
-  const checks   = ['prof','monitor','familia','pedagogo'];
-  const nomes    = ['Professor(a)','Monitor(a)','Familiares e Apoiadores','Pedagogo(a)'];
+  const checks   = ['prof','monitor','familia','pedagogo','napnee'];
+  const nomes    = ['Professor(a)','Monitor(a)','Familiares e Apoiadores','Pedagogo(a)','NAPNEE'];
   const sel      = checks.filter(id => document.getElementById('guia-'+id)?.checked);
   if(!sel.length){ showToast('Selecione pelo menos um guia','erro'); return; }
   const modo     = document.querySelector('input[name="guia-modo"]:checked')?.value || 'separados';
@@ -4821,7 +4799,10 @@ function gerarPromptGuias() {
   const t        = estado.trilha ? TRILHAS[estado.trilha] : null;
   const nomeT    = t ? t.nome : '[nome da trilha]';
   const modoTxt  = modo==='juntos' ? 'um unico documento consolidado' : modo==='ambos' ? 'documentos separados E um consolidado' : 'documentos separados por publico';
-  const prompt = `# Guias Pos-Producao — Trilha ${trilha}\n\nTrilha: ${trilha} — "${nomeT}"\nGuias solicitados: ${nomesSel.join(', ')}\nModo de geracao: ${modoTxt}\n\nTodos os OAs desta trilha ja foram gerados. Gere agora os guias para os publicos indicados.\n\nProtocolos de referencia disponiveis no repositorio (use como base):\n- camada3_protocolo_texto_tematico.md\n- camada4_protocolos_oas_pre_aula_aula_pos.md\n- camada5_protocolos_avaliacao_somativa.md\n- instrumento_avaliacao_oas.md\n\nPara cada guia, siga esta estrutura:\n\n## Guia do(a) [Publico]\n### Trilha ${trilha} — ${nomeT}\n\n**O que esta trilha ensina** (2-3 paragrafos)\n**Cronograma e prazos** (OAs em sequencia)\n**Como apoiar / Como atuar** (acoes praticas)\n**Indicadores de progresso** (o que observar)\n**Plano de recuperacao** (4 Pilares de Feedback)\n**Contato e suporte** (quem acionar)\n\nNao gere nenhum conteudo antes de confirmar que entendeu esta instrucao.`;
+  const napneeExtra = sel.includes('napnee')
+    ? `\n\nEspecifico do Guia NAPNEE (Nucleo de Atendimento as Pessoas com Necessidades Educacionais Especificas):\n- Adaptacoes razoaveis por OA (digital e impresso) e recursos de acessibilidade ja embutidos (fonte, tema, audio)\n- Orientacoes por necessidade especifica (visual, auditiva, motora, TEA, TDAH, altas habilidades)\n- Principios do Desenho Universal para a Aprendizagem aplicados a trilha\n- Articulacao com professor e pedagogo (quem adapta o que, e quando)`
+    : '';
+  const prompt = `# Guias Pos-Producao — Trilha ${trilha}\n\nTrilha: ${trilha} — "${nomeT}"\nGuias solicitados: ${nomesSel.join(', ')}\nModo de geracao: ${modoTxt}\n\nTodos os OAs desta trilha ja foram gerados. Gere agora os guias para os publicos indicados.\n\nProtocolos de referencia disponiveis no repositorio (use como base):\n- camada3_protocolo_texto_tematico.md\n- camada4_protocolos_oas_pre_aula_aula_pos.md\n- camada5_protocolos_avaliacao_somativa.md\n- instrumento_avaliacao_oas.md\n\nPara cada guia, siga esta estrutura:\n\n## Guia do(a) [Publico]\n### Trilha ${trilha} — ${nomeT}\n\n**O que esta trilha ensina** (2-3 paragrafos)\n**Cronograma e prazos** (OAs em sequencia)\n**Como apoiar / Como atuar** (acoes praticas)\n**Indicadores de progresso** (o que observar)\n**Plano de recuperacao** (4 Pilares de Feedback)\n**Contato e suporte** (quem acionar)${napneeExtra}\n\nNao gere nenhum conteudo antes de confirmar que entendeu esta instrucao.`;
   document.getElementById('guias-output-body').textContent = prompt;
   document.getElementById('guias-output-wrap').style.display = 'block';
   document.getElementById('guias-output-wrap').scrollIntoView({behavior:'smooth'});
@@ -5064,72 +5045,30 @@ Após confirmar a geração, aguarde aprovação do autor antes de gerar outros 
 function gerarPromptIT() {
   const ctx = _getOrqCtx();
   if(!ctx){ showToast('Selecione a trilha primeiro','erro'); return; }
-  const usarManual = document.getElementById('orq-it-manual')?.checked || false;
-  const usarLote   = document.getElementById('orq-it-lote')?.checked   || false;
-  if(!usarManual && !usarLote) { showToast('Selecione Manual e/ou Lote antes de gerar', 'erro'); return; }
-
-  const legCanonica = document.getElementById('orq-it-leg-canonica')?.checked || false;
-  const legPoetica  = document.getElementById('orq-it-leg-poetica')?.checked  || false;
-  const legendas = [legCanonica ? 'Canônica' : null, legPoetica ? 'Poética' : null].filter(Boolean).join(' + ') || 'Canônica';
-
-  const modos = [];
-  if(usarManual) modos.push('Manual (`imagem-tematica-manual`)');
-  if(usarLote)   modos.push('Lote (`imagens-tematicas-lote`)');
-
-  let saidas = '';
-  if(usarManual) saidas += `\n### Saída Manual (skill \`imagem-tematica-manual\` — recomendada)\n- Roteiro \`.md\` minimalista em _imagens/\n- \`${ctx.code}-IT-pt-v{N}-Gemine.txt\` — para colagem no Gemini\n- \`${ctx.code}-IT-pt-v{N}-Gemine.html\` — roteiro visual interativo com botões "Copiar" por imagem\n`;
-  if(usarLote)   saidas += `\n### Saída Lote (skill \`imagens-tematicas-lote\`)\n- \`${ctx.code}-IT-pt-v{N}.txt\` — roteiro completo com metadados\n- \`${ctx.code}-IT-pt-v{N}-Gemine.txt\` — versão limpa para colagem no Gemini\n`;
 
   const prompt =
-`# Gerar Imagens Temáticas (IT) — ${ctx.code}
+`# Gerar Imagens Temáticas (IT) — ${ctx.code} · Onda 2 (Sonnet 5)
 
 Trilha: ${ctx.code} — "${ctx.nome}"
-Base:   ${getFilePrefix()}${ctx.code}-TT-v1.md (aprovado pelo autor)
+Base:   TT aprovado da trilha (maior v{N} em ${getPasta('pre')}/)
 OA:     Imagens Temáticas (IT) · 13 imagens 1200×1200 px (IT-00 capa + Figuras 1-12)
-Modo:   ${modos.join(' + ')}
-Legendas: ${legendas}
 
 ## Instrução
 
-Com base no TT aprovado da ${ctx.code}, gere os prompts das 13 Imagens Temáticas.
-**Protocolo IT v8** — tabela canônica: _skill_cowork/tabela-it-canonica-v8.md (ler antes de gerar).
+Acione a skill imagem-tematica-manual e siga o Protocolo IT v8 (tabela canônica:
+_skill_cowork/tabela-it-canonica-v8.md) — a skill define sequência, arco narrativo,
+referências anexadas, descritores e estilos. Legendas: poéticas (padrão v8).
 
-## Saídas esperadas
-${saidas}
-## Sequência das 13 imagens (v8)
+## Saídas (em _imagens/ da trilha, com versionamento v{N} do TT)
 
-IT-00 Capa (SEM legenda) → IT-01 Símbolo da trilha (3D, após a epígrafe) →
-IT-02 Ato I/Gancho → IT-03 Explore Google Maps (Desenho) →
-IT-04 a IT-08 Tópicos 1-5 → IT-09 Ato III/Fechamento →
-IT-10 Conexões Interdisciplinares (Desenho técnico) →
-IT-11 Protocolo C5/RCP (antes do box) → IT-12 Ciência e Arte (dentro do box)
+- \`${ctx.code}-IT-pt-v{N}.md\` — roteiro minimalista
+- \`${ctx.code}-IT-pt-v{N}-Gemine.txt\` — para colagem no Gemini
+- \`${ctx.code}-IT-pt-v{N}-Gemine.html\` — roteiro visual com botões "Copiar" por imagem
 
-## Regras obrigatórias (v8)
-
-- Todas 1200×1200 px (1:1 quadrado)
-- Arco narrativo: IT-00 → IT-02 (chegada DE COSTAS) → IT-09 (retorno DE COSTAS) — mesmo cenário e mesma referência anexada
-- Referência real anexada no Gemini: IT-00, IT-02, IT-03, IT-09 ("Anexe imagem real de referência.")
-- Parágrafo-âncora: o 1º parágrafo de cada seção do TT contextualiza e ancora a imagem, em diálogo com a legenda poética
-- Descritores físicos completos (~60 palavras) com roupa fixa por trilha
-- "jovem estudante universitário" (sem idade — filtro Gemini)
-- Estilos: Cinematográfico (default) · 3D (IT-01) · Desenho (IT-03) · Desenho técnico (IT-10)
-
-## Legendas das imagens
-
-Estilo selecionado: ${legendas}
-- Canônica: descrição objetiva (Fig. N — o que a imagem mostra)
-- Poética: frase curta evocativa, alinhada à narrativa da trilha
-
-## Entrega
-
-Pasta: _imagens/ da trilha ${ctx.code}
-Formato principal: .html (roteiro visual interativo com botões Copiar)
-
-⏳ IMPORTANTE: a geração do arquivo .html leva alguns minutos — aguarde a
-confirmação do Claude Code de que o arquivo foi salvo em _imagens/ antes de
-abrir o roteiro e iniciar a produção no Gemini. Após gerar, aguarde aprovação do autor.`;
-  _mostrarOrqPrompt('🖼️ Prompt — Gerar IT (copie e cole no Cowork)', prompt);
-  showToast('Prompt IT gerado — modo: ' + modos.join(' + '), 'ouro');
+Os PNGs são passo manual do autor no Gemini. Relatório: no máximo 2 linhas.
+⏳ Aguarde a confirmação de que o .html foi salvo antes de abrir o roteiro.`;
+  _mostrarOrqPrompt('🖼️ Prompt — Gerar IT (copie e cole no Claude Code)', prompt);
+  showToast('Prompt IT gerado — Manual · legendas poéticas (v8)', 'ouro');
 }
 
 function gerarPromptPreAula() {
@@ -5139,53 +5078,24 @@ function gerarPromptPreAula() {
 `# Gerar OAs de ${getDiscConfig().fases_label.pre} — ${ctx.code}
 
 Trilha: ${ctx.code} — "${ctx.nome}"
-Base:   ${getFilePrefix()}${ctx.code}-TT-v1.md (aprovado pelo autor)
-Fase:   ${getDiscConfig().fases_label.pre}
+Base:   TT aprovado (maior v{N} em ${getPasta('pre')}/) — todos os OAs herdam a v{N} do TT
+Matriz de modelos: _skill_cowork/modelos-por-oa-v2.md · Relatório: ≤2 linhas por OA
 
-## Instrução
+## OAs a gerar (em ordem · acionar a skill e ler o SKILL.md antes de cada um)
 
-Com base no TT aprovado da ${ctx.code}, gere os OAs de ${getDiscConfig().fases_label.pre} abaixo em sequência.
-Gere um OA por vez — aguarde confirmação do autor antes de prosseguir ao próximo.
+1. MD — Resumo em Áudio (roteiro) · skill resumo-em-audio · **Sonnet 5 (Onda 2)**
+   Gate: 7 seções · 950-1.400 palavras · 6 [PPP] (os .m4a são passo manual do autor)
+2. PP — Ponto de Partida · skill ponto-de-partida · **Sonnet 5 (Onda 2)**
+   Gate: validar_banco.py PASS · contrato do injetor
+3. TT digital · skill texto-tematico-digital · **Sonnet 5 (Onda 2)**
+   Gate: template T05 verbatim · mesma v{N} do TT
+4. TN — Testinho · skill testinho · **Opus 5 (Onda 3)**
+   Gate: validar_banco.py PASS 11/11 · 3 versões equânimes A/B/C
+5. MC — Mapa Conceitual · skill mapa-conceitual · **Haiku 4.5 (Onda 4)**
+6. CD — Cartões Didáticos · skill cartoes-didaticos · **Haiku 4.5 (Onda 4)**
 
-## OAs a gerar (em ordem)
-
-### 1 · MD — Resumo em Áudio
-Skill: resumo-em-audio
-Arquivos: ${getFilePrefix()}${ctx.code}-MD-v1.docx · ${getFilePrefix()}${ctx.code}-NotebookLM-fonte.txt
-Pasta: ${getPasta('pre')}/
-Formatos: ${getFormatosOA('MD')}
-Protocolo: 5 blocos · linguagem oral · 6-8 minutos · abertura e encerramento padronizados
-
-### 2 · MC — Mapa Conceitual
-Skill: mapa-conceitual
-Arquivo: ${getFilePrefix()}${ctx.code}-MC-v1.md (Mermaid)
-Pasta: ${getPasta('pre')}/
-Formatos: ${getFormatosOA('MC')}
-Protocolo: conceito central + nós de 1º e 2º nível + verbos de ligação + exemplos-âncora mineiros
-
-### 3 · CD — Cartões Didáticos
-Skill: cartoes-didaticos
-Arquivos: ${getFilePrefix()}${ctx.code}-CD-v1.docx · ${getFilePrefix()}${ctx.code}-CD-v1.tex · ${getFilePrefix()}${ctx.code}-CD-v1-glossario.xml · ${getFilePrefix()}${ctx.code}-CD-v1-quiz.txt
-Pasta: ${getPasta('pre')}/ · (Moodle em ${getPasta('pre')}/Moodle/)
-Formatos: ${getFormatosOA('CD')}
-Protocolo: 25 cartões · 5 categorias (C/E/P/X/A) · 5 por categoria · Century Gothic
-
-### 4 · PP — Ponto de Partida
-Skill: ponto-de-partida
-Arquivos: ${getFilePrefix()}${ctx.code}-PP-v1.xml · ${getFilePrefix()}${ctx.code}-PP-v1.docx · ${getFilePrefix()}${ctx.code}-PP-v1.tex
-Pasta: ${getPasta('pre')}/ · (Moodle em ${getPasta('pre')}/Moodle/)
-Formatos: ${getFormatosOA('PP')}
-Protocolo: Parte I (Percepção Inicial, autoavaliação) + Parte II (5 questões diagnósticas)
-
-### 5 · TN — Testinho
-Arquivo: ${getFilePrefix()}${ctx.code}-TN-v1.md
-Pasta: ${getPasta('pre')}/
-Formatos: ${getFormatosOA('TN')}
-Protocolo: 15 questões · versões A/B/C · Bloom L1-L3 · 10-12 minutos
-
-## Confirmação final
-
-Após gerar e aprovar todos os 5 OAs, marque "Concluída" no orquestrador para liberar a fase ${getDiscConfig().fases_label.aula}.`;
+Pasta: ${getPasta('pre')}/ · versionamento: v{N} do TT, anterior em xx/.
+Após o último OA, marque "Concluída" no orquestrador para liberar a fase ${getDiscConfig().fases_label.aula}.`;
   _mostrarOrqPrompt(`📚 Prompt — Gerar ${getDiscConfig().fases_label.pre} (copie e cole no Cowork)`, prompt);
   showToast(`Prompt de ${getDiscConfig().fases_label.pre} gerado`, 'ouro');
 }
@@ -5197,46 +5107,22 @@ function gerarPromptAula() {
 `# Gerar OAs de ${getDiscConfig().fases_label.aula} — ${ctx.code}
 
 Trilha: ${ctx.code} — "${ctx.nome}"
-Base:   ${getFilePrefix()}${ctx.code}-TT-v1.md (aprovado) · OAs de ${getDiscConfig().fases_label.pre} concluídos
-Fase:   ${getDiscConfig().fases_label.aula}
+Base:   TT aprovado · OAs de ${getDiscConfig().fases_label.pre} concluídos
+Matriz de modelos: _skill_cowork/modelos-por-oa-v2.md · Relatório: ≤2 linhas por OA
 
-## Instrução
+## OAs a gerar (em ordem · acionar a skill e ler o SKILL.md antes de cada um)
 
-Com base no TT aprovado da ${ctx.code}, gere os OAs de ${getDiscConfig().fases_label.aula} abaixo em sequência.
-Gere um OA por vez — aguarde confirmação do autor antes de prosseguir ao próximo.
+1. IG — Infográfico · skill infografico (gerar_ig.py + _ig_conteudo/) · **Sonnet 5 (Onda 2)**
+   Gate: script roda sem erro — o HTML é do script, nunca à mão
+2. FA — Folha de Atividades (impressa) · skill folha-de-atividades · **Sonnet 5 (Onda 2)**
+   Gate: PDFs estudante+professor renderizados sem transbordo · oferecer DX opcional após aprovar
+3. AP — Apresentação digital · skill apresentacao-trilha-digital · **Sonnet 5 (Onda 2)**
+   Gate: varredura de transbordo VAZIA em 1366×768 e 1920×1080 (SKILL.md 3.4)
+4. PR — Provinha · skill provinha (PR-v2 digital) · **Opus 5 (Onda 3)**
+   Gate: 3 versões A/B/C · teste no navegador 10/10 e 3,6/10
 
-## OAs a gerar (em ordem)
-
-### 1 · FA — Folha de Atividades
-Skill: folha-de-atividades
-Arquivos: ${getFilePrefix()}${ctx.code}-FA-v1-estudante.docx · ${getFilePrefix()}${ctx.code}-FA-v1-professor.docx
-Pasta: ${getPasta('aula')}/
-Formatos: ${getFormatosOA('FA')}
-Protocolo v9: 5 blocos · Century Gothic 11pt · paleta dourado/cinza/verde
-⚠️ Após FA: oferecer DX opcional ao autor.
-
-### 2 · AP — Apresentação de Apoio à Aula
-Skill: apresentacao-trilha
-Arquivo: ${getFilePrefix()}${ctx.code}-AP-v1.pptx
-Pasta: ${getPasta('aula')}/
-Formatos: ${getFormatosOA('AP')}
-Protocolo AP-v11: 13 slides · 5 fases (Capa / Ato I / Ato II x5 / Ato III + Aplicações x4 / Fechamento x2). Epígrafe da trilha na CAPA (Slide 1). Bibliografia Básica ABNT no Slide 12 (Pausa Para Reflexão) — substitui as questões textuais da Provinha (manter apenas a imagem da Provinha + texto "Sucesso na Provinha!").
-
-### 3 · IG — Infográfico
-Arquivo: ${getFilePrefix()}${ctx.code}-IG-v1.html
-Pasta: ${getPasta('aula')}/
-Formatos: ${getFormatosOA('IG')}
-Protocolo: HTML interativo standalone · Contextualização Tripla · ${ctx.topicos.length} tópicos
-
-### 4 · PR — Provinha
-Arquivo: ${getFilePrefix()}${ctx.code}-PR-v1.md
-Pasta: ${getPasta('aula')}/
-Formatos: ${getFormatosOA('PR')}
-Protocolo: 10 questões · Bloom L3-L5 · 20-25 minutos
-
-## Confirmação final
-
-Após gerar e aprovar todos os 4 OAs, marque "Concluída" no orquestrador para liberar a fase ${getDiscConfig().fases_label.pos}.`;
+Pasta: ${getPasta('aula')}/ · versionamento conforme a skill (PR tem versão própria).
+Após o último OA, marque "Concluída" no orquestrador para liberar a fase ${getDiscConfig().fases_label.pos}.`;
   _mostrarOrqPrompt(`🎓 Prompt — Gerar ${getDiscConfig().fases_label.aula} (copie e cole no Cowork)`, prompt);
   showToast(`Prompt de ${getDiscConfig().fases_label.aula} gerado`, 'ouro');
 }
@@ -5248,39 +5134,21 @@ function gerarPromptPosAula() {
 `# Gerar OAs de ${getDiscConfig().fases_label.pos} — ${ctx.code}
 
 Trilha: ${ctx.code} — "${ctx.nome}"
-Base:   ${getFilePrefix()}${ctx.code}-TT-v1.md (aprovado) · OAs de ${getDiscConfig().fases_label.aula} concluídos
-Fase:   ${getDiscConfig().fases_label.pos}
+Base:   TT aprovado · OAs de ${getDiscConfig().fases_label.aula} concluídos
+Matriz de modelos: _skill_cowork/modelos-por-oa-v2.md · Relatório: ≤2 linhas por OA
+Todos desta fase são avaliativos → **Opus 5 (Onda 3)**
 
-## Instrução
+## OAs a gerar (em ordem · acionar a skill e ler o SKILL.md antes de cada um)
 
-Com base no TT aprovado da ${ctx.code}, gere os OAs de ${getDiscConfig().fases_label.pos} abaixo em sequência.
-Gere um OA por vez — aguarde confirmação do autor antes de prosseguir ao próximo.
+1. TM — Tarefa Mínima · skill tarefa-minima (ler fragmento FI automaticamente)
+   Gate: validar_banco.py PASS · Bloom L1-L3 · "aula dada, aula estudada HOJE"
+2. TC — Tarefa Complementar · skill tarefa-complementar (TC-v3 ENEM-style)
+   Gate: validar_banco.py PASS · 5 MC estímulo rico · Bloom L4-L5
+3. TR — Trabalho · skill trabalho (TR-v3 IMPRESSO: gerar_tr.py + gerar_tr_impresso.py)
+   Gate: PDF com 12 páginas (3 versões × 4), rodapé em todas, sem sobra no pé
 
-## OAs a gerar (em ordem)
-
-### 1 · TM — Tarefa Mínima
-Arquivo: ${getFilePrefix()}${ctx.code}-TM-v1.md
-Pasta: ${getPasta('pos')}/
-Formatos: ${getFormatosOA('TM')}
-Protocolo: fixação obrigatória · 20 minutos · Bloom L1-L3
-Piazzi: "aula dada, aula estudada HOJE"
-
-### 2 · TC — Tarefa Complementar
-Arquivo: ${getFilePrefix()}${ctx.code}-TC-v1.md
-Pasta: ${getPasta('pos')}/
-Formatos: ${getFormatosOA('TC')}
-Protocolo: aprofundamento opcional · Bloom L3-L4 · conecta com próxima trilha
-
-### 3 · TR — Trabalho
-Arquivo: ${getFilePrefix()}${ctx.code}-TR-v1.md
-Pasta: ${getPasta('pos')}/
-Formatos: ${getFormatosOA('TR')}
-Protocolo: 3 versões (A/B/C) · Bloom L5-L6 · Contextualização Tripla · 1 semana
-
-## Confirmação final
-
-Após gerar e aprovar todos os 3 OAs, marque "Concluída" no orquestrador.
-Em seguida, ativar a Seção 7 (Guias Pós-Produção).`;
+Pasta: ${getPasta('pos')}/ · em seguida, Onda 4 (Haiku 4.5): publicar_trilha.py + gerar_qrcodes.py (push = ato do autor).
+Após o último OA, marque "Concluída" no orquestrador e gere os Guias na Seção 08.`;
   _mostrarOrqPrompt(`📝 Prompt — Gerar ${getDiscConfig().fases_label.pos} (copie e cole no Cowork)`, prompt);
   showToast(`Prompt de ${getDiscConfig().fases_label.pos} gerado`, 'ouro');
 }
