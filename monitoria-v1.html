@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoria — Registro de Entregas</title>
+<style>
+:root {
+  --ouro: oklch(0.65 0.22 45);
+  --ouro-claro: oklch(0.72 0.19 45);
+  --verde-claro: oklch(0.70 0.15 150);
+  --verde-bg: oklch(0.25 0.04 150);
+  --epi: oklch(0.68 0.17 55);
+  --erro: oklch(0.62 0.21 25);
+  --fundo: oklch(0.12 0.02 260);
+  --cinza-card: oklch(0.17 0.02 260);
+  --cinza-claro: oklch(0.22 0.02 260);
+  --cinza-borda: oklch(0.30 0.02 260);
+  --texto: oklch(0.90 0.01 260);
+  --texto-suave: oklch(0.68 0.01 260);
+  --mono: 'Courier New', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--fundo); color: var(--texto); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; padding: 20px; }
+h2 { font-family: var(--mono); font-size: 1rem; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.05em; margin: 26px 0 12px; }
+.intro { font-size: 0.9rem; color: var(--texto-suave); line-height: 1.6; max-width: 900px; }
+.disc-toggle { display: flex; gap: 10px; margin: 16px 0 4px; flex-wrap: wrap; }
+.disc-btn {
+  font-family: var(--mono); font-weight: 700; font-size: 0.9rem; cursor: pointer;
+  padding: 10px 18px; background: var(--cinza-claro); color: var(--texto-suave);
+  border: 1px solid var(--cinza-borda);
+}
+.disc-btn.ativa { background: var(--verde-bg); color: var(--verde-claro); border-color: var(--verde-claro); }
+.disc-btn.ativa.fe { background: oklch(0.24 0.05 55); color: var(--epi); border-color: var(--epi); }
+.card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); padding: 18px; margin-top: 12px; max-width: 900px; }
+.linha-form { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; align-items: flex-end; }
+label.campo { display: flex; flex-direction: column; gap: 5px; font-size: 0.85rem; color: var(--texto-suave); }
+input[type=text], input[type=date], select, textarea {
+  background: var(--cinza-claro); color: var(--texto); border: 1px solid var(--cinza-borda);
+  padding: 9px 10px; font-size: 0.95rem; font-family: inherit;
+}
+input:disabled { opacity: 0.7; }
+input#ra { font-family: var(--mono); font-size: 1.05rem; width: 130px; letter-spacing: 0.08em; }
+textarea { width: 100%; min-height: 56px; resize: vertical; }
+.btn {
+  background: var(--ouro); color: #000; border: none; font-family: var(--mono);
+  font-weight: 700; padding: 10px 20px; cursor: pointer; font-size: 0.9rem;
+}
+.btn.secundario { background: var(--cinza-claro); color: var(--texto); border: 1px solid var(--cinza-borda); }
+.btn:disabled { opacity: 0.5; cursor: wait; }
+.aluno-box { display: none; border: 1px solid var(--verde-claro); background: var(--verde-bg); padding: 12px 14px; margin-bottom: 14px; font-size: 0.95rem; line-height: 1.7; }
+.aluno-box strong { font-size: 1.05rem; }
+.aluno-box .meta-aluno { font-family: var(--mono); font-size: 0.85rem; color: var(--texto-suave); }
+fieldset { border: 1px solid var(--cinza-borda); padding: 12px 14px; margin-bottom: 14px; }
+legend { font-family: var(--mono); font-size: 0.8rem; color: var(--ouro-claro); text-transform: uppercase; letter-spacing: 0.05em; padding: 0 6px; }
+.opcoes { display: flex; gap: 8px 22px; flex-wrap: wrap; }
+.opcoes label { display: flex; align-items: center; gap: 7px; font-size: 0.95rem; cursor: pointer; }
+.opcoes input { width: 16px; height: 16px; accent-color: var(--ouro); }
+.criterios { font-size: 0.85rem; color: var(--texto-suave); line-height: 1.6; margin-top: 10px; border-top: 1px dashed var(--cinza-borda); padding-top: 8px; }
+.criterios strong { color: var(--texto); }
+.aviso { margin-top: 12px; padding: 11px 14px; border: 1px solid var(--cinza-borda); font-size: 0.9rem; color: var(--texto-suave); }
+.aviso.ok { border-color: var(--verde-claro); color: var(--verde-claro); }
+.aviso.erro { border-color: var(--erro); color: var(--erro); }
+table { width: 100%; border-collapse: collapse; background: var(--cinza-card); margin-top: 10px; }
+th, td { padding: 8px 10px; border: 1px solid var(--cinza-borda); text-align: left; font-size: 0.85rem; }
+th { font-family: var(--mono); color: var(--texto-suave); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.04em; }
+td.mono { font-family: var(--mono); }
+.tag { font-family: var(--mono); font-size: 0.78rem; padding: 2px 8px; border: 1px solid var(--cinza-borda); white-space: nowrap; }
+.tag.ok { color: var(--verde-claro); border-color: var(--verde-claro); }
+.tag.atraso { color: var(--ouro-claro); border-color: var(--ouro-claro); }
+.tag.erro { color: var(--erro); border-color: var(--erro); }
+.toolbar-lista { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.meta { font-family: var(--mono); font-size: 0.8rem; color: var(--texto-suave); }
+</style>
+</head>
+<body>
+
+<h2 style="margin-top:0;">Monitoria — Registro de Entregas</h2>
+<p class="intro">
+  Registro digital do <strong>Espa&ccedil;o da Equipe de Monitoria</strong>: a entrega do
+  <strong>Roteiro de Bancada (RB)</strong> nas trilhas da FE1 e da
+  <strong>Folha de Atividades (FA)</strong> nas trilhas da FC1.
+  Digite apenas o <strong>RA</strong> do estudante &mdash; nome, disciplina, curso, turma e grupo
+  s&atilde;o preenchidos automaticamente pela lista oficial (SUAP). Cada registro espelha a folha
+  impressa: situa&ccedil;&atilde;o do prazo, completude, observa&ccedil;&otilde;es e monitor(a).
+</p>
+
+<div class="disc-toggle">
+  <button class="disc-btn fe ativa" id="btnFE1" onclick="setDisciplina('FE1')">FE1 &middot; Roteiro de Bancada (RB)</button>
+  <button class="disc-btn" id="btnFC1" onclick="setDisciplina('FC1')">FC1 &middot; Folha de Atividades (FA)</button>
+</div>
+
+<div class="card">
+  <div class="linha-form">
+    <label class="campo">RA do estudante
+      <input type="text" id="ra" maxlength="7" inputmode="numeric" placeholder="0000000"
+             onkeydown="if(event.key==='Enter')buscarAluno()">
+    </label>
+    <button class="btn" id="btnBuscar" onclick="buscarAluno()">Buscar</button>
+    <label class="campo">Trilha
+      <select id="trilha"></select>
+    </label>
+    <label class="campo">Data da entrega
+      <input type="date" id="dataEntrega">
+    </label>
+  </div>
+
+  <div class="aluno-box" id="alunoBox">
+    <strong id="alunoNome">&mdash;</strong><br>
+    <span class="meta-aluno" id="alunoMeta">&mdash;</span>
+  </div>
+
+  <fieldset>
+    <legend>Situa&ccedil;&atilde;o da entrega</legend>
+    <div class="opcoes">
+      <label><input type="radio" name="situacao" value="no prazo" checked> No prazo</label>
+      <label><input type="radio" name="situacao" value="ate 1 semana"> Atraso de at&eacute; 1 semana</label>
+      <label><input type="radio" name="situacao" value="mais de 1 semana"> Atraso de mais de 1 semana</label>
+      <label><input type="radio" name="situacao" value="atestado medico"> Atestado M&eacute;dico</label>
+    </div>
+    <div class="criterios">
+      <strong>Crit&eacute;rios</strong> &mdash; <strong>No prazo:</strong> entrega at&eacute; a data-limite da trilha &middot;
+      <strong>Atraso de at&eacute; 1 semana:</strong> 1 a 7 dias ap&oacute;s o prazo &middot;
+      <strong>Atraso de mais de 1 semana:</strong> acima de 7 dias &middot;
+      <strong>Atestado M&eacute;dico:</strong> atraso justificado por atestado &mdash; confira o documento e
+      anote a data do atestado nas observa&ccedil;&otilde;es (obrigat&oacute;rio).
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Completude</legend>
+    <div class="opcoes">
+      <label><input type="radio" name="completude" value="completo" checked> Completo</label>
+      <label><input type="radio" name="completude" value="incompleto"> Incompleto</label>
+    </div>
+    <div class="criterios"><strong>Incompleto:</strong> uma ou mais se&ccedil;&otilde;es ou campos sem resposta.</div>
+  </fieldset>
+
+  <div class="linha-form" style="margin-bottom:8px;">
+    <label class="campo" style="flex:1;min-width:280px;">Observa&ccedil;&otilde;es da monitoria
+      <textarea id="obs" placeholder="Ex.: atestado do dia 12/09; faltou a se&ccedil;&atilde;o de discuss&atilde;o."></textarea>
+    </label>
+  </div>
+  <div class="linha-form">
+    <label class="campo">Monitor(a)
+      <input type="text" id="monitor" style="width:220px;" placeholder="Seu nome">
+    </label>
+    <button class="btn" id="btnRegistrar" onclick="registrar()">Registrar entrega</button>
+  </div>
+  <div class="aviso" id="aviso" hidden></div>
+</div>
+
+<h2>Registros desta disciplina</h2>
+<div class="toolbar-lista">
+  <button class="btn secundario" id="btnLista" onclick="carregarLista()">Atualizar lista</button>
+  <label class="meta">Trilha
+    <select id="fTrilha" onchange="renderLista()"><option value="">Todas</option></select>
+  </label>
+  <label class="meta">Turma
+    <select id="fTurma" onchange="renderLista()"><option value="">Todas</option></select>
+  </label>
+  <span class="meta" id="metaLista">Clique em "Atualizar lista" para buscar a planilha.</span>
+</div>
+<table id="tblRegistros" hidden></table>
+
+<script>
+/* Endpoints publicos por disciplina (repo/planilha POR DISCIPLINA — 16.4).
+   As CHAVES nao ficam no codigo: cada uma e pedida 1x e guardada so neste
+   navegador (localStorage) — a da FC1 e a mesma da aba Analise. */
+var CFG = {
+  FC1: {
+    url: 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec',
+    chaveKey: 'fc1_chave_relatorio', tipoCampo: 'tipo', oa: 'FA',
+    oaNome: 'Folha de Atividades (FA)',
+    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10']
+  },
+  FE1: {
+    url: 'https://script.google.com/macros/s/AKfycbxBYD4VXRUkFnicnOR2WF8VS_OYdD8z0uYnJCVnGF5Il0BzJF-o4VF8JHPztzARCUJd/exec',
+    chaveKey: 'fe1_chave_relatorio', tipoCampo: 'tipo_msg', oa: 'RB',
+    oaNome: 'Roteiro de Bancada (RB)',
+    trilhas: ['T0A','T04']
+  }
+};
+var disciplina = 'FE1';
+var alunoAtual = null;
+var registros = [];
+
+function cfg() { return CFG[disciplina]; }
+
+function obterChave(forcar) {
+  var k = cfg().chaveKey;
+  var c = forcar ? '' : (localStorage.getItem(k) || '');
+  if (!c) {
+    c = (prompt('Digite a chave de acesso da equipe da ' + disciplina +
+                ' (fornecida pelo professor):') || '').trim();
+    if (c) { try { localStorage.setItem(k, c); } catch (e) {} }
+  }
+  return c;
+}
+
+function chaveInvalida(msg) {
+  if (String(msg).indexOf('Chave') !== -1) {
+    try { localStorage.removeItem(cfg().chaveKey); } catch (e) {}
+  }
+}
+
+function setDisciplina(d) {
+  disciplina = d;
+  document.getElementById('btnFE1').classList.toggle('ativa', d === 'FE1');
+  document.getElementById('btnFC1').classList.toggle('ativa', d === 'FC1');
+  var sel = document.getElementById('trilha');
+  sel.innerHTML = cfg().trilhas.map(function (t) {
+    return '<option value="' + t + '">' + t + '</option>';
+  }).join('');
+  limparAluno();
+  registros = [];
+  document.getElementById('tblRegistros').hidden = true;
+  document.getElementById('fTrilha').innerHTML = '<option value="">Todas</option>';
+  document.getElementById('fTurma').innerHTML = '<option value="">Todas</option>';
+  document.getElementById('metaLista').textContent =
+    'Clique em "Atualizar lista" para buscar a planilha da ' + d + '.';
+}
+
+function limparAluno() {
+  alunoAtual = null;
+  document.getElementById('alunoBox').style.display = 'none';
+  document.getElementById('aviso').hidden = true;
+}
+
+function avisar(msg, classe) {
+  var av = document.getElementById('aviso');
+  av.hidden = false;
+  av.className = 'aviso' + (classe ? ' ' + classe : '');
+  av.textContent = msg;
+}
+
+function buscarAluno() {
+  var ra = (document.getElementById('ra').value || '').replace(/\D/g, '');
+  if (ra.length !== 7) { avisar('RA precisa ter 7 dígitos (com zeros à esquerda).', 'erro'); return; }
+  var chave = obterChave(false);
+  if (!chave) { avisar('Sem a chave da equipe não é possível buscar o estudante.', 'erro'); return; }
+  limparAluno();
+  var btn = document.getElementById('btnBuscar');
+  btn.disabled = true;
+  fetch(cfg().url + '?monitoria_aluno=1&chave=' + encodeURIComponent(chave) + '&ra=' + ra)
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) { chaveInvalida(j.erro); avisar(j.erro || 'Falha na busca.', 'erro'); return; }
+      alunoAtual = j;
+      document.getElementById('alunoNome').textContent = j.nome + (j.equipe ? ' (EQUIPE)' : '');
+      var meta = ['Disciplina: ' + j.disciplina, 'Curso: ' + j.curso, 'Turma: ' + j.turma];
+      if (j.grupo) meta.push('Grupo: ' + j.grupo);
+      if (j.diario) meta.push('Diário: ' + j.diario);
+      document.getElementById('alunoMeta').textContent = meta.join(' · ');
+      document.getElementById('alunoBox').style.display = 'block';
+    })
+    .catch(function () { avisar('Sem conexão com a planilha. Tente de novo.', 'erro'); })
+    .finally(function () { btn.disabled = false; });
+}
+
+function valorMarcado(nome) {
+  var el = document.querySelector('input[name="' + nome + '"]:checked');
+  return el ? el.value : '';
+}
+
+function registrar() {
+  if (!alunoAtual) { avisar('Busque o estudante pelo RA antes de registrar.', 'erro'); return; }
+  var situacao = valorMarcado('situacao');
+  var obs = document.getElementById('obs').value.trim();
+  if (situacao === 'atestado medico' && !obs) {
+    avisar('Com Atestado Médico, anote nas observações a data do atestado.', 'erro'); return;
+  }
+  var monitor = document.getElementById('monitor').value.trim();
+  if (!monitor) { avisar('Preencha o nome do(a) monitor(a).', 'erro'); return; }
+  try { localStorage.setItem('monitoria_monitor', monitor); } catch (e) {}
+  var chave = obterChave(false);
+  if (!chave) { avisar('Sem a chave da equipe não é possível registrar.', 'erro'); return; }
+
+  var corpo = { chave: chave, ra: alunoAtual.ra,
+    trilha: document.getElementById('trilha').value, oa: cfg().oa,
+    data_entrega: document.getElementById('dataEntrega').value,
+    situacao: situacao, completude: valorMarcado('completude'),
+    obs: obs, monitor: monitor };
+  corpo[cfg().tipoCampo] = 'MONITORIA';
+
+  var btn = document.getElementById('btnRegistrar');
+  btn.disabled = true;
+  fetch(cfg().url, { method: 'POST', body: JSON.stringify(corpo) })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) { chaveInvalida(j.erro); avisar(j.erro || 'Falha ao registrar.', 'erro'); return; }
+      avisar((j.atualizado ? 'Registro ATUALIZADO' : 'Entrega registrada') + ' — ' +
+        j.nome + ' · ' + corpo.trilha + ' · ' + cfg().oa +
+        ' · registro ' + j.registro + '.', 'ok');
+      document.getElementById('obs').value = '';
+      document.getElementById('ra').value = '';
+      document.querySelector('input[name="situacao"][value="no prazo"]').checked = true;
+      document.querySelector('input[name="completude"][value="completo"]').checked = true;
+      limparAlunoMantendoAviso();
+      document.getElementById('ra').focus();
+    })
+    .catch(function () { avisar('Sem conexão com a planilha. O registro NÃO foi gravado.', 'erro'); })
+    .finally(function () { btn.disabled = false; });
+}
+
+function limparAlunoMantendoAviso() {
+  alunoAtual = null;
+  document.getElementById('alunoBox').style.display = 'none';
+}
+
+function carregarLista() {
+  var chave = obterChave(false);
+  if (!chave) return;
+  var btn = document.getElementById('btnLista');
+  btn.disabled = true;
+  document.getElementById('metaLista').textContent = 'Buscando...';
+  fetch(cfg().url + '?monitoria_admin=1&chave=' + encodeURIComponent(chave))
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) {
+        chaveInvalida(j.erro);
+        document.getElementById('metaLista').textContent = j.erro || 'Falha na busca.';
+        return;
+      }
+      registros = j.registros || [];
+      var trilhas = {}, turmas = {};
+      registros.forEach(function (r) { trilhas[r.trilha] = 1; turmas[r.turma] = 1; });
+      preencherFiltro('fTrilha', Object.keys(trilhas).sort());
+      preencherFiltro('fTurma', Object.keys(turmas).sort());
+      renderLista();
+    })
+    .catch(function () { document.getElementById('metaLista').textContent = 'Sem conexão com a planilha.'; })
+    .finally(function () { btn.disabled = false; });
+}
+
+function preencherFiltro(id, valores) {
+  var sel = document.getElementById(id);
+  var atual = sel.value;
+  sel.innerHTML = '<option value="">Todas</option>' + valores.map(function (v) {
+    return '<option' + (v === atual ? ' selected' : '') + '>' + v + '</option>';
+  }).join('');
+}
+
+var TAGS = { 'no prazo': 'ok', 'ate 1 semana': 'atraso', 'mais de 1 semana': 'erro', 'atestado medico': 'atraso' };
+var ROTULOS = { 'no prazo': 'No prazo', 'ate 1 semana': 'Atraso ≤ 1 sem.',
+                'mais de 1 semana': 'Atraso > 1 sem.', 'atestado medico': 'Atestado Médico' };
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+  });
+}
+
+function renderLista() {
+  var fT = document.getElementById('fTrilha').value;
+  var fU = document.getElementById('fTurma').value;
+  var vis = registros.filter(function (r) {
+    return (!fT || r.trilha === fT) && (!fU || r.turma === fU);
+  });
+  var tbl = document.getElementById('tblRegistros');
+  var linhas = vis.map(function (r) {
+    var grupo = r.grupo ? ' · ' + esc(r.grupo) : '';
+    return '<tr><td class="mono">' + esc(r.ra) + '</td><td>' + esc(r.nome) +
+      '</td><td>' + esc(r.turma) + grupo + '</td><td class="mono">' + esc(r.trilha) +
+      ' · ' + esc(r.oa) + '</td><td class="mono">' + esc(r.data_entrega) +
+      '</td><td><span class="tag ' + (TAGS[r.situacao] || '') + '">' +
+      esc(ROTULOS[r.situacao] || r.situacao) + '</span></td><td>' +
+      (r.completude === 'incompleto' ? '<span class="tag erro">Incompleto</span>' : 'Completo') +
+      '</td><td>' + esc(r.obs) + '</td><td>' + esc(r.monitor) + '</td></tr>';
+  });
+  tbl.innerHTML = '<tr><th>RA</th><th>Nome</th><th>Turma</th><th>Trilha</th>' +
+    '<th>Entrega</th><th>Situação</th><th>Completude</th>' +
+    '<th>Observações</th><th>Monitor(a)</th></tr>' + linhas.join('');
+  tbl.hidden = false;
+  document.getElementById('metaLista').textContent =
+    vis.length + ' registro(s) · ' + disciplina + ' · ' + cfg().oaNome;
+}
+
+(function init() {
+  document.getElementById('dataEntrega').value = new Date().toISOString().slice(0, 10);
+  try {
+    document.getElementById('monitor').value = localStorage.getItem('monitoria_monitor') || '';
+  } catch (e) {}
+  setDisciplina('FE1');
+})();
+</script>
+</body>
+</html>

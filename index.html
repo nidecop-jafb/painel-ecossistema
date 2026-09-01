@@ -979,6 +979,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       <div class="tab" onclick="showTab('distribuicao')">Distribui&ccedil;&atilde;o</div>
       <div class="tab" onclick="showTab('dados')">An&aacute;lise</div>
       <div class="tab" onclick="showTab('guias')">Guias</div>
+      <div class="tab" onclick="showTab('monitoria')">Monitoria</div>
     </div>
   </header>
 
@@ -1626,7 +1627,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
 <td><a href="../T07_Referencial_Posicao_e_Tempo/Aula/T07-FA-v5-professor-impressa.html" class="pill pill-done">v5</a></td>
 <td><a href="../T08_Velocidade_Media_e_Instantanea/Aula/T08-FA-v2-professor-impressa.html" class="pill pill-done">v2</a></td>
 <td><a href="../T09_Aceleracao_Media_e_Instantanea/Aula/T09-FA-v1-professor-impressa.html" class="pill pill-done">v1</a></td>
-<td><a href="../T10_O_Movimento_Uniforme_MU/Aula/T10-FA-v1-professor.html" class="pill pill-done">v1</a></td>
+<td><a href="../T10_O_Movimento_Uniforme_MU/Aula/T10-FA-v1-professor-impressa.html" class="pill pill-done">v1</a></td>
 <td><span class="pill pill-empty">&mdash;</span></td>
 </tr>
 <tr class="tt-sub"><td>.html-dig-est</td>
@@ -2821,6 +2822,14 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
       </section>
     </div>
 
+    <!-- ABA MONITORIA — registro da entrega de RB (FE1) e FA (FC1) na Monitoria -->
+    <div class="tab-content" id="tab-monitoria">
+      <section style="display:flex;flex-direction:column;height:calc(100vh - 150px);">
+        <iframe id="monitoria-iframe" src="about:blank" data-src="monitoria-v1.html"
+                style="width:100%;flex:1;min-height:0;border:1px solid var(--cinza-borda);display:block;background:var(--fundo);"></iframe>
+      </section>
+    </div>
+
   </main>
 </div>
 
@@ -2831,12 +2840,13 @@ function showTab(id) {
   const target = document.getElementById('tab-' + id);
   if (target) target.classList.add('active');
   const tabs = document.querySelectorAll('#header-tabs .tab');
-  const map = { visao: 0, producao: 1, onda1: 2, epigrafes: 3, qualidade: 4, skills: 5, infra: 6, distribuicao: 7, dados: 8, guias: 9 };
+  const map = { visao: 0, producao: 1, onda1: 2, epigrafes: 3, qualidade: 4, skills: 5, infra: 6, distribuicao: 7, dados: 8, guias: 9, monitoria: 10 };
   if (map[id] !== undefined && tabs[map[id]]) tabs[map[id]].classList.add('active');
   var main = document.querySelector('.main');
   if (main) main.scrollTop = 0;
   if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); loadCitacoesIframe(); }
   if (id === 'dados') lazyLoadIframe('dados-iframe');
+  if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
   if (id === 'qualidade') initQualidade();
