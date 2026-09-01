@@ -150,6 +150,43 @@ td.mono { font-family: var(--mono); }
   <div class="aviso" id="aviso" hidden></div>
 </div>
 
+<h2>Relat&oacute;rio de entrega e cobran&ccedil;a</h2>
+<div class="toolbar-lista">
+  <label class="meta">Trilha
+    <select id="rTrilha"></select>
+  </label>
+  <button class="btn secundario" id="btnRelatorio" onclick="gerarRelatorio()">Gerar relat&oacute;rio</button>
+  <span class="meta" id="metaRelatorio">Compara a lista oficial de alunos com os registros de entrega.</span>
+</div>
+<div id="relatorio" hidden>
+  <div class="cards-rel" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+    <div class="card" style="margin-top:0;flex:0 0 auto;min-width:150px;">
+      <div style="font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--verde-claro);" id="rEntregues">&ndash;</div>
+      <div class="meta">Entregas registradas</div>
+    </div>
+    <div class="card" style="margin-top:0;flex:0 0 auto;min-width:150px;">
+      <div style="font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--erro);" id="rPendentes">&ndash;</div>
+      <div class="meta">Pendentes</div>
+    </div>
+    <div class="card" style="margin-top:0;flex:0 0 auto;min-width:150px;">
+      <div style="font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--ouro-claro);" id="rTotal">&ndash;</div>
+      <div class="meta">Alunos na lista</div>
+    </div>
+  </div>
+  <table id="tblPendentes" style="margin-top:14px;"></table>
+  <div class="card" id="cobrancaBox" style="max-width:none;">
+    <strong style="font-family:var(--mono);color:var(--ouro-claro);">Cobran&ccedil;a por e-mail (em lote)</strong>
+    <p class="meta" style="margin:8px 0 10px;line-height:1.6;">
+      O envio sai do <strong>seu</strong> e-mail: os bot&otilde;es abrem uma mensagem pronta com os
+      pendentes em <strong>CCO</strong> (os estudantes n&atilde;o veem os e-mails uns dos outros).
+      Endere&ccedil;o usado: coluna Email da lista oficial; sem ela, RA@aluno.ifmg.edu.br.
+      Confira e clique em Enviar no seu aplicativo de e-mail.
+    </p>
+    <div class="toolbar-lista" id="cobrancaBotoes"></div>
+    <div class="aviso ok" id="cobrancaCopiado" hidden>E-mails copiados &mdash; cole no campo CCO da sua mensagem.</div>
+  </div>
+</div>
+
 <h2>Registros desta disciplina</h2>
 <div class="toolbar-lista">
   <button class="btn secundario" id="btnLista" onclick="carregarLista()">Atualizar lista</button>
@@ -187,20 +224,28 @@ var registros = [];
 
 function cfg() { return CFG[disciplina]; }
 
+/* Acesso da Equipe de Monitoria: chave PROPRIA da Monitoria (a mesma para
+   FC1 e FE1, digitada UMA vez — vale so para os endpoints monitoria_*).
+   A chave da equipe de professores tambem funciona (fallback). */
+var MONITORIA_CHAVE_KEY = 'monitoria_chave';
+
 function obterChave(forcar) {
-  var k = cfg().chaveKey;
-  var c = forcar ? '' : (localStorage.getItem(k) || '');
+  var c = '';
+  if (!forcar) {
+    c = localStorage.getItem(MONITORIA_CHAVE_KEY) ||
+        localStorage.getItem(cfg().chaveKey) || '';
+  }
   if (!c) {
-    c = (prompt('Digite a chave de acesso da equipe da ' + disciplina +
-                ' (fornecida pelo professor):') || '').trim();
-    if (c) { try { localStorage.setItem(k, c); } catch (e) {} }
+    c = (prompt('Digite a chave da Monitoria (fornecida pelo professor — ' +
+                'vale para FC1 e FE1):') || '').trim();
+    if (c) { try { localStorage.setItem(MONITORIA_CHAVE_KEY, c); } catch (e) {} }
   }
   return c;
 }
 
 function chaveInvalida(msg) {
   if (String(msg).indexOf('Chave') !== -1) {
-    try { localStorage.removeItem(cfg().chaveKey); } catch (e) {}
+    try { localStorage.removeItem(MONITORIA_CHAVE_KEY); } catch (e) {}
   }
 }
 
@@ -208,10 +253,14 @@ function setDisciplina(d) {
   disciplina = d;
   document.getElementById('btnFE1').classList.toggle('ativa', d === 'FE1');
   document.getElementById('btnFC1').classList.toggle('ativa', d === 'FC1');
-  var sel = document.getElementById('trilha');
-  sel.innerHTML = cfg().trilhas.map(function (t) {
+  var opcoes = cfg().trilhas.map(function (t) {
     return '<option value="' + t + '">' + t + '</option>';
   }).join('');
+  document.getElementById('trilha').innerHTML = opcoes;
+  document.getElementById('rTrilha').innerHTML = opcoes;
+  document.getElementById('relatorio').hidden = true;
+  document.getElementById('metaRelatorio').textContent =
+    'Compara a lista oficial de alunos com os registros de entrega.';
   limparAluno();
   registros = [];
   document.getElementById('tblRegistros').hidden = true;
@@ -306,6 +355,101 @@ function registrar() {
 function limparAlunoMantendoAviso() {
   alunoAtual = null;
   document.getElementById('alunoBox').style.display = 'none';
+}
+
+/* ── Relatorio de entrega + cobranca (o servidor lista; o monitor envia) ── */
+var pendentesAtual = [];
+
+function gerarRelatorio() {
+  var chave = obterChave(false);
+  if (!chave) return;
+  var trilha = document.getElementById('rTrilha').value;
+  var btn = document.getElementById('btnRelatorio');
+  btn.disabled = true;
+  document.getElementById('metaRelatorio').textContent = 'Buscando...';
+  fetch(cfg().url + '?monitoria_pendentes=1&chave=' + encodeURIComponent(chave) +
+        '&trilha=' + encodeURIComponent(trilha))
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) {
+        chaveInvalida(j.erro);
+        document.getElementById('metaRelatorio').textContent = j.erro || 'Falha na busca.';
+        return;
+      }
+      pendentesAtual = j.lista || [];
+      document.getElementById('rTotal').textContent = j.total_alunos;
+      document.getElementById('rPendentes').textContent = j.pendentes;
+      document.getElementById('rEntregues').textContent = j.total_alunos - j.pendentes;
+      renderPendentes(trilha);
+      document.getElementById('relatorio').hidden = false;
+      document.getElementById('metaRelatorio').textContent =
+        trilha + ' · ' + cfg().oaNome + ' · atualizado agora';
+    })
+    .catch(function () { document.getElementById('metaRelatorio').textContent = 'Sem conexão com a planilha.'; })
+    .finally(function () { btn.disabled = false; });
+}
+
+function renderPendentes(trilha) {
+  var tbl = document.getElementById('tblPendentes');
+  var temGrupo = pendentesAtual.some(function (a) { return a.grupo; });
+  var linhas = pendentesAtual.map(function (a) {
+    return '<tr><td class="mono">' + esc(a.ra) + '</td><td>' + esc(a.nome) +
+      '</td><td>' + esc(a.turma) + (temGrupo && a.grupo ? ' · ' + esc(a.grupo) : '') +
+      '</td><td class="mono">' + esc(a.email) + '</td></tr>';
+  });
+  tbl.innerHTML = '<tr><th colspan="4">Pendentes — ' + esc(trilha) + ' · ' +
+    esc(cfg().oaNome) + '</th></tr>' +
+    '<tr><th>RA</th><th>Nome</th><th>Turma</th><th>E-mail</th></tr>' +
+    (linhas.length ? linhas.join('') :
+      '<tr><td colspan="4">Ninguém pendente — todas as entregas registradas.</td></tr>');
+  renderCobranca(trilha);
+}
+
+function assuntoCobranca(trilha) {
+  return disciplina + ' · Entrega da ' + cfg().oaNome + ' da ' + trilha + ' na Monitoria';
+}
+
+function corpoCobranca(trilha) {
+  return 'Olá!\n\nA Equipe de Monitoria ainda não registrou a entrega da sua ' +
+    cfg().oaNome + ' da trilha ' + trilha + ' (' + disciplina + ').\n\n' +
+    'Entregue a folha impressa na Monitoria o quanto antes. Critérios de registro: ' +
+    'No prazo · Atraso de até 1 semana (1-7 dias) · Atraso de mais de 1 semana · ' +
+    'Atestado Médico (leve o documento).\n\n' +
+    'Se você já entregou, procure a Monitoria para conferirmos o registro.\n\n' +
+    'IFMG campus Ouro Preto · CODAFIS / NIDEC · Trilhas de Aprendizagem';
+}
+
+function renderCobranca(trilha) {
+  var box = document.getElementById('cobrancaBotoes');
+  document.getElementById('cobrancaCopiado').hidden = true;
+  if (!pendentesAtual.length) { box.innerHTML = '<span class="meta">Sem pendentes — nada a cobrar.</span>'; return; }
+  var emails = pendentesAtual.map(function (a) { return a.email; });
+  var html = '<button class="btn secundario" onclick="copiarEmails()">Copiar os ' +
+    emails.length + ' e-mails (CCO)</button>';
+  var LOTE = 25; // clientes de e-mail limitam o tamanho do link mailto
+  for (var i = 0; i < emails.length; i += LOTE) {
+    var lote = emails.slice(i, i + LOTE);
+    var n = Math.floor(i / LOTE) + 1;
+    var href = 'mailto:?bcc=' + encodeURIComponent(lote.join(',')) +
+      '&subject=' + encodeURIComponent(assuntoCobranca(trilha)) +
+      '&body=' + encodeURIComponent(corpoCobranca(trilha));
+    html += ' <a class="btn" style="text-decoration:none;display:inline-block;" href="' + href +
+      '">Abrir e-mail — lote ' + n + ' (' + lote.length + ')</a>';
+  }
+  box.innerHTML = html;
+}
+
+function copiarEmails() {
+  var txt = pendentesAtual.map(function (a) { return a.email; }).join('; ');
+  var mostra = function () { document.getElementById('cobrancaCopiado').hidden = false; };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(mostra);
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); mostra(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
 }
 
 function carregarLista() {

@@ -2446,7 +2446,7 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
 <summary>FE-T0A &middot; Metodologia experimental<span class="dist-cont">19 OAs no ar</span></summary>
 <div class="dist-corpo"><strong style="color:var(--texto);">Abrir OA publicado:</strong> <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/pp/" target="_blank" style="color:var(--ouro-claro);">PP</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/md/" target="_blank" style="color:var(--ouro-claro);">MD</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/tt/" target="_blank" style="color:var(--ouro-claro);">TT</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/sm/" target="_blank" style="color:var(--ouro-claro);">SM</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/mc/" target="_blank" style="color:var(--ouro-claro);">MC</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/cd/" target="_blank" style="color:var(--ouro-claro);">CD</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ie/" target="_blank" style="color:var(--ouro-claro);">IE</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/cs/" target="_blank" style="color:var(--ouro-claro);">CS</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/tn/" target="_blank" style="color:var(--ouro-claro);">TN</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/rb/" target="_blank" style="color:var(--ouro-claro);">RB</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ap/" target="_blank" style="color:var(--ouro-claro);">AP</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-painel/" target="_blank" style="color:var(--ouro-claro);">IG-PAINEL</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-escalas/" target="_blank" style="color:var(--ouro-claro);">IG-ESCALAS</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-incerteza/" target="_blank" style="color:var(--ouro-claro);">IG-INCERTEZA</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-paralaxe/" target="_blank" style="color:var(--ouro-claro);">IG-PARALAXE</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/pr/" target="_blank" style="color:var(--ouro-claro);">PR</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/dx/" target="_blank" style="color:var(--ouro-claro);">DX</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/rm/" target="_blank" style="color:var(--ouro-claro);">RM</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/rc/" target="_blank" style="color:var(--ouro-claro);">RC</a><br><strong style="color:var(--texto);">Folha de QR codes (local):</strong> <span style="font-family:var(--mono);font-size:11px;">T0A_Metodologia_experimental/_qrcodes/ &middot; FE-T0A-QR-oas-v1.pdf &middot; .html &middot; 19 PNG</span></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:10px 0 24px;line-height:1.6;"><strong>FC1: 10 trilhas &middot; FE1: 2 trilha(s)</strong> &mdash; toque na trilha para abrir. As pastas <span style="font-family:var(--mono);">_qrcodes/</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (n&atilde;o na web). &Uacute;ltima publica&ccedil;&atilde;o nos sites: <strong>30/08/2026</strong>.</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:10px 0 24px;line-height:1.6;"><strong>FC1: 10 trilhas &middot; FE1: 2 trilha(s)</strong> &mdash; toque na trilha para abrir. As pastas <span style="font-family:var(--mono);">_qrcodes/</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (n&atilde;o na web). &Uacute;ltima publica&ccedil;&atilde;o nos sites: <strong>01/09/2026</strong>.</p>
 <script>
 /* Atalho #dist-t{nn} abre a trilha na sanfona da Distribuicao. */
 (function () {
@@ -3593,5 +3593,15 @@ function marcarResolvido(id) {
 })();
 </script>
 <iframe id="citacoes-hidden-iframe" src="about:blank" style="display:none;width:0;height:0;border:none;"></iframe>
+<script>
+/* Acesso direto por hash: .../#monitoria abre a aba Monitoria (link que a
+   Equipe de Monitoria salva na tela inicial); vale para qualquer aba. */
+(function () {
+  var h = (location.hash || '').replace('#', '').toLowerCase();
+  if (h && document.getElementById('tab-' + h)) {
+    try { showTab(h); } catch (e) {}
+  }
+})();
+</script>
 </body>
 </html>
