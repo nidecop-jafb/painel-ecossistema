@@ -971,6 +971,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
     <div class="tabs" id="header-tabs" style="margin-top:8px;margin-bottom:0;">
       <div class="tab active" onclick="showTab('visao')">Vis&atilde;o Geral</div>
       <div class="tab" onclick="showTab('producao')">Produ&ccedil;&atilde;o</div>
+      <div class="tab" onclick="showTab('preplan')">Pr&eacute;-Planejamento</div>
       <div class="tab" onclick="showTab('onda1')">Texto Tem&aacute;tico</div>
       <div class="tab" onclick="showTab('epigrafes')">Ep&iacute;grafes</div>
       <div class="tab" onclick="showTab('qualidade')">Qualidade</div>
@@ -1141,6 +1142,9 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       </div>
       <div class="rail-item" onclick="showTab('producao');closePanel()">
         <span style="font-size:11px">&#9632;</span> Produ&ccedil;&atilde;o
+      </div>
+      <div class="rail-item" onclick="showTab('preplan');closePanel()">
+        <span style="font-size:11px">&#9632;</span> Pr&eacute;-Planejamento
       </div>
       <div class="rail-item" onclick="showTab('onda1');closePanel()">
         <span style="font-size:11px">&#9654;</span> Onda1-Plano
@@ -2122,6 +2126,77 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       </section>
     </div>
 
+    <!-- TAB: PRE-PLANEJAMENTO -->
+    <div class="tab-content" id="tab-preplan">
+      <section>
+        <h2 class="section-title">Pr&eacute;-Planejamento &mdash; Entrevista do Autor (PRE-v1)</h2>
+        <p style="font-size:13px;color:var(--texto-sub);margin-bottom:16px;line-height:1.7;">
+          Antes de gastar tokens produzindo, gastar poucos tokens perguntando (regra 6 da se&ccedil;&atilde;o 18 do CLAUDE.md raiz).
+          A skill <span style="font-family:var(--mono);color:var(--ouro-claro);">/entrevista-autor</span> entrevista o autor em at&eacute; 3 rodadas
+          e grava um <strong>briefing curto</strong> em <span style="font-family:var(--mono);">Trilhas_de_Aprendizagem/_preplanejamento/</span> da disciplina.
+          Nada &eacute; produzido at&eacute; o autor responder <strong>&ldquo;aprovado&rdquo;</strong>.
+          <br><strong>N&Atilde;O use</strong> para OA rotineiro derivado de TT aprovado que j&aacute; tem skill pr&oacute;pria &mdash; a skill do OA j&aacute; carrega os crit&eacute;rios.
+        </p>
+
+        <div style="border:1px solid var(--cinza-borda);background:var(--cinza-card);padding:16px;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:10px;">
+          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Disciplina
+            <select id="preDisc" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
+              <option value="FC1" selected>FC1 &mdash; F&iacute;sica Conceitual 1</option>
+              <option value="FE1">FE1 &mdash; F&iacute;sica Experimental 1</option>
+              <option value="FC2">FC2 &mdash; F&iacute;sica Conceitual 2</option>
+              <option value="FC3">FC3 &mdash; F&iacute;sica Conceitual 3</option>
+            </select>
+          </label>
+          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Alvo
+            <select id="preAlvo" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
+              <option value="projeto">projeto</option>
+              <option value="metodo">m&eacute;todo</option>
+              <option value="oa">OA novo</option>
+              <option value="site">site</option>
+              <option value="relatorio">relat&oacute;rio</option>
+              <option value="painel">painel</option>
+              <option value="integracao">integra&ccedil;&atilde;o</option>
+              <option value="outro">outro</option>
+            </select>
+          </label>
+          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;flex:1;min-width:260px;">Assunto (1 frase &mdash; o que se quer criar ou refinar)
+            <input id="preAssunto" placeholder="ex.: aba de Presen&ccedil;a por grupo no Painel" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
+          </label>
+          <button type="button" id="preBtnEntrevista" onclick="prePromptEntrevista(this)"
+                  style="padding:9px 16px;background:var(--fundo);color:var(--ouro-claro);border:1px solid var(--ouro);font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;">
+            &#10697; Copiar prompt da entrevista
+          </button>
+        </div>
+        <p style="font-size:12px;color:var(--texto-sub);margin-bottom:26px;">
+          Cole no Claude Code (Cowork). O Claude l&ecirc; o que j&aacute; est&aacute; decidido, pergunta s&oacute; o que falta e grava o briefing.
+        </p>
+
+        <h2 class="section-title">Briefings gravados</h2>
+        <!-- AUTO:PREPLANEJAMENTO:INICIO -->
+<style>
+/* Sanfona do Pre-Planejamento — gerada pelo atualizar_painel.py */
+details.pre-brief { border: 1px solid var(--cinza-borda); margin-bottom: 8px; }
+details.pre-brief > summary { cursor: pointer; list-style: none; padding: 10px 12px; font-family: var(--mono); font-size: 12px; color: var(--texto); }
+details.pre-brief > summary::-webkit-details-marker { display: none; }
+details.pre-brief > summary::before { content: '+'; color: var(--ouro-claro); display: inline-block; min-width: 1.4em; }
+details.pre-brief[open] > summary::before { content: '\2212'; }
+details.pre-brief > summary .pre-meta { color: var(--texto-sub); font-size: 11px; margin-left: 8px; }
+details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px; color: var(--texto-sub); line-height: 1.75; }
+.pre-status { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; padding: 2px 7px; border: 1px solid currentColor; margin-right: 8px; }
+.pre-aprovado { color: var(--verde-claro); }
+.pre-rascunho { color: var(--ouro-claro); }
+.pre-acao { font-family: var(--mono); font-size: 11px; color: var(--ouro-claro); background: var(--fundo); border: 1px solid var(--cinza-borda); padding: 5px 10px; cursor: pointer; margin: 8px 6px 0 0; }
+.pre-acao:hover { border-color: var(--ouro-claro); }
+</style>
+<details class="pre-brief">
+<summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-meta">FC1 &middot; 2026-09-05</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md" target="_blank">&#128196; Abrir o .md</a></div>
+</details>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>1 briefing(s) &middot; 0 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" s&oacute; funciona no painel local).</p>
+<!-- AUTO:PREPLANEJAMENTO:FIM -->
+      </section>
+    </div>
+
     <!-- TAB: SKILLS -->
     <div class="tab-content" id="tab-skills">
       <section>
@@ -2446,7 +2521,7 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
 <summary>FE-T0A &middot; Metodologia experimental<span class="dist-cont">19 OAs no ar</span></summary>
 <div class="dist-corpo"><strong style="color:var(--texto);">Abrir OA publicado:</strong> <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/pp/" target="_blank" style="color:var(--ouro-claro);">PP</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/md/" target="_blank" style="color:var(--ouro-claro);">MD</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/tt/" target="_blank" style="color:var(--ouro-claro);">TT</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/sm/" target="_blank" style="color:var(--ouro-claro);">SM</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/mc/" target="_blank" style="color:var(--ouro-claro);">MC</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/cd/" target="_blank" style="color:var(--ouro-claro);">CD</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ie/" target="_blank" style="color:var(--ouro-claro);">IE</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/cs/" target="_blank" style="color:var(--ouro-claro);">CS</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/tn/" target="_blank" style="color:var(--ouro-claro);">TN</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/rb/" target="_blank" style="color:var(--ouro-claro);">RB</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ap/" target="_blank" style="color:var(--ouro-claro);">AP</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-painel/" target="_blank" style="color:var(--ouro-claro);">IG-PAINEL</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-escalas/" target="_blank" style="color:var(--ouro-claro);">IG-ESCALAS</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-incerteza/" target="_blank" style="color:var(--ouro-claro);">IG-INCERTEZA</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/ig-paralaxe/" target="_blank" style="color:var(--ouro-claro);">IG-PARALAXE</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/pr/" target="_blank" style="color:var(--ouro-claro);">PR</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/dx/" target="_blank" style="color:var(--ouro-claro);">DX</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/rm/" target="_blank" style="color:var(--ouro-claro);">RM</a> &middot; <a href="https://nidecop-jafb.github.io/fe1-oa/t0a/rc/" target="_blank" style="color:var(--ouro-claro);">RC</a><br><strong style="color:var(--texto);">Folha de QR codes (local):</strong> <span style="font-family:var(--mono);font-size:11px;">T0A_Metodologia_experimental/_qrcodes/ &middot; FE-T0A-QR-oas-v1.pdf &middot; .html &middot; 19 PNG</span></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:10px 0 24px;line-height:1.6;"><strong>FC1: 10 trilhas &middot; FE1: 2 trilha(s)</strong> &mdash; toque na trilha para abrir. As pastas <span style="font-family:var(--mono);">_qrcodes/</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (n&atilde;o na web). &Uacute;ltima publica&ccedil;&atilde;o nos sites: <strong>01/09/2026</strong>.</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:10px 0 24px;line-height:1.6;"><strong>FC1: 10 trilhas &middot; FE1: 2 trilha(s)</strong> &mdash; toque na trilha para abrir. As pastas <span style="font-family:var(--mono);">_qrcodes/</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (n&atilde;o na web). &Uacute;ltima publica&ccedil;&atilde;o nos sites: <strong>03/09/2026</strong>.</p>
 <script>
 /* Atalho #dist-t{nn} abre a trilha na sanfona da Distribuicao. */
 (function () {
@@ -2840,7 +2915,7 @@ function showTab(id) {
   const target = document.getElementById('tab-' + id);
   if (target) target.classList.add('active');
   const tabs = document.querySelectorAll('#header-tabs .tab');
-  const map = { visao: 0, producao: 1, onda1: 2, epigrafes: 3, qualidade: 4, skills: 5, infra: 6, distribuicao: 7, dados: 8, guias: 9, monitoria: 10 };
+  const map = { visao: 0, producao: 1, preplan: 2, onda1: 3, epigrafes: 4, qualidade: 5, skills: 6, infra: 7, distribuicao: 8, dados: 9, guias: 10, monitoria: 11 };
   if (map[id] !== undefined && tabs[map[id]]) tabs[map[id]].classList.add('active');
   var main = document.querySelector('.main');
   if (main) main.scrollTop = 0;
@@ -2896,6 +2971,59 @@ function copiarPromptGuia(texto, btn, titulo) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(texto).then(feito).catch(function () { copiarFallbackGuia(texto); feito(); });
   } else { copiarFallbackGuia(texto); feito(); }
+}
+
+/* ── PRE-PLANEJAMENTO (PRE-v1) ──
+   Tres prompts, mesmo caminho clipboard das demais abas: iniciar a entrevista,
+   editar um briefing e aprova-lo. A LISTAGEM dos briefings nao mora aqui — e
+   zona AUTO:PREPLANEJAMENTO, regenerada do disco pelo atualizar_painel.py. */
+var PRE_SKILL = 'Trilhas_de_Aprendizagem/_skill_cowork/entrevista-autor/SKILL.md';
+
+function preFeedback(btn, msg, aviso) {
+  var html = btn.innerHTML;
+  var cor = aviso ? 'var(--ouro)' : 'var(--verde-claro)';
+  var icone = aviso ? '&#9888;' : '&#10003;';
+  btn.innerHTML = '<span style="color:' + cor + ';font-weight:700;">' + icone + ' ' +
+                  (msg || 'Copiado! Cole no Claude Code') + '</span>';
+  setTimeout(function () { btn.innerHTML = html; }, 2200);
+}
+
+function preCopiar(texto, btn, msg) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(texto)
+      .then(function () { preFeedback(btn, msg); })
+      .catch(function () { copiarFallbackGuia(texto); preFeedback(btn, msg); });
+  } else { copiarFallbackGuia(texto); preFeedback(btn, msg); }
+}
+
+function prePromptEntrevista(btn) {
+  var disc = document.getElementById('preDisc').value;
+  var alvo = document.getElementById('preAlvo').options[document.getElementById('preAlvo').selectedIndex].text;
+  var assunto = document.getElementById('preAssunto').value.trim();
+  if (!assunto) {
+    preFeedback(btn, 'Descreva o assunto em 1 frase', true);
+    document.getElementById('preAssunto').focus();
+    return;
+  }
+  var p = 'Rode a skill /entrevista-autor (' + PRE_SKILL + '), protocolo PRE-v1.\n' +
+    'Disciplina: ' + disc + '. Alvo: ' + alvo + '. Assunto: ' + assunto + '.\n' +
+    'Leia antes de perguntar (CLAUDE.md da pasta, feedback_lessons.md e o SKILL.md do OA, se houver) e me diga em 3 linhas o que ja esta decidido. ' +
+    'Depois pergunte SO o que falta, no maximo 3 rodadas de ate 5 perguntas, sempre com opcoes. ' +
+    'Grave o briefing em Trilhas_de_Aprendizagem/_preplanejamento/ da ' + disc + ' e nao produza nada antes de eu responder "aprovado".';
+  preCopiar(p, btn);
+}
+
+function prePromptEditar(caminho, btn) {
+  preCopiar('Abra o briefing ' + caminho + ' e ajuste-o conforme eu vou descrever a seguir. ' +
+    'Edite o proprio arquivo (o briefing nao versiona: alteracao pedida = editar, nunca gerar de novo) ' +
+    'e mantenha o status "rascunho" ate eu aprovar. Meu ajuste: ', btn,
+    'Copiado! Complete o ajuste no final');
+}
+
+function prePromptAprovar(caminho, btn) {
+  preCopiar('Aprovado. Marque o briefing ' + caminho + ' como "status: aprovado" no cabecalho e execute-o: ' +
+    'leia os arquivos listados em "Dependencias e arquivos a ler na execucao", respeite os criterios de sucesso e o que esta fora do escopo, ' +
+    'e use o modelo e o esforco declarados na secao "Execucao".', btn, 'Copiado! Cole no Claude Code');
 }
 
 var COLETA_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec';
