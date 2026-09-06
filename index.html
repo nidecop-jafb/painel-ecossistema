@@ -2963,10 +2963,11 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
             <th style="text-align:left;">Curso</th>
             <th style="text-align:left;">Tipo</th>
             <th style="text-align:left;">Status</th>
+            <th style="text-align:left;">A&ccedil;&otilde;es</th>
           </tr>
         </thead>
         <tbody id="cadastroCorpo">
-          <tr><td colspan="4" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Carregando...</td></tr>
+          <tr><td colspan="5" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Carregando...</td></tr>
         </tbody>
       </table>
 
@@ -3015,10 +3016,11 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
             <th style="text-align:left;">Perfil</th>
             <th style="text-align:left;">Disciplinas</th>
             <th style="text-align:left;">Status</th>
+            <th style="text-align:left;">A&ccedil;&otilde;es</th>
           </tr>
         </thead>
         <tbody id="perfisCorpo">
-          <tr><td colspan="5" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Lista protegida &mdash; clique em "Carregar perfis".</td></tr>
+          <tr><td colspan="6" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Lista protegida &mdash; clique em "Carregar perfis".</td></tr>
         </tbody>
       </table>
 
@@ -3270,17 +3272,47 @@ function cadastroRenderTabela(cursos) {
       '<td>' + c.nome + '</td>' +
       '<td style="font-family:var(--mono);font-size:12px;">' + cadastroRotuloTipo(c.tipo) + '</td>' +
       '<td style="font-family:var(--mono);font-size:12px;color:' + cor + ';">' + (c.status || '-') + '</td>';
-    tr.style.cursor = 'pointer';
-    tr.title = 'Clique para editar este curso no formulario abaixo';
-    tr.onclick = function () {
-      document.getElementById('cadSigla').value = c.sigla;
-      document.getElementById('cadNome').value = c.nome;
-      document.getElementById('cadTipo').value = c.tipo || 'tecnico';
-      document.getElementById('cadStatus').value = c.status || 'previsao';
-      cadastroStatusUI('Editando ' + c.sigla + ' — altere e clique em Salvar curso.');
-    };
+    var td = document.createElement('td');
+    var bE = document.createElement('button');
+    bE.type = 'button'; bE.className = 'pre-acao'; bE.textContent = '\u270E Editar';
+    bE.onclick = function () { cadastroEditar(c); };
+    var bX = document.createElement('button');
+    bX.type = 'button'; bX.className = 'pre-acao'; bX.textContent = '\u2716 Excluir';
+    bX.style.marginLeft = '6px'; bX.style.borderColor = 'var(--erro)'; bX.style.color = 'var(--erro)';
+    bX.onclick = function () { cadastroExcluir(c, bX); };
+    td.appendChild(bE); td.appendChild(bX);
+    tr.appendChild(td);
     corpo.appendChild(tr);
   });
+}
+
+function cadastroEditar(c) {
+  document.getElementById('cadSigla').value = c.sigla;
+  document.getElementById('cadNome').value = c.nome;
+  document.getElementById('cadTipo').value = c.tipo || 'tecnico';
+  document.getElementById('cadStatus').value = c.status || 'previsao';
+  document.getElementById('cadSigla').scrollIntoView({ block: 'center' });
+  cadastroStatusUI('Editando ' + c.sigla + ' — altere e clique em Salvar curso.');
+}
+
+function cadastroExcluir(c, btn) {
+  if (!confirm('Excluir o curso ' + c.sigla + ' (' + c.nome + ')?\n\nA linha sai da aba `cursos` da planilha. Nao ha desfazer.')) return;
+  var chave = cfgObterChave();
+  if (!chave) { cadastroStatusUI('Sem a chave da equipe nao e possivel excluir.', 'var(--erro)'); return; }
+  btn.disabled = true;
+  cadastroStatusUI('Excluindo ' + c.sigla + '...');
+  fetch(COLETA_ENDPOINT, {
+    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'CURSO', acao: 'excluir', chave: chave, sigla: c.sigla, por: 'painel-equipe' })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      cadastroStatusUI('\u2713 ' + c.sigla + ' excluido.', 'var(--verde-claro)');
+      cadastroCarregar();
+    })
+    .catch(function (e) { cadastroStatusUI('Falha ao excluir: ' + e.message, 'var(--erro)'); })
+    .finally(function () { btn.disabled = false; });
 }
 
 function cadastroCarregar(btn) {
@@ -3365,19 +3397,49 @@ function perfisRenderTabela(perfis) {
       '<td style="font-family:var(--mono);font-size:12px;">' + (pf.perfil || '-') + '</td>' +
       '<td style="font-family:var(--mono);font-size:12px;">' + (pf.disciplinas || '&mdash;') + '</td>' +
       '<td style="font-family:var(--mono);font-size:12px;color:' + cor + ';">' + (pf.status || '-') + '</td>';
-    tr.style.cursor = 'pointer';
-    tr.title = 'Clique para editar este perfil no formulario abaixo';
-    tr.onclick = function () {
-      document.getElementById('pfRA').value = pf.ra || '';
-      document.getElementById('pfNome').value = pf.nome || '';
-      document.getElementById('pfPerfil').value = pf.perfil || 'outro';
-      document.getElementById('pfDisciplinas').value = pf.disciplinas || '';
-      document.getElementById('pfStatus').value = pf.status || 'ativo';
-      document.getElementById('pfObs').value = pf.observacoes || '';
-      perfisStatusUI('Editando ' + pf.nome + ' — altere e clique em Salvar perfil.');
-    };
+    var tdP = document.createElement('td');
+    var bEp = document.createElement('button');
+    bEp.type = 'button'; bEp.className = 'pre-acao'; bEp.textContent = '\u270E Editar';
+    bEp.onclick = function () { perfisEditar(pf); };
+    var bXp = document.createElement('button');
+    bXp.type = 'button'; bXp.className = 'pre-acao'; bXp.textContent = '\u2716 Excluir';
+    bXp.style.marginLeft = '6px'; bXp.style.borderColor = 'var(--erro)'; bXp.style.color = 'var(--erro)';
+    bXp.onclick = function () { perfisExcluir(pf, bXp); };
+    tdP.appendChild(bEp); tdP.appendChild(bXp);
+    tr.appendChild(tdP);
     corpo.appendChild(tr);
   });
+}
+
+function perfisEditar(pf) {
+  document.getElementById('pfRA').value = pf.ra || '';
+  document.getElementById('pfNome').value = pf.nome || '';
+  document.getElementById('pfPerfil').value = pf.perfil || 'outro';
+  document.getElementById('pfDisciplinas').value = pf.disciplinas || '';
+  document.getElementById('pfStatus').value = pf.status || 'ativo';
+  document.getElementById('pfObs').value = pf.observacoes || '';
+  document.getElementById('pfRA').scrollIntoView({ block: 'center' });
+  perfisStatusUI('Editando ' + pf.nome + ' — altere e clique em Salvar perfil.');
+}
+
+function perfisExcluir(pf, btn) {
+  if (!confirm('Excluir o perfil de ' + pf.nome + ' (RA ' + pf.ra + ')?\n\nA linha sai da aba `perfis`. A aba `alunos` NAO e alterada — o login desse RA continua valendo. Nao ha desfazer.')) return;
+  var chave = cfgObterChave();
+  if (!chave) { perfisStatusUI('Sem a chave da equipe nao e possivel excluir.', 'var(--erro)'); return; }
+  btn.disabled = true;
+  perfisStatusUI('Excluindo ' + pf.ra + '...');
+  fetch(COLETA_ENDPOINT, {
+    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'PERFIL', acao: 'excluir', chave: chave, ra: pf.ra, por: 'painel-equipe' })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      perfisStatusUI('\u2713 Perfil de ' + pf.nome + ' excluido.', 'var(--verde-claro)');
+      perfisCarregar();
+    })
+    .catch(function (e) { perfisStatusUI('Falha ao excluir: ' + e.message, 'var(--erro)'); })
+    .finally(function () { btn.disabled = false; });
 }
 
 function perfisCarregar(btn) {
