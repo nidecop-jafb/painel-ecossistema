@@ -2166,15 +2166,23 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </select>
           </label>
           <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Alvo
-            <select id="preAlvo" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
-              <option value="projeto">projeto</option>
-              <option value="metodo">m&eacute;todo</option>
-              <option value="oa">OA novo</option>
-              <option value="site">site</option>
-              <option value="relatorio">relat&oacute;rio</option>
-              <option value="painel">painel</option>
-              <option value="integracao">integra&ccedil;&atilde;o</option>
-              <option value="outro">outro</option>
+            <select id="preAlvo" onchange="preAlvoMudou()" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
+              <optgroup label="Planejamento da disciplina">
+                <option value="ementa">ementa</option>
+                <option value="plano_curso">plano de curso</option>
+                <option value="temas">temas</option>
+                <option value="trilhas">trilhas</option>
+              </optgroup>
+              <optgroup label="Produ&ccedil;&atilde;o e ecossistema">
+                <option value="projeto">projeto</option>
+                <option value="metodo">m&eacute;todo</option>
+                <option value="oa">OA novo</option>
+                <option value="site">site</option>
+                <option value="relatorio">relat&oacute;rio</option>
+                <option value="painel">painel</option>
+                <option value="integracao">integra&ccedil;&atilde;o</option>
+                <option value="outro">outro</option>
+              </optgroup>
             </select>
           </label>
           <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;flex:1;min-width:260px;">Assunto (1 frase &mdash; o que se quer criar ou refinar)
@@ -2185,6 +2193,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             &#10697; Copiar prompt da entrevista
           </button>
         </div>
+        <p id="preDica" style="font-size:12px;color:var(--texto-sub);margin-bottom:8px;"></p>
         <p style="font-size:12px;color:var(--texto-sub);margin-bottom:26px;">
           Cole no Claude Code (Cowork). O Claude l&ecirc; o que j&aacute; est&aacute; decidido, pergunta s&oacute; o que falta e grava o briefing.
         </p>
@@ -3149,6 +3158,7 @@ function showTab(id) {
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
   if (id === 'cadastro') { cadastroCarregar(); discCarregar(); }
+  if (id === 'preplan') preAlvoMudou();
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
   if (id === 'qualidade') initQualidade();
@@ -3223,6 +3233,44 @@ function preCopiar(texto, btn, msg) {
   } else { copiarFallbackGuia(texto); preFeedback(btn, msg); }
 }
 
+/* O que a entrevista precisa levantar em cada alvo do planejamento da
+   disciplina. Alvo sem entrada aqui usa o roteiro geral do SKILL.md. */
+var PRE_ROTEIROS = {
+  ementa: {
+    dica: 'Ementa: o texto oficial da disciplina — objetivos, conteudos, carga horaria, avaliacao e bibliografia.',
+    itens: 'a ementa vigente (se houver) e de onde ela veio (PPC, colegiado); carga horaria e distribuicao; objetivos de aprendizagem; ' +
+           'conteudos por unidade; criterios de avaliacao e pesos; bibliografia basica e complementar; ' +
+           'o que precisa mudar em relacao a versao atual e por que; quem aprova a mudanca.'
+  },
+  plano_curso: {
+    dica: 'Plano de curso: a ementa virando calendario — o que acontece em cada semana ou aula.',
+    itens: 'a ementa aprovada que ele deriva; numero de semanas e aulas por semana; datas de inicio, fim e das avaliacoes; ' +
+           'feriados e paradas do calendario academico; a distribuicao dos temas ao longo das semanas; ' +
+           'quando entra cada instrumento avaliativo; o que fica de reserva para reposicao.'
+  },
+  temas: {
+    dica: 'Temas: os blocos que agrupam as trilhas (hoje a FC1 tem 9 temas para 60 trilhas).',
+    itens: 'os temas ja existentes e o que muda; o criterio de agrupamento (conceito, aplicacao na mineracao, ordem do livro); ' +
+           'quantas trilhas por tema; a faixa de numeracao de cada um; o fio condutor que liga os temas; ' +
+           'o que o estudante deve saber ao terminar cada tema.'
+  },
+  trilhas: {
+    dica: 'Trilhas: as unidades de estudo dentro de um tema — cada uma vira um conjunto de OAs.',
+    itens: 'o tema a que pertencem e a numeracao (T{NN}); o titulo e os 5 topicos de cada trilha; ' +
+           'os conceitos-ancora e as lacunas que ela fecha; a contextualizacao tripla (mineracao, Ouro Preto, cotidiano); ' +
+           'o protagonista e o professor personagem; quais OAs a trilha vai ter; a ordem de producao.'
+  }
+};
+
+function preAlvoMudou() {
+  var sel = document.getElementById('preAlvo');
+  var dica = document.getElementById('preDica');
+  if (!sel || !dica) return;
+  var r = PRE_ROTEIROS[sel.value];
+  dica.textContent = r ? r.dica : '';
+  dica.style.color = r ? 'var(--ouro-claro)' : 'var(--texto-sub)';
+}
+
 function prePromptEntrevista(btn) {
   var disc = document.getElementById('preDisc').value;
   var alvo = document.getElementById('preAlvo').options[document.getElementById('preAlvo').selectedIndex].text;
@@ -3237,6 +3285,10 @@ function prePromptEntrevista(btn) {
     'Leia antes de perguntar (CLAUDE.md da pasta, feedback_lessons.md e o SKILL.md do OA, se houver) e me diga em 3 linhas o que ja esta decidido. ' +
     'Depois pergunte SO o que falta, no maximo 3 rodadas de ate 5 perguntas, sempre com opcoes. ' +
     'Grave o briefing em Trilhas_de_Aprendizagem/_preplanejamento/ da ' + disc + ' e nao produza nada antes de eu responder "aprovado".';
+  var chave = document.getElementById('preAlvo').value;
+  if (PRE_ROTEIROS[chave]) {
+    p += '\nNeste alvo, levante especificamente: ' + PRE_ROTEIROS[chave].itens;
+  }
   preCopiar(p, btn);
 }
 
