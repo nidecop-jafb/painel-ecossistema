@@ -3166,6 +3166,8 @@ function showTab(id) {
   if (id === 'preplan') {
     preAlvoMudou();
     if (!DISC_CACHE.length) discCarregar();
+    else { try { prePreencherDisciplinas(); } catch (e) {} }
+    if (!window.CURSOS_CACHE_PRE || !CURSOS_CACHE_PRE.length) cadastroCarregar();
     else { try { prePreencherCursos(); } catch (e) {} }
   }
   if (id === 'producao') renderPromptsGuias();
