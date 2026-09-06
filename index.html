@@ -969,7 +969,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
           <option value="fe3" disabled>FE3 &mdash; F&iacute;sica Experimental 3 (Eletro+Moderna) &#9203;</option>
         </optgroup>
       </select>
-      <select id="sel-curso" style="font-family:var(--mono);font-size:13px;padding:6px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+      <select id="sel-curso" onchange="try{discPreencherSeletorCabecalho()}catch(e){}" style="font-family:var(--mono);font-size:13px;padding:6px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
         <option value="min">MIN &mdash; T&eacute;cnico em Minera&ccedil;&atilde;o</option>
         <option value="met" disabled>MET &mdash; T&eacute;cnico em Metalurgia &#9203;</option>
         <option value="edi" disabled>EDI &mdash; T&eacute;cnico em Edifica&ccedil;&otilde;es &#9203;</option>
@@ -2994,6 +2994,52 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
         <button type="button" class="pre-acao" onclick="cadastroSalvar(this)">Salvar curso</button>
       </div>
 
+      <h3 style="margin-top:36px;">Disciplinas do curso</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
+        Cada disciplina pertence a um curso da tabela acima e alimenta o seletor de disciplina do cabecalho,
+        filtrado pelo curso escolhido. <strong style="color:var(--texto);">Ativa</strong> = tem trilha publicada.
+      </p>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;">
+        <button type="button" class="pre-acao" onclick="discCarregar(this)">&#8635; Recarregar lista</button>
+        <span id="discStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"></span>
+      </div>
+      <table class="status-table" id="discTabela" style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="text-align:left;">C&oacute;digo</th>
+            <th style="text-align:left;">Disciplina</th>
+            <th style="text-align:left;">Curso</th>
+            <th style="text-align:left;">S&eacute;rie</th>
+            <th style="text-align:left;">Status</th>
+            <th style="text-align:left;">A&ccedil;&otilde;es</th>
+          </tr>
+        </thead>
+        <tbody id="discCorpo">
+          <tr><td colspan="6" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Carregando...</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:28px;">Cadastrar ou editar disciplina</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">
+        Protegido pela chave da equipe. O c&oacute;digo &eacute; a chave: repetir um c&oacute;digo existente
+        <strong style="color:var(--texto);">atualiza</strong>, n&atilde;o duplica.
+      </p>
+      <div style="display:grid;grid-template-columns:120px 1fr 150px 130px 130px auto;gap:10px;align-items:center;margin-top:12px;max-width:1100px;">
+        <input id="dsCodigo" type="text" maxlength="8" placeholder="C&Oacute;DIGO"
+               style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);text-transform:uppercase;">
+        <input id="dsNome" type="text" maxlength="80" placeholder="Nome da disciplina"
+               style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+        <select id="dsCurso" style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);"></select>
+        <input id="dsSerie" type="text" maxlength="40" placeholder="1a serie"
+               style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+        <select id="dsStatus" style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+          <option value="previsao">Previs&atilde;o</option>
+          <option value="ativa">Ativa</option>
+          <option value="encerrada">Encerrada</option>
+        </select>
+        <button type="button" class="pre-acao" onclick="discSalvar(this)">Salvar disciplina</button>
+      </div>
+
       <h3 style="margin-top:36px;">Perfis &mdash; quem trabalha no projeto</h3>
       <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
         Fonte unica de quem e quem: a aba <span style="color:var(--ouro-claro);">perfis</span> da planilha,
@@ -3102,7 +3148,7 @@ function showTab(id) {
   if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); loadCitacoesIframe(); }
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
-  if (id === 'cadastro') cadastroCarregar();
+  if (id === 'cadastro') { cadastroCarregar(); discCarregar(); }
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
   if (id === 'qualidade') initQualidade();
@@ -3325,6 +3371,7 @@ function cadastroCarregar(btn) {
       var cursos = res.cursos || [];
       cadastroRenderTabela(cursos);
       cadastroPreencherSeletor(cursos);
+      discPreencherCursos(cursos);
       var ativos = cursos.filter(function (c) { return c.status === 'ativo'; }).length;
       cadastroStatusUI('\u2713 ' + cursos.length + ' curso(s) — ' + ativos + ' com trilha publicada.', 'var(--verde-claro)');
     })
@@ -3369,6 +3416,173 @@ function cadastroSalvar(btn) {
         cadastroStatusUI('Chave incorreta — clique em Salvar de novo e digite a chave correta.', 'var(--erro)');
       } else {
         cadastroStatusUI('Falha ao salvar: ' + e.message, 'var(--erro)');
+      }
+    })
+    .finally(function () { btn.disabled = false; });
+}
+
+/* ── CADASTRO (F17): disciplinas de cada curso ──
+   Leitura publica; gravacao com a chave da equipe. A mesma lista alimenta
+   o seletor de disciplina do cabecalho, filtrado pelo curso escolhido. */
+var DISC_CACHE = [];
+
+function discStatusUI(msg, cor) {
+  var el = document.getElementById('discStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = cor || 'var(--texto-sub)';
+}
+
+/* o select de curso do formulario vem da lista de cursos ja carregada */
+function discPreencherCursos(cursos) {
+  var sel = document.getElementById('dsCurso');
+  if (!sel || !cursos || !cursos.length) return;
+  var atual = sel.value;
+  sel.innerHTML = cursos.map(function (c) {
+    return '<option value="' + c.sigla + '">' + c.sigla + '</option>';
+  }).join('');
+  if (atual) sel.value = atual;
+}
+
+/* seletor do cabecalho: so as disciplinas do curso selecionado */
+function discPreencherSeletorCabecalho() {
+  var sel = document.getElementById('sel-disciplina');
+  var selCurso = document.getElementById('sel-curso');
+  if (!sel || !DISC_CACHE.length) return;
+  var curso = selCurso ? (selCurso.value || '').toUpperCase() : '';
+  var anterior = sel.value;
+  var doCurso = DISC_CACHE.filter(function (d) { return !curso || d.curso === curso; });
+  if (!doCurso.length) return;
+  sel.innerHTML = '';
+  [['Fisica Conceitual', 'FC'], ['Fisica Experimental', 'FE'], ['Outras', '']].forEach(function (g) {
+    var itens = doCurso.filter(function (d) {
+      return g[1] ? d.codigo.indexOf(g[1]) === 0 : (d.codigo.indexOf('FC') !== 0 && d.codigo.indexOf('FE') !== 0);
+    });
+    if (!itens.length) return;
+    var grupo = document.createElement('optgroup');
+    grupo.label = g[0];
+    itens.forEach(function (d) {
+      var op = document.createElement('option');
+      op.value = d.codigo.toLowerCase();
+      op.textContent = d.codigo + ' — ' + d.nome + (d.status === 'ativa' ? '' : ' \u23F3');
+      if (d.status !== 'ativa') op.disabled = true;
+      grupo.appendChild(op);
+    });
+    sel.appendChild(grupo);
+  });
+  var vals = Array.prototype.map.call(sel.options, function (o) { return o.value; });
+  if (vals.indexOf(anterior) !== -1) sel.value = anterior;
+}
+
+function discEditar(d) {
+  document.getElementById('dsCodigo').value = d.codigo;
+  document.getElementById('dsNome').value = d.nome;
+  document.getElementById('dsCurso').value = d.curso;
+  document.getElementById('dsSerie').value = d.serie || '';
+  document.getElementById('dsStatus').value = d.status || 'previsao';
+  document.getElementById('dsCodigo').scrollIntoView({ block: 'center' });
+  discStatusUI('Editando ' + d.codigo + ' — altere e clique em Salvar disciplina.');
+}
+
+function discExcluir(d, btn) {
+  if (!confirm('Excluir a disciplina ' + d.codigo + ' (' + d.nome + ')?\n\nA linha sai da aba `disciplinas`. Nao ha desfazer.')) return;
+  var chave = cfgObterChave();
+  if (!chave) { discStatusUI('Sem a chave da equipe nao e possivel excluir.', 'var(--erro)'); return; }
+  btn.disabled = true;
+  discStatusUI('Excluindo ' + d.codigo + '...');
+  fetch(COLETA_ENDPOINT, {
+    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'DISCIPLINA', acao: 'excluir', chave: chave, codigo: d.codigo, por: 'painel-equipe' })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      discStatusUI('\u2713 ' + d.codigo + ' excluida.', 'var(--verde-claro)');
+      discCarregar();
+    })
+    .catch(function (e) { discStatusUI('Falha ao excluir: ' + e.message, 'var(--erro)'); })
+    .finally(function () { btn.disabled = false; });
+}
+
+function discRenderTabela(lista) {
+  var corpo = document.getElementById('discCorpo');
+  if (!corpo) return;
+  corpo.innerHTML = '';
+  lista.forEach(function (d) {
+    var tr = document.createElement('tr');
+    var cor = d.status === 'ativa' ? 'var(--verde-claro)' : 'var(--texto-sub)';
+    tr.innerHTML =
+      '<td style="font-family:var(--mono);color:var(--ouro-claro);">' + d.codigo + '</td>' +
+      '<td>' + d.nome + '</td>' +
+      '<td style="font-family:var(--mono);font-size:12px;">' + d.curso + '</td>' +
+      '<td style="font-family:var(--mono);font-size:12px;">' + (d.serie || '&mdash;') + '</td>' +
+      '<td style="font-family:var(--mono);font-size:12px;color:' + cor + ';">' + (d.status || '-') + '</td>';
+    var td = document.createElement('td');
+    var bE = document.createElement('button');
+    bE.type = 'button'; bE.className = 'pre-acao'; bE.textContent = '\u270E Editar';
+    bE.onclick = function () { discEditar(d); };
+    var bX = document.createElement('button');
+    bX.type = 'button'; bX.className = 'pre-acao'; bX.textContent = '\u2716 Excluir';
+    bX.style.marginLeft = '6px'; bX.style.borderColor = 'var(--erro)'; bX.style.color = 'var(--erro)';
+    bX.onclick = function () { discExcluir(d, bX); };
+    td.appendChild(bE); td.appendChild(bX);
+    tr.appendChild(td);
+    corpo.appendChild(tr);
+  });
+}
+
+function discCarregar(btn) {
+  if (btn) btn.disabled = true;
+  discStatusUI('Buscando disciplinas...');
+  return fetch(COLETA_ENDPOINT + '?disciplinas=1')
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'resposta invalida');
+      DISC_CACHE = res.disciplinas || [];
+      discRenderTabela(DISC_CACHE);
+      discPreencherSeletorCabecalho();
+      var ativas = DISC_CACHE.filter(function (d) { return d.status === 'ativa'; }).length;
+      discStatusUI('\u2713 ' + DISC_CACHE.length + ' disciplina(s) — ' + ativas + ' com trilha publicada.', 'var(--verde-claro)');
+    })
+    .catch(function (e) {
+      discStatusUI('Falha ao buscar: ' + e.message + ' — o endpoint precisa estar na versao F17 (reimplantar Code.gs).', 'var(--erro)');
+    })
+    .finally(function () { if (btn) btn.disabled = false; });
+}
+
+function discSalvar(btn) {
+  var cod = (document.getElementById('dsCodigo').value || '').trim().toUpperCase();
+  var nome = (document.getElementById('dsNome').value || '').trim();
+  if (!/^[A-Z0-9]{2,8}$/.test(cod)) { discStatusUI('Codigo invalido (2 a 8 letras/numeros).', 'var(--erro)'); return; }
+  if (!nome) { discStatusUI('Informe o nome da disciplina.', 'var(--erro)'); return; }
+  var chave = cfgObterChave();
+  if (!chave) { discStatusUI('Sem a chave da equipe nao e possivel salvar.', 'var(--erro)'); return; }
+  btn.disabled = true;
+  discStatusUI('Salvando ' + cod + '...');
+  fetch(COLETA_ENDPOINT, {
+    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({
+      tipo: 'DISCIPLINA', chave: chave, codigo: cod, nome: nome,
+      curso: document.getElementById('dsCurso').value,
+      serie: document.getElementById('dsSerie').value,
+      status: document.getElementById('dsStatus').value,
+      por: 'painel-equipe'
+    })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      discStatusUI('\u2713 ' + cod + ' ' + (res.acao === 'criada' ? 'cadastrada' : 'atualizada') + '.', 'var(--verde-claro)');
+      document.getElementById('dsCodigo').value = '';
+      document.getElementById('dsNome').value = '';
+      discCarregar();
+    })
+    .catch(function (e) {
+      if (String(e.message).indexOf('Chave') !== -1) {
+        try { localStorage.removeItem(CFG_CHAVE_KEY); } catch (err) {}
+        discStatusUI('Chave incorreta — clique em Salvar de novo e digite a chave correta.', 'var(--erro)');
+      } else {
+        discStatusUI('Falha ao salvar: ' + e.message, 'var(--erro)');
       }
     })
     .finally(function () { btn.disabled = false; });
@@ -3676,7 +3890,7 @@ function showTrilha(code) {
   showTab('visao');
   /* F13: o seletor de curso do cabecalho le da aba `cursos` (fonte unica).
      Falhou a rede? ficam as opcoes fixas do HTML, que sao o fallback. */
-  try { cadastroCarregar(); } catch (e) {}
+  try { cadastroCarregar(); discCarregar(); } catch (e) {}
 }
 
 function togglePanel(id, btn) {
