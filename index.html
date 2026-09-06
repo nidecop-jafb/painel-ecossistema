@@ -2165,6 +2165,11 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
               <option value="FC3">FC3 &mdash; F&iacute;sica Conceitual 3</option>
             </select>
           </label>
+          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Curso
+            <select id="preCurso" onchange="prePreencherDisciplinas()" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
+              <option value="">Todos</option>
+            </select>
+          </label>
           <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Alvo
             <select id="preAlvo" onchange="preAlvoMudou()" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
               <optgroup label="Planejamento da disciplina">
@@ -3158,7 +3163,11 @@ function showTab(id) {
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
   if (id === 'cadastro') { cadastroCarregar(); discCarregar(); }
-  if (id === 'preplan') preAlvoMudou();
+  if (id === 'preplan') {
+    preAlvoMudou();
+    if (!DISC_CACHE.length) discCarregar();
+    else { try { prePreencherCursos(); } catch (e) {} }
+  }
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
   if (id === 'qualidade') initQualidade();
@@ -3261,6 +3270,39 @@ var PRE_ROTEIROS = {
            'o protagonista e o professor personagem; quais OAs a trilha vai ter; a ordem de producao.'
   }
 };
+
+/* Pre-Planejamento: curso e disciplina vem do Cadastro (abas cursos e
+   disciplinas), nao mais da lista fixa. Sem rede, ficam as 4 opcoes do HTML. */
+function prePreencherCursos() {
+  var sel = document.getElementById('preCurso');
+  if (!sel || !window.CURSOS_CACHE_PRE || !CURSOS_CACHE_PRE.length) return;
+  var atual = sel.value;
+  sel.innerHTML = '<option value="">Todos os cursos</option>' +
+    CURSOS_CACHE_PRE.map(function (c) {
+      return '<option value="' + c.sigla + '">' + c.sigla + ' — ' + c.nome + '</option>';
+    }).join('');
+  if (atual) sel.value = atual;
+  prePreencherDisciplinas();
+}
+
+function prePreencherDisciplinas() {
+  var sel = document.getElementById('preDisc');
+  var selCurso = document.getElementById('preCurso');
+  if (!sel || !DISC_CACHE || !DISC_CACHE.length) return;
+  var curso = selCurso ? selCurso.value : '';
+  var atual = sel.value;
+  var lista = DISC_CACHE.filter(function (d) { return !curso || d.curso === curso; });
+  if (!lista.length) {
+    sel.innerHTML = '<option value="">(nenhuma disciplina neste curso)</option>';
+    return;
+  }
+  sel.innerHTML = lista.map(function (d) {
+    return '<option value="' + d.codigo + '">' + d.codigo + ' — ' + d.nome +
+      (d.status === 'ativa' ? '' : ' \u23F3') + '</option>';
+  }).join('');
+  var vals = Array.prototype.map.call(sel.options, function (o) { return o.value; });
+  if (vals.indexOf(atual) !== -1) sel.value = atual;
+}
 
 function preAlvoMudou() {
   var sel = document.getElementById('preAlvo');
@@ -3424,6 +3466,8 @@ function cadastroCarregar(btn) {
       cadastroRenderTabela(cursos);
       cadastroPreencherSeletor(cursos);
       discPreencherCursos(cursos);
+      window.CURSOS_CACHE_PRE = cursos;
+      try { prePreencherCursos(); } catch (e) {}
       var ativos = cursos.filter(function (c) { return c.status === 'ativo'; }).length;
       cadastroStatusUI('\u2713 ' + cursos.length + ' curso(s) — ' + ativos + ' com trilha publicada.', 'var(--verde-claro)');
     })
@@ -3593,6 +3637,7 @@ function discCarregar(btn) {
       DISC_CACHE = res.disciplinas || [];
       discRenderTabela(DISC_CACHE);
       discPreencherSeletorCabecalho();
+      try { prePreencherDisciplinas(); } catch (e) {}
       var ativas = DISC_CACHE.filter(function (d) { return d.status === 'ativa'; }).length;
       discStatusUI('\u2713 ' + DISC_CACHE.length + ' disciplina(s) — ' + ativas + ' com trilha publicada.', 'var(--verde-claro)');
     })
