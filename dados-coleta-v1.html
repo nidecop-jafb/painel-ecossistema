@@ -59,6 +59,9 @@ summary { cursor: pointer; font-size: 0.82rem; color: var(--ouro-claro); font-fa
 
 <div class="toolbar">
   <button class="btn" id="btnAtualizar" onclick="carregar()">Atualizar dados</button>
+  <label class="meta">Relat&oacute;rio
+    <select id="fPerfil" onchange="trocarPerfil()"></select>
+  </label>
   <label class="meta">Turma
     <select id="fTurma" onchange="render()"><option value="">Todas</option></select>
   </label>
@@ -66,11 +69,13 @@ summary { cursor: pointer; font-size: 0.82rem; color: var(--ouro-claro); font-fa
     <select id="fOA" onchange="render()"><option value="">Todos</option></select>
   </label>
   <span class="meta" id="metaInfo">Clique em "Atualizar dados" para buscar a planilha.</span>
+  <button class="btn" id="btnImprimir" onclick="window.print()" style="margin-left:auto;">Imprimir / PDF</button>
 </div>
+<div class="aviso" id="avisoPerfil" hidden style="margin-bottom:12px;"></div>
 <div class="aviso" id="aviso" hidden></div>
 
 <div id="conteudo" hidden>
-  <div class="cards">
+  <div class="cards" data-secao="cards">
     <div class="card"><div class="num" id="cEnvios">–</div><div class="lbl">Envios v&aacute;lidos</div></div>
     <div class="card"><div class="num" id="cAlunos">–</div><div class="lbl">Alunos que entregaram</div></div>
     <div class="card"><div class="num" id="cPendentes">–</div><div class="lbl">Pendentes</div></div>
@@ -78,19 +83,30 @@ summary { cursor: pointer; font-size: 0.82rem; color: var(--ouro-claro); font-fa
     <div class="card"><div class="num" id="cReenvios">–</div><div class="lbl">Reenvios</div></div>
   </div>
 
-  <h2>Entrega por turma</h2>
-  <table id="tblTurmas"></table>
-  <details id="detPendentes"><summary>Ver alunos pendentes</summary><ul class="pendlist" id="listaPendentes"></ul></details>
+  <h2 data-secao="turmas">Entrega por turma</h2>
+  <table id="tblTurmas" data-secao="turmas"></table>
+  <details id="detPendentes" data-secao="pendentes"><summary>Ver alunos pendentes</summary><ul class="pendlist" id="listaPendentes"></ul></details>
 
-  <h2>Distribui&ccedil;&atilde;o de notas (0–10)</h2>
-  <div class="dist" id="dist"></div>
+  <h2 data-secao="notas">Distribui&ccedil;&atilde;o de notas (0–10)</h2>
+  <div class="dist" id="dist" data-secao="notas"></div>
 
-  <h2>Resultados por OA</h2>
-  <table id="tblOA"></table>
+  <h2 data-secao="oa">Resultados por OA</h2>
+  <table id="tblOA" data-secao="oa"></table>
 
-  <h2>Taxa de acerto por item (@ID) — do mais cr&iacute;tico ao mais f&aacute;cil</h2>
-  <div class="meta" style="margin-bottom:8px;">Vermelho &lt; 50% &middot; Ouro 50–69% &middot; Verde &ge; 70% &middot; Base: 1.&ordm; envio de cada aluno</div>
-  <table id="tblItens"></table>
+  <h2 data-secao="itens">Taxa de acerto por item (@ID) — do mais cr&iacute;tico ao mais f&aacute;cil</h2>
+  <div class="meta" style="margin-bottom:8px;" data-secao="itens">Vermelho &lt; 50% &middot; Ouro 50–69% &middot; Verde &ge; 70% &middot; Base: 1.&ordm; envio de cada aluno</div>
+  <table id="tblItens" data-secao="itens"></table>
+
+  <h2 data-secao="presenca">Presen&ccedil;a</h2>
+  <div class="meta" style="margin-bottom:8px;" data-secao="presenca">Aulas registradas na chamada digital &middot; a turma EQUIPE fica fora</div>
+  <table id="tblPresenca" data-secao="presenca"></table>
+
+  <h2 data-secao="monitoria">Monitoria &mdash; entregas de FA/RB</h2>
+  <table id="tblMonitoria" data-secao="monitoria"></table>
+
+  <h2 data-secao="risco">Estudantes que precisam de aten&ccedil;&atilde;o</h2>
+  <div class="meta" style="margin-bottom:8px;" data-secao="risco">Sem entrega e/ou com presen&ccedil;a abaixo de 75%</div>
+  <table id="tblRisco" data-secao="risco"></table>
 </div>
 
 <script>
@@ -124,16 +140,23 @@ function carregar() {
   var btn = document.getElementById('btnAtualizar');
   btn.disabled = true;
   document.getElementById('metaInfo').textContent = 'Buscando dados da planilha...';
-  fetch(CFG.url + '?relatorio=1&chave=' + encodeURIComponent(chave))
+  preencherPerfis();
+  var anon = PERFIL_ATUAL.nominal ? '' : '&anonimo=1';
+  fetch(CFG.url + '?relatorio=1&chave=' + encodeURIComponent(chave) + anon)
     .then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) throw new Error(res.erro || 'resposta invalida');
       DB = res;
       preencherFiltros();
+      return carregarExtras(chave);
+    })
+    .then(function () {
+      aplicarSecoesDoPerfil();
       render();
       document.getElementById('metaInfo').textContent =
-        'Atualizado em ' + new Date(res.gerado_em).toLocaleString('pt-BR') +
-        ' · linhas de TESTE excluidas automaticamente';
+        'Atualizado em ' + new Date(DB.gerado_em).toLocaleString('pt-BR') +
+        ' · linhas de TESTE excluidas automaticamente' +
+        (PERFIL_ATUAL.nominal ? '' : ' · payload SEM nomes');
       document.getElementById('aviso').hidden = true;
       document.getElementById('conteudo').hidden = false;
     })
@@ -149,6 +172,161 @@ function carregar() {
       document.getElementById('metaInfo').textContent = '';
     })
     .finally(function () { btn.disabled = false; });
+}
+
+/* ── RELATORIOS POR PERFIL (2026-09-06) ──
+   UM template, 4 perfis: cada um liga/desliga secoes e decide se ve nome.
+   Perfil novo = mais uma entrada aqui, sem tela nova.
+   LGPD: `nominal:false` NAO esconde o nome na tela — pede o payload anonimo
+   ao servidor (?anonimo=1), entao o nome nem chega ao navegador. */
+var PERFIS_REL = [
+  { id: 'professor', rotulo: 'Professor(a)', nominal: true,
+    secoes: ['cards', 'turmas', 'pendentes', 'notas', 'oa', 'itens', 'presenca'],
+    nota: 'Turma a turma, com nome: entregas, notas, itens criticos e presenca.' },
+  { id: 'monitoria', rotulo: 'Monitoria', nominal: true,
+    secoes: ['cards', 'turmas', 'pendentes', 'monitoria'],
+    nota: 'Entregas de FA/RB registradas na Monitoria, com atrasos e atestados.' },
+  { id: 'pedagogia', rotulo: 'Pedagogia / NAPNE', nominal: true,
+    secoes: ['cards', 'turmas', 'risco', 'presenca'],
+    nota: 'Por estudante, quem esta ficando para tras. Sem detalhe de item.' },
+  { id: 'coordenacao', rotulo: 'Coordena&ccedil;&atilde;o / Dire&ccedil;&atilde;o', nominal: false,
+    secoes: ['cards', 'turmas', 'notas', 'oa'],
+    nota: 'Agregado por turma. Este relatorio NAO carrega nome de estudante — pode ser mostrado fora da equipe.' }
+];
+var PERFIL_ATUAL = PERFIS_REL[0];
+var DB_EXTRA = { presenca: null, monitoria: null };
+
+function perfilPorId(id) {
+  for (var i = 0; i < PERFIS_REL.length; i++) if (PERFIS_REL[i].id === id) return PERFIS_REL[i];
+  return PERFIS_REL[0];
+}
+
+function preencherPerfis() {
+  var sel = document.getElementById('fPerfil');
+  if (!sel || sel.options.length) return;
+  sel.innerHTML = PERFIS_REL.map(function (p) {
+    return '<option value="' + p.id + '">' + p.rotulo + '</option>';
+  }).join('');
+}
+
+function aplicarSecoesDoPerfil() {
+  var visiveis = PERFIL_ATUAL.secoes;
+  var els = document.querySelectorAll('[data-secao]');
+  Array.prototype.forEach.call(els, function (el) {
+    el.hidden = visiveis.indexOf(el.getAttribute('data-secao')) === -1;
+  });
+  var av = document.getElementById('avisoPerfil');
+  av.hidden = false;
+  av.className = 'aviso' + (PERFIL_ATUAL.nominal ? '' : ' erro');
+  av.innerHTML = '<strong>' + PERFIL_ATUAL.rotulo + '</strong> &mdash; ' + PERFIL_ATUAL.nota;
+}
+
+/* Trocar de perfil pode mudar o payload (nominal x anonimo): nesse caso
+   rebusca, senao so re-renderiza. */
+function trocarPerfil() {
+  var novo = perfilPorId(document.getElementById('fPerfil').value);
+  var mudouSigilo = (novo.nominal !== PERFIL_ATUAL.nominal);
+  PERFIL_ATUAL = novo;
+  aplicarSecoesDoPerfil();
+  if (mudouSigilo && DB && DB.alunos) carregar();
+  else if (DB && DB.alunos) render();
+}
+
+function carregarExtras(chave) {
+  var anon = PERFIL_ATUAL.nominal ? '' : '&anonimo=1';
+  var pedidos = [];
+  if (PERFIL_ATUAL.secoes.indexOf('presenca') !== -1 || PERFIL_ATUAL.secoes.indexOf('risco') !== -1) {
+    pedidos.push(fetch(CFG.url + '?presenca_relatorio=1&chave=' + encodeURIComponent(chave) + anon)
+      .then(function (r) { return r.json(); })
+      .then(function (res) { DB_EXTRA.presenca = res.ok ? res : null; })
+      .catch(function () { DB_EXTRA.presenca = null; }));
+  }
+  if (PERFIL_ATUAL.secoes.indexOf('monitoria') !== -1) {
+    pedidos.push(fetch(CFG.url + '?monitoria_admin=1&chave=' + encodeURIComponent(chave))
+      .then(function (r) { return r.json(); })
+      .then(function (res) { DB_EXTRA.monitoria = res.ok ? res : null; })
+      .catch(function () { DB_EXTRA.monitoria = null; }));
+  }
+  return Promise.all(pedidos);
+}
+
+function renderPresenca() {
+  var tb = document.getElementById('tblPresenca');
+  if (!tb) return;
+  var d = DB_EXTRA.presenca;
+  if (!d || !d.alunos || !d.alunos.length) {
+    tb.innerHTML = '<tr><td class="meta">Sem presenca registrada ainda (ou endpoint anterior a F15).</td></tr>';
+    return;
+  }
+  var ft = document.getElementById('fTurma').value;
+  var linhas = d.alunos.filter(function (a) { return !ft || a.turma === ft; });
+  var html = '<tr><th>Turma</th><th>' + (PERFIL_ATUAL.nominal ? 'Estudante' : 'Registros') +
+    '</th><th>Presencas</th><th>Aulas da turma</th><th>%</th></tr>';
+  linhas.sort(function (a, b) { return (a.turma + a.nome).localeCompare(b.turma + b.nome); });
+  linhas.forEach(function (a) {
+    var tot = (d.aulas_por_turma && d.aulas_por_turma[a.turma]) || d.total_aulas || 0;
+    var pct = tot ? Math.round(100 * a.presencas / tot) : 0;
+    var cor = pct >= 75 ? 'var(--ok)' : (pct >= 50 ? 'var(--ouro)' : 'var(--erro)');
+    html += '<tr><td>' + a.turma + '</td><td>' + (PERFIL_ATUAL.nominal ? a.nome : '&mdash;') +
+      '</td><td>' + a.presencas + '</td><td>' + tot +
+      '</td><td style="color:' + cor + '">' + pct + '%</td></tr>';
+  });
+  tb.innerHTML = html;
+}
+
+function renderMonitoria() {
+  var tb = document.getElementById('tblMonitoria');
+  if (!tb) return;
+  var d = DB_EXTRA.monitoria;
+  if (!d || !d.registros || !d.registros.length) {
+    tb.innerHTML = '<tr><td class="meta">Sem registros de Monitoria ainda.</td></tr>';
+    return;
+  }
+  var ft = document.getElementById('fTurma').value;
+  var regs = d.registros.filter(function (r) { return !ft || r.turma === ft; });
+  var html = '<tr><th>Trilha</th><th>OA</th><th>Estudante</th><th>Turma</th><th>Entrega</th><th>Situacao</th><th>Completude</th></tr>';
+  regs.slice(-200).reverse().forEach(function (r) {
+    var atraso = String(r.situacao || '').toLowerCase().indexOf('atraso') !== -1;
+    var cor = atraso ? 'var(--erro)' : 'var(--ok)';
+    html += '<tr><td>' + (r.trilha || '') + '</td><td>' + (r.oa || '') + '</td><td>' +
+      (r.nome || '') + '</td><td>' + (r.turma || '') + '</td><td>' + (r.data_entrega || '') +
+      '</td><td style="color:' + cor + '">' + (r.situacao || '') + '</td><td>' + (r.completude || '') + '</td></tr>';
+  });
+  tb.innerHTML = html;
+}
+
+/* Pedagogia: cruza entrega em falta com presenca baixa. */
+function renderRisco() {
+  var tb = document.getElementById('tblRisco');
+  if (!tb) return;
+  var ft = document.getElementById('fTurma').value;
+  var entregou = {};
+  enviosBase().forEach(function (e) { entregou[e.ra] = true; });
+  var presPorRA = {};
+  var d = DB_EXTRA.presenca;
+  if (d && d.alunos) d.alunos.forEach(function (a) { presPorRA[a.ra] = a; });
+  var linhas = [];
+  DB.alunos.filter(function (a) { return !ft || a.turma === ft; }).forEach(function (a) {
+    var pres = presPorRA[a.ra];
+    var tot = pres && d ? ((d.aulas_por_turma && d.aulas_por_turma[a.turma]) || d.total_aulas || 0) : 0;
+    var pct = (pres && tot) ? Math.round(100 * pres.presencas / tot) : null;
+    var semEntrega = !entregou[a.ra];
+    if (semEntrega || (pct !== null && pct < 75)) {
+      linhas.push({ nome: a.nome, turma: a.turma, entrega: semEntrega ? 'em falta' : 'ok', pct: pct });
+    }
+  });
+  if (!linhas.length) {
+    tb.innerHTML = '<tr><td class="meta">Ninguem em situacao de atencao com os filtros atuais.</td></tr>';
+    return;
+  }
+  var html = '<tr><th>Estudante</th><th>Turma</th><th>Entrega do OA</th><th>Presenca</th></tr>';
+  linhas.sort(function (a, b) { return (a.pct === null ? 999 : a.pct) - (b.pct === null ? 999 : b.pct); });
+  linhas.forEach(function (l) {
+    var cor = l.entrega === 'em falta' ? 'var(--erro)' : 'var(--texto)';
+    html += '<tr><td>' + l.nome + '</td><td>' + l.turma + '</td><td style="color:' + cor + '">' +
+      l.entrega + '</td><td>' + (l.pct === null ? '&mdash;' : l.pct + '%') + '</td></tr>';
+  });
+  tb.innerHTML = html;
 }
 
 function preencherFiltros() {
@@ -282,6 +460,10 @@ function render() {
   document.getElementById('tblItens').innerHTML = html ===
     '<tr><th>Item @ID</th><th>Tipo</th><th>Bloom</th><th class="num">N</th><th class="num">Acerto</th><th>Taxa</th></tr>'
     ? '<tr><td colspan="6" style="color:var(--texto-suave)">Sem itens na base filtrada.</td></tr>' : html;
+
+  renderPresenca();
+  renderMonitoria();
+  renderRisco();
 }
 </script>
 </body>
