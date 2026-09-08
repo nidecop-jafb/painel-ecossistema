@@ -213,6 +213,17 @@ body {
   height: calc(100vh - var(--header-h));
 }
 .main > section { margin-bottom: 32px; }
+/* Barra de disciplinas habilitadas (ementa + plano de curso aprovados).
+   Mesma barra nas 4 abas de producao — a fonte e a aba `disciplinas` do Cadastro. */
+.disc-bar { border:1px solid var(--cinza-borda); background:var(--cinza-card); padding:10px 12px; margin-bottom:14px; }
+.disc-bar-topo { font-family:var(--mono); font-size:11px; color:var(--ouro); text-transform:uppercase; letter-spacing:.05em; margin-bottom:8px; }
+.disc-bar-curso { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-bottom:6px; }
+.disc-bar-curso:last-child { margin-bottom:0; }
+.disc-bar-sigla { font-family:var(--mono); font-size:11px; color:var(--texto-sub); min-width:170px; }
+.disc-chip { font-family:var(--mono); font-size:11.5px; padding:3px 10px; border:1px solid var(--cinza-borda); background:var(--fundo); color:var(--texto-sub); cursor:pointer; }
+.disc-chip:hover { border-color:var(--ouro-claro); color:var(--texto); }
+.disc-chip.sel { border-color:var(--verde-claro); color:var(--verde-claro); background:var(--verde-bg); }
+.disc-bar-vazio { font-family:var(--mono); font-size:11.5px; color:var(--texto-sub); line-height:1.6; }
 .section-title {
   font-family: var(--display);
   font-size: 18px;
@@ -2041,7 +2052,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </div>
           </div>
           <div class="onda-col">
-            <div class="onda-header">Onda 2 — Conteúdo</div>
+            <div class="onda-header">Onda 2 — Pré-Aula · Pré-Lab</div>
             <div class="onda-body">
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT</div>
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT Digital</div>
@@ -2057,7 +2068,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </div>
           </div>
           <div class="onda-col">
-            <div class="onda-header">Onda 3 — Aula</div>
+            <div class="onda-header">Onda 3 — Aula · Lab</div>
             <div class="onda-body">
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> FA + DX</div>
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> AP</div>
@@ -2069,7 +2080,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </div>
           </div>
           <div class="onda-col">
-            <div class="onda-header">Onda 4 — Pós-Aula</div>
+            <div class="onda-header">Onda 4 — Pós-Aula · Pós-Lab</div>
             <div class="onda-body">
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TM</div>
               <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TC</div>
@@ -2151,7 +2162,8 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
         <p style="font-size:13px;color:var(--texto-sub);margin-bottom:16px;line-height:1.7;">
           Antes de gastar tokens produzindo, gastar poucos tokens perguntando (regra 6 da se&ccedil;&atilde;o 18 do CLAUDE.md raiz).
           A skill <span style="font-family:var(--mono);color:var(--ouro-claro);">/entrevista-autor</span> entrevista o autor em at&eacute; 3 rodadas
-          e grava um <strong>briefing curto</strong> em <span style="font-family:var(--mono);">Trilhas_de_Aprendizagem/_preplanejamento/</span> da disciplina.
+          e grava uma <strong>Instru&ccedil;&atilde;o Inicial curta</strong> em <span style="font-family:var(--mono);">_planejamento/_pre/</span> da disciplina
+          &mdash; ou em <span style="font-family:var(--mono);">T{NN}_.../_pre/</span> da pr&oacute;pria trilha, quando o alvo &eacute; uma trilha (preencha o campo Trilha).
           Nada &eacute; produzido at&eacute; o autor responder <strong>&ldquo;aprovado&rdquo;</strong>.
           <br><strong>N&Atilde;O use</strong> para OA rotineiro derivado de TT aprovado que j&aacute; tem skill pr&oacute;pria &mdash; a skill do OA j&aacute; carrega os crit&eacute;rios.
         </p>
@@ -2190,6 +2202,9 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
               </optgroup>
             </select>
           </label>
+          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Trilha (s&oacute; se o alvo for de uma trilha)
+            <input id="preTrilha" maxlength="4" placeholder="T10" style="padding:8px;width:70px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);text-transform:uppercase;">
+          </label>
           <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;flex:1;min-width:260px;">Assunto (1 frase &mdash; o que se quer criar ou refinar)
             <input id="preAssunto" placeholder="ex.: aba de Presen&ccedil;a por grupo no Painel" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
           </label>
@@ -2203,7 +2218,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
           Cole no Claude Code (Cowork). O Claude l&ecirc; o que j&aacute; est&aacute; decidido, pergunta s&oacute; o que falta e grava o briefing.
         </p>
 
-        <h2 class="section-title">Briefings gravados</h2>
+        <h2 class="section-title">Instru&ccedil;&otilde;es Iniciais gravadas ap&oacute;s entrevista</h2>
         <!-- AUTO:PREPLANEJAMENTO:INICIO -->
 <style>
 /* Sanfona do Pre-Planejamento — gerada pelo atualizar_painel.py */
@@ -2220,6 +2235,22 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 .pre-acao { font-family: var(--mono); font-size: 11px; color: var(--ouro-claro); background: var(--fundo); border: 1px solid var(--cinza-borda); padding: 5px 10px; cursor: pointer; margin: 8px 6px 0 0; }
 .pre-acao:hover { border-color: var(--ouro-claro); }
 </style>
+<details class="pre-brief">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>Camada 2 da T0B &middot; Sistema Internacional de Unidades (SI)<span class="pre-meta">ILB &middot; 2026-09-08</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Definir a Camada 2 da trilha T0B — Sistema Internacional de Unidades —, uma trilha de bancada completa (não ambientação) com medição própria e Protocolo C5, narrando unidades base do SI e padrões históricos, integrando os 3 eixos próprios da ILB, com elenco Sofia/Pedro/Lucas, valor nota 20/40/40 (T01-T10), pronto para gerar 15 OAs até 05/10 (E2=06/10/2026).<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong>  <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-camada2-si-ilb-2026-09-08.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-camada2-si-ilb-2026-09-08.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-camada2-si-ilb-2026-09-08.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-camada2-si-ilb-2026-09-08.md" target="_blank">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>OA novo &middot; pasta e subpastas da T0B (Sistema Internacional de Unidades)<span class="pre-meta">ILB &middot; 2026-09-08</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar a trilha **T0B — Sistema Internacional de Unidades**, imediatamente após a T0A, no Tema 0<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Haiku 4.5 · Esforço: baixo · Skill: nenhuma (mecânico — pastas, memory.md, edição de <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-pasta-si-ilb-2026-09-08.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-pasta-si-ilb-2026-09-08.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-pasta-si-ilb-2026-09-08.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-pasta-si-ilb-2026-09-08.md" target="_blank">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>outro &middot; Refinar o TT da T0A com os 3 eixos próprios da ILB<span class="pre-meta">ILB &middot; 2026-09-08</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Atualizar `ILB-T0A-TT-v1.tex` para `v2`, aplicando os 3 eixos próprios da ILB — Didático,<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: `texto-tematico-ilb` <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-tt-3eixos-ilb-2026-09-08.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-tt-3eixos-ilb-2026-09-08.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-tt-3eixos-ilb-2026-09-08.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-tt-3eixos-ilb-2026-09-08.md" target="_blank">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief">
+<summary><span class="pre-status pre-aprovado">APROVADO</span>Integração &middot; Claude ↔ Microsoft OneNote (leitura)<span class="pre-meta">FC1 &middot; 2026-09-08</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Permitir que o Claude leia o conteúdo do bloco de notas OneNote &quot;JA2026&quot; (compartilhado via SharePoint, licença Microsoft 365 MSO do autor) usando a sessão já logada do Chrome real do autor, e traga esse conteúdo para o repositório — sem registro de app nem autorização da TI.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Sonnet 5 · Esforço: médio · Skill: nenhuma (tarefa de integração nova, não mecânica; se virar script recorrente, reavaliar para Opus 5 &quot;scripts novos&quot; numa entrevista futura)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-integracao-onenote-2026-09-08.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-integracao-onenote-2026-09-08.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-integracao-onenote-2026-09-08.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-integracao-onenote-2026-09-08.md" target="_blank">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Minhas Entregas &middot; painel de pendências e notas do estudante<span class="pre-meta">ILB &middot; 2026-09-08</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Construir &quot;Minhas Entregas&quot; — seção do índice que mostra ao estudante logado (por RA) o que falta<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-minhas-entregas-2026-09-08.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-minhas-entregas-2026-09-08.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-minhas-entregas-2026-09-08.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-minhas-entregas-2026-09-08.md" target="_blank">&#128196; Abrir o .md</a></div>
@@ -2250,7 +2281,7 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Camada 2 &middot; a trilha T0A, Antes da primeira medida<span class="pre-meta">ILB &middot; 2026-09-07</span></summary>
-<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Escrever a Camada 2 da T0A — o briefing de conteúdo que autoriza gerar o Texto Temático (TT) e o<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (a Camada 2 antecede as skills de objeto) <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-camada2-t0a-ilb-2026-09-07.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-camada2-t0a-ilb-2026-09-07.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-camada2-t0a-ilb-2026-09-07.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-camada2-t0a-ilb-2026-09-07.md" target="_blank">&#128196; Abrir o .md</a></div>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Escrever a Camada 2 da T0A — o briefing de conteúdo que autoriza gerar o Texto Temático (TT) e o<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (a Camada 2 antecede as skills de objeto) <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-camada2-t0a-ilb-2026-09-07.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-camada2-t0a-ilb-2026-09-07.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-camada2-t0a-ilb-2026-09-07.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-camada2-t0a-ilb-2026-09-07.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>infraestrutura &middot; skills, templates e site da ILB<span class="pre-meta">ILB &middot; 2026-09-07</span></summary>
@@ -2278,25 +2309,25 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>painel &middot; Cadastro (perfis de usuario)<span class="pre-meta">FC1 &middot; 2026-09-06</span></summary>
-<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Dar a aba Cadastro uma segunda secao, Perfis, tendo a aba `perfis` da planilha como<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto (endpoint novo + migracao de fonte de dados + <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-cadastro-perfis-2026-09-06.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-cadastro-perfis-2026-09-06.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-cadastro-perfis-2026-09-06.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../_preplanejamento/PRE-painel-cadastro-perfis-2026-09-06.md" target="_blank">&#128196; Abrir o .md</a></div>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Dar a aba Cadastro uma segunda secao, Perfis, tendo a aba `perfis` da planilha como<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto (endpoint novo + migracao de fonte de dados + <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-perfis-2026-09-06.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-perfis-2026-09-06.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-perfis-2026-09-06.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-perfis-2026-09-06.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>painel &middot; relatorios por perfil<span class="pre-meta">FC1 &middot; 2026-09-06</span></summary>
-<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Um template unico de relatorio na aba Analise que muda as secoes conforme o perfil<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto · Skill: nenhuma · Verificacao: os 4 perfis no <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-relatorios-por-perfil-2026-09-06.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-relatorios-por-perfil-2026-09-06.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-relatorios-por-perfil-2026-09-06.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../_preplanejamento/PRE-painel-relatorios-por-perfil-2026-09-06.md" target="_blank">&#128196; Abrir o .md</a></div>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Um template unico de relatorio na aba Analise que muda as secoes conforme o perfil<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto · Skill: nenhuma · Verificacao: os 4 perfis no <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-relatorios-por-perfil-2026-09-06.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-relatorios-por-perfil-2026-09-06.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-relatorios-por-perfil-2026-09-06.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-relatorios-por-perfil-2026-09-06.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>painel &middot; Cadastro (cursos)<span class="pre-meta">FC1 &middot; 2026-09-06</span></summary>
-<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Dar a aba Cadastro conteudo real: 8 cursos em 3 grupos (Tecnico: Mineracao, Metalurgia,<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto (endpoint novo + reimplantacao do Apps Script + revisao <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-cadastro-cursos-perfis-2026-09-06.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-cadastro-cursos-perfis-2026-09-06.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-cadastro-cursos-perfis-2026-09-06.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../_preplanejamento/PRE-painel-cadastro-cursos-perfis-2026-09-06.md" target="_blank">&#128196; Abrir o .md</a></div>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Dar a aba Cadastro conteudo real: 8 cursos em 3 grupos (Tecnico: Mineracao, Metalurgia,<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto (endpoint novo + reimplantacao do Apps Script + revisao <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-cursos-perfis-2026-09-06.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-cursos-perfis-2026-09-06.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-cursos-perfis-2026-09-06.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-cadastro-cursos-perfis-2026-09-06.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>painel &middot; menu em 8 funcoes<span class="pre-meta">FC1 &middot; 2026-09-05</span></summary>
-<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Reagrupar as 11 abas do Painel do Ecossistema em um menu de 2 niveis com as 8 funcoes (Cadastro · Pre-Planejamento · Projeto · Producao · Publicacao · Coleta · Analise · Integracao), sem reescrever o conteudo das abas.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Sonnet 5 · Esforco: medio · Skill: nenhuma (edicao direta do fonte) · Verificacao: navegador local + painel publicado <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-menu-8-funcoes-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-menu-8-funcoes-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-menu-8-funcoes-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../_preplanejamento/PRE-painel-menu-8-funcoes-2026-09-05.md" target="_blank">&#128196; Abrir o .md</a></div>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Reagrupar as 11 abas do Painel do Ecossistema em um menu de 2 niveis com as 8 funcoes (Cadastro · Pre-Planejamento · Projeto · Producao · Publicacao · Coleta · Analise · Integracao), sem reescrever o conteudo das abas.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Sonnet 5 · Esforco: medio · Skill: nenhuma (edicao direta do fonte) · Verificacao: navegador local + painel publicado <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-menu-8-funcoes-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-menu-8-funcoes-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-menu-8-funcoes-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-menu-8-funcoes-2026-09-05.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-meta">FC1 &middot; 2026-09-05</span></summary>
-<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../_preplanejamento/PRE-painel-pre-planejamento-2026-09-05.md" target="_blank">&#128196; Abrir o .md</a></div>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>19 briefing(s) &middot; 0 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" s&oacute; funciona no painel local).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>23 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 3 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" s&oacute; funciona no painel local).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -2308,6 +2339,9 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
         <p style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
           Cada skill tem um SKILL.md com protocolo detalhado. Acione com o comando de slash antes de gerar qualquer OA.
         </p>
+        <div class="disc-bar" id="disc-bar-skills"></div>
+        <div id="skills-lista"></div>
+        <div id="skills-fc1-original" style="display:none;">
 
         <div class="rail-label" style="margin:16px 0 8px;">Pré-Aula</div>
         <div class="skill-list">
@@ -2369,6 +2403,7 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
           <div class="skill-item frozen-skill"><span class="skill-sigla">—</span><span class="skill-name">folha-de-atividades (Pandoc)</span><span class="skill-badge congelada">congelada</span></div>
           <div class="skill-item frozen-skill"><span class="skill-sigla">—</span><span class="skill-name">trabalho (Pandoc)</span><span class="skill-badge congelada">congelada</span></div>
         </div>
+        </div><!-- /skills-fc1-original -->
       </section>
 
       <section>
@@ -2505,6 +2540,9 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
             <button onclick="window.open('skill_onda1_plano-v1.html','_blank')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px solid var(--verde-claro);color:var(--verde-claro);cursor:pointer;">Abrir em nova janela &#8599;</button>
           </div>
         </div>
+        <div style="padding:8px 16px 0;">
+          <div class="disc-bar" id="disc-bar-onda1"></div>
+        </div>
         <div id="onda1-trilha-bar" style="padding:8px 16px;border-bottom:1px solid var(--cinza-borda);">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
             <span style="font-family:var(--mono);font-size:11px;color:var(--ouro);text-transform:uppercase;letter-spacing:.05em;">C&oacute;digo da Trilha</span>
@@ -2524,15 +2562,8 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
         <p style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
           Cada trilha usa autores &uacute;nicos &mdash; sem repeti&ccedil;&atilde;o entre trilhas. Selecione a disciplina para visualizar.
         </p>
+        <div class="disc-bar" id="disc-bar-epigrafes"></div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <select id="sel-epigrafe-disc" onchange="loadEpigrafe()" style="font-family:var(--mono);font-size:13px;padding:6px 10px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
-            <option value="fc1">FC1 &mdash; F&iacute;sica Conceitual 1 (60 trilhas)</option>
-            <option value="fe1">FE1 &mdash; F&iacute;sica Experimental 1 (17 trilhas)</option>
-            <option value="fc2" disabled>FC2 &mdash; F&iacute;sica Conceitual 2 &#9203;</option>
-            <option value="fc3" disabled>FC3 &mdash; F&iacute;sica Conceitual 3 &#9203;</option>
-            <option value="fe2" disabled>FE2 &mdash; F&iacute;sica Experimental 2 &#9203;</option>
-            <option value="fe3" disabled>FE3 &mdash; F&iacute;sica Experimental 3 &#9203;</option>
-          </select>
           <span id="epigrafe-status" style="font-family:var(--mono);font-size:11px;color:var(--verde-claro);"></span>
         </div>
         <div id="epigrafe-container" style="border:1px solid var(--cinza-borda);overflow:hidden;">
@@ -2946,6 +2977,8 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
           Painel integrado de qualidade: problemas pendentes, crit&eacute;rios de sucesso por OA e modos de produ&ccedil;&atilde;o (loops).
         </p>
 
+        <div class="disc-bar" id="disc-bar-qualidade"></div>
+
         <!-- Sub-abas -->
         <div class="tabs" id="qualidade-subtabs" style="margin-bottom:16px;">
           <div class="tab active" onclick="showQualidadeSubtab('problemas')">Problemas</div>
@@ -3068,6 +3101,9 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
       <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
         Cada disciplina pertence a um curso da tabela acima e alimenta o seletor de disciplina do cabecalho,
         filtrado pelo curso escolhido. <strong style="color:var(--texto);">Ativa</strong> = tem trilha publicada.
+        <br><strong style="color:var(--ouro-claro);">Ementa</strong> e <strong style="color:var(--ouro-claro);">Plano de curso</strong>
+        s&atilde;o o port&atilde;o de produ&ccedil;&atilde;o: s&oacute; a disciplina com os <strong style="color:var(--texto);">dois aprovados</strong>
+        aparece nas abas Texto Tem&aacute;tico, Ep&iacute;grafes, Skills e Qualidade.
       </p>
       <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;">
         <button type="button" class="pre-acao" onclick="discCarregar(this)">&#8635; Recarregar lista</button>
@@ -3081,11 +3117,13 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
             <th style="text-align:left;">Curso</th>
             <th style="text-align:left;">S&eacute;rie</th>
             <th style="text-align:left;">Status</th>
+            <th style="text-align:left;">Ementa</th>
+            <th style="text-align:left;">Plano de curso</th>
             <th style="text-align:left;">A&ccedil;&otilde;es</th>
           </tr>
         </thead>
         <tbody id="discCorpo">
-          <tr><td colspan="6" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Carregando...</td></tr>
+          <tr><td colspan="8" style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Carregando...</td></tr>
         </tbody>
       </table>
 
@@ -3094,7 +3132,7 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
         Protegido pela chave da equipe. O c&oacute;digo &eacute; a chave: repetir um c&oacute;digo existente
         <strong style="color:var(--texto);">atualiza</strong>, n&atilde;o duplica.
       </p>
-      <div style="display:grid;grid-template-columns:120px 1fr 150px 130px 130px auto;gap:10px;align-items:center;margin-top:12px;max-width:1100px;">
+      <div style="display:grid;grid-template-columns:110px 1fr 110px 110px 120px 150px 150px auto;gap:10px;align-items:center;margin-top:12px;max-width:1280px;">
         <input id="dsCodigo" type="text" maxlength="8" placeholder="C&Oacute;DIGO"
                style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);text-transform:uppercase;">
         <input id="dsNome" type="text" maxlength="80" placeholder="Nome da disciplina"
@@ -3106,6 +3144,16 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
           <option value="previsao">Previs&atilde;o</option>
           <option value="ativa">Ativa</option>
           <option value="encerrada">Encerrada</option>
+        </select>
+        <select id="dsEmenta" title="Ementa" style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+          <option value="ausente">Ementa: ausente</option>
+          <option value="rascunho">Ementa: rascunho</option>
+          <option value="aprovado">Ementa: aprovada</option>
+        </select>
+        <select id="dsPlano" title="Plano de curso" style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
+          <option value="ausente">Plano: ausente</option>
+          <option value="rascunho">Plano: rascunho</option>
+          <option value="aprovado">Plano: aprovado</option>
         </select>
         <button type="button" class="pre-acao" onclick="discSalvar(this)">Salvar disciplina</button>
       </div>
@@ -3215,6 +3263,7 @@ function showTab(id) {
   }
   var main = document.querySelector('.main');
   if (main) main.scrollTop = 0;
+  if (DISC_BARRAS.indexOf(id) !== -1) discGarantirCadastro();
   if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); loadCitacoesIframe(); }
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
@@ -3384,12 +3433,27 @@ function prePromptEntrevista(btn) {
     'Disciplina: ' + disc + '. Alvo: ' + alvo + '. Assunto: ' + assunto + '.\n' +
     'Leia antes de perguntar (CLAUDE.md da pasta, feedback_lessons.md e o SKILL.md do OA, se houver) e me diga em 3 linhas o que ja esta decidido. ' +
     'Depois pergunte SO o que falta, no maximo 3 rodadas de ate 5 perguntas, sempre com opcoes. ' +
-    'Grave o briefing em Trilhas_de_Aprendizagem/_preplanejamento/ da ' + disc + ' e nao produza nada antes de eu responder "aprovado".';
+    preOndeGravar(disc) + ' Nao produza nada antes de eu responder "aprovado".';
   var chave = document.getElementById('preAlvo').value;
   if (PRE_ROTEIROS[chave]) {
     p += '\nNeste alvo, levante especificamente: ' + PRE_ROTEIROS[chave].itens;
   }
   preCopiar(p, btn);
+}
+
+/* Onde a Instrucao Inicial deve ser gravada: com a TRILHA quando o alvo e de uma
+   trilha (campo Trilha preenchido); em _planejamento/_pre/ da disciplina quando nao e.
+   Regra 3 da secao 20 do _claude/ da raiz, revisada em 2026-09-08. */
+function preOndeGravar(disc) {
+  var t = (document.getElementById('preTrilha').value || '').trim().toUpperCase();
+  var pastaTrilhas = (skFam(disc) === 'ilb') ? 'Trilhas' : 'Trilhas_de_Aprendizagem';
+  if (t) {
+    return 'Grave a Instrucao Inicial na pasta da propria trilha: ' + pastaTrilhas + '/'
+      + t + '_*/_pre/ da ' + disc + ' (crie a pasta _pre/ se nao existir), com o codigo '
+      + t + ' no nome do arquivo.';
+  }
+  return 'Grave a Instrucao Inicial em _planejamento/_pre/ da ' + disc
+    + ' (a partir da raiz da disciplina, nao de dentro de ' + pastaTrilhas + ').';
 }
 
 function prePromptEditar(caminho, btn) {
@@ -3634,6 +3698,8 @@ function discEditar(d) {
   document.getElementById('dsCurso').value = d.curso;
   document.getElementById('dsSerie').value = d.serie || '';
   document.getElementById('dsStatus').value = d.status || 'previsao';
+  document.getElementById('dsEmenta').value = d.ementa || 'ausente';
+  document.getElementById('dsPlano').value = d.plano || 'ausente';
   document.getElementById('dsCodigo').scrollIntoView({ block: 'center' });
   discStatusUI('Editando ' + d.codigo + ' — altere e clique em Salvar disciplina.');
 }
@@ -3658,6 +3724,14 @@ function discExcluir(d, btn) {
     .finally(function () { btn.disabled = false; });
 }
 
+/* Ementa / Plano de curso: 'aprovado' e o unico valor que libera a disciplina
+   nas abas de producao — por isso e o unico pintado de verde. */
+function discDocCelula(v) {
+  var t = (v || 'ausente');
+  var cor = t === 'aprovado' ? 'var(--verde-claro)' : (t === 'rascunho' ? 'var(--ouro-claro)' : 'var(--texto-sub)');
+  return '<td style="font-family:var(--mono);font-size:12px;color:' + cor + ';">' + t + '</td>';
+}
+
 function discRenderTabela(lista) {
   var corpo = document.getElementById('discCorpo');
   if (!corpo) return;
@@ -3670,7 +3744,8 @@ function discRenderTabela(lista) {
       '<td>' + d.nome + '</td>' +
       '<td style="font-family:var(--mono);font-size:12px;">' + d.curso + '</td>' +
       '<td style="font-family:var(--mono);font-size:12px;">' + (d.serie || '&mdash;') + '</td>' +
-      '<td style="font-family:var(--mono);font-size:12px;color:' + cor + ';">' + (d.status || '-') + '</td>';
+      '<td style="font-family:var(--mono);font-size:12px;color:' + cor + ';">' + (d.status || '-') + '</td>' +
+      discDocCelula(d.ementa) + discDocCelula(d.plano);
     var td = document.createElement('td');
     var bE = document.createElement('button');
     bE.type = 'button'; bE.className = 'pre-acao'; bE.textContent = '\u270E Editar';
@@ -3697,7 +3772,10 @@ function discCarregar(btn) {
       discPreencherSeletorCabecalho();
       try { prePreencherDisciplinas(); } catch (e) {}
       var ativas = DISC_CACHE.filter(function (d) { return d.status === 'ativa'; }).length;
-      discStatusUI('\u2713 ' + DISC_CACHE.length + ' disciplina(s) — ' + ativas + ' com trilha publicada.', 'var(--verde-claro)');
+      var lib = discHabilitadas().length;
+      try { renderBarrasDisciplina(); } catch (e) {}
+      discStatusUI('\u2713 ' + DISC_CACHE.length + ' disciplina(s) — ' + ativas + ' com trilha publicada, ' + lib
+        + ' com ementa e plano de curso aprovados.', 'var(--verde-claro)');
     })
     .catch(function (e) {
       discStatusUI('Falha ao buscar: ' + e.message + ' — o endpoint precisa estar na versao F17 (reimplantar Code.gs).', 'var(--erro)');
@@ -3721,6 +3799,8 @@ function discSalvar(btn) {
       curso: document.getElementById('dsCurso').value,
       serie: document.getElementById('dsSerie').value,
       status: document.getElementById('dsStatus').value,
+      ementa: document.getElementById('dsEmenta').value,
+      plano: document.getElementById('dsPlano').value,
       por: 'painel-equipe'
     })
   })
@@ -4023,7 +4103,9 @@ var EPIGRAFE_PATHS = (location.protocol === 'file:') ? {
 };
 
 function loadEpigrafe() {
-  var disc = document.getElementById('sel-epigrafe-disc').value;
+  /* o seletor proprio da aba saiu em 2026-09-08: a disciplina vem da barra de
+     disciplinas habilitadas, que espelha o seletor do cabecalho. */
+  var disc = (document.getElementById('sel-disciplina').value || 'fc1');
   var iframe = document.getElementById('epigrafe-iframe');
   var status = document.getElementById('epigrafe-status');
   var path = EPIGRAFE_PATHS[disc];
@@ -4120,19 +4202,195 @@ function selectTrilhaPainel(code) {
   }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   DISCIPLINAS HABILITADAS — porta de entrada das 4 abas de producao
+   ══════════════════════════════════════════════════════════════════
+   Fonte unica: aba `disciplinas` do Cadastro (colunas Ementa e Plano de
+   curso, F17b). Uma disciplina so aparece nas abas Texto Tematico,
+   Epigrafes, Skills e Qualidade quando os DOIS estao 'aprovado' — e a
+   regra que o autor pediu em 2026-09-08. Cadastrar dispensa editar HTML.
+   Sem rede, DISC_CACHE fica vazio e a barra explica o que falta. */
+
+var DISC_BARRAS = ['onda1', 'epigrafes', 'skills', 'qualidade'];
+
+function discHabilitadas() {
+  if (!window.DISC_CACHE || !DISC_CACHE.length) return [];
+  return DISC_CACHE.filter(function (d) {
+    return d.ementa === 'aprovado' && d.plano === 'aprovado';
+  });
+}
+
+/* Cursos que oferecem ao menos uma disciplina habilitada, na ordem do Cadastro. */
+function cursosHabilitados() {
+  var siglas = {}, out = [];
+  discHabilitadas().forEach(function (d) { siglas[d.curso] = true; });
+  (window.CURSOS_CACHE_PRE || []).forEach(function (c) {
+    if (siglas[c.sigla]) { out.push(c); delete siglas[c.sigla]; }
+  });
+  Object.keys(siglas).forEach(function (sg) { out.push({ sigla: sg, nome: sg }); });
+  return out;
+}
+
+function renderBarraDisciplina(qual) {
+  var el = document.getElementById('disc-bar-' + qual);
+  if (!el) return;
+  var libs = discHabilitadas();
+  if (!libs.length) {
+    el.innerHTML = '<div class="disc-bar-vazio">Nenhuma disciplina com <strong>ementa</strong> e '
+      + '<strong>plano de curso</strong> aprovados. Marque os dois na aba <strong>Cadastro</strong> '
+      + '&mdash; ou recarregue a lista, se o Painel ainda n&atilde;o falou com a planilha.</div>';
+    return;
+  }
+  var atual = (document.getElementById('sel-disciplina').value || '').toUpperCase();
+  var cursos = cursosHabilitados();
+  var h = ['<div class="disc-bar-topo">Disciplinas com ementa e plano de curso aprovados &mdash; '
+           + libs.length + ' em ' + cursos.length + ' curso(s)</div>'];
+  cursos.forEach(function (c) {
+    var doCurso = libs.filter(function (d) { return d.curso === c.sigla; });
+    if (!doCurso.length) return;
+    h.push('<div class="disc-bar-curso"><span class="disc-bar-sigla">' + c.sigla + ' &middot; ' + c.nome + '</span>');
+    doCurso.forEach(function (d) {
+      h.push('<button type="button" class="disc-chip' + (d.codigo === atual ? ' sel' : '') + '" '
+        + 'title="' + d.nome + (d.serie ? ' &mdash; ' + d.serie : '') + '" '
+        + 'onclick="discBarSelecionar(&quot;' + d.codigo + '&quot;,&quot;' + d.curso + '&quot;)">'
+        + d.codigo + '</button>');
+    });
+    h.push('</div>');
+  });
+  el.innerHTML = h.join('');
+}
+
+function renderBarrasDisciplina() {
+  DISC_BARRAS.forEach(renderBarraDisciplina);
+  try { renderSkills(); } catch (e) {}
+}
+
+/* Clicar num chip troca a disciplina corrente do Painel inteiro (o seletor do
+   cabecalho continua sendo a fonte de verdade) e reaplica a aba visivel. */
+function discBarSelecionar(codigo, curso) {
+  var selC = document.getElementById('sel-curso');
+  var selD = document.getElementById('sel-disciplina');
+  if (selC) {
+    var v = String(curso || '').toLowerCase();
+    for (var i = 0; i < selC.options.length; i++) {
+      if (selC.options[i].value.toLowerCase() === v) {
+        selC.options[i].disabled = false;
+        selC.value = selC.options[i].value;
+        break;
+      }
+    }
+    try { discPreencherSeletorCabecalho(); } catch (e) {}
+  }
+  if (selD) {
+    var alvo = String(codigo || '').toLowerCase();
+    for (var j = 0; j < selD.options.length; j++) {
+      if (selD.options[j].value === alvo) { selD.options[j].disabled = false; selD.value = alvo; break; }
+    }
+  }
+  try { loadDisciplina(); } catch (e) {}
+  renderBarrasDisciplina();
+  try { loadEpigrafe(); } catch (e) {}
+  try { renderOnda1Chips(); } catch (e) {}
+  if (window._problemasData) { try { renderProblemas(); } catch (e) {} }
+}
+
+/* Garante que as 4 abas tenham a lista do Cadastro, mesmo que o autor nunca
+   tenha aberto a aba Cadastro nesta sessao. */
+function discGarantirCadastro() {
+  if (!window.DISC_CACHE || !DISC_CACHE.length) { try { discCarregar(); } catch (e) {} }
+  if (!window.CURSOS_CACHE_PRE || !CURSOS_CACHE_PRE.length) { try { cadastroCarregar(); } catch (e) {} }
+  renderBarrasDisciplina();
+}
+
+/* ── SKILLS por disciplina ──────────────────────────────────────────
+   As skills nao sao as mesmas em toda disciplina: a FE1 troca FA por RB e
+   IT por IP; a ILB tem o seu proprio TT. A lista e escolhida pela FAMILIA do
+   codigo (FC*, FE*, ILB), com a FC1 como padrao. */
+function skFam(cod) {
+  var c = String(cod || '').toUpperCase();
+  if (c.indexOf('FE') === 0) return 'fe';
+  if (c === 'ILB' || c === 'LME') return 'ilb';
+  return 'fc';
+}
+
+var SKILLS_POR_FAMILIA = {
+  fe: [
+    ['Pré-Laboratório', [
+      ['TT', 'texto-tematico-fe', 'ativo'],
+      ['IP', 'imagem-tematica-fe-manual', 'ativo'],
+      ['MC', 'mapa-conceitual', 'ativo'],
+      ['CD', 'cartoes-didaticos', 'ativo'],
+      ['PP', 'ponto-de-partida', 'ativo'],
+      ['TN', 'testinho', 'ativo']
+    ]],
+    ['Laboratório', [
+      ['RB', 'roteiro-bancada (padrão T0A-RB-v6)', 'ativo'],
+      ['SM', 'simulacoes-fe', 'ativo'],
+      ['IG', 'infografico (gerar_ig_fe.py)', 'ativo'],
+      ['AP', 'apresentacao-trilha', 'ativo'],
+      ['PR', 'provinha', 'ativo']
+    ]],
+    ['Pós-Laboratório', [
+      ['RM', 'relatorio-minimo', 'previsao'],
+      ['RC', 'relatorio-completo', 'previsao'],
+      ['DX', 'desafios-pedagogicos', 'ativo'],
+      ['PI', 'projeto-investigativo (unificado, fim do curso)', 'previsao']
+    ]]
+  ],
+  ilb: [
+    ['Pré-Laboratório', [
+      ['TT', 'texto-tematico-ilb', 'ativo'],
+      ['DIG', 'texto-tematico-digital-ilb', 'ativo'],
+      ['IT', 'imagem-tematica-ilb', 'ativo']
+    ]],
+    ['Apoio', [
+      ['C2', 'abertura-trilha', 'ativo'],
+      ['PRE', 'entrevista-autor', 'ativo']
+    ]]
+  ]
+};
+
+function renderSkills() {
+  var alvo = document.getElementById('skills-lista');
+  var orig = document.getElementById('skills-fc1-original');
+  if (!alvo || !orig) return;
+  var cod = (document.getElementById('sel-disciplina').value || 'fc1').toUpperCase();
+  var fam = skFam(cod);
+  if (fam === 'fc') { alvo.innerHTML = orig.innerHTML; return; }
+  var grupos = SKILLS_POR_FAMILIA[fam] || [];
+  var h = [];
+  grupos.forEach(function (g) {
+    h.push('<div class="rail-label" style="margin:16px 0 8px;">' + g[0] + '</div><div class="skill-list">');
+    g[1].forEach(function (it) {
+      var ativo = it[2] === 'ativo';
+      h.push('<div class="skill-item ' + (ativo ? 'active-skill' : 'frozen-skill') + '">'
+        + '<span class="skill-sigla">' + it[0] + '</span>'
+        + '<span class="skill-name">' + it[1] + '</span>'
+        + '<span class="skill-badge ' + (ativo ? 'ativo' : 'congelada') + '">'
+        + (ativo ? 'ativo' : 'previsão') + '</span></div>');
+    });
+    h.push('</div>');
+  });
+  h.push('<p style="font-size:12px;color:var(--texto-sub);margin-top:14px;line-height:1.6;">'
+    + 'Lista da disciplina <strong>' + cod + '</strong>. A tabela de comandos abaixo &eacute; a da FC1 '
+    + '&mdash; os comandos comuns (MC, CD, PP, TN, DX, AP, PR) valem igual.</p>');
+  alvo.innerHTML = h.join('');
+}
+
 /* ── DISCIPLINA × CURSO ── */
 
 var FC_ONDAS = [
   { titulo:'Onda 1 — Texto Temático', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
-  { titulo:'Onda 2 — Pré-Aula', items:['TT','TT Digital','IT (Gemini)','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico → /imagem-tematica-manual → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico' },
-  { titulo:'Onda 3 — Aula', items:['FA + DX','AP','PR'], tempo:'~30 min/trilha', skills:'/folha-de-atividades → /apresentacao-trilha → /provinha' },
-  { titulo:'Onda 4 — Pós-Aula', items:['TM','TC','TR (A/B/C)'], tempo:'~40 min/trilha', skills:'/tarefa-minima → /tarefa-complementar → /trabalho' }
+  { titulo:'Onda 2 — Pré-Aula · Pré-Lab', items:['TT','TT Digital','IT (Gemini)','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico → /imagem-tematica-manual → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico' },
+  { titulo:'Onda 3 — Aula · Lab', items:['FA + DX','AP','PR'], tempo:'~30 min/trilha', skills:'/folha-de-atividades → /apresentacao-trilha → /provinha' },
+  { titulo:'Onda 4 — Pós-Aula · Pós-Lab', items:['TM','TC','TR (A/B/C)'], tempo:'~40 min/trilha', skills:'/tarefa-minima → /tarefa-complementar → /trabalho' }
 ];
 var FE_ONDAS = [
   { titulo:'Onda 1 — Texto Temático', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
-  { titulo:'Onda 2 — Pré-Laboratório', items:['TT','IP (Gemini)','CS','IE','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico-fe → /imagem-tematica-fe → /checklist-seguranca → /inventario-equipamento → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico (FE: gerar_ig_fe.py)' },
-  { titulo:'Onda 3 — Laboratório', items:['RB','AP','PR'], tempo:'~30 min/trilha', skills:'/roteiro-bancada → /apresentacao-trilha → /provinha' },
-  { titulo:'Onda 4 — Pós-Laboratório', items:['RM','RC','DX','PI (A/B/C)'], tempo:'~40 min/trilha', skills:'/relatorio-minimo → /relatorio-completo → /desafio-pedagogico → /projeto-investigativo' }
+  { titulo:'Onda 2 — Pré-Aula · Pré-Lab', items:['TT','IP (Gemini)','CS','IE','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico-fe → /imagem-tematica-fe → /checklist-seguranca → /inventario-equipamento → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico (FE: gerar_ig_fe.py)' },
+  { titulo:'Onda 3 — Aula · Lab', items:['RB','AP','PR'], tempo:'~30 min/trilha', skills:'/roteiro-bancada → /apresentacao-trilha → /provinha' },
+  { titulo:'Onda 4 — Pós-Aula · Pós-Lab', items:['RM','RC','DX','PI (A/B/C)'], tempo:'~40 min/trilha', skills:'/relatorio-minimo → /relatorio-completo → /desafio-pedagogico → /projeto-investigativo' }
 ];
 
 var FC_FLUXO = 'TT (Texto Temático) ─────────────────── ÂNCORA DE TUDO\n .md + .html (digital) + .pdf\n  │\n  ├─→ TT Digital (.html interativo)\n  ├─→ IT (.html digital, 12 imagens — Gemini manual)\n  ├─→ MD (.html digital, Resumo em Áudio — NotebookLM)\n  ├─→ MC (Mapa Conceitual) ──→ CD (Cartões)\n  ├─→ PP (Ponto de Partida) ──→ TN (Testinho 3 versões)\n  ├─→ IG (Infográfico Digital: painel + elemento vivo)\n  │\n  ├─→ FA (.html digital + .html impressa) ──→ DX (Desafio opcional)\n  ├─→ AP (Apresentação .html)\n  ├─→ PR (Provinha .html digital)\n  │\n  └─→ TM (Tarefa Mínima) ──→ TC (Complementar) ──→ TR (Trabalho A/B/C)\n       └── lê fragmento FI automaticamente';
@@ -4215,6 +4473,47 @@ var DISC_DATA = {
       ]}
     ],
     statusTrilhas:['T0A','T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','T11','T12','T13','T14','T15']
+  },
+  /* ILB — Introducao ao Laboratorio (LFI). Entrou no Painel em 2026-09-08,
+     junto com o criterio ementa + plano de curso aprovados. */
+  ilb: {
+    label:'ILB', type:'fe', nTemas:6, nTrilhas:12, nOAs:180, oasProduzidos:1, oasPorTrilha:15,
+    temasCompletos:0, temasCompletosSub:'—', trilhasProd:'T0A', trilhasProdN:1,
+    temas: [
+      { n:0, nome:'Antes da primeira medida', trilhas:'T0A · T0B', meta:'Set 2026', status:'current', statusTxt:'CORRENTE', wave:'empty' },
+      { n:1, nome:'Um número e sua dúvida', trilhas:'T01–T02', meta:'Out 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:2, nome:'Quando o número não basta', trilhas:'T03–T04', meta:'Out 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:3, nome:'O mesmo encontro, duas causas', trilhas:'T05–T06', meta:'Nov 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:4, nome:'Movimento que não é reto', trilhas:'T07–T08', meta:'Nov 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' },
+      { n:5, nome:'O que sobrevive à colisão', trilhas:'T09–T10', meta:'Dez 2026', status:'upcoming', statusTxt:'PENDENTE', wave:'empty' }
+    ],
+    nav: [
+      { label:'Tema 0 — Antes da primeira medida', items:[
+        {code:'T0A',nome:'T0A Boas-vindas à Física Experimental',count:'1/15',dot:'partial'},
+        {code:'T0B',nome:'T0B Sistema Internacional de Unidades',count:'0/15',dot:'empty'}
+      ]},
+      { label:'Tema 1 — Um número e sua dúvida', items:[
+        {code:'T01',nome:'T01 Qual é a sua altura',count:'0/15',dot:'empty'},
+        {code:'T02',nome:'T02 Densidade dos cilindros',count:'0/15',dot:'empty'}
+      ]},
+      { label:'Tema 2 — Quando o número não basta', items:[
+        {code:'T03',nome:'T03 Principais forças da Mecânica Clássica',count:'0/15',dot:'empty'},
+        {code:'T04',nome:'T04 Equilíbrio estático de ponto material',count:'0/15',dot:'empty'}
+      ]},
+      { label:'Tema 3 — O mesmo encontro, duas causas', items:[
+        {code:'T05',nome:'T05 Encontro de pontos materiais',count:'0/15',dot:'empty'},
+        {code:'T06',nome:'T06 Movimento sob forças constantes',count:'0/15',dot:'empty'}
+      ]},
+      { label:'Tema 4 — Movimento que não é reto', items:[
+        {code:'T07',nome:'T07 Movimento circular uniforme (MCU)',count:'0/15',dot:'empty'},
+        {code:'T08',nome:'T08 Queda e lançamentos',count:'0/15',dot:'empty'}
+      ]},
+      { label:'Tema 5 — O que sobrevive à colisão', items:[
+        {code:'T09',nome:'T09 Forças impulsivas',count:'0/15',dot:'empty'},
+        {code:'T10',nome:'T10 Leis de conservação e colisões',count:'0/15',dot:'empty'}
+      ]}
+    ],
+    statusTrilhas:['T0A','T0B','T01','T02','T03','T04','T05','T06','T07','T08','T09','T10']
   }
 };
 
@@ -4279,17 +4578,31 @@ var FC1_PG_HTML = {
   temaMap: document.getElementById('tema-map').innerHTML
 };
 
+/* Disciplina habilitada no Cadastro que ainda nao tem bloco proprio em
+   DISC_DATA (temas, nav, contagens): o Painel monta um esqueleto vazio com o
+   nome vindo da planilha, em vez de ficar mudo mostrando a disciplina anterior. */
+function discDataEsqueleto(cod) {
+  var reg = (window.DISC_CACHE || []).filter(function (x) { return x.codigo === cod.toUpperCase(); })[0];
+  var nome = reg ? reg.nome : cod.toUpperCase();
+  return {
+    label: cod.toUpperCase(), type: (skFam(cod) === 'fc' ? 'fc' : 'fe'),
+    nTemas: 0, nTrilhas: 0, nOAs: 0, oasProduzidos: 0, oasPorTrilha: 0,
+    temasCompletos: 0, temasCompletosSub: '—', trilhasProd: '—', trilhasProdN: 0,
+    temas: [], statusTrilhas: [],
+    nav: [{ label: nome, items: [{ code: null, nome: 'Sem trilha cadastrada ainda', count: '—', dot: 'empty' }] }]
+  };
+}
+
 function loadDisciplina() {
   var disc = document.getElementById('sel-disciplina').value;
   var curso = document.getElementById('sel-curso').value;
-  var d = DISC_DATA[disc];
-  if (!d) return;
+  var d = DISC_DATA[disc] || discDataEsqueleto(disc);
   var isFE = d.type === 'fe';
   var ondas = isFE ? FE_ONDAS : FC_ONDAS;
   var ondaLabels = isFE ? ['O1','O2','O3','O4'] : ['O1','O2','O3','O4'];
   var ondaLegenda = isFE
     ? 'O1=Plano · O2=Pré-Lab · O3=Lab · O4=Pós-Lab'
-    : 'O1=Plano · O2=Conteúdo · O3=Aula · O4=Pós-Aula';
+    : 'O1=Plano · O2=Pré-Aula · O3=Aula · O4=Pós-Aula';
   var oas = isFE ? FE_OAS : FC_OAS;
 
   /* 1. Calendário */
@@ -4388,6 +4701,8 @@ function loadDisciplina() {
 
   var onda1Iframe = document.getElementById('onda1-iframe');
   if (onda1Iframe && onda1Iframe.src !== 'about:blank') lazyLoadIframe('onda1-iframe');
+
+  try { DISC_BARRAS.forEach(renderBarraDisciplina); renderSkills(); } catch (e) {}
 }
 
 document.getElementById('sel-disciplina').addEventListener('change', loadDisciplina);
@@ -4515,7 +4830,13 @@ function renderProblemas() {
   var totalResolvidos = 0;
   var totalGeral = 0;
 
-  _problemasData.categorias.forEach(function(cat) {
+  /* categorias vem rotuladas por disciplina ("FC1 - Checklist..."); com a
+     disciplina corrente escolhida na barra, so entram as dela. */
+  var discAtual = (document.getElementById('sel-disciplina').value || '').toUpperCase();
+  _problemasData.categorias.filter(function(cat) {
+    var m = /^([A-Z0-9]{2,8})\s*[\u2014-]/.exec(String(cat.titulo || '').trim());
+    return !m || !discAtual || m[1] === discAtual;
+  }).forEach(function(cat) {
     var items = cat.problemas.filter(function(p) {
       var resolvido = p.resolvido || _problemasResolvidos[p.id];
       if (resolvido) totalResolvidos++;
