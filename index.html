@@ -4404,13 +4404,26 @@ var SKILLS_POR_FAMILIA = {
   ],
   ilb: [
     ['Pré-Laboratório', [
-      ['TT', 'texto-tematico-ilb', 'ativo'],
-      ['DIG', 'texto-tematico-digital-ilb', 'ativo'],
-      ['IT', 'imagem-tematica-ilb', 'ativo']
+      ['MD', 'Resumo em Áudio — sem skill própria', 'a definir'],
+      ['TT', 'texto-tematico-ilb', 'propria'],
+      ['DIG', 'texto-tematico-digital-ilb', 'propria'],
+      ['IT', 'imagem-tematica-ilb', 'propria'],
+      ['CD', 'Cartões Didáticos — sem skill própria', 'a definir'],
+      ['EP', 'Epígrafes — _scripts/gerar_citacoes_ilb.py', 'script']
     ]],
-    ['Apoio', [
-      ['C2', 'abertura-trilha', 'ativo'],
-      ['PRE', 'entrevista-autor', 'ativo']
+    ['Laboratório', [
+      ['RB', 'Roteiro de Bancada — _scripts/gerar_rb_ilb.py + ILB-RB-template-v1', 'script'],
+      ['IE', 'Inventário de Equipamento — dentro do RB (Camada 2 v3, 8.1)', 'script'],
+      ['CS', 'Checklist de Segurança — dentro do RB (Camada 2 v3, 8.1)', 'script'],
+      ['AP', 'Apresentação do Lab — sem skill própria', 'a definir']
+    ]],
+    ['Pós-Laboratório', [
+      ['RM', 'Relatório Mínimo — ILB-RM-RC-modelo-e-rubrica-v2', 'script'],
+      ['RC', 'Relatório Completo — _scripts/gerar_rc_ilb.py', 'script']
+    ]],
+    ['Apoio (skills da FC1)', [
+      ['C2', 'abertura-trilha', 'compartilhada'],
+      ['PRE', 'entrevista-autor', 'compartilhada']
     ]]
   ]
 };
@@ -4427,18 +4440,28 @@ function renderSkills() {
   grupos.forEach(function (g) {
     h.push('<div class="rail-label" style="margin:16px 0 8px;">' + g[0] + '</div><div class="skill-list">');
     g[1].forEach(function (it) {
-      var ativo = it[2] === 'ativo';
-      h.push('<div class="skill-item ' + (ativo ? 'active-skill' : 'frozen-skill') + '">'
+      /* 'ativo' e 'previsao' continuam valendo para a FE1; a ILB usa os quatro
+         estados novos, que dizem O QUE sustenta cada linha. */
+      var e = it[2];
+      var pronto = (e === 'ativo' || e === 'propria' || e === 'script' || e === 'compartilhada');
+      var rotulo = { propria: 'skill própria', script: 'script', compartilhada: 'skill da FC1',
+                     'a definir': 'a definir', ativo: 'ativo', previsao: 'previsão' }[e] || e;
+      h.push('<div class="skill-item ' + (pronto ? 'active-skill' : 'frozen-skill') + '">'
         + '<span class="skill-sigla">' + it[0] + '</span>'
         + '<span class="skill-name">' + it[1] + '</span>'
-        + '<span class="skill-badge ' + (ativo ? 'ativo' : 'congelada') + '">'
-        + (ativo ? 'ativo' : 'previsão') + '</span></div>');
+        + '<span class="skill-badge ' + (pronto ? 'ativo' : 'congelada') + '">'
+        + rotulo + '</span></div>');
     });
     h.push('</div>');
   });
   h.push('<p style="font-size:12px;color:var(--texto-sub);margin-top:14px;line-height:1.6;">'
-    + 'Lista da disciplina <strong>' + cod + '</strong>. A tabela de comandos abaixo &eacute; a da FC1 '
-    + '&mdash; os comandos comuns (MC, CD, PP, TN, DX, AP, PR) valem igual.</p>');
+    + 'Lista da disciplina <strong>' + cod + '</strong>. '
+    + '<strong>skill própria</strong> = em <span style="font-family:var(--mono);">Trilhas/_skill_cowork/</span> · '
+    + '<strong>script</strong> = não há skill, a produção sai de um <span style="font-family:var(--mono);">.py</span> '
+    + 'em <span style="font-family:var(--mono);">Trilhas/_scripts/</span> · '
+    + '<strong>skill da FC1</strong> = acionada de lá · '
+    + '<strong>a definir</strong> = OA previsto na Camada 2, ainda sem skill nem script. '
+    + 'A tabela de comandos abaixo é a da FC1.</p>');
   alvo.innerHTML = h.join('');
 }
 
