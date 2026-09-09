@@ -4273,10 +4273,14 @@ function ehILB() {
 }
 
 function cenarioSecILB(t) {
+  /* Uma recomendacao por EIXO da contextualizacao tripla da ILB (regra 6 do
+     CLAUDE.md da ILB, A6.0). Os tres entram JUNTOS no topico, nunca um isolado
+     — estas tres opcoes sao pontos de entrada, nao alternativas excludentes.
+     A bancada nao esta aqui: ela e o Cenario PRINCIPAL da ILB. */
   return [
-    { tag:'Opcao 1 — a bancada', texto:`Bancada do Laboratorio de Mecanica do IFMG-OP: o acervo de instrumentos que a trilha usa para ${eixoTop(t,0)}, e a rotina de montagem, medicao e registro que se repete em toda trilha do semestre.` },
-    { tag:'Opcao 2 — a sala imaginada', texto:`A sala de ensino medio SEM laboratorio dedicado, onde o licenciando vai ter de transpor ${eixoTop(t,0)} com o que houver a mao — o eixo didatico da ILB nasce dessa restricao, nao a ignora.` },
-    { tag:'Opcao 3 — Ouro Preto, eixo historico', texto:`A Escola de Minas (1876) e o Museu de Ciencia e Tecnica: onde a exigencia de medir com rigor virou instituicao. Entra como eixo historico-cultural, nunca como cenario de acao da trilha.` }
+    { tag:'Eixo Didatico — a sala sem laboratorio', texto:`A sala de ensino medio SEM laboratorio dedicado: que montagem de ${eixoTop(t,0)} cabe ali, com o que houver a mao, que erro o aluno comete primeiro e o que da para avaliar sem o instrumento. A dobra da licenciatura — o licenciando mede hoje o que vai ter de ensinar a medir depois.` },
+    { tag:'Eixo Historico-Cultural — onde medir virou instituicao', texto:`A Escola de Minas de Ouro Preto (1876) e o Museu de Ciencia e Tecnica: o acervo de instrumentos que formou quem media o minerio do Quadrilatero Ferrifero. Entra pela historia da MEDICAO e do metodo, nao pela mineracao como conteudo tecnico — e nunca como cenario de acao da trilha.` },
+    { tag:'Eixo Metrologico — a cadeia que sustenta o numero', texto:`O acervo visto pela Metrologia: a resolucao de cada instrumento usado em ${eixoTop(t,0)}, a incerteza que ele impoe, o certificado de calibracao e a cadeia de rastreabilidade que liga a medida da bancada ao SI — o vocabulario formal que a disciplina inteira instala.` }
   ];
 }
 
