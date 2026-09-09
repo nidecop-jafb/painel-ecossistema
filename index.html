@@ -4565,6 +4565,8 @@ function renderSkills() {
   alvo.innerHTML = h.join('');
 }
 
+var IMAGENS_ILB_FOLHAS = {};
+
 /* AUTO:PERGUNTAS_ILB:INICIO */
 var PERGUNTAS_ILB = {
   'T0A': {
@@ -6456,6 +6458,7 @@ var IMAGENS_ILB = {
   }
  ]
 };
+var IMAGENS_ILB_FOLHAS = {"T0A": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_imagens/ILB-T0A-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_imagens/ILB-T0A-Figura-pt-v2-Gemine.html"}, "T0B": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_imagens/ILB-T0B-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0B_Sistema_Internacional_de_Unidades/_imagens/ILB-T0B-Figura-pt-v2-Gemine.html"}, "T01": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T01_Qual_e_a_Sua_Altura/_imagens/ILB-T01-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T01_Qual_e_a_Sua_Altura/_imagens/ILB-T01-Figura-pt-v2-Gemine.html"}, "T02": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T02_Densidade_dos_Cilindros/_imagens/ILB-T02-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T02_Densidade_dos_Cilindros/_imagens/ILB-T02-Figura-pt-v2-Gemine.html"}, "T03": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T03_Principais_Forcas_da_Mecanica_Classica/_imagens/ILB-T03-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T03_Principais_Forcas_da_Mecanica_Classica/_imagens/ILB-T03-Figura-pt-v2-Gemine.html"}, "T04": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T04_Equilibrio_Estatico_de_Ponto_Material/_imagens/ILB-T04-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T04_Equilibrio_Estatico_de_Ponto_Material/_imagens/ILB-T04-Figura-pt-v2-Gemine.html"}, "T05": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T05_Encontro_de_Pontos_Materiais/_imagens/ILB-T05-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T05_Encontro_de_Pontos_Materiais/_imagens/ILB-T05-Figura-pt-v2-Gemine.html"}, "T06": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T06_Movimento_sob_Forcas_Constantes/_imagens/ILB-T06-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T06_Movimento_sob_Forcas_Constantes/_imagens/ILB-T06-Figura-pt-v2-Gemine.html"}, "T07": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T07_Movimento_Circular_Uniforme_MCU/_imagens/ILB-T07-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T07_Movimento_Circular_Uniforme_MCU/_imagens/ILB-T07-Figura-pt-v2-Gemine.html"}, "T08": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T08_Queda_e_Lancamentos/_imagens/ILB-T08-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T08_Queda_e_Lancamentos/_imagens/ILB-T08-Figura-pt-v2-Gemine.html"}, "T09": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T09_Forcas_Impulsivas/_imagens/ILB-T09-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T09_Forcas_Impulsivas/_imagens/ILB-T09-Figura-pt-v2-Gemine.html"}, "T10": {"rodada": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T10_Leis_de_Conservacao_e_Colisoes/_imagens/ILB-T10-Figura-v2-rodada.html", "gemine": "../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T10_Leis_de_Conservacao_e_Colisoes/_imagens/ILB-T10-Figura-pt-v2-Gemine.html"}};
 var IMAGENS_ILB_DOWNLOAD = "G:\\JA2026\\3_Estudio\\01_Fisica_Conceitual_1\\Trilhas_de_Aprendizagem\\_imagens_download";
 /* AUTO:IMAGENS_ILB:FIM */
 
@@ -6506,6 +6509,14 @@ function renderImagens() {
   h.push('</div></div>');
 
   var lista = IMAGENS_ILB[IMG_TRILHA] || [];
+  var f = (typeof IMAGENS_ILB_FOLHAS !== 'undefined' && IMAGENS_ILB_FOLHAS[IMG_TRILHA]) || null;
+  if (f) {
+    h.push('<div style="display:flex;gap:8px;margin:10px 0;flex-wrap:wrap;">'
+      + '<a class="pre-acao" style="text-decoration:none;" target="_blank" href="' + f.gemine
+      + '">&#128196; Folha Gemine &mdash; gerar</a>'
+      + '<a class="pre-acao" style="text-decoration:none;" target="_blank" href="' + f.rodada
+      + '">&#128196; Folha da rodada &mdash; conferir e ajustar</a></div>');
+  }
   h.push('<div style="display:flex;align-items:center;gap:10px;margin:12px 0;flex-wrap:wrap;">'
     + '<button type="button" class="pre-acao" onclick="imgCopiarLote()">&#10697; Copiar o lote &mdash; '
     + lista.length + ' imagens de ' + IMG_TRILHA + '</button>'
@@ -6532,14 +6543,18 @@ function renderImagens() {
 
   var semPrompt = lista.filter(function (i) { return !i.aprovado; }).length;
   h.push('<p style="font-size:12px;color:var(--texto-sub);margin-top:12px;line-height:1.7;">'
-    + '<strong>Refinar:</strong> escreva o pedido no bloco <span style="font-family:var(--mono);">[AJUSTE]</span> '
-    + 'do prompt daquela imagem e recole no Gemini &mdash; o resto do prompt n&atilde;o muda, ent&atilde;o a v2 nasce '
-    + 'da v1. <strong>O ciclo &eacute; por imagem:</strong> uma IT reprovada n&atilde;o segura as outras, e imagem '
-    + 'aprovada nunca &eacute; regerada.<br>'
+    + '<strong>Refinar:</strong> o pedido de mudan&ccedil;a se escreve no campo '
+    + '<span style="font-family:var(--mono);">[AJUSTE]</span> da <strong>folha da rodada</strong>, '
+    + 'nunca aqui e nunca por cima do prompt aprovado &mdash; o bot&atilde;o &quot;copiar com o ajuste&quot; '
+    + 'monta o texto que vai ao Gemini. <strong>O ciclo &eacute; por figura:</strong> uma figura reprovada '
+    + 'n&atilde;o segura as outras, e figura aprovada nunca &eacute; regerada.<br>'
     + '<strong>Depois de baixar:</strong> as imagens s&atilde;o conferidas contra o descritor e s&oacute; entram em '
     + '<span style="font-family:var(--mono);">Trilhas/' + IMG_TRILHA + '_.../_imagens/</span> ap&oacute;s a sua aprova&ccedil;&atilde;o.'
     + (semPrompt ? '<br><strong style="color:var(--ouro);">&#9888; ' + semPrompt + ' imagens sem prompt aprovado</strong> '
        + '&mdash; sai o esqueleto com os blocos; o conte&uacute;do da trilha s&oacute; a Camada 2 define.' : '')
+    + '<br><strong>Nome do arquivo:</strong> salve cada imagem com o nome da &uacute;ltima coluna. '
+    + 'A tria&shy;gem casa arquivo e figura pelo nome, e a legenda, o arquivo e o n&uacute;mero no TT '
+    + 'dizem todos a mesma coisa: <span style="font-family:var(--mono);">Figura N</span>.'
     + '</p>');
 
   el.innerHTML = h.join('');
