@@ -1023,6 +1023,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       <div class="tab" id="pill-producao" onclick="showTab('producao')">Produ&ccedil;&atilde;o</div>
       <div class="tab" id="pill-onda1" onclick="showTab('onda1')">Texto Tem&aacute;tico</div>
       <div class="tab" id="pill-epigrafes" onclick="showTab('epigrafes')">Ep&iacute;grafes</div>
+      <div class="tab" id="pill-imagens" onclick="showTab('imagens')">Imagens</div>
       <div class="tab" id="pill-skills" onclick="showTab('skills')">Skills</div>
       <div class="tab" id="pill-qualidade" onclick="showTab('qualidade')">Qualidade</div>
     </div>
@@ -2481,6 +2482,20 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
       </section>
     </div>
 
+    <!-- TAB: IMAGENS TEMATICAS (OA proprio da ILB) -->
+    <div class="tab-content" id="tab-imagens">
+      <section>
+        <h2 class="section-title">Imagens Tem&aacute;ticas &mdash; OA pr&oacute;prio</h2>
+        <p style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
+          Gera&ccedil;&atilde;o <strong>manual no Gemini</strong>. Copie o prompt, gere <strong>na ordem do quadro</strong>,
+          baixe tudo em <span style="font-family:var(--mono);font-size:12px;" id="img-pasta-download">&mdash;</span>
+          e volte aqui para a confer&ecirc;ncia.
+        </p>
+        <div class="disc-bar" id="disc-bar-imagens"></div>
+        <div id="img-corpo"></div>
+      </section>
+    </div>
+
     <!-- TAB: INFRA -->
     <div class="tab-content" id="tab-infra">
       <section>
@@ -3325,6 +3340,7 @@ function showTab(id) {
   }
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
+  if (id === 'imagens') renderImagens();
   if (id === 'qualidade') { initQualidade(); try { renderAvisosQualidade(); } catch (e) {} }
 }
 
@@ -4286,7 +4302,7 @@ function selectTrilhaPainel(code) {
    regra que o autor pediu em 2026-09-08. Cadastrar dispensa editar HTML.
    Sem rede, DISC_CACHE fica vazio e a barra explica o que falta. */
 
-var DISC_BARRAS = ['onda1', 'epigrafes', 'skills', 'qualidade'];
+var DISC_BARRAS = ['onda1', 'epigrafes', 'imagens', 'skills', 'qualidade'];
 
 function discHabilitadas() {
   if (!window.DISC_CACHE || !DISC_CACHE.length) return [];
@@ -4368,6 +4384,7 @@ function discBarSelecionar(codigo, curso) {
   try { renderOnda1Chips(); } catch (e) {}
   if (window._problemasData) { try { renderProblemas(); } catch (e) {} }
   try { renderAvisosQualidade(); } catch (e) {}
+  try { renderImagens(); } catch (e) {}
 }
 
 /* Garante que as 4 abas tenham a lista do Cadastro, mesmo que o autor nunca
@@ -4475,6 +4492,1665 @@ function renderSkills() {
     + 'A tabela de comandos abaixo é a da FC1.</p>');
   alvo.innerHTML = h.join('');
 }
+
+/* AUTO:IMAGENS_ILB:INICIO */
+var IMAGENS_ILB = {
+ "T0A": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "O Laboratório de Mecânica antes da primeira aula.",
+   "destino": "Capa do TT",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-00-v1.png",
+   "prompt": "ILB-T0A-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: nenhum - cena vazia, sem pessoas\n[CENARIO]: Laboratorio de Mecanica do Pavilhao de Fisica, IFMG-OP - bancadas brancas limpas, instrumentos de medicao alinhados (reguas, paquimetros, cronometros), quadro verde ao fundo, prateleiras organizadas\n[ACAO]: ambiente vazio e silencioso, antes da chegada da turma, luz da noite entrando pela janela\n[ESTILO]: Cinematografico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos, luz noturna azulada\n[COMPOSICAO]: Quadro 1:1, plano geral, profundidade de campo\n[EVITAR]: pessoas, texto legivel, logotipos, luz diurna, desordem\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "Régua e paquímetro cruzados — o símbolo da trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-01-v1.png",
+   "prompt": "ILB-T0A-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: uma regua graduada e um paquimetro cruzados em X, estilo escultural, material verde-quadro #3E8E5A fosco\n[CENARIO]: nenhum - objeto isolado\n[ACAO]: composicao estatica, os dois instrumentos cruzados no centro\n[ESTILO]: 3D com profundidade\n[PALETA]: verde-quadro #3E8E5A fosco, fundo cinza chapado #CCCCCC\n[COMPOSICAO]: Quadro 1:1, objeto centralizado, sombra projetada suave\n[EVITAR]: fundo transparente, xadrez de transparencia desenhado, gradiente no fundo, texto, pessoas\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A turma entra: começa a primeira aula.",
+   "destino": "Ato I — gancho",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-02-v1.png",
+   "prompt": "ILB-T0A-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: SOFIA, cabelo castanho medio na altura dos ombros com pontas aneladas visiveis sobre a gola; PEDRO, linha da barba recortada no contorno do rosto em tres quartos, cabelo escuro curto e liso; LUCAS, cachos pretos curtos rentes, totalmente visiveis no alto da cabeca; BARBARA, rabo de cavalo castanho-escuro caindo entre as escapulas, a mais alta do grupo - os quatro licenciandos entrando juntos, vistos de costas\n[CENARIO]: o mesmo Laboratorio de Mecanica da capa, visto a partir da porta\n[ACAO]: os quatro entrando pela porta, de costas, silhuetas contra a luz do corredor\n[ESTILO]: Cinematografico\n[PALETA]: verde-quadro #3E8E5A, tons noturnos internos, luz mais quente vindo da porta\n[COMPOSICAO]: Quadro 1:1, plano medio, angulo levemente baixo\n[EVITAR]: rostos de frente, texto, professores, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas que se repetem em toda trilha do semestre.",
+   "destino": "Tópico 2 — as 3 etapas do eixo metodológico",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-03-v1.png",
+   "prompt": "ILB-T0A-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: nenhum - diagrama esquematico de tres etapas em sequencia\n[CENARIO]: fundo neutro de prancha tecnica\n[ACAO]: fluxo horizontal da esquerda para a direita: bloco 1 medicao e incerteza (icone de regua e simbolo mais-menos), bloco 2 tabela e grafico (icone de tabela e eixos), bloco 3 curva ajustada (icone de linha de tendencia sobre pontos), setas conectando os tres\n[ESTILO]: Desenho tecnico\n[PALETA]: monocromatico, tracos em verde-quadro #3E8E5A sobre fundo branco\n[COMPOSICAO]: Quadro 1:1, esquema horizontal centralizado, rotulos curtos\n[EVITAR]: texto longo, pessoas, cores saturadas, gradientes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "A menor divisão da escala: onde a incerteza começa.",
+   "destino": "Tópico 2 — reconhecimento do acervo",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-04-v1.png",
+   "prompt": "ILB-T0A-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: nenhum - natureza-morta de instrumento\n[CENARIO]: bancada branca do Laboratorio de Mecanica, close-up\n[ACAO]: uma regua graduada em detalhe extremo, foco na menor divisao da escala, profundidade de campo rasa\n[ESTILO]: Cinematografico\n[PALETA]: metal cinza-grafite da regua, branco da bancada, verde-quadro desfocado ao fundo\n[COMPOSICAO]: Quadro 1:1, macro, foco seletivo na escala\n[EVITAR]: pessoas, maos, texto legivel alem dos tracos da regua\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "A primeira entrada, datada: o registro que se pode refazer.",
+   "destino": "Tópico 4 — o Roteiro de Bancada",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-05-v1.png",
+   "prompt": "ILB-T0A-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: nenhum - natureza-morta de caderno\n[CENARIO]: bancada do Laboratorio de Mecanica\n[ACAO]: um caderno de laboratorio aberto, pagina com uma primeira entrada manuscrita estilizada (ilegivel) e uma data no canto\n[ESTILO]: Desenho\n[PALETA]: papel bege claro, tinta azul-escura, verde-quadro como acento\n[COMPOSICAO]: Quadro 1:1, vista de cima, caderno centralizado\n[EVITAR]: texto legivel real, pessoas, maos, logotipos\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Segurança",
+   "estilo": "Cinematográfico",
+   "legenda": "O canto de segurança do laboratório escolar.",
+   "destino": "Tópico 3 — segurança e EPI",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-06-v1.png",
+   "prompt": "ILB-T0A-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: nenhum\n[CENARIO]: canto do Laboratorio de Mecanica com sinalizacao de seguranca\n[ACAO]: extintor de incendio vermelho fixado na parede, placa de saida iluminada, kit de primeiros socorros branco com cruz verde, organizados no mesmo canto\n[ESTILO]: Cinematografico\n[PALETA]: vermelho do extintor, verde da cruz e da placa, branco do kit, cinza-grafite da parede\n[COMPOSICAO]: Quadro 1:1, plano fechado no canto, angulo leve\n[EVITAR]: pessoas, texto legivel nas placas, desordem\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-07-v1.png",
+   "prompt": "ILB-T0A-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: nenhuma figura humana identificavel - composicao alegorica\n[CENARIO]: cena atemporal remetendo a um gabinete cientifico do seculo dezenove\n[ACAO]: uma balanca de precisao e instrumentos de medicao antigos sobre uma mesa de madeira escura, luz dourada lateral, a maneira de uma natureza-morta cientifica classica\n[ESTILO]: Pintura a oleo\n[PALETA]: tons terrosos e dourados, marrom escuro da madeira, verde-quadro como acento sutil\n[COMPOSICAO]: Quadro 1:1, natureza-morta classica, luz lateral dramatica\n[EVITAR]: rostos reconheciveis, texto, elementos modernos, cores vivas saturadas\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A turma sai: o mesmo enquadramento da abertura.",
+   "destino": "Ato III — fechamento",
+   "aprovado": true,
+   "arquivo": "ILB-T0A-IT-08-v1.png",
+   "prompt": "ILB-T0A-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: os mesmos quatro licenciandos do IT-02 - SOFIA (cabelo castanho medio na altura dos ombros, pontas aneladas visiveis sobre a gola), PEDRO (linha da barba recortada no contorno do rosto em tres quartos, cabelo escuro curto e liso), LUCAS (cachos pretos curtos rentes, totalmente visiveis no alto da cabeca), BARBARA (rabo de cavalo castanho-escuro caindo entre as escapulas, a mais alta do grupo) - saindo juntos, vistos de dentro para fora, um caderno visivel debaixo do braco de um deles\n[CENARIO]: o mesmo Laboratorio de Mecanica, mesma porta do IT-02, agora enquadrada de dentro para fora\n[ACAO]: os quatro saindo pela porta, de costas para a camera (camera dentro do laboratorio), luz do corredor a frente\n[ESTILO]: Cinematografico\n[PALETA]: identica ao IT-02\n[COMPOSICAO]: Quadro 1:1, enquadramento espelhado do IT-02 (camera do lado de dentro)\n[EVITAR]: rostos de frente, texto, professores, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T0B": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-00-v1.png",
+   "prompt": "ILB-T0B-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-01-v1.png",
+   "prompt": "ILB-T0B-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-02-v1.png",
+   "prompt": "ILB-T0B-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-03-v1.png",
+   "prompt": "ILB-T0B-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-04-v1.png",
+   "prompt": "ILB-T0B-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-05-v1.png",
+   "prompt": "ILB-T0B-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-06-v1.png",
+   "prompt": "ILB-T0B-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-07-v1.png",
+   "prompt": "ILB-T0B-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-08-v1.png",
+   "prompt": "ILB-T0B-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-09-v1.png",
+   "prompt": "ILB-T0B-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-10-v1.png",
+   "prompt": "ILB-T0B-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-11-v1.png",
+   "prompt": "ILB-T0B-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T0B-IT-12-v1.png",
+   "prompt": "ILB-T0B-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T01": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-00-v1.png",
+   "prompt": "ILB-T01-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-01-v1.png",
+   "prompt": "ILB-T01-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-02-v1.png",
+   "prompt": "ILB-T01-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-03-v1.png",
+   "prompt": "ILB-T01-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-04-v1.png",
+   "prompt": "ILB-T01-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-05-v1.png",
+   "prompt": "ILB-T01-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-06-v1.png",
+   "prompt": "ILB-T01-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-07-v1.png",
+   "prompt": "ILB-T01-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-08-v1.png",
+   "prompt": "ILB-T01-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-09-v1.png",
+   "prompt": "ILB-T01-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-10-v1.png",
+   "prompt": "ILB-T01-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-11-v1.png",
+   "prompt": "ILB-T01-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T01-IT-12-v1.png",
+   "prompt": "ILB-T01-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T02": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-00-v1.png",
+   "prompt": "ILB-T02-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-01-v1.png",
+   "prompt": "ILB-T02-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-02-v1.png",
+   "prompt": "ILB-T02-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-03-v1.png",
+   "prompt": "ILB-T02-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-04-v1.png",
+   "prompt": "ILB-T02-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-05-v1.png",
+   "prompt": "ILB-T02-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-06-v1.png",
+   "prompt": "ILB-T02-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-07-v1.png",
+   "prompt": "ILB-T02-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-08-v1.png",
+   "prompt": "ILB-T02-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-09-v1.png",
+   "prompt": "ILB-T02-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-10-v1.png",
+   "prompt": "ILB-T02-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-11-v1.png",
+   "prompt": "ILB-T02-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T02-IT-12-v1.png",
+   "prompt": "ILB-T02-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T03": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-00-v1.png",
+   "prompt": "ILB-T03-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-01-v1.png",
+   "prompt": "ILB-T03-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-02-v1.png",
+   "prompt": "ILB-T03-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-03-v1.png",
+   "prompt": "ILB-T03-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-04-v1.png",
+   "prompt": "ILB-T03-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-05-v1.png",
+   "prompt": "ILB-T03-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-06-v1.png",
+   "prompt": "ILB-T03-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-07-v1.png",
+   "prompt": "ILB-T03-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-08-v1.png",
+   "prompt": "ILB-T03-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-09-v1.png",
+   "prompt": "ILB-T03-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-10-v1.png",
+   "prompt": "ILB-T03-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-11-v1.png",
+   "prompt": "ILB-T03-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T03-IT-12-v1.png",
+   "prompt": "ILB-T03-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T04": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-00-v1.png",
+   "prompt": "ILB-T04-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-01-v1.png",
+   "prompt": "ILB-T04-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-02-v1.png",
+   "prompt": "ILB-T04-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-03-v1.png",
+   "prompt": "ILB-T04-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-04-v1.png",
+   "prompt": "ILB-T04-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-05-v1.png",
+   "prompt": "ILB-T04-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-06-v1.png",
+   "prompt": "ILB-T04-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-07-v1.png",
+   "prompt": "ILB-T04-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-08-v1.png",
+   "prompt": "ILB-T04-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-09-v1.png",
+   "prompt": "ILB-T04-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-10-v1.png",
+   "prompt": "ILB-T04-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-11-v1.png",
+   "prompt": "ILB-T04-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T04-IT-12-v1.png",
+   "prompt": "ILB-T04-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T05": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-00-v1.png",
+   "prompt": "ILB-T05-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-01-v1.png",
+   "prompt": "ILB-T05-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-02-v1.png",
+   "prompt": "ILB-T05-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-03-v1.png",
+   "prompt": "ILB-T05-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-04-v1.png",
+   "prompt": "ILB-T05-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-05-v1.png",
+   "prompt": "ILB-T05-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-06-v1.png",
+   "prompt": "ILB-T05-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-07-v1.png",
+   "prompt": "ILB-T05-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-08-v1.png",
+   "prompt": "ILB-T05-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-09-v1.png",
+   "prompt": "ILB-T05-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-10-v1.png",
+   "prompt": "ILB-T05-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-11-v1.png",
+   "prompt": "ILB-T05-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T05-IT-12-v1.png",
+   "prompt": "ILB-T05-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T06": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-00-v1.png",
+   "prompt": "ILB-T06-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-01-v1.png",
+   "prompt": "ILB-T06-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-02-v1.png",
+   "prompt": "ILB-T06-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-03-v1.png",
+   "prompt": "ILB-T06-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-04-v1.png",
+   "prompt": "ILB-T06-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-05-v1.png",
+   "prompt": "ILB-T06-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-06-v1.png",
+   "prompt": "ILB-T06-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-07-v1.png",
+   "prompt": "ILB-T06-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-08-v1.png",
+   "prompt": "ILB-T06-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-09-v1.png",
+   "prompt": "ILB-T06-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-10-v1.png",
+   "prompt": "ILB-T06-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-11-v1.png",
+   "prompt": "ILB-T06-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T06-IT-12-v1.png",
+   "prompt": "ILB-T06-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T07": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-00-v1.png",
+   "prompt": "ILB-T07-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-01-v1.png",
+   "prompt": "ILB-T07-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-02-v1.png",
+   "prompt": "ILB-T07-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-03-v1.png",
+   "prompt": "ILB-T07-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-04-v1.png",
+   "prompt": "ILB-T07-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-05-v1.png",
+   "prompt": "ILB-T07-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-06-v1.png",
+   "prompt": "ILB-T07-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-07-v1.png",
+   "prompt": "ILB-T07-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-08-v1.png",
+   "prompt": "ILB-T07-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-09-v1.png",
+   "prompt": "ILB-T07-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-10-v1.png",
+   "prompt": "ILB-T07-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-11-v1.png",
+   "prompt": "ILB-T07-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T07-IT-12-v1.png",
+   "prompt": "ILB-T07-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T08": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-00-v1.png",
+   "prompt": "ILB-T08-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-01-v1.png",
+   "prompt": "ILB-T08-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-02-v1.png",
+   "prompt": "ILB-T08-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-03-v1.png",
+   "prompt": "ILB-T08-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-04-v1.png",
+   "prompt": "ILB-T08-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-05-v1.png",
+   "prompt": "ILB-T08-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-06-v1.png",
+   "prompt": "ILB-T08-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-07-v1.png",
+   "prompt": "ILB-T08-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-08-v1.png",
+   "prompt": "ILB-T08-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-09-v1.png",
+   "prompt": "ILB-T08-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-10-v1.png",
+   "prompt": "ILB-T08-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-11-v1.png",
+   "prompt": "ILB-T08-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T08-IT-12-v1.png",
+   "prompt": "ILB-T08-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T09": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-00-v1.png",
+   "prompt": "ILB-T09-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-01-v1.png",
+   "prompt": "ILB-T09-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-02-v1.png",
+   "prompt": "ILB-T09-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-03-v1.png",
+   "prompt": "ILB-T09-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-04-v1.png",
+   "prompt": "ILB-T09-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-05-v1.png",
+   "prompt": "ILB-T09-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-06-v1.png",
+   "prompt": "ILB-T09-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-07-v1.png",
+   "prompt": "ILB-T09-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-08-v1.png",
+   "prompt": "ILB-T09-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-09-v1.png",
+   "prompt": "ILB-T09-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-10-v1.png",
+   "prompt": "ILB-T09-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-11-v1.png",
+   "prompt": "ILB-T09-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T09-IT-12-v1.png",
+   "prompt": "ILB-T09-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ],
+ "T10": [
+  {
+   "cod": "IT-00",
+   "papel": "Capa",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada montada, antes do experimento.",
+   "destino": "Capa do TT",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-00-v1.png",
+   "prompt": "ILB-T10-IT-00\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-01",
+   "papel": "Símbolo",
+   "estilo": "3D",
+   "legenda": "O instrumento que dá nome à trilha.",
+   "destino": "Abertura, ao lado do título e da epígrafe 1",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-01-v1.png",
+   "prompt": "ILB-T10-IT-01\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: 3D\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-02",
+   "papel": "Abertura",
+   "estilo": "Cinematográfico",
+   "legenda": "A dupla chega à bancada.",
+   "destino": "Ato I — gancho",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-02-v1.png",
+   "prompt": "ILB-T10-IT-02\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-03",
+   "papel": "Método",
+   "estilo": "Desenho técnico",
+   "legenda": "As três etapas aplicadas a este experimento.",
+   "destino": "Tópico 2 — medição e incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-03-v1.png",
+   "prompt": "ILB-T10-IT-03\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-04",
+   "papel": "Acervo",
+   "estilo": "Cinematográfico",
+   "legenda": "O instrumento da trilha e a sua menor divisão.",
+   "destino": "Tópico 1 — o fenômeno e a grandeza a medir",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-04-v1.png",
+   "prompt": "ILB-T10-IT-04\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-05",
+   "papel": "Roteiro de Bancada",
+   "estilo": "Desenho",
+   "legenda": "O registro bruto, antes de qualquer conta.",
+   "destino": "Tópico 2 — registro da medida",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-05-v1.png",
+   "prompt": "ILB-T10-IT-05\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-06",
+   "papel": "Prancha: tabela de coleta",
+   "estilo": "Desenho técnico",
+   "legenda": "A forma da tabela deste tema.",
+   "destino": "Tópico 3 — apresentação de tabelas",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-06-v1.png",
+   "prompt": "ILB-T10-IT-06\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-07",
+   "papel": "Prancha: gráfico e ajuste",
+   "estilo": "Desenho técnico",
+   "legenda": "Os pontos, a curva e o que ela prevê.",
+   "destino": "Tópico 4 — ajuste de curva",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-07-v1.png",
+   "prompt": "ILB-T10-IT-07\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-08",
+   "papel": "Prancha: fontes de erro",
+   "estilo": "Desenho técnico",
+   "legenda": "De onde vem a dúvida do número.",
+   "destino": "Tópico 2 — incerteza",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-08-v1.png",
+   "prompt": "ILB-T10-IT-08\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Desenho técnico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-09",
+   "papel": "Experimento em execução",
+   "estilo": "Cinematográfico",
+   "legenda": "A medida sendo feita.",
+   "destino": "Tópico 1 — a montagem",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-09-v1.png",
+   "prompt": "ILB-T10-IT-09\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-10",
+   "papel": "Prática docente",
+   "estilo": "Cinematográfico",
+   "legenda": "A mesma prática, na sala de ensino médio.",
+   "destino": "Tópico 5 — eixo didático",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-10-v1.png",
+   "prompt": "ILB-T10-IT-10\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-11",
+   "papel": "Ciência e Arte",
+   "estilo": "Pintura a óleo",
+   "legenda": "A obra que fecha a trilha.",
+   "destino": "Seção Ciência e Arte — junto da epígrafe 3",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-11-v1.png",
+   "prompt": "ILB-T10-IT-11\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Pintura a óleo\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  },
+  {
+   "cod": "IT-12",
+   "papel": "Fechamento",
+   "estilo": "Cinematográfico",
+   "legenda": "A bancada desmontada: o mesmo enquadramento da capa.",
+   "destino": "Ato III — fechamento",
+   "aprovado": false,
+   "arquivo": "ILB-T10-IT-12-v1.png",
+   "prompt": "ILB-T10-IT-12\nImagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:\n[SUJEITO]: a definir na Camada 2\n[CENARIO]: a definir na Camada 2 — bancada do Laboratorio de Mecanica do IFMG-OP\n[ACAO]: a definir na Camada 2\n[ESTILO]: Cinematográfico\n[PALETA]: verde-quadro #3E8E5A, branco das bancadas, cinza-grafite dos equipamentos\n[COMPOSICAO]: Quadro 1:1\n[EVITAR]: texto legivel, logotipos, marcas, adolescentes\n[AJUSTE]:"
+  }
+ ]
+};
+var IMAGENS_ILB_DOWNLOAD = "G:\\JA2026\\3_Estudio\\01_Fisica_Conceitual_1\\Trilhas_de_Aprendizagem\\_imagens_download";
+/* AUTO:IMAGENS_ILB:FIM */
+
+
+/* ═══ IMAGENS TEMATICAS — OA proprio (briefing de 2026-09-09) ═══════════
+   Fonte unica: Trilhas/_scripts/gerar_imagens_ilb.py da ILB, que injeta o
+   bloco AUTO:IMAGENS_ILB acima. O quadro e o prompt saem do MESMO dado —
+   nunca de duas listas paralelas. */
+
+var IMG_TRILHA = null;
+
+function imgEsc(t) {
+  return String(t == null ? '' : t)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderImagens() {
+  var el = document.getElementById('img-corpo');
+  if (!el) return;
+  var pasta = document.getElementById('img-pasta-download');
+  if (pasta) pasta.textContent = IMAGENS_ILB_DOWNLOAD || '—';
+
+  var disc = (document.getElementById('sel-disciplina').value || '').toUpperCase();
+  if (disc !== 'ILB') {
+    el.innerHTML = '<div class="disc-bar-vazio">As Imagens Tem&aacute;ticas como OA pr&oacute;prio existem hoje '
+      + 'apenas na <strong>ILB</strong>. Na FC1 e na FE1 elas seguem no pipeline da aba '
+      + '<strong>Texto Tem&aacute;tico</strong> (se&ccedil;&atilde;o 07).</div>';
+    return;
+  }
+  if (!Object.keys(IMAGENS_ILB).length) {
+    el.innerHTML = '<div class="disc-bar-vazio">Bloco de imagens vazio &mdash; rode '
+      + '<span style="font-family:var(--mono);">Trilhas/_scripts/gerar_imagens_ilb.py</span> da ILB.</div>';
+    return;
+  }
+
+  var codigos = Object.keys(IMAGENS_ILB);
+  if (!IMG_TRILHA || codigos.indexOf(IMG_TRILHA) === -1) IMG_TRILHA = codigos[0];
+
+  var h = ['<div style="margin-bottom:10px;">'
+    + '<div style="font-family:var(--mono);font-size:11px;color:var(--ouro);text-transform:uppercase;'
+    + 'letter-spacing:.05em;margin-bottom:6px;">Trilha</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:4px;">'];
+  codigos.forEach(function (c) {
+    h.push('<button type="button" class="disc-chip' + (c === IMG_TRILHA ? ' sel' : '') + '" '
+      + 'onclick="imgSelecionarTrilha(&quot;' + c + '&quot;)">' + c + '</button>');
+  });
+  h.push('</div></div>');
+
+  var lista = IMAGENS_ILB[IMG_TRILHA] || [];
+  h.push('<div style="display:flex;align-items:center;gap:10px;margin:12px 0;flex-wrap:wrap;">'
+    + '<button type="button" class="pre-acao" onclick="imgCopiarLote()">&#10697; Copiar o lote &mdash; '
+    + lista.length + ' imagens de ' + IMG_TRILHA + '</button>'
+    + '<span style="font-family:var(--mono);font-size:11.5px;color:var(--texto-sub);">'
+    + 'Gere <strong>na ordem</strong>: a tria­gem casa arquivo e IT pela ordem de gera&ccedil;&atilde;o.</span></div>');
+
+  h.push('<div class="status-table-wrap"><table class="status-table"><thead><tr>'
+    + '<th>ID</th><th>Papel</th><th>Estilo</th><th>Legenda</th><th>Onde entra no TT</th>'
+    + '<th>Prompt</th><th>Arquivo final</th></tr></thead><tbody>');
+  lista.forEach(function (i, k) {
+    h.push('<tr>'
+      + '<td style="font-family:var(--mono);color:var(--ouro-claro);white-space:nowrap;">' + imgEsc(i.cod) + '</td>'
+      + '<td>' + imgEsc(i.papel) + '</td>'
+      + '<td style="font-size:12px;color:var(--texto-sub);">' + imgEsc(i.estilo) + '</td>'
+      + '<td style="font-size:12.5px;">' + imgEsc(i.legenda) + '</td>'
+      + '<td style="font-size:12px;color:var(--texto-sub);">' + imgEsc(i.destino) + '</td>'
+      + '<td><button type="button" class="pre-acao" style="margin:0;" onclick="imgCopiarUma(' + k + ')">'
+      + (i.aprovado ? '&#10697; copiar' : '&#10697; esqueleto') + '</button></td>'
+      + '<td style="font-family:var(--mono);font-size:11px;color:var(--texto-sub);">' + imgEsc(i.arquivo) + '</td>'
+      + '</tr>');
+  });
+  h.push('</tbody></table></div>');
+
+  var semPrompt = lista.filter(function (i) { return !i.aprovado; }).length;
+  h.push('<p style="font-size:12px;color:var(--texto-sub);margin-top:12px;line-height:1.7;">'
+    + '<strong>Refinar:</strong> escreva o pedido no bloco <span style="font-family:var(--mono);">[AJUSTE]</span> '
+    + 'do prompt daquela imagem e recole no Gemini &mdash; o resto do prompt n&atilde;o muda, ent&atilde;o a v2 nasce '
+    + 'da v1. <strong>O ciclo &eacute; por imagem:</strong> uma IT reprovada n&atilde;o segura as outras, e imagem '
+    + 'aprovada nunca &eacute; regerada.<br>'
+    + '<strong>Depois de baixar:</strong> as imagens s&atilde;o conferidas contra o descritor e s&oacute; entram em '
+    + '<span style="font-family:var(--mono);">Trilhas/' + IMG_TRILHA + '_.../_imagens/</span> ap&oacute;s a sua aprova&ccedil;&atilde;o.'
+    + (semPrompt ? '<br><strong style="color:var(--ouro);">&#9888; ' + semPrompt + ' imagens sem prompt aprovado</strong> '
+       + '&mdash; sai o esqueleto com os blocos; o conte&uacute;do da trilha s&oacute; a Camada 2 define.' : '')
+    + '</p>');
+
+  el.innerHTML = h.join('');
+}
+
+function imgSelecionarTrilha(c) { IMG_TRILHA = c; renderImagens(); }
+
+function imgCopiarUma(k) {
+  var i = (IMAGENS_ILB[IMG_TRILHA] || [])[k];
+  if (i) copiarTexto(i.prompt, 'Prompt de ' + i.cod + ' copiado');
+}
+
+function imgCopiarLote() {
+  var lista = IMAGENS_ILB[IMG_TRILHA] || [];
+  var txt = lista.map(function (i) { return i.prompt; }).join('\n\n');
+  copiarTexto(txt, lista.length + ' prompts de ' + IMG_TRILHA + ' copiados');
+}
+
+function copiarTexto(txt, msg) {
+  navigator.clipboard.writeText(txt).then(function () { alert(msg); })
+    .catch(function () {
+      var t = document.createElement('textarea');
+      t.value = txt; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); alert(msg); } catch (e) { alert('Nao foi possivel copiar.'); }
+      document.body.removeChild(t);
+    });
+}
+
 
 /* ── DISCIPLINA × CURSO ── */
 
