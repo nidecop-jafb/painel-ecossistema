@@ -765,6 +765,11 @@ select option { background: var(--superficie); color: var(--texto); }
         Ep&iacute;grafes da Trilha
         <span class="campo-auto-badge">Autom&aacute;tico &mdash; sem repeti&ccedil;&atilde;o</span>
       </div>
+      <div id="epigrafe-nota-ilb" class="nota-info" style="display:none;margin-bottom:8px;">
+        <strong>Na ILB as tr&ecirc;s s&atilde;o aplicadas</strong>, uma em cada momento da trilha &mdash; nenhuma
+        &eacute; descartada. Clicar num cart&atilde;o s&oacute; escolhe qual vai para os campos edit&aacute;veis abaixo.
+        A Ci&ecirc;ncia e Arte fecha retomando as tr&ecirc;s: <em>&ldquo;Tr&ecirc;s c&eacute;rebros, o mesmo gesto&rdquo;</em>.
+      </div>
       <div id="epigrafes-auto" style="display:flex;flex-direction:column;gap:8px;">
         <div style="font-size:12px;color:var(--texto-sub);padding:10px;border:1px solid var(--cinza-borda);background:var(--input-bg);">Selecione uma trilha para carregar as 3 ep&iacute;grafes.</div>
       </div>
@@ -3039,8 +3044,17 @@ function renderEpigrafes() {
     hdr.style.fontSize = '11px';
     hdr.style.color = 'var(--texto-sub)';
     hdr.style.marginBottom = '4px';
-    var label = 'Epígrafe ' + (i+1);
-    if (isSel) label += ' <span style="color:var(--verde-claro);font-size:11px;font-weight:600">SELECIONADA</span>';
+    /* Na ILB as tres sao aplicadas, uma por momento — o cartao diz o DESTINO,
+       e o clique so escolhe qual vai para os campos editaveis abaixo. Na FC1
+       segue valendo escolher uma. */
+    var DESTINO_ILB = ['1 · pensador(a)/educador(a) → abre o TT',
+                       '2 · cientista → abre o Roteiro de Bancada',
+                       '3 · artista → Ciência e Arte'];
+    var ilb = (typeof ehILB === 'function') && ehILB();
+    var label = ilb ? (DESTINO_ILB[i] || ('Epígrafe ' + (i + 1))) : ('Epígrafe ' + (i + 1));
+    if (isSel) label += ilb
+      ? ' <span style="color:var(--verde-claro);font-size:11px;font-weight:600">NO EDITOR</span>'
+      : ' <span style="color:var(--verde-claro);font-size:11px;font-weight:600">SELECIONADA</span>';
     if (c.repetida) label += ' <span style="color:#c0392b;font-size:11px;font-weight:600">REPETIDA</span>';
     hdr.innerHTML = label;
     card.appendChild(hdr);
@@ -4564,6 +4578,8 @@ const CURSO_SERIE_LABEL = {
    Trilha) viraram OAs proprios em 2026-09-09 e saem do fluxo do formulario. */
 function aplicarFluxoILB() {
   const ilb = ehILB();
+  const nota = document.getElementById('epigrafe-nota-ilb');
+  if (nota) nota.style.display = ilb ? '' : 'none';
   const g = document.getElementById('grupo-figuras-ilb');
   if (g) g.style.display = ilb ? '' : 'none';
   ['sec7', 'sec8'].forEach(function (id) {
