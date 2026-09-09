@@ -226,6 +226,22 @@ body {
 .qual-aviso { border:1px solid var(--ouro); background:var(--ouro-bg); color:var(--texto);
   padding:10px 12px; margin-bottom:12px; font-size:12.5px; line-height:1.65; }
 .qual-aviso strong { color:var(--ouro-claro); }
+#perguntas-quadro:empty{display:none}
+.pg-caixa{border:1px solid var(--cinza-borda);border-left:3px solid var(--ouro);
+ background:var(--cinza-claro);margin:0 0 10px;padding:10px 14px}
+.pg-topo{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;cursor:pointer}
+.pg-topo h3{margin:0;font-size:13px;color:var(--ouro);text-transform:uppercase;
+ letter-spacing:.05em;font-family:var(--mono)}
+.pg-fonte{font-family:var(--mono);font-size:11px;color:var(--texto-sub)}
+.pg-item{border-top:1px solid var(--cinza-borda);padding:9px 0}
+.pg-item:first-child{border-top:none}
+.pg-num{display:inline-block;min-width:26px;font-family:var(--mono);color:var(--ouro-claro)}
+.pg-perg{font-size:13.5px;color:var(--texto);font-weight:600}
+.pg-subs{margin:6px 0 0 26px;padding:0;list-style:none}
+.pg-subs li{font-size:12.5px;color:var(--texto-sub);line-height:1.6;
+ padding-left:12px;text-indent:-12px}
+.pg-meta{margin:6px 0 0 26px;font-family:var(--mono);font-size:11px;color:var(--texto-sub)}
+.pg-meta span{margin-right:14px}
 .disc-bar-vazio { font-family:var(--mono); font-size:11.5px; color:var(--texto-sub); line-height:1.6; }
 .section-title {
   font-family: var(--display);
@@ -2269,6 +2285,10 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 .pre-acao:hover { border-color: var(--ouro-claro); }
 </style>
 <details class="pre-brief">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>metodo &middot; As 5 perguntas-guia da T0A da ILB<span class="pre-meta">ILB &middot; 2026-09-09</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Trocar a organização da T0A — hoje 4 fundamentos e 5 blocos de professor (Camada 2 v3) — por<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma (Camada 2 é documento de planejamento, não OA) <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-metodo-5perguntas-t0a-ilb-2026-09-09.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-metodo-5perguntas-t0a-ilb-2026-09-09.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-metodo-5perguntas-t0a-ilb-2026-09-09.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/T0A_Boas_Vindas_a_Fisica_Experimental/_pre/PRE-metodo-5perguntas-t0a-ilb-2026-09-09.md" target="_blank">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief">
 <summary><span class="pre-status pre-rascunho">RASCUNHO</span>OA novo &middot; Imagens Temáticas da ILB, do prompt à pasta da trilha<span class="pre-meta">ILB &middot; 2026-09-09</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Transformar as Imagens Temáticas da ILB num **OA próprio**, com sub-aba no Painel que gera o<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto · Skill: `imagem-tematica-ilb` (para o conteúdo dos roteiros) +<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-oa-imagens-tematicas-ilb-2026-09-09.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-oa-imagens-tematicas-ilb-2026-09-09.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-oa-imagens-tematicas-ilb-2026-09-09.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/_pre/PRE-oa-imagens-tematicas-ilb-2026-09-09.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
@@ -2368,7 +2388,7 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-meta">FC1 &middot; 2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="../../../01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" target="_blank">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>25 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 5 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" s&oacute; funciona no painel local).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>26 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 6 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" s&oacute; funciona no painel local).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -2606,6 +2626,7 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
           <div id="onda1-chips" style="display:flex;flex-wrap:wrap;gap:4px;max-height:72px;overflow-y:auto;"></div>
         </div>
         </div><!-- /onda1-sticky-header -->
+        <div id="perguntas-quadro"></div>
         <iframe id="onda1-iframe" src="about:blank" data-src="skill_onda1_plano-v1.html" allow="clipboard-write; clipboard-read" style="width:100%;flex:1;min-height:0;border:none;display:block;background:var(--fundo);"></iframe>
       </section>
     </div>
@@ -4280,6 +4301,53 @@ function postToOnda1(action) {
 }
 
 
+/* ═══ PERGUNTAS-GUIA DA TRILHA (Camada 2 v4 da T0A, 2026-09-09) ════════
+   A trilha deixou de ser organizada pelo que o professor entrega e passou a
+   ser organizada pelo que o estudante pergunta. Fonte unica:
+   Trilhas/_scripts/gerar_perguntas_ilb.py da ILB, que injeta o bloco
+   AUTO:PERGUNTAS_ILB acima. Trilha sem perguntas nao mostra o quadro. */
+
+var PG_ABERTO = true;
+
+function renderPerguntas(code) {
+  var el = document.getElementById('perguntas-quadro');
+  if (!el) return;
+  var disc = (document.getElementById('sel-disciplina') || {}).value || '';
+  var d = (disc.toUpperCase() === 'ILB' && code) ? PERGUNTAS_ILB[code] : null;
+  if (!d || !d.itens || !d.itens.length) { el.innerHTML = ''; return; }
+
+  var h = ['<div class="pg-caixa"><div class="pg-topo" onclick="pgAlternar()">'
+    + '<h3>' + code + ' &mdash; as ' + d.itens.length + ' perguntas-guia</h3>'
+    + '<span class="pg-fonte">' + imgEsc(d.camada2) + '</span>'
+    + '<span class="pg-fonte" style="margin-left:auto;">' + (PG_ABERTO ? '&#9650;' : '&#9660;')
+    + '</span></div>'];
+  if (PG_ABERTO) {
+    h.push('<div style="margin-top:8px;">');
+    d.itens.forEach(function (i) {
+      h.push('<div class="pg-item">'
+        + '<span class="pg-num">P' + i.n + '</span>'
+        + '<span class="pg-perg">' + imgEsc(i.pergunta) + '</span>'
+        + '<ul class="pg-subs">');
+      i.subs.forEach(function (t) { h.push('<li>&mdash; ' + imgEsc(t) + '</li>'); });
+      h.push('</ul><div class="pg-meta">'
+        + '<span>Bloom: ' + imgEsc(i.bloom) + '</span>'
+        + '<span>Eixo: ' + imgEsc(i.eixo) + '</span>'
+        + '<span>' + imgEsc(i.onde) + '</span>'
+        + '<span>' + imgEsc(i.bloco) + '</span></div></div>');
+    });
+    h.push('</div>');
+  }
+  h.push('</div>');
+  el.innerHTML = h.join('');
+}
+
+function pgAlternar() {
+  PG_ABERTO = !PG_ABERTO;
+  renderPerguntas(PG_TRILHA);
+}
+
+var PG_TRILHA = null;
+
 function selectTrilhaPainel(code) {
   document.querySelectorAll('#onda1-chips .onda1-chip').forEach(function(c) { c.classList.remove('sel'); });
   var chips = document.querySelectorAll('#onda1-chips .onda1-chip');
@@ -4290,6 +4358,8 @@ function selectTrilhaPainel(code) {
   if (iframe && iframe.contentWindow) {
     try { iframe.contentWindow.postMessage({ type: 'selectTrilha', trilha: code }, '*'); } catch(e) {}
   }
+  PG_TRILHA = code;
+  renderPerguntas(code);
 }
 
 
@@ -4359,6 +4429,8 @@ function renderBarrasDisciplina() {
 /* Clicar num chip troca a disciplina corrente do Painel inteiro (o seletor do
    cabecalho continua sendo a fonte de verdade) e reaplica a aba visivel. */
 function discBarSelecionar(codigo, curso) {
+  PG_TRILHA = null;
+  renderPerguntas(null);
   var selC = document.getElementById('sel-curso');
   var selD = document.getElementById('sel-disciplina');
   if (selC) {
@@ -4492,6 +4564,46 @@ function renderSkills() {
     + 'A tabela de comandos abaixo é a da FC1.</p>');
   alvo.innerHTML = h.join('');
 }
+
+/* AUTO:PERGUNTAS_ILB:INICIO */
+var PERGUNTAS_ILB = {
+  'T0A': {
+    camada2: 'ILB-T0A-Camada2-v4.md',
+    itens: [
+      {
+        n: 1, pergunta: 'O que os documentos oficiais revelam?',
+        subs: ['O Projeto Pedagogico do Curso (PPC) — o que a Licenciatura promete formar', 'A matriz curricular — por que um laboratorio sem disciplina teorica vinculada no 2.o periodo; a ILB sem pre-requisito, mas pre-requisito do Lab de Mecanica (6088)', 'A ementa e o plano de ensino da ILB — o que a disciplina cobra, por escrito', 'O Regulamento de Ensino (Res. 01/2026) — frequencia 75 % (Art. 101) e rendimento 60 % (Art. 124)'],
+        bloom: 'L4 analisar', eixo: 'Didatico',
+        onde: 'TT topico 1 · AP bloco 1 · CD', bloco: 'Bloco 1 — 15 min'
+      },
+      {
+        n: 2, pergunta: 'O que sao as Trilhas de Aprendizagem, quantas paradas estrategicas e quantos Objetos de Aprendizagem cada parada contem?',
+        subs: ['As 12 trilhas em 16 encontros: T0A e T0B de ambientacao, T01-T10 de bancada', 'As 3 paradas: Pre-Lab (20 min) · Lab (100 min) · Pos-Lab (40 min)', 'Os OAs de cada parada — Pre-Lab: MD, TT, CD · Lab: RB (com IE e CS dentro) e AP · Pos-Lab: RM e RC', 'Por que nao o formato tradicional: o experimento e veiculo; muda o experimento dez vezes, nao muda o protocolo de medida'],
+        bloom: 'L2 entender', eixo: 'Metrologico',
+        onde: 'TT topico 2 · AP bloco 2 · CD', bloco: 'Bloco 2 — 20 min'
+      },
+      {
+        n: 3, pergunta: 'Existe uma sequencia para estudar que funciona bem, ou cada estudante escolhe por onde comecar e como caminhar?',
+        subs: ['A sequencia recomendada e uma so: audio (MD) -> Texto Tematico (TT) -> ficha de preparacao. O ritmo e do estudante; a ordem das paradas, nao', 'Antes: ouvir o MD, ler o TT, prever o resultado, conferir o Inventario de Equipamento (IE) e o Checklist de Seguranca (CS)', 'Durante — seguranca primeiro: normas do Laboratorio de Mecanica, Equipamento de Protecao Individual (EPI), extintor, saida, kit de primeiros socorros', 'Durante — o acervo: cada instrumento, seu nome, para que serve e a sua menor divisao', 'Durante — o registro no Roteiro de Bancada (RB): dado bruto, datado, com as condicoes. O dado bruto nao se apaga e nao se corrige: anota-se ao lado', 'Depois: Relatorio Minimo (RM) em ate 1 dia; Relatorio Completo (RC) em ate 6 dias'],
+        bloom: 'L2 entender · L5 avaliar', eixo: 'os tres, simultaneamente',
+        onde: 'TT topico 3 · AP blocos 3 e 4 · RB da T0A inteiro', bloco: 'Blocos 3 e 4 — 45 min'
+      },
+      {
+        n: 4, pergunta: 'Como funciona o sistema de avaliacao? Quais instrumentos existem, quanto vale cada um e quando acontecem?',
+        subs: ['Os quatro instrumentos: Pre-Lab 20 % (ficha) · Lab 40 % (RB preenchido) · Pos-Lab RM 15 % (1 pagina, ate 1 dia) · Pos-Lab RC 25 % (ate 6 dias)', 'Quando cada um acontece, no calendario das 10 trilhas de bancada', 'A T0A e excecao: so presenca e o termo de seguranca assinado, pre-requisito para a bancada na T01', 'Aprovacao: frequencia minima 75 % e rendimento minimo 60 %', 'Estrategia recomendada: o peso esta no processo. Quem chega preparado mede melhor; quem registra bem escreve o RM no mesmo dia, e o RC vira revisao, nao reconstrucao'],
+        bloom: 'L4 analisar', eixo: 'Didatico',
+        onde: 'TT topico 4 · AP bloco 5 · CD', bloco: 'Bloco 5 — 20 min (com a P5)'
+      },
+      {
+        n: 5, pergunta: 'Como posso carregar os materiais e o metodo de estudo com seguranca na minha mao? Quais sao as inovacoes que podem motivar meu estudo?',
+        subs: ['O site da disciplina — materiais, entrega de relatorios e canal de monitoria; abre no telefone, com QR na primeira pagina do TT impresso', 'O Resumo em Audio (MD) — 3 a 5 min; monta o esqueleto antes da leitura', 'Os Cartoes Didaticos (CD) — revisao ativa do vocabulario e dos instrumentos', 'O TT em duas formas — PDF para imprimir e HTML para o telefone, na mesma versao', 'Ajuste de curva assistido por inteligencia artificial, a partir da T01, sempre com conferencia do estudante: coerencia dimensional, ordem de grandeza, residuos. O uso de IA e declarado no relatorio', 'A monitoria — tratamento de dados, graficos e redacao, divulgada desde a T0A'],
+        bloom: 'L2 entender · L5 avaliar', eixo: 'Didatico (com o Metrologico na conferencia do ajuste)',
+        onde: 'TT topico 5 · AP bloco 5 · CD', bloco: 'Bloco 5 — 20 min (com a P4)'
+      },
+    ]
+  },
+};
+/* AUTO:PERGUNTAS_ILB:FIM */
 
 /* AUTO:IMAGENS_ILB:INICIO */
 var IMAGENS_ILB = {
@@ -6246,7 +6358,8 @@ function renderImagens() {
     + '<button type="button" class="pre-acao" onclick="imgCopiarLote()">&#10697; Copiar o lote &mdash; '
     + lista.length + ' imagens de ' + IMG_TRILHA + '</button>'
     + '<span style="font-family:var(--mono);font-size:11.5px;color:var(--texto-sub);">'
-    + 'Gere <strong>na ordem</strong>: a tria­gem casa arquivo e IT pela ordem de gera&ccedil;&atilde;o.</span></div>');
+    + 'Salve cada arquivo com o <strong>nome final</strong> da coluna &agrave; direita: a tria­gem '
+    + 'casa arquivo e IT pelo nome, n&atilde;o pela ordem.</span></div>');
 
   h.push('<div class="status-table-wrap"><table class="status-table"><thead><tr>'
     + '<th>ID</th><th>Papel</th><th>Estilo</th><th>Legenda</th><th>Onde entra no TT</th>'
