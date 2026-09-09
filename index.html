@@ -4135,10 +4135,12 @@ function lazyLoadIframe(iframeId) {
    usa as copias publicadas em epigrafes/ pelo publicar_painel.py. */
 var EPIGRAFE_PATHS = (location.protocol === 'file:') ? {
   fc1: '../FC1-citacoes-v2.html',
-  fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html'
+  fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html',
+  ilb: '../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/ILB-citacoes-v1.html'
 } : {
   fc1: 'epigrafes/FC1-citacoes-v2.html',
-  fe1: 'epigrafes/FE1-citacoes-v2.html'
+  fe1: 'epigrafes/FE1-citacoes-v2.html',
+  ilb: 'epigrafes/ILB-citacoes-v1.html'
 };
 
 function loadEpigrafe() {
@@ -4823,10 +4825,12 @@ loadDisciplina();
    terminar de carregar — corrige as epígrafes vazias no primeiro clique. */
 var CITACOES_PATHS = (location.protocol === 'file:') ? {
   fc1: '../FC1-citacoes-v2.html',
-  fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html'
+  fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html',
+  ilb: '../../../LFI_02_ILB_Introducao_ao_Laboratorio/Trilhas/ILB-citacoes-v1.html'
 } : {
   fc1: 'epigrafes/FC1-citacoes-v2.html',
-  fe1: 'epigrafes/FE1-citacoes-v2.html'
+  fe1: 'epigrafes/FE1-citacoes-v2.html',
+  ilb: 'epigrafes/ILB-citacoes-v1.html'
 };
 var _citTrilhaPendente = null;
 var _citTentativas = 0;

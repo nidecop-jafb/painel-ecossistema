@@ -1650,6 +1650,253 @@ const TEMAS_ILB = [
   { num: 5, nome: "O que sobrevive a colisao", sub: "T09 · T10", foco: "Sensor de forca, para-choques, fotogates duplos · antes e depois · comparacao de estados e decisao sobre conservacao" },
 ];
 
+/* Epigrafes da ILB — 3 por trilha, na ordem pensador(a)/educador(a) · cientista ·
+   artista. FONTE UNICA: Trilhas/_scripts/gerar_citacoes_ilb.py, que gera este bloco
+   em _scripts/_saida/ilb-citacoes.js. Nao editar a mao: rodar o script e recolar.
+   Escolher a trilha ja traz as tres na secao Epigrafe do formulario. */
+const CITACOES_ILB = {
+  "T0A": [
+    {
+      "tipo": "Educador",
+      "cit": "A leitura do mundo precede a leitura da palavra.",
+      "atrib": "Paulo Freire",
+      "bio": "Paulo Reglus Neves Freire (1921-1997). Brasileiro, educador e filósofo. Patrono da educação brasileira; criador da pedagogia crítica. Fonte: A importância do ato de ler, 1982."
+    },
+    {
+      "tipo": "Físico e astrônomo",
+      "cit": "O universo é um livro escrito em linguagem matemática.",
+      "atrib": "Galileu Galilei",
+      "bio": "Galileo Galilei (1564-1642). Italiano, físico e astrônomo. Fundador do método experimental moderno. Fonte: Il Saggiatore, 1623 — paráfrase da passagem do \"grandíssimo livro\"."
+    },
+    {
+      "tipo": "Artista",
+      "cit": "Saper vedere: todo conhecimento começa nas nossas percepções.",
+      "atrib": "Leonardo da Vinci",
+      "bio": "Leonardo da Vinci (1452-1519). Italiano, pintor, engenheiro e anatomista. Autor dos Cadernos. Fonte: Cadernos (Codex), compilações póstumas."
+    }
+  ],
+  "T0B": [
+    {
+      "tipo": "Pensador e educador",
+      "cit": "A todos os tempos, a todos os povos.",
+      "atrib": "Condorcet",
+      "bio": "Nicolas de Condorcet (1743-1794). Francês, matemático e filósofo. Relator do sistema métrico e da instrução pública. Fonte: Lema do sistema métrico decimal, 1791-1799."
+    },
+    {
+      "tipo": "Físico",
+      "cit": "Quando você pode medir aquilo de que fala, você sabe algo sobre isso.",
+      "atrib": "Lord Kelvin",
+      "bio": "William Thomson, Lord Kelvin (1824-1907). Britânico, físico. Deu nome à unidade de temperatura do SI. Fonte: Electrical Units of Measurement, 1883, in Popular Lectures and Addresses."
+    },
+    {
+      "tipo": "Arquiteto",
+      "cit": "O Modulor é uma medida tirada do homem.",
+      "atrib": "Le Corbusier",
+      "bio": "Charles-Édouard Jeanneret, Le Corbusier (1887-1965). Suíço-francês, arquiteto. Criador do Modulor. Fonte: Le Modulor, 1948."
+    }
+  ],
+  "T01": [
+    {
+      "tipo": "Pensador",
+      "cit": "O homem é a medida de todas as coisas.",
+      "atrib": "Protágoras",
+      "bio": "Protágoras de Abdera (c. 490-420 a.C.). Grego, sofista. Autor do fragmento do \"homem-medida\". Fonte: Fragmento DK 80 B1, citado por Platão (Teeteto, 152a)."
+    },
+    {
+      "tipo": "Físico",
+      "cit": "O que observamos não é a natureza em si, mas a natureza exposta ao nosso método.",
+      "atrib": "Werner Heisenberg",
+      "bio": "Werner Heisenberg (1901-1976). Alemão, físico. Princípio da incerteza; Nobel de Física de 1932. Fonte: Physics and Philosophy, 1958."
+    },
+    {
+      "tipo": "Escultor",
+      "cit": "Quanto mais me aproximo, maior fica a distância.",
+      "atrib": "Alberto Giacometti",
+      "bio": "Alberto Giacometti (1901-1966). Suíço, escultor e pintor. Figuras humanas alongadas, refeitas sem fim. Fonte: Atribuída, sobre a figura humana refeita sem cessar."
+    }
+  ],
+  "T02": [
+    {
+      "tipo": "Filósofo da ciência",
+      "cit": "O fato científico é conquistado, construído, constatado.",
+      "atrib": "Gaston Bachelard",
+      "bio": "Gaston Bachelard (1884-1962). Francês, filósofo da ciência. Obstáculo epistemológico e ruptura com o senso comum. Fonte: La formation de l'esprit scientifique, 1938."
+    },
+    {
+      "tipo": "Matemático e físico",
+      "cit": "Eureka! — achei.",
+      "atrib": "Arquimedes",
+      "bio": "Arquimedes de Siracusa (c. 287-212 a.C.). Grego, matemático e físico. Empuxo, alavanca e cálculo de volumes. Fonte: Relato de Vitrúvio, De architectura, IX, prefácio."
+    },
+    {
+      "tipo": "Escultor",
+      "cit": "O melhor artista não tem ideia que um só mármore não contenha em si.",
+      "atrib": "Michelangelo",
+      "bio": "Michelangelo Buonarroti (1475-1564). Italiano, escultor, pintor e poeta. Autor das Rime, além do David e da Capela Sistina. Fonte: Rime, soneto 151, c. 1538-1544."
+    }
+  ],
+  "T03": [
+    {
+      "tipo": "Filósofo",
+      "cit": "Conceitos sem intuições são vazios; intuições sem conceitos são cegas.",
+      "atrib": "Immanuel Kant",
+      "bio": "Immanuel Kant (1724-1804). Alemão, filósofo. Crítica da Razão Pura; síntese entre empirismo e racionalismo. Fonte: Kritik der reinen Vernunft, 1781, A51/B75."
+    },
+    {
+      "tipo": "Físico",
+      "cit": "Força imprimida é a ação exercida sobre um corpo para mudar seu estado.",
+      "atrib": "Isaac Newton",
+      "bio": "Isaac Newton (1643-1727). Inglês, físico e matemático. Leis do movimento e gravitação universal. Fonte: Philosophiae Naturalis Principia Mathematica, 1687, Definição IV."
+    },
+    {
+      "tipo": "Artista",
+      "cit": "Aos setenta e três, entendi um pouco da estrutura real da natureza.",
+      "atrib": "Hokusai",
+      "bio": "Katsushika Hokusai (1760-1849). Japonês, artista do ukiyo-e. Autor da Grande Onda e das Cem Vistas do Monte Fuji. Fonte: Posfácio de Cem Vistas do Monte Fuji, 1834."
+    }
+  ],
+  "T04": [
+    {
+      "tipo": "Filósofa",
+      "cit": "Os movimentos naturais da alma obedecem a leis análogas às da gravidade.",
+      "atrib": "Simone Weil",
+      "bio": "Simone Weil (1909-1943). Francesa, filósofa. A gravidade e a graça, publicado após sua morte. Fonte: La pesanteur et la grâce, 1947 (póstumo)."
+    },
+    {
+      "tipo": "Matemático",
+      "cit": "Maravilha, e não é maravilha.",
+      "atrib": "Simon Stevin",
+      "bio": "Simon Stevin (1548-1620). Flamengo, matemático e engenheiro. Provou o equilíbrio no plano inclinado com a corrente de esferas. Fonte: De Beghinselen der Weeghconst, 1586 — divisa do clootcrans."
+    },
+    {
+      "tipo": "Artista",
+      "cit": "O Bicho não tem avesso.",
+      "atrib": "Lygia Clark",
+      "bio": "Lygia Clark (1920-1988). Brasileira, artista neoconcreta. Criadora dos Bichos, esculturas articuladas por dobradiças. Fonte: Texto sobre os Bichos, 1960."
+    }
+  ],
+  "T05": [
+    {
+      "tipo": "Pensadora",
+      "cit": "O pensamento nasce na brecha entre o passado e o futuro.",
+      "atrib": "Hannah Arendt",
+      "bio": "Hannah Arendt (1906-1975). Alemã naturalizada estadunidense, pensadora política. Entre o passado e o futuro. Fonte: Between Past and Future, 1961 — prefácio."
+    },
+    {
+      "tipo": "Matemático e filósofo",
+      "cit": "Dividir cada dificuldade em tantas parcelas quantas forem possíveis.",
+      "atrib": "René Descartes",
+      "bio": "René Descartes (1596-1650). Francês, filósofo e matemático. Criador da geometria analítica e do plano cartesiano. Fonte: Discours de la méthode, 1637, segunda parte."
+    },
+    {
+      "tipo": "Fotógrafo",
+      "cit": "O cavalo em movimento — o que o olho não alcança, a câmera separa.",
+      "atrib": "Eadweard Muybridge (adapt.)",
+      "bio": "Eadweard Muybridge (1830-1904). Britânico, fotógrafo. Decompôs o galope em fotografias sequenciais. Fonte: The Horse in Motion, 1878 — leitura da obra, não citação."
+    }
+  ],
+  "T06": [
+    {
+      "tipo": "Educadora",
+      "cit": "As mãos são o instrumento da inteligência humana.",
+      "atrib": "Maria Montessori",
+      "bio": "Maria Montessori (1870-1952). Italiana, médica e educadora. Método Montessori e a educação pelo material concreto. Fonte: La mente del bambino (A mente absorvente), 1949."
+    },
+    {
+      "tipo": "Física e matemática",
+      "cit": "A força viva de um corpo é proporcional ao quadrado da sua velocidade.",
+      "atrib": "Émilie du Châtelet",
+      "bio": "Émilie du Châtelet (1706-1749). Francesa, física e matemática. Traduziu e comentou os Principia; defendeu a força viva (mv²). Fonte: Institutions de physique, 1740, cap. XXI."
+    },
+    {
+      "tipo": "Artista",
+      "cit": "O movimento e a luz destroem a materialidade dos corpos.",
+      "atrib": "Umberto Boccioni",
+      "bio": "Umberto Boccioni (1882-1916). Italiano, pintor e escultor futurista. Formas Únicas da Continuidade no Espaço. Fonte: Manifesto técnico da pintura futurista, 1910."
+    }
+  ],
+  "T07": [
+    {
+      "tipo": "Pensador",
+      "cit": "Que é o tempo? Se ninguém me pergunta, eu sei; se quero explicar, não sei.",
+      "atrib": "Santo Agostinho",
+      "bio": "Agostinho de Hipona (354-430). Norte-africano, filósofo e teólogo. O livro XI das Confissões discute a natureza do tempo. Fonte: Confessiones, XI, 14."
+    },
+    {
+      "tipo": "Astrônomo",
+      "cit": "A geometria é única e eterna.",
+      "atrib": "Johannes Kepler",
+      "bio": "Johannes Kepler (1571-1630). Alemão, astrônomo. Leis do movimento planetário e a harmonia dos mundos. Fonte: Harmonices Mundi, 1619."
+    },
+    {
+      "tipo": "Artista",
+      "cit": "Ritmo sem fim — o círculo que não para de recomeçar.",
+      "atrib": "Sonia Delaunay",
+      "bio": "Sonia Delaunay (1885-1979). Ucraniano-francesa, artista. Simultaneísmo; séries de círculos e ritmos concêntricos. Fonte: Rythme sans fin, série de 1934 — leitura da obra."
+    }
+  ],
+  "T08": [
+    {
+      "tipo": "Educador e epistemólogo",
+      "cit": "A inteligência organiza o mundo organizando-se a si mesma.",
+      "atrib": "Jean Piaget",
+      "bio": "Jean Piaget (1896-1980). Suíço, epistemólogo. Epistemologia genética e os estágios do desenvolvimento. Fonte: La construction du réel chez l'enfant, 1937 — conclusão."
+    },
+    {
+      "tipo": "Matemático",
+      "cit": "Nenhuma parte da trajetória de um projétil é perfeitamente reta.",
+      "atrib": "Niccolò Tartaglia",
+      "bio": "Niccolò Tartaglia (1499-1557). Italiano, matemático. Primeiro estudo sistemático da trajetória de projéteis. Fonte: Nova Scientia, 1537, livro I."
+    },
+    {
+      "tipo": "Artista",
+      "cit": "Nu descendo uma escada — o movimento parado em camadas.",
+      "atrib": "Marcel Duchamp (adapt.)",
+      "bio": "Marcel Duchamp (1887-1968). Francês, artista. Nu descendo uma escada e os ready-mades. Fonte: Nu descendant un escalier n.º 2, 1912 — leitura da obra."
+    }
+  ],
+  "T09": [
+    {
+      "tipo": "Pensador",
+      "cit": "Não se entra duas vezes no mesmo rio.",
+      "atrib": "Heráclito",
+      "bio": "Heráclito de Éfeso (c. 540-480 a.C.). Grego, filósofo. O fluxo permanente e a unidade dos opostos. Fonte: Fragmento DK 22 B91, citado por Platão (Crátilo, 402a)."
+    },
+    {
+      "tipo": "Físico e matemático",
+      "cit": "No choque de dois corpos, algo se conserva além do movimento.",
+      "atrib": "Christiaan Huygens (adapt.)",
+      "bio": "Christiaan Huygens (1629-1695). Neerlandês, físico e matemático. Resolveu a colisão elástica e criou o relógio de pêndulo. Fonte: De motu corporum ex percussione, 1656 (publicado em 1703)."
+    },
+    {
+      "tipo": "Fotógrafo",
+      "cit": "Fotografar é pôr na mesma mira a cabeça, o olho e o coração.",
+      "atrib": "Henri Cartier-Bresson",
+      "bio": "Henri Cartier-Bresson (1908-2004). Francês, fotógrafo. Cofundador da Magnum; formulou o instante decisivo. Fonte: Images à la sauvette (O instante decisivo), 1952 — prefácio."
+    }
+  ],
+  "T10": [
+    {
+      "tipo": "Filósofo",
+      "cit": "Cada coisa se esforça por perseverar em seu ser.",
+      "atrib": "Espinosa",
+      "bio": "Baruch de Espinosa (1632-1677). Neerlandês, filósofo. A Ética e o conceito de conatus. Fonte: Ethica, 1677, parte III, proposição 6."
+    },
+    {
+      "tipo": "Matemática",
+      "cit": "A cada simetria contínua corresponde uma lei de conservação.",
+      "atrib": "Teorema de Emmy Noether",
+      "bio": "Emmy Noether (1882-1935). Alemã, matemática. Seu teorema liga simetrias a leis de conservação. Fonte: Invariante Variationsprobleme, 1918."
+    },
+    {
+      "tipo": "Poeta",
+      "cit": "Eu canto porque o instante existe e a minha vida está completa.",
+      "atrib": "Cecília Meireles",
+      "bio": "Cecília Meireles (1901-1964). Brasileira, poeta e educadora. Viagem e o Romanceiro da Inconfidência. Fonte: Motivo, in Viagem, 1939."
+    }
+  ]
+};
+
 const TRILHAS_ILB = {
   "T0A":{ nome:"Boas-vindas a Fisica Experimental", tema:0, t:[] },
   "T0B":{ nome:"Sistema Internacional de Unidades (SI)", tema:0, t:[] },
@@ -1669,7 +1916,7 @@ const TRILHAS_ILB = {
 const _INLINE_DATA = {
   fc1: { temas: TEMAS.slice(), trilhas: {...TRILHAS} },
   fe1: { temas: TEMAS_FE1.slice(), trilhas: {...TRILHAS_FE1} },
-  ilb: { temas: TEMAS_ILB.slice(), trilhas: {...TRILHAS_ILB} },
+  ilb: { temas: TEMAS_ILB.slice(), trilhas: {...TRILHAS_ILB}, citacoes: CITACOES_ILB },
 };
 
 // Configuração por família de disciplina (FC vs FE)
