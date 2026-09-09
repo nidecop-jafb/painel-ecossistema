@@ -1914,11 +1914,111 @@ const TRILHAS_ILB = {
   "T10":{ nome:"Leis de conservacao nas colisoes", tema:5, t:[] },
 };
 
+// ═══════════════════════════════════════════════════════════
+// NARRATIVA DA ILB — Camada 2 v3 da T0A, aprovada em 2026-09-07
+// O leitor da ILB e ADULTO e futuro professor: o protagonista e ele
+// proprio. O TT NAO abre com cena de personagens — abre falando com o
+// leitor pelo futuro ("dos dois lados da bancada"). Sofia, Pedro e Lucas,
+// se aparecerem, sao a TURMA-ALVO IMAGINADA, nao os estudantes da ILB.
+// ═══════════════════════════════════════════════════════════
+const PROTAGONISTAS_ILB = [
+  {
+    id: 1, icon: "\uD83E\uDDD1\u200D\uD83D\uDD2C", nome: "O licenciando", idade: "adulto",
+    pronomes: "voce",
+    familia: "estudante de Licenciatura em Fisica, 2.o periodo",
+    dimensao: "Metodologica-Didatica",
+    perfil_resumo: "O leitor E o protagonista — nao ha cena de personagens",
+    perfil_completo: "Adulto, futuro professor de Fisica. O TT fala com ele em 2.a pessoa e pelo futuro: em dois anos ele estara do outro lado da bancada. Toda trilha fecha com a mesma pergunta — o que disto caberia numa sala de aula de ensino medio?",
+    tom: "direto, em 2.a pessoa, sem infantilizar",
+    uso_tipico: "todas as trilhas da ILB — e o modo padrao, nao uma escolha",
+    cenarios: "Laboratorio de Mecanica do IFMG-OP, bancada, acervo de instrumentos",
+    descritor_visual: "Estudante adulto de licenciatura, jaleco, EPI conforme a pratica",
+    principal_em: "todas", coadjuvante_em: "\u2014"
+  },
+  {
+    id: 2, icon: "\uD83D\uDC69", nome: "Sofia", idade: 16, pronomes: "ela/dela",
+    familia: "turma-alvo imaginada",
+    dimensao: "Cientifica-Artistica",
+    perfil_resumo: "Turma-alvo imaginada — a aluna que o licenciando vai ter",
+    perfil_completo: "Nao e estudante da ILB. Aparece quando o TT precisa mostrar a turma de ensino medio que o licenciando vai encontrar: o erro que ela comete primeiro, a pergunta que ela faz. Descritor visual identico ao da FC1 (elenco canonico), sem alteracao.",
+    tom: "perguntadora, observadora",
+    uso_tipico: "eixo didatico — a aula imaginada, nunca a bancada da ILB",
+    cenarios: "sala de aula de ensino medio imaginada",
+    descritor_visual: "Estudante brasileira, 16 anos, cabelos castanho medio anelados nas pontas na altura dos ombros, uniforme IFMG",
+    principal_em: "\u2014", coadjuvante_em: "eixo didatico"
+  },
+  {
+    id: 3, icon: "\uD83D\uDC66", nome: "Pedro", idade: 16, pronomes: "ele/dele",
+    familia: "turma-alvo imaginada",
+    dimensao: "Cientifica-Empreendedora",
+    perfil_resumo: "Turma-alvo imaginada — o aluno que o licenciando vai ter",
+    perfil_completo: "Nao e estudante da ILB. Mesmo papel de Sofia no eixo didatico: encarna a turma de ensino medio a que a pratica sera transposta. Descritor visual identico ao da FC1.",
+    tom: "pratico, quer ver funcionando",
+    uso_tipico: "eixo didatico — a aula imaginada",
+    cenarios: "sala de aula de ensino medio imaginada",
+    descritor_visual: "Estudante brasileiro, 16 anos, cabelo castanho-escuro, barba curta, bigode e costeletas, uniforme IFMG",
+    principal_em: "\u2014", coadjuvante_em: "eixo didatico"
+  },
+  {
+    id: 4, icon: "\uD83D\uDC66", nome: "Lucas", idade: 16, pronomes: "ele/dele",
+    familia: "turma-alvo imaginada",
+    dimensao: "Cientifica-Social",
+    perfil_resumo: "Turma-alvo imaginada — o terceiro da trinca",
+    perfil_completo: "Nao e estudante da ILB. Completa a trinca da turma imaginada quando o eixo didatico precisa de mais de dois pontos de vista. Descritor visual identico ao da FC1.",
+    tom: "questionador do porque",
+    uso_tipico: "eixo didatico, quando dois pontos de vista nao bastam",
+    cenarios: "sala de aula de ensino medio imaginada",
+    descritor_visual: "Estudante brasileiro, 16 anos, uniforme IFMG (descritor canonico da FC1)",
+    principal_em: "\u2014", coadjuvante_em: "eixo didatico"
+  }
+];
+
+const PROFESSORES_ILB = [
+  {
+    id: 1, icon: "\uD83D\uDC68\u200D\uD83C\uDFEB", nome: "Julio", cargo: "Prof. responsavel \u00b7 ILB \u00b7 IFMG-OP",
+    descricao: "55 anos, 1,70m, pele branca, cabelo longo cacheado castanho preso, costeleta curta, sem barba, olhos verde-claro, sem oculos.",
+    aparece_em: "todas as trilhas da ILB (professor responsavel, Plano de Ensino v5)"
+  }
+];
+
+/* A ILB nao alterna protagonista por tema: o licenciando e sempre o principal,
+   e a turma imaginada entra como coadjuvante quando o eixo didatico pede. */
+const MATRIZ_PROT_ILB = {
+  0: { licenciando: 'P', sofia: 'S', pedro: 'S', lucas: null },
+  1: { licenciando: 'P', sofia: 'S', pedro: 'S', lucas: null },
+  2: { licenciando: 'P', sofia: 'S', pedro: 'S', lucas: 'S' },
+  3: { licenciando: 'P', sofia: 'S', pedro: 'S', lucas: 'S' },
+  4: { licenciando: 'P', sofia: 'S', pedro: 'S', lucas: 'S' },
+  5: { licenciando: 'P', sofia: 'S', pedro: 'S', lucas: 'S' }
+};
+
+/* Cenarios da ILB: a bancada primeiro. Ouro Preto entra pelo eixo
+   historico-cultural, nao como cenario de acao. */
+const CENARIOS_ILB = {
+  "Laboratorio": [
+    "Bancada do Laboratorio de Mecanica", "Acervo de instrumentos",
+    "Canto de seguranca (extintor, saida, primeiros socorros)",
+    "Mesa de forcas", "Trilho de ar", "Plataforma giratoria"
+  ],
+  "Campus IFMG-OP": [
+    "Campus do IFMG", "Corredor do bloco de laboratorios", "Sala de aula da Licenciatura"
+  ],
+  "Sala de aula imaginada": [
+    "Sala de ensino medio sem laboratorio", "Patio da escola", "Bancada improvisada"
+  ],
+  "Ouro Preto (eixo historico)": [
+    "Escola de Minas (UFOP)", "Museu de Ciencia e Tecnica", "Praca Tiradentes",
+    "Quadrilatero Ferrifero"
+  ]
+};
+
 // Backup dos dados inline para restauração rápida
 const _INLINE_DATA = {
   fc1: { temas: TEMAS.slice(), trilhas: {...TRILHAS} },
   fe1: { temas: TEMAS_FE1.slice(), trilhas: {...TRILHAS_FE1} },
-  ilb: { temas: TEMAS_ILB.slice(), trilhas: {...TRILHAS_ILB}, citacoes: CITACOES_ILB },
+  ilb: { temas: TEMAS_ILB.slice(), trilhas: {...TRILHAS_ILB}, citacoes: CITACOES_ILB,
+         protagonistas: PROTAGONISTAS_ILB, professores: PROFESSORES_ILB,
+         matriz_prot_tema: MATRIZ_PROT_ILB, cenarios: CENARIOS_ILB },
 };
 
 // Configuração por família de disciplina (FC vs FE)
@@ -1968,7 +2068,7 @@ function getPasta(fase) {
 // Sofia, Pedro, Lucas (T01+) · Bárbara, Kwame (T13+)
 // Lucas substitui Ana (2026-05-16). Todos com 16 anos. Coadjuvantes locais adicionados.
 // Regra: trilha ÍMPAR → coadjuvante local feminino | trilha PAR → coadjuvante local masculino
-const PROTAGONISTAS_CANONICOS = [
+let PROTAGONISTAS_CANONICOS = [
   {
     id: 1, icon: "👩", nome: "Sofia", idade: 16,
     pronomes: "ela/dela",
@@ -2069,7 +2169,7 @@ const NOTAS_MODO_PROTS = {
 // ─── PROFESSORES AUTORES — IFMG-OP ───────────────────────
 // Apenas Julio e Felipe são autores-personagem do TT.
 // Daniel, Lázaro e Luellerson são coadjuvantes locais masculinos (ver COADJUVANTES_LOCAIS).
-const PROFESSORES_CANONICOS = [
+let PROFESSORES_CANONICOS = [
   {
     id: 1, icon: "👨‍🏫", nome: "Julio", cargo: "Prof. de Física · IFMG-OP",
     descricao: "55 anos, 1,70m, pele branca, cabelo longo cacheado castanho preso, costeleta curta, sem barba, olhos verde-claro, sem óculos.",
@@ -2391,6 +2491,9 @@ async function carregarDadosJSON(disciplina, curso) {
     TEMAS = dados.temas.slice();
     TRILHAS = normalizarTrilhas(JSON.parse(JSON.stringify(dados.trilhas)));
     MATRIZ_PROT_TEMA = dados.matriz_prot_tema || {};
+    /* elencos por disciplina: sem isto a ILB mostrava os 5 adolescentes da FC1 */
+    if (dados.protagonistas) PROTAGONISTAS_CANONICOS = dados.protagonistas;
+    if (dados.professores) PROFESSORES_CANONICOS = dados.professores;
     CITACOES_SUGESTOES = dados.citacoes || {};
     CITACOES_FALLBACK = dados.citacoes_fallback || {};
     CENARIOS_PRINCIPAL = dados.cenarios || CENARIOS_PRINCIPAL;
@@ -2418,6 +2521,9 @@ async function carregarDadosJSON(disciplina, curso) {
     TEMAS = dados.temas;
     TRILHAS = normalizarTrilhas(dados.trilhas);
     MATRIZ_PROT_TEMA = dados.matriz_prot_tema || {};
+    /* elencos por disciplina: sem isto a ILB mostrava os 5 adolescentes da FC1 */
+    if (dados.protagonistas) PROTAGONISTAS_CANONICOS = dados.protagonistas;
+    if (dados.professores) PROFESSORES_CANONICOS = dados.professores;
     CITACOES_SUGESTOES = dados.citacoes || {};
     CITACOES_FALLBACK = dados.citacoes_fallback || {};
     CENARIOS_PRINCIPAL = dados.cenarios || CENARIOS_PRINCIPAL;
@@ -4119,6 +4225,12 @@ function gerarCenarioSec() {
   if(!estado.trilha) return;
   const t = TRILHAS[estado.trilha];
   const cp = estado.cenarioPrincipal || 'Campus do IFMG';
+  if (ehILB()) {
+    renderOpcoes('opcoes-cenario-sec', cenarioSecILB(t), (i, txt) => {
+      document.getElementById('cenario-sec-edit').value = txt;
+    });
+    return;
+  }
   const opcoes = [
     { tag:"Opcao 1", texto:`Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.` },
     { tag:"Opcao 2", texto:`Galeria subterranea de uma mina historica de Ouro Preto, onde os conceitos de ${t.nome.toLowerCase()} se manifestam em escala real e em contexto de trabalho.` },
@@ -4127,6 +4239,31 @@ function gerarCenarioSec() {
   renderOpcoes('opcoes-cenario-sec', opcoes, (i, txt) => {
     document.getElementById('cenario-sec-edit').value = txt;
   });
+}
+
+/* A ILB tem narrativa propria: leitor adulto, sem cena de personagens.
+   Ver Camada 2 v3 da T0A e a secao 2 do CLAUDE.md da ILB. */
+function ehILB() {
+  return String(typeof _disciplinaAtual !== 'undefined' ? _disciplinaAtual : '').toLowerCase() === 'ilb';
+}
+
+function cenarioSecILB(t) {
+  return [
+    { tag:'Opcao 1 — a bancada', texto:`Bancada do Laboratorio de Mecanica do IFMG-OP: o acervo de instrumentos que a trilha usa para ${eixoTop(t,0)}, e a rotina de montagem, medicao e registro que se repete em toda trilha do semestre.` },
+    { tag:'Opcao 2 — a sala imaginada', texto:`A sala de ensino medio SEM laboratorio dedicado, onde o licenciando vai ter de transpor ${eixoTop(t,0)} com o que houver a mao — o eixo didatico da ILB nasce dessa restricao, nao a ignora.` },
+    { tag:'Opcao 3 — Ouro Preto, eixo historico', texto:`A Escola de Minas (1876) e o Museu de Ciencia e Tecnica: onde a exigencia de medir com rigor virou instituicao. Entra como eixo historico-cultural, nunca como cenario de acao da trilha.` }
+  ];
+}
+
+/* Ato I da ILB: 3 variantes do mesmo gesto — falar com o leitor pelo futuro.
+   NENHUMA abre com cena de personagem; e a regra da Camada 2 v3. */
+function ato1ILB(t) {
+  const nome = eixoNomeArt(t);
+  return [
+    { tag:'Dos dois lados da bancada', texto:`[ABERTURA — SEM CENA DE PERSONAGENS]\nEm dois anos, alguem vai perguntar a voce, na frente de uma turma, por que ${eixoTop(t,0)} da o numero que da — e nao o numero "certo". Voce vai estar do outro lado da bancada. Esta trilha comeca hoje, deste lado.\n\n[Desenvolver: o que voce vai medir hoje · o que vai ter de saber explicar depois]` },
+    { tag:'A pergunta que fecha toda trilha', texto:`[ABERTURA — SEM CENA DE PERSONAGENS]\nToda trilha desta disciplina termina na mesma pergunta: o que disto caberia numa sala de aula de ensino medio? Comece por ela. Antes de tocar o instrumento, decida o que de ${nome} voce conseguiria ensinar sem o instrumento.\n\n[Desenvolver: o que exige a bancada · o que sobrevive sem ela]` },
+    { tag:'O erro que a turma comete primeiro', texto:`[ABERTURA — SEM CENA DE PERSONAGENS]\nHa um erro que a sua futura turma vai cometer primeiro em ${nome}, e ele nao e descuido: e um modelo mental coerente. Esta trilha mede o fenomeno e, no mesmo movimento, mostra por que aquele erro e razoavel.\n\n[Desenvolver: o erro classico · a medida que o desfaz · como leva-la para a sala]` }
+  ];
 }
 
 // ─── Ato I e III ──────────────────────────────────────────
@@ -4139,6 +4276,12 @@ function gerarAto1() {
   let txt;
 
   let opcoes;
+  if (ehILB()) {
+    opcoes = ato1ILB(t);
+    renderOpcoes('opcao-ato1', opcoes, (i, tx) => { document.getElementById('ato1-edit').value = tx; });
+    document.getElementById('ato1-edit').value = opcoes[0].texto;
+    return;
+  }
   if(n >= 2 && ativos.length >= 2) {
     // DUALIDADE ou TRIO — uma proposta com perspectivas cruzadas
     const nomes = ativos.map(pa => pa.nomeDisplay);
