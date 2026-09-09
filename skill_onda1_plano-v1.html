@@ -790,6 +790,14 @@ select option { background: var(--superficie); color: var(--texto); }
     <span class="secao-chevron" aria-hidden="true">▾</span>
   </div>
   <div class="secao-body">
+    <div class="nota-info" id="nota-conteudo-ilb" style="display:none;">
+      <strong>A ILB tem espinha fixa.</strong> A regra 2 do <span style="font-family:var(--mono);">CLAUDE.md</span>
+      da ILB manda todo TT percorrer as <strong>3 etapas do eixo metodol&oacute;gico</strong> &mdash; medi&ccedil;&atilde;o e
+      incerteza · tabelas e gr&aacute;ficos · ajuste de curva. <em>Muda o experimento; n&atilde;o muda o protocolo
+      de medida.</em> Os t&oacute;picos 2, 3 e 4 j&aacute; nascem com essas etapas e com a tabela e o produto do
+      <strong>tema</strong>; troque o <strong>1</strong> (o fen&ocirc;meno da trilha) e o <strong>5</strong> (o fecho did&aacute;tico).
+      TT que n&atilde;o percorrer as tr&ecirc;s est&aacute; incompleto.
+    </div>
     <div class="nota-info">Cada t&oacute;pico tem um <strong>t&iacute;tulo</strong> (nome da se&ccedil;&atilde;o no TT) e at&eacute; <strong>5 assuntos</strong> (subtemas que o TT deve cobrir dentro desse t&oacute;pico). Os assuntos orientam o Claude na gera&ccedil;&atilde;o do conte&uacute;do &mdash; n&atilde;o aparecem no t&iacute;tulo da se&ccedil;&atilde;o.</div>
     <div class="topicos-list" id="topicos-lista" style="margin-top:14px;"></div>
     <div class="btn-row">
@@ -2517,17 +2525,59 @@ let MATRIZ_PROT_TEMA = {
 // Os dados inline acima servem como fallback (FC1-MIN).
 // ═══════════════════════════════════════════════════════════
 
+
+/* Espinha do TT da ILB: as 3 etapas do eixo metodologico (regra 2 do CLAUDE.md
+   da ILB) mais o experimento da trilha e o fecho didatico. A tabela e o produto
+   do tratamento vem do TEMA, pela matriz-sintese de LFI-ILB-Temas-e-Trilhas-v1.
+   Substitui o "topico a definir", que nao dizia nada. */
+const ILB_TEMA_TRATAMENTO = {
+  0: { tabela: 'caderno de laboratorio', produto: 'registro rastreavel do que se observou' },
+  1: { tabela: 'uma coluna repetida', produto: 'numero com incerteza' },
+  2: { tabela: 'duas colunas acopladas (modulo e angulo)', produto: 'composicao vetorial verificada' },
+  3: { tabela: 'posicao x tempo', produto: 'grafico com reta ajustada e linearizacao' },
+  4: { tabela: 'periodica e par acoplado', produto: 'grandeza periodica por contagem multipla' },
+  5: { tabela: 'antes e depois', produto: 'decisao sobre conservacao' }
+};
+
+function esqueletoILB(t) {
+  /* Tema 0 (T0A e T0B) e AMBIENTACAO, nao bancada: "a primeira medicao e da
+     T01, em 13/10" (Plano de Ensino v5, nota 6.1). Dar a elas o eixo das 3
+     etapas seria prometer medicao que o encontro nao tem. */
+  if (t.tema === 0) {
+    return [
+      `O que esta trilha apresenta (a definir na Camada 2)`,
+      `Reconhecimento do laboratorio: o acervo, a menor divisao de cada instrumento e onde cada coisa fica`,
+      `Seguranca do laboratorio escolar e EPI — a norma daqui NAO e a NR-22`,
+      `O caderno de laboratorio: a primeira entrada, datada, e o que torna um registro rastreavel`,
+      `O que disto cabe numa sala de ensino medio (eixo didatico: a norma que o futuro professor vai adaptar)`
+    ];
+  }
+  const tr = ILB_TEMA_TRATAMENTO[t.tema] || ILB_TEMA_TRATAMENTO[1];
+  return [
+    `O fenomeno da trilha e a grandeza a medir (a definir na Camada 2: montagem, instrumento e o que se le nele)`,
+    `Avaliacao e expressao da medicao e da sua incerteza (etapa 1 do eixo metodologico: resolucao do instrumento, medidas repetidas, valor ± incerteza)`,
+    `Apresentacao de tabelas e graficos (etapa 2: tabela ${tr.tabela}, unidades no cabecalho, algarismos significativos)`,
+    `Ajuste de uma curva aos dados experimentais (etapa 3: ${tr.produto})`,
+    `O que disto cabe numa sala de ensino medio (eixo didatico: montagem possivel sem laboratorio e o erro que a turma comete primeiro)`
+  ];
+}
+
 /* Toda trilha precisa de 5 topicos para os geradores rodarem. Trilha sem
    Camada 2 aprovada (as da ILB, por exemplo) chega com t: [] — completa-se com
    um marcador visivel, que o autor troca ao aprovar a Camada 2. Nunca inventar
    topico: o marcador tem de aparecer no texto gerado. */
 const TOPICO_PENDENTE = 'topico a definir na Camada 2';
 
-function normalizarTrilhas(trilhas) {
+function normalizarTrilhas(trilhas, disciplina) {
+  var ilb = String(disciplina || '').toLowerCase() === 'ilb';
   Object.keys(trilhas || {}).forEach(function (c) {
     var t = trilhas[c];
     t.t = Array.isArray(t.t) ? t.t.slice() : [];
     t.semCamada2 = t.t.length === 0;
+    /* Na ILB, trilha sem Camada 2 nasce com a espinha metodologica em vez de
+       cinco marcadores iguais — o esqueleto ja e conteudo, e o autor troca o
+       topico 1 e o 5, que sao os da trilha. */
+    if (ilb && t.semCamada2) t.t = esqueletoILB(t);
     while (t.t.length < 5) t.t.push(TOPICO_PENDENTE + ' (' + (t.t.length + 1) + ')');
   });
   return trilhas;
@@ -2542,7 +2592,7 @@ async function carregarDadosJSON(disciplina, curso) {
   if(_INLINE_DATA[disciplina]) {
     const dados = _INLINE_DATA[disciplina];
     TEMAS = dados.temas.slice();
-    TRILHAS = normalizarTrilhas(JSON.parse(JSON.stringify(dados.trilhas)));
+    TRILHAS = normalizarTrilhas(JSON.parse(JSON.stringify(dados.trilhas)), disciplina);
     MATRIZ_PROT_TEMA = dados.matriz_prot_tema || {};
     /* elencos por disciplina: sem isto a ILB mostrava os 5 adolescentes da FC1 */
     if (dados.protagonistas) PROTAGONISTAS_CANONICOS = dados.protagonistas;
@@ -2573,7 +2623,7 @@ async function carregarDadosJSON(disciplina, curso) {
     }
 
     TEMAS = dados.temas;
-    TRILHAS = normalizarTrilhas(dados.trilhas);
+    TRILHAS = normalizarTrilhas(dados.trilhas, disciplina);
     MATRIZ_PROT_TEMA = dados.matriz_prot_tema || {};
     /* elencos por disciplina: sem isto a ILB mostrava os 5 adolescentes da FC1 */
     if (dados.protagonistas) PROTAGONISTAS_CANONICOS = dados.protagonistas;
@@ -4580,6 +4630,8 @@ function aplicarFluxoILB() {
   const ilb = ehILB();
   const nota = document.getElementById('epigrafe-nota-ilb');
   if (nota) nota.style.display = ilb ? '' : 'none';
+  const notaC = document.getElementById('nota-conteudo-ilb');
+  if (notaC) notaC.style.display = ilb ? '' : 'none';
   const g = document.getElementById('grupo-figuras-ilb');
   if (g) g.style.display = ilb ? '' : 'none';
   ['sec7', 'sec8'].forEach(function (id) {
