@@ -3293,7 +3293,12 @@ function showTab(id) {
   var main = document.querySelector('.main');
   if (main) main.scrollTop = 0;
   if (DISC_BARRAS.indexOf(id) !== -1) discGarantirCadastro();
-  if (id === 'onda1') { renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); loadCitacoesIframe(); }
+  if (id === 'onda1') {
+    renderOnda1Chips(); lazyLoadIframe('onda1-iframe'); loadCitacoesIframe();
+    var ifr = document.getElementById('onda1-iframe');
+    if (ifr) ifr.addEventListener('load', enviarCursoAoOnda1, { once: true });
+    setTimeout(enviarCursoAoOnda1, 400);
+  }
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
   if (id === 'cadastro') { cadastroCarregar(); discCarregar(); }
@@ -3619,6 +3624,7 @@ function cadastroCarregar(btn) {
       discPreencherCursos(cursos);
       window.CURSOS_CACHE_PRE = cursos;
       try { prePreencherCursos(); } catch (e) {}
+      try { enviarCursoAoOnda1(); } catch (e) {}
       var ativos = cursos.filter(function (c) { return c.status === 'ativo'; }).length;
       cadastroStatusUI('\u2713 ' + cursos.length + ' curso(s) — ' + ativos + ' com trilha publicada.', 'var(--verde-claro)');
     })
@@ -4211,6 +4217,29 @@ function renderOnda1Chips() {
   });
 }
 
+/* Curso corrente do cabecalho, lido da aba `cursos` do Cadastro (fonte unica).
+   O `tipo` (tecnico | tecnologo | licenciatura) e o que abre a Opcao 1, 2 ou 3
+   da Contextualizacao Tripla dentro do formulario Texto Tematico. */
+function cursoCorrente() {
+  var sel = document.getElementById('sel-curso');
+  var sigla = sel ? (sel.value || '').toUpperCase() : '';
+  var reg = (window.CURSOS_CACHE_PRE || []).filter(function (c) { return c.sigla === sigla; })[0];
+  return { sigla: sigla, nome: reg ? reg.nome : sigla, tipo: (reg && reg.tipo) ? reg.tipo : 'tecnico' };
+}
+
+/* Enviado ao carregar o iframe, ao trocar de curso e ao trocar de disciplina —
+   o formulario redesenha os 3 eixos sozinho ao receber. */
+function enviarCursoAoOnda1() {
+  var iframe = document.getElementById('onda1-iframe');
+  if (!iframe || !iframe.contentWindow || iframe.src === 'about:blank') return;
+  var c = cursoCorrente();
+  try {
+    iframe.contentWindow.postMessage({
+      type: 'cursoContexto', sigla: c.sigla, nome: c.nome, tipo: c.tipo
+    }, '*');
+  } catch (e) {}
+}
+
 function postToOnda1(action) {
   var iframe = document.getElementById('onda1-iframe');
   if (iframe && iframe.contentWindow) {
@@ -4776,6 +4805,7 @@ function loadDisciplina() {
 
   var onda1Iframe = document.getElementById('onda1-iframe');
   if (onda1Iframe && onda1Iframe.src !== 'about:blank') lazyLoadIframe('onda1-iframe');
+  setTimeout(enviarCursoAoOnda1, 250);
 
   try { DISC_BARRAS.forEach(renderBarraDisciplina); renderSkills(); } catch (e) {}
 }

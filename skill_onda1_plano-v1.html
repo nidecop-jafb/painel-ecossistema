@@ -1037,19 +1037,22 @@ select option { background: var(--superficie); color: var(--texto); }
   <div class="secao-header" onclick="toggleSecao(4)">
     <span class="secao-num">04</span>
     <span class="secao-titulo">Contextualizacao Tripla</span>
-    <span class="secao-campos">Eixo tecnico, historico-cultural, cotidiano</span>
+    <span class="secao-campos" id="sec4-campos">Eixo tecnico, historico-cultural, cotidiano</span>
     <span class="secao-chevron" aria-hidden="true">▾</span>
   </div>
   <div class="secao-body">
-    <div class="campo-grupo">
-      <div class="campo-label">Eixo Tecnico — Mineracao <span class="campo-edit-badge">Gerado — confirme ou edite</span></div>
-      <div class="opcoes-geradas" id="opcao-tecnico"></div>
-      <textarea id="tecnico-edit" class="gerado" rows="2" placeholder="Edite o eixo tecnico..."></textarea>
+    <div id="eixos-opcao-aviso" style="font-family:var(--mono);font-size:11.5px;color:var(--texto-sub);border:1px solid var(--cinza-borda);background:var(--input-bg);padding:7px 10px;margin-bottom:10px;line-height:1.6;">
+      Carregando o curso do Cadastro...
     </div>
     <div class="campo-grupo">
-      <div class="campo-label">Eixo Historico-Cultural — Ouro Preto <span class="campo-edit-badge">Gerado — confirme ou edite</span></div>
+      <div class="campo-label"><span id="rot-eixo1">Eixo Tecnico — Mineracao</span> <span class="campo-edit-badge">Gerado — confirme ou edite</span></div>
+      <div class="opcoes-geradas" id="opcao-tecnico"></div>
+      <textarea id="tecnico-edit" class="gerado" rows="2" placeholder="Edite o eixo 1..."></textarea>
+    </div>
+    <div class="campo-grupo">
+      <div class="campo-label"><span id="rot-eixo2">Eixo Historico-Cultural — Ouro Preto</span> <span class="campo-edit-badge">Gerado — confirme ou edite</span></div>
       <div class="opcoes-geradas" id="opcao-hist"></div>
-      <textarea id="hist-edit" class="gerado" rows="2" placeholder="Edite o eixo historico-cultural..."></textarea>
+      <textarea id="hist-edit" class="gerado" rows="2" placeholder="Edite o eixo 2..."></textarea>
     </div>
 
     <!-- NOVO: Entrelaçamento Ciência-Arte -->
@@ -1167,9 +1170,9 @@ select option { background: var(--superficie); color: var(--texto); }
     <!-- /NOVO: Entrelaçamento Ciência-Arte -->
 
     <div class="campo-grupo">
-      <div class="campo-label">Eixo Cotidiano — Estudante de 15-16 anos de OP <span class="campo-edit-badge">Gerado — confirme ou edite</span></div>
+      <div class="campo-label"><span id="rot-eixo3">Eixo Cotidiano — Voce, 15-16 anos</span> <span class="campo-edit-badge">Gerado — confirme ou edite</span></div>
       <div class="opcoes-geradas" id="opcao-cotid"></div>
-      <textarea id="cotid-edit" class="gerado" rows="2" placeholder="Edite o eixo cotidiano..."></textarea>
+      <textarea id="cotid-edit" class="gerado" rows="2" placeholder="Edite o eixo 3..."></textarea>
     </div>
     <div class="btn-row">
       <button class="btn btn-ouro" id="btn-confirmar-sec4" onclick="avancarSecao(4)">Confirmar contextualizacao ▶</button>
@@ -2427,6 +2430,8 @@ function init() {
             s.style.display = 'none';
           }
         });
+      } else if (ev.data.type === 'cursoContexto') {
+        try { aplicarCursoContexto(ev.data); } catch (e) {}
       } else if (ev.data.type === 'citacoesData') {
         var container = document.getElementById('epigrafes-auto');
         if (!container) return;
@@ -3898,38 +3903,130 @@ function gerarAto3() {
   document.getElementById('ato3-edit').value = txt;
 }
 
-// ─── Contextualizacao ────────────────────────────────────
-function gerarContextualizacao() {
-  if(!estado.trilha) return;
-  const t = TRILHAS[estado.trilha];
-  const temaObj = TEMAS[t.tema-1];
 
-  // Eixo Técnico — 3 ângulos
-  const tecOpcoes = [
+/* ═══ CONTEXTUALIZACAO TRIPLA — AS 3 OPCOES DO QUADRO 1 ═══════════════════
+   Qual opcao vale nao se escolhe aqui: vem do TIPO do curso gravado e aprovado
+   no CADASTRO do Painel (aba `cursos`: tecnico | tecnologo | licenciatura),
+   entregue por postMessage {type:'cursoContexto'}. Sem o Painel (arquivo aberto
+   sozinho), cai na Opcao 1, que e a da FC1/FE1.
+
+     Opcao 1 · Tecnicos    : Tecnico-Mineracao   · Historico-Cultural · Cotidiano
+     Opcao 2 · Tecnologicos: Qualidade           · Historico-Cultural · Metrologico
+     Opcao 3 · Licenciatura: Didatico-Pedagogico · Historico-Cultural · Metrologico
+
+   O eixo 2 (Ouro Preto) e o unico comum as tres — e a ancora do lugar.       */
+
+var EIXO_ANGULOS = {
+  tecnico: function (t) { return [
     { tag:'Operação direta', texto:`Aplicacao de ${t.nome.toLowerCase()} em processos reais de mineracao: ${t.t[2].toLowerCase()} e ${t.t[3].toLowerCase()} — conectando conceito fisico a operacoes industriais cotidianas do setor mineral.` },
     { tag:'Segurança NR-22', texto:`${t.nome} como fundamento da seguranca operacional na mineracao: o desconhecimento de ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()} gera riscos reais de acidente. O dominio do conceito e pre-requisito pratico para a NR-22.` },
-    { tag:'Eficiência produtiva', texto:`Otimizacao de ${t.t[1].toLowerCase()} e ${t.t[3].toLowerCase()} pela aplicacao correta de ${t.nome.toLowerCase()}: cada percentual de eficiencia ganho representa impacto mensuravel no fluxo produtivo da planta mineral.` },
-  ];
-  renderOpcoes('opcao-tecnico', tecOpcoes, (i,tx)=>{ document.getElementById('tecnico-edit').value=tx; });
-  document.getElementById('tecnico-edit').value = tecOpcoes[0].texto;
+    { tag:'Eficiência produtiva', texto:`Otimizacao de ${t.t[1].toLowerCase()} e ${t.t[3].toLowerCase()} pela aplicacao correta de ${t.nome.toLowerCase()}: cada percentual de eficiencia ganho representa impacto mensuravel no fluxo produtivo da planta mineral.` }
+  ]; },
 
-  // Eixo Histórico-Cultural — 3 ângulos
-  const histOpcoes = [
+  qualidade: function (t) { return [
+    { tag:'Controle de processo', texto:`${t.nome} como variavel de processo: ${t.t[2].toLowerCase()} e ${t.t[3].toLowerCase()} so ficam sob controle quando a grandeza e medida, registrada e comparada com a faixa especificada — e a diferenca entre operar e apenas produzir.` },
+    { tag:'Conformidade do produto', texto:`A especificacao do produto traduz ${t.nome.toLowerCase()} em requisito verificavel: ${t.t[0].toLowerCase()} define o que se mede, e ${t.t[1].toLowerCase()} define o criterio de aceitacao. Sem esse elo, conformidade vira opiniao.` },
+    { tag:'Melhoria contínua', texto:`Indicadores construidos sobre ${t.nome.toLowerCase()} mostram onde o processo perde: a variacao de ${t.t[1].toLowerCase()} e o custo de ${t.t[3].toLowerCase()} apontam a causa-raiz antes que ela chegue ao cliente.` }
+  ]; },
+
+  didatico: function (t) { return [
+    { tag:'Obstáculo epistemológico', texto:`As concepcoes previas sobre ${t.nome.toLowerCase()} que o licenciando precisa reconhecer antes de ensinar: os erros classicos em ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()} nao sao descuido, sao um modelo mental coerente que resiste a aula expositiva.` },
+    { tag:'Transposição didática', texto:`O caminho do saber sabio ao saber ensinavel em ${t.nome.toLowerCase()}: o que se recorta de ${t.t[2].toLowerCase()}, o que se adia, e por que a ordem escolhida sustenta (ou trai) o conceito.` },
+    { tag:'Sequência de ensino', texto:`Como o futuro professor planeja a aula de ${t.nome.toLowerCase()}: a pergunta inicial, a atividade que produz a evidencia de ${t.t[0].toLowerCase()}, e o instrumento que mostra se a turma aprendeu ${t.t[1].toLowerCase()} — Bloom L4-L6, nao so lembrar.` }
+  ]; },
+
+  hist: function (t) { return [
     { tag:'Aleijadinho & construção', texto:`Conexao com o patrimonio barroco de Ouro Preto: as solucoes construtivas de Aleijadinho e dos engenheiros coloniais revelam aplicacoes intuitivas de ${t.nome.toLowerCase()} — da estabilidade das fachadas ao dimensionamento de campanarios e estruturas de mineracao do seculo XVIII.` },
     { tag:'Mineração colonial', texto:`A mineracao de ouro do seculo XVIII em Ouro Preto dependia de ${t.nome.toLowerCase()} para funcionar: as galerias, os sistemas de drenagem e os engenhos coloniais aplicavam os mesmos principios fisicos que os estudantes aprendem hoje — sem formalismo matematico, mas com precisao pratica notavel.` },
-    { tag:'Escola de Minas & UFOP', texto:`A Escola de Minas de Ouro Preto (1876) foi fundada para formalizar o conhecimento de ${t.nome.toLowerCase()} que os mineradores ja aplicavam intuitivamente. Esse percurso — da pratica empirica a teoria sistematizada — e o mesmo que o estudante faz nesta trilha.` },
-  ];
-  renderOpcoes('opcao-hist', histOpcoes, (i,tx)=>{ document.getElementById('hist-edit').value=tx; });
-  document.getElementById('hist-edit').value = histOpcoes[0].texto;
+    { tag:'Escola de Minas & UFOP', texto:`A Escola de Minas de Ouro Preto (1876) foi fundada para formalizar o conhecimento de ${t.nome.toLowerCase()} que os mineradores ja aplicavam intuitivamente. Esse percurso — da pratica empirica a teoria sistematizada — e o mesmo que o estudante faz nesta trilha.` }
+  ]; },
 
-  // Eixo Cotidiano — 3 ângulos
-  const cotOpcoes = [
+  cotidiano: function (t) { return [
     { tag:'Vivência urbana', texto:`Experiencias do estudante de 15-16 anos morador de Ouro Preto: deslocamentos em ladeiras íngremes, observacao de maquinas em operacao, visitacao a minas e igrejas historicas — situacoes que envolvem ${t.t[0].toLowerCase()} sem que o estudante perceba a fisica presente.` },
     { tag:'Transporte & mobilidade', texto:`O estudante que vai ao IFMG todos os dias experimenta ${t.nome.toLowerCase()} no onibus, na subida da ladeira, na mochila nas costas. Essas experiencias corporais sao a ancora cognitiva para os conceitos de ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()}.` },
-    { tag:'Curiosidade tecnológica', texto:`Celular, fone de ouvido, camera: os dispositivos que os estudantes de 15-16 anos usam diariamente funcionam com base em ${t.nome.toLowerCase()}. Conectar o abstrato ao familiar e o primeiro passo para engajar a turma nos conceitos de ${t.t[0].toLowerCase()}.` },
-  ];
-  renderOpcoes('opcao-cotid', cotOpcoes, (i,tx)=>{ document.getElementById('cotid-edit').value=tx; });
-  document.getElementById('cotid-edit').value = cotOpcoes[0].texto;
+    { tag:'Curiosidade tecnológica', texto:`Celular, fone de ouvido, camera: os dispositivos que os estudantes de 15-16 anos usam diariamente funcionam com base em ${t.nome.toLowerCase()}. Conectar o abstrato ao familiar e o primeiro passo para engajar a turma nos conceitos de ${t.t[0].toLowerCase()}.` }
+  ]; },
+
+  metrologico: function (t) { return [
+    { tag:'Grandeza & unidade SI', texto:`Que grandeza ${t.nome.toLowerCase()} realmente mede, e em que unidade do SI: nomear a grandeza, escrever a unidade com a grafia correta e reconhecer as unidades derivadas envolvidas em ${t.t[0].toLowerCase()} e o primeiro ato de rigor.` },
+    { tag:'Incerteza & algarismos', texto:`Toda medida de ${t.t[1].toLowerCase()} vem com duvida: quantos algarismos significativos o instrumento sustenta, como a incerteza se propaga no calculo e por que um resultado sem incerteza nao e um resultado.` },
+    { tag:'Rastreabilidade & calibração', texto:`De onde vem a confianca no numero: o padrao, a calibracao do instrumento e a cadeia de rastreabilidade que liga a medida de ${t.t[2].toLowerCase()} feita em sala ao SI — e o que se perde quando essa cadeia se rompe.` }
+  ]; }
+};
+
+var EIXOS_OPCAO = {
+  tecnico: { n: 1, curso: 'Cursos Tecnicos',
+    eixos: [
+      { rotulo: 'Eixo Tecnico — Mineracao', chave: 'tecnico' },
+      { rotulo: 'Eixo Historico-Cultural — Ouro Preto', chave: 'hist' },
+      { rotulo: 'Eixo Cotidiano — Voce, 15-16 anos', chave: 'cotidiano' }
+    ] },
+  tecnologo: { n: 2, curso: 'Cursos Tecnologicos',
+    eixos: [
+      { rotulo: 'Eixo da Qualidade — Processos e Produtos', chave: 'qualidade' },
+      { rotulo: 'Eixo Historico-Cultural — Ouro Preto', chave: 'hist' },
+      { rotulo: 'Eixo Metrologico — SI', chave: 'metrologico' }
+    ] },
+  licenciatura: { n: 3, curso: 'Cursos de Licenciatura',
+    eixos: [
+      { rotulo: 'Eixo Didatico — Pedagogico', chave: 'didatico' },
+      { rotulo: 'Eixo Historico-Cultural — Ouro Preto', chave: 'hist' },
+      { rotulo: 'Eixo Metrologico — SI', chave: 'metrologico' }
+    ] }
+};
+
+/* curso corrente: preenchido pelo Painel; 'tecnico' e o padrao de quem abre o
+   formulario fora do Painel (a FC1 e a FE1 sao tecnicas). */
+var CURSO_CTX = { sigla: '', nome: '', tipo: 'tecnico' };
+
+function eixosAtuais() { return EIXOS_OPCAO[CURSO_CTX.tipo] || EIXOS_OPCAO.tecnico; }
+
+/* usados nas saidas (prompt, .md, prompt do TT): o nome do eixo tem de ser o da
+   opcao vigente, senao o Claude recebe "eixo tecnico" num curso de licenciatura */
+function rotEixo(i) { return eixosAtuais().eixos[i].rotulo; }
+function rotuloOpcao() {
+  var op = eixosAtuais();
+  return 'Opcao ' + op.n + ' · ' + op.curso + (CURSO_CTX.sigla ? ' · ' + CURSO_CTX.sigla : '');
+}
+
+function aplicarCursoContexto(dados) {
+  CURSO_CTX = {
+    sigla: dados.sigla || '',
+    nome: dados.nome || '',
+    tipo: EIXOS_OPCAO[dados.tipo] ? dados.tipo : 'tecnico'
+  };
+  var op = eixosAtuais();
+  ['rot-eixo1', 'rot-eixo2', 'rot-eixo3'].forEach(function (id, i) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = op.eixos[i].rotulo;
+  });
+  var campos = document.getElementById('sec4-campos');
+  if (campos) campos.textContent = op.eixos.map(function (e) {
+    return e.rotulo.split('—')[0].replace('Eixo', '').trim();
+  }).join(', ');
+  var aviso = document.getElementById('eixos-opcao-aviso');
+  if (aviso) {
+    aviso.innerHTML = '<strong>Opcao ' + op.n + ' &middot; ' + op.curso + '</strong> — '
+      + (CURSO_CTX.sigla ? CURSO_CTX.sigla + ' &middot; ' + CURSO_CTX.nome : 'curso nao informado')
+      + '. Os tres eixos abaixo saem do <strong>tipo</strong> do curso gravado no Cadastro do Painel; '
+      + 'para mudar, altere o curso no cabecalho ou o tipo dele na aba Cadastro.';
+  }
+  if (estado && estado.trilha) gerarContextualizacao();
+}
+
+// ─── Contextualizacao ────────────────────────────────────
+/* Os 3 eixos saem da opcao do curso (Quadro 1); os ids dos slots e dos campos
+   sao posicionais — eixo 1, 2 e 3 —, nao mais 'tecnico/hist/cotidiano'. */
+function gerarContextualizacao() {
+  if (!estado.trilha) return;
+  const t = TRILHAS[estado.trilha];
+  const slots = ['opcao-tecnico', 'opcao-hist', 'opcao-cotid'];
+  const campos = ['tecnico-edit', 'hist-edit', 'cotid-edit'];
+  eixosAtuais().eixos.forEach(function (eixo, i) {
+    const opcoes = EIXO_ANGULOS[eixo.chave](t);
+    renderOpcoes(slots[i], opcoes, function (k, tx) { document.getElementById(campos[i]).value = tx; });
+    document.getElementById(campos[i]).value = opcoes[0].texto;
+  });
 }
 
 // ─── Turma ────────────────────────────────────────────────
@@ -4291,13 +4388,13 @@ Resolucao esperada (Ato III): ${document.getElementById('ato3-edit').value || '[
 ${getInstrumentosOutput()}${getSimulacoesOutput()}
 Autores da trilha (para rodapé do TT): ${estado.profsAtivos.length ? estado.profsAtivos.map(p=>p.nome).join(', ') : (document.getElementById('inp-autor')?.value||'[a definir]')}
 
-## 4 · Contextualizacao Tripla
+## 4 · Contextualizacao Tripla (${rotuloOpcao()})
 
-Eixo tecnico: ${document.getElementById('tecnico-edit').value || '[a definir]'}
+${rotEixo(0)}: ${document.getElementById('tecnico-edit').value || '[a definir]'}
 
-Eixo historico-cultural: ${document.getElementById('hist-edit').value || '[a definir]'}
+${rotEixo(1)}: ${document.getElementById('hist-edit').value || '[a definir]'}
 
-Eixo cotidiano: ${document.getElementById('cotid-edit').value || '[a definir]'}${getArteOutput()}
+${rotEixo(2)}: ${document.getElementById('cotid-edit').value || '[a definir]'}${getArteOutput()}
 
 ## 5 · Lacunas
 
@@ -4445,10 +4542,10 @@ function autoExportRascunho(gatilho) {
   md += `\n`;
 
   // Sec 4 — Contextualizacao
-  md += `## 04 · Contextualizacao Tripla\n\n`;
-  md += `- **Eixo tecnico:** ${val('tecnico-edit')}\n`;
-  md += `- **Eixo historico:** ${val('hist-edit')}\n`;
-  md += `- **Eixo cotidiano:** ${val('cotid-edit')}\n\n`;
+  md += `## 04 · Contextualizacao Tripla — ${rotuloOpcao()}\n\n`;
+  md += `- **${rotEixo(0)}:** ${val('tecnico-edit')}\n`;
+  md += `- **${rotEixo(1)}:** ${val('hist-edit')}\n`;
+  md += `- **${rotEixo(2)}:** ${val('cotid-edit')}\n\n`;
 
   // Sec 5 — Lacunas
   md += `## 05 · Lacunas\n\n`;
@@ -5014,10 +5111,10 @@ ${topListAssuntos}
 > dentro do tópico, mas NUNCA deve aparecer no heading ## da seção. O título do tópico
 > é apenas o texto antes do parêntese.
 
-Contextualização Tripla:
-  Eixo técnico:            ${ctx.tecnico}
-  Eixo histórico-cultural: ${ctx.hist}
-  Eixo cotidiano:          ${ctx.cotid}
+Contextualização Tripla — ${rotuloOpcao()}:
+  ${rotEixo(0)}: ${ctx.tecnico}
+  ${rotEixo(1)}: ${ctx.hist}
+  ${rotEixo(2)}: ${ctx.cotid}
 
 ## Protocolo de escrita (obrigatório)
 
