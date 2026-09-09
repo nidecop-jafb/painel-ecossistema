@@ -223,6 +223,9 @@ body {
 .disc-chip { font-family:var(--mono); font-size:11.5px; padding:3px 10px; border:1px solid var(--cinza-borda); background:var(--fundo); color:var(--texto-sub); cursor:pointer; }
 .disc-chip:hover { border-color:var(--ouro-claro); color:var(--texto); }
 .disc-chip.sel { border-color:var(--verde-claro); color:var(--verde-claro); background:var(--verde-bg); }
+.qual-aviso { border:1px solid var(--ouro); background:var(--ouro-bg); color:var(--texto);
+  padding:10px 12px; margin-bottom:12px; font-size:12.5px; line-height:1.65; }
+.qual-aviso strong { color:var(--ouro-claro); }
 .disc-bar-vazio { font-family:var(--mono); font-size:11.5px; color:var(--texto-sub); line-height:1.6; }
 .section-title {
   font-family: var(--display);
@@ -3037,6 +3040,7 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
               <input type="checkbox" id="filtro-resolvidos" onchange="renderProblemas()"> Mostrar resolvidos
             </label>
           </div>
+          <div id="qual-aviso-problemas" class="qual-aviso" style="display:none;"></div>
           <div id="problemas-container"></div>
           <div id="problemas-erro" style="display:none;padding:20px;text-align:center;color:var(--texto-sub);font-size:13px;">
             N&atilde;o foi poss&iacute;vel carregar os problemas. Verifique se o arquivo <code>_dados/problemas-pendentes.json</code> existe.
@@ -3048,6 +3052,7 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
           <p style="font-size:13px;color:var(--texto-sub);margin-bottom:12px;">
             Tabelas de crit&eacute;rios de sucesso verific&aacute;veis para cada OA &mdash; FC1 e FE1.
           </p>
+          <div id="qual-aviso-criterios" class="qual-aviso" style="display:none;"></div>
           <iframe id="criterios-iframe"
                   data-src="criterios-sucesso-oa.html"
                   style="width:100%;height:calc(100vh - 260px);border:1px solid var(--cinza-borda);background:var(--fundo);"
@@ -3059,6 +3064,7 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
           <p style="font-size:13px;color:var(--texto-sub);margin-bottom:12px;">
             Refer&ecirc;ncia dos 4 modos de loop de produ&ccedil;&atilde;o (Claude Code) e atribui&ccedil;&atilde;o por OA.
           </p>
+          <div id="qual-aviso-loops" class="qual-aviso" style="display:none;"></div>
           <iframe id="loops-iframe"
                   data-src="loops-producao-v2.1.html"
                   style="width:100%;height:calc(100vh - 260px);border:1px solid var(--cinza-borda);background:var(--fundo);"
@@ -3315,7 +3321,7 @@ function showTab(id) {
   }
   if (id === 'producao') renderPromptsGuias();
   if (id === 'epigrafes') loadEpigrafe();
-  if (id === 'qualidade') initQualidade();
+  if (id === 'qualidade') { initQualidade(); try { renderAvisosQualidade(); } catch (e) {} }
 }
 
 /* ── GUIAS: prompts prontos para o Claude Code ── */
@@ -4357,6 +4363,7 @@ function discBarSelecionar(codigo, curso) {
   try { loadEpigrafe(); } catch (e) {}
   try { renderOnda1Chips(); } catch (e) {}
   if (window._problemasData) { try { renderProblemas(); } catch (e) {} }
+  try { renderAvisosQualidade(); } catch (e) {}
 }
 
 /* Garante que as 4 abas tenham a lista do Cadastro, mesmo que o autor nunca
@@ -4909,6 +4916,48 @@ window.addEventListener('message', function(ev) {
 /* ── QUALIDADE ── */
 var _problemasData = null;
 var _problemasResolvidos = {};
+
+/* Os tres documentos da aba Qualidade sao de FC1 e FE1. Servi-los a outra
+   disciplina sem ressalva faz o painel AFIRMAR o que nao mediu — e, no caso
+   dos problemas, lista vazia le-se como "nenhum problema" em vez de "nao
+   levantado". Estas tarjas dizem o que cada documento cobre. */
+var QUAL_COBERTURA = ['FC1', 'FE1'];
+
+function qualDiscAtual() {
+  return (document.getElementById('sel-disciplina').value || '').toUpperCase();
+}
+
+function qualAviso(id, html) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = html || '';
+  el.style.display = html ? '' : 'none';
+}
+
+function renderAvisosQualidade() {
+  var d = qualDiscAtual();
+  var coberta = QUAL_COBERTURA.indexOf(d) !== -1;
+  if (coberta) {
+    ['qual-aviso-problemas', 'qual-aviso-criterios', 'qual-aviso-loops'].forEach(function (i) {
+      qualAviso(i, '');
+    });
+    return;
+  }
+  qualAviso('qual-aviso-problemas',
+    '<strong>Nada levantado para a ' + d + ' &mdash; lista vazia n&atilde;o quer dizer zero problemas.</strong> '
+    + 'O invent&aacute;rio de <span style="font-family:var(--mono);">_dados/problemas-pendentes.json</span> '
+    + 'saiu do Loop de manuten&ccedil;&atilde;o de <strong>22/07/2026</strong>, que percorreu FC1 e FE1. '
+    + 'A ' + d + ' ainda n&atilde;o passou por ele.');
+  qualAviso('qual-aviso-criterios',
+    '<strong>Este documento &eacute; da FC1 e da FE1</strong> ("Crit&eacute;rios de Sucesso por OA &mdash; FC1 &amp; FE1") '
+    + 'e n&atilde;o cobre a ' + d + '. Para a ILB, o que vale hoje &eacute; o <strong>checklist pr&eacute;-entrega</strong> '
+    + 'da skill <span style="font-family:var(--mono);">texto-tematico-ilb</span> (se&ccedil;&atilde;o 7) e os '
+    + '<strong>indicadores de sucesso</strong> da Camada 2 de cada trilha.');
+  qualAviso('qual-aviso-loops',
+    '<strong>Este documento &eacute; da FC1 e da FE1</strong> ("Loops Claude Code &mdash; Produ&ccedil;&atilde;o de OAs FC1 &amp; FE1") '
+    + 'e n&atilde;o cobre a ' + d + '. A matriz de modelo e esfor&ccedil;o por OA da ' + d + ' ainda n&atilde;o foi escrita &mdash; '
+    + 'at&eacute; l&aacute;, vale a regra 4 da se&ccedil;&atilde;o 18 do CLAUDE.md da raiz.');
+}
 
 function initQualidade() {
   if (!_problemasData) {
