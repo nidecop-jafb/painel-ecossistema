@@ -1678,7 +1678,7 @@ const TRILHAS_FE1 = {
 // mas os topicos entram aqui quando o autor aprovar a matriz de topicos.
 // ═══════════════════════════════════════════════════════════
 const TEMAS_ILB = [
-  { num: 0, nome: "Antes da primeira medida", sub: "T0A · T0B", foco: "Ambientacao: laboratorio, seguranca e EPI, caderno de laboratorio e o Sistema Internacional de Unidades" },
+  { num: 0, nome: "Antes da primeira medida", sub: "T0A · T0B", foco: "Ambientacao: laboratorio, seguranca e EPI, Roteiro de Bancada e o Sistema Internacional de Unidades" },
   { num: 1, nome: "Um numero e sua duvida", sub: "T01 · T02", foco: "Regua, trena, paquimetro, micrometro, balanca · tabela de uma coluna repetida · valor ± incerteza e propagacao em medida indireta" },
   { num: 2, nome: "Quando o numero nao basta", sub: "T03 · T04", foco: "Transferidor, dinamometro, mesa de forcas · duas colunas acopladas · modulo, direcao e sentido; composicao vetorial" },
   { num: 3, nome: "O mesmo encontro, duas causas", sub: "T05 · T06", foco: "Cronometro, sensores fotoeletricos, trilho · posicao × tempo · grafico, ajuste de reta e parabola, linearizacao" },
@@ -2531,7 +2531,7 @@ let MATRIZ_PROT_TEMA = {
    do tratamento vem do TEMA, pela matriz-sintese de LFI-ILB-Temas-e-Trilhas-v1.
    Substitui o "topico a definir", que nao dizia nada. */
 const ILB_TEMA_TRATAMENTO = {
-  0: { tabela: 'caderno de laboratorio', produto: 'registro rastreavel do que se observou' },
+  0: { tabela: 'Roteiro de Bancada', produto: 'registro rastreavel do que se observou' },
   1: { tabela: 'uma coluna repetida', produto: 'numero com incerteza' },
   2: { tabela: 'duas colunas acopladas (modulo e angulo)', produto: 'composicao vetorial verificada' },
   3: { tabela: 'posicao x tempo', produto: 'grafico com reta ajustada e linearizacao' },
@@ -2548,7 +2548,7 @@ function esqueletoILB(t) {
       `O que esta trilha apresenta (a definir na Camada 2)`,
       `Reconhecimento do laboratorio: o acervo, a menor divisao de cada instrumento e onde cada coisa fica`,
       `Seguranca do laboratorio escolar e EPI — a norma daqui NAO e a NR-22`,
-      `O caderno de laboratorio: a primeira entrada, datada, e o que torna um registro rastreavel`,
+      `O Roteiro de Bancada: a primeira entrada, datada, e o que torna um registro rastreavel`,
       `O que disto cabe numa sala de ensino medio (eixo didatico: a norma que o futuro professor vai adaptar)`
     ];
   }
@@ -4576,6 +4576,16 @@ var EIXO_ANGULOS = {
     { tag:'Curiosidade tecnológica', texto:`Celular, fone de ouvido, camera: os dispositivos que os estudantes de 15-16 anos usam diariamente funcionam com base ${eixoNomeEm(t)}. Conectar o abstrato ao familiar e o primeiro passo para engajar a turma ${eixoTopEm(t,0)}.` }
   ]; },
 
+  /* Historico-cultural da ILB. O banco `hist` acima e o da FC1 e trata a
+     mineracao como conteudo tecnico — na ILB isso e erro: a regra 6 do
+     CLAUDE.md da ILB manda aplicar o eixo a historia da PROPRIA MEDICAO e do
+     metodo cientifico. Ouro Preto continua sendo a ancora do lugar. */
+  histILB: function (t) { return [
+    { tag:'Escola de Minas — medir vira instituicao', texto:`A Escola de Minas de Ouro Preto (1876) nasceu para formalizar a exigencia de medir com rigor: laboratorio, padrao e registro deixaram de ser habilidade pessoal e viraram institucao. ${eixoTop(t,0)} chega ao licenciando por essa cadeia — e e ela que ele vai reproduzir, em escala menor, na sua sala.` },
+    { tag:'Museu de Ciencia e Tecnica — o instrumento como documento', texto:`O acervo de instrumentos do Museu de Ciencia e Tecnica mostra o que uma epoca conseguia medir e com que resolucao. Comparar aquele instrumento com o da bancada de hoje e a maneira mais direta de o licenciando ver que incerteza nao e defeito: e a fronteira historica do que se sabia medir.` },
+    { tag:'A medida antes do SI — o padrao local', texto:`Antes do sistema metrico, cada praca tinha o seu padrao, e Ouro Preto negociava ouro com balancas que ninguem podia conferir contra nada. A historia da medicao e a historia da confianca no numero — o que hoje se chama rastreabilidade nasceu dessa desconfianca.` }
+  ]; },
+
   metrologico: function (t) { return [
     { tag:'Grandeza & unidade SI', texto:`Que grandezas estao em jogo ${eixoTopEm(t,0)} e em que unidades do SI elas se escrevem: nomear a grandeza, grafar a unidade como se deve (m, s, m/s — nunca M/S) e reconhecer as unidades derivadas envolvidas e o primeiro ato de rigor.` },
     { tag:'Incerteza & algarismos', texto:`Toda medida que alimenta ${eixoTop(t,1)} vem com duvida: quantos algarismos significativos o instrumento sustenta, como a incerteza se propaga no calculo e por que um resultado sem incerteza nao e um resultado.` },
@@ -4599,7 +4609,8 @@ var EIXOS_OPCAO = {
   licenciatura: { n: 3, curso: 'Cursos de Licenciatura',
     eixos: [
       { rotulo: 'Eixo Didatico — Pedagogico', chave: 'didatico' },
-      { rotulo: 'Eixo Historico-Cultural — Ouro Preto', chave: 'hist' },
+      /* na ILB o historico-cultural e o da historia da medicao, nao o da FC1 */
+      { rotulo: 'Eixo Historico-Cultural — Ouro Preto', chave: 'histILB' },
       { rotulo: 'Eixo Metrologico — SI', chave: 'metrologico' }
     ] }
 };
