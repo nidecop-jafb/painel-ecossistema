@@ -1191,7 +1191,7 @@ select option { background: var(--superficie); color: var(--texto); }
   <div class="secao-body">
     <div class="campo-grupo">
       <div class="campo-label">Curso e Série</div>
-      <div class="campo-readonly">1a série · Técnico em Mineração Integrado ao Ensino Médio · IFMG-OP</div>
+      <div class="campo-readonly" id="out-curso-serie">1a série · Técnico em Mineração Integrado ao Ensino Médio · IFMG-OP</div>
     </div>
     <div class="campo-grupo">
       <div class="campo-label">Trilhas ja Cursadas <span class="campo-auto-badge">3 anteriores automaticas</span></div>
@@ -2525,6 +2525,7 @@ async function carregarDadosJSON(disciplina, curso) {
 
     _disciplinaAtual = disciplina;
     _cursoAtual = curso;
+    try { aplicarCursoSerie(); } catch (e) {}
 
     if(statusEl) statusEl.textContent = `✓ ${disciplina.toUpperCase()}-${curso.toUpperCase()} carregado (${Object.keys(TRILHAS).length} trilhas)`;
     return true;
@@ -2555,6 +2556,7 @@ async function carregarDadosJSON(disciplina, curso) {
 
     _disciplinaAtual = disciplina;
     _cursoAtual = curso;
+    try { aplicarCursoSerie(); } catch (e) {}
 
     if(statusEl) statusEl.textContent = `✓ ${disciplina.toUpperCase()}-${curso.toUpperCase()} carregado (${Object.keys(TRILHAS).length} trilhas)`;
     return true;
@@ -4529,6 +4531,18 @@ function rotuloOpcao() {
   return 'Opcao ' + op.n + ' · ' + op.curso + (CURSO_CTX.sigla ? ' · ' + CURSO_CTX.sigla : '');
 }
 
+const CURSO_SERIE_LABEL = {
+  ilb: '2.\u00ba per\u00edodo \u00b7 Licenciatura em F\u00edsica \u00b7 IFMG-OP',
+  fc1: '1a s\u00e9rie \u00b7 T\u00e9cnico em Minera\u00e7\u00e3o Integrado ao Ensino M\u00e9dio \u00b7 IFMG-OP',
+  fe1: '1a s\u00e9rie \u00b7 T\u00e9cnico em Minera\u00e7\u00e3o Integrado ao Ensino M\u00e9dio \u00b7 IFMG-OP'
+};
+
+function aplicarCursoSerie() {
+  const el = document.getElementById('out-curso-serie');
+  const d = String(typeof _disciplinaAtual !== 'undefined' ? _disciplinaAtual : 'fc1').toLowerCase();
+  if (el && CURSO_SERIE_LABEL[d]) el.textContent = CURSO_SERIE_LABEL[d];
+}
+
 function aplicarCursoContexto(dados) {
   CURSO_CTX = {
     sigla: dados.sigla || '',
@@ -4582,7 +4596,47 @@ function atualizarTrilhasCursadas(code) {
   document.getElementById('out-trilhas-cursadas').textContent = anteriores.join('\n');
 }
 
+/* ── LACUNAS E FINALIZACAO DA ILB ──────────────────────────────────
+   O leitor da ILB e adulto. As lacunas que a trilha precisa prever nao sao
+   as dele: sao as da TURMA-ALVO IMAGINADA que ele vai encontrar quando
+   estiver do outro lado da bancada. Por isso vem por ETAPA e SERIE, em
+   Leitura e/ou Matematica (decisao do autor, 2026-09-09).
+   Vale a regra 1 do CLAUDE.md da ILB: 2.o periodo, SEM Mecanica I — a
+   ancora nao pode supor formalismo que o licenciando ainda nao cursou. */
+
+const LACUNAS_ILB = [
+  { tag: 'Fundamental · anos iniciais · Leitura',
+    texto: 'Turma-alvo com lacuna de LEITURA dos anos iniciais do Fundamental (1.a a 4.a serie): le palavra a palavra, nao retem o enunciado inteiro e perde o comando da questao. No laboratorio isso aparece como roteiro nao seguido — nao por indisciplina, por decodificacao. O licenciando precisa prever roteiro curto, um comando por linha, e leitura em voz alta antes da montagem.' },
+  { tag: 'Fundamental · anos iniciais · Matematica',
+    texto: 'Turma-alvo com lacuna de MATEMATICA dos anos iniciais do Fundamental (1.a a 4.a serie): as quatro operacoes ainda inseguras, dificuldade com valor posicional e com a leitura de escala. A medida nao falha na fisica, falha na aritmetica — o licenciando precisa prever o instrumento de leitura direta antes do de leitura interpolada.' },
+  { tag: 'Fundamental · anos iniciais · Leitura e Matematica',
+    texto: 'Turma-alvo com as DUAS lacunas dos anos iniciais do Fundamental (1.a a 4.a serie): enunciado nao retido e aritmetica insegura ao mesmo tempo. E o cenario mais comum na rede publica e o que mais exige do futuro professor: reduzir o roteiro ao gesto, dar a tabela ja montada e deixar o numero grande e legivel antes de pedir qualquer conta.' },
+  { tag: 'Ensino Medio · Leitura',
+    texto: 'Turma-alvo do Ensino Medio (1.a a 3.a serie) com lacuna de LEITURA: acompanha o texto corrido, mas nao le tabela, grafico nem legenda — o suporte visual passa despercebido. O licenciando precisa prever a leitura do grafico como CONTEUDO da aula, nao como pre-requisito dela.' },
+  { tag: 'Ensino Medio · Matematica',
+    texto: 'Turma-alvo do Ensino Medio (1.a a 3.a serie) com lacuna de MATEMATICA: proporcionalidade insegura, notacao cientifica e potencia de dez evitadas, algarismo significativo ignorado. Toda incerteza vira "erro", e o resultado se apresenta com todos os digitos da calculadora — e o obstaculo direto do eixo metrologico.' },
+  { tag: 'Ensino Medio · Leitura e Matematica',
+    texto: 'Turma-alvo do Ensino Medio (1.a a 3.a serie) com as DUAS lacunas: nao le o grafico e nao sustenta a proporcao. O licenciando precisa decidir o que a pratica ainda ensina nessas condicoes — e essa decisao, e nao o experimento, e o que a trilha o treina a tomar.' }
+];
+
+function gerarTurmaILB(code) {
+  const t = TRILHAS[code];
+  const ancora = `Licenciatura em Fisica, 2.o periodo: SEM Mecanica I cursada (regra 1 do CLAUDE.md da ILB). A ancora disponivel e o Ensino Medio do proprio licenciando mais o eixo metodologico ja percorrido nas trilhas anteriores — medicao e incerteza, tabelas e graficos, ajuste de curva. Para ${eixoTop(t, 0)}, supor conceito qualitativo e leitura de instrumento, nunca formalismo de calculo.`;
+  renderOpcoes('opcao-ancora', [{ tag: 'Gerado', texto: ancora }],
+    (i, tx) => { document.getElementById('ancora-edit').value = tx; });
+  document.getElementById('ancora-edit').value = ancora;
+
+  renderOpcoes('opcao-lacunas', LACUNAS_ILB,
+    (i, tx) => { document.getElementById('lacunas-edit').value = tx; });
+  document.getElementById('lacunas-edit').value = LACUNAS_ILB[4].texto;
+}
+
+function competenciaILB(t) {
+  return `Medir ${eixoTop(t, 0)} com o instrumento adequado, exprimir o resultado com incerteza e unidade do SI, e DECIDIR o que desta pratica cabe numa sala de ensino medio — nomeando a lacuna de leitura ou de matematica que a turma-alvo traz e a adaptacao que ela exige. A competencia da ILB e dupla: medir e saber ensinar a medir.`;
+}
+
 function gerarTurma(code) {
+  if (ehILB()) { gerarTurmaILB(code); return; }
   const t = TRILHAS[code];
   const ancora = `Dominio de ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()} a nivel qualitativo; familiaridade com o vocabulario tecnico da mineracao introduzido nas trilhas anteriores; operacoes basicas com numeros e unidades do SI.`;
   renderOpcoes('opcao-ancora', [{tag:"Gerado",texto:ancora}], (i,tx)=>{document.getElementById('ancora-edit').value=tx;});
@@ -4597,7 +4651,7 @@ function gerarTurma(code) {
 function gerarCompetencia() {
   if(!estado.trilha) return;
   const t = TRILHAS[estado.trilha];
-  const comp = `Avaliar situacoes reais de mineracao e patrimônio de Ouro Preto usando os conceitos de ${t.nome.toLowerCase()}, identificando as grandezas relevantes, aplicando o modelo fisico correto e justificando as solucoes com argumentos causais fundamentados — demonstrando domínio dos 5 topicos da trilha em Bloom L4-L6.`;
+  const comp = ehILB() ? competenciaILB(t) : `Avaliar situacoes reais de mineracao e patrimônio de Ouro Preto usando os conceitos de ${t.nome.toLowerCase()}, identificando as grandezas relevantes, aplicando o modelo fisico correto e justificando as solucoes com argumentos causais fundamentados — demonstrando domínio dos 5 topicos da trilha em Bloom L4-L6.`;
   renderOpcoes('opcao-comp', [{tag:"Gerado",texto:comp}], (i,tx)=>{document.getElementById('comp-edit').value=tx;});
   document.getElementById('comp-edit').value = comp;
 }
