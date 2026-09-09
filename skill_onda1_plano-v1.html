@@ -3916,41 +3916,113 @@ function gerarAto3() {
 
    O eixo 2 (Ouro Preto) e o unico comum as tres — e a ancora do lugar.       */
 
+/* Helpers de redacao dos angulos.
+
+   Duas armadilhas reais, achadas varrendo as 63 trilhas:
+   1. NOME da trilha e TITULO DO TOPICO comecam com artigo com muita frequencia
+      ("O Movimento Uniforme", "As trilhas e os objetos de aprendizagem"). Emendar
+      uma preposicao na frente produz "de o", "em a", "de as". Por isso preposicao
+      nunca entra na string do angulo: entra por `eixoTopDe/Em/Sobre` e
+      `eixoNomeDe/Em`, que contraem.
+   2. Baixar a inicial estraga sigla — "SUAP" virava "sUAP". `eixoMin` so baixa
+      quando a primeira palavra nao e sigla.
+   E o titulo do topico entra sem o parentese de assuntos (Regra dos parenteses)
+   e sem a lista depois dos dois-pontos: o eixo e contextualizacao, nao indice. */
+
+var EIXO_CONTRACAO = {
+  de:    { o:'do',       a:'da',       os:'dos',       as:'das' },
+  em:    { o:'no',       a:'na',       os:'nos',       as:'nas' },
+  sobre: { o:'sobre o',  a:'sobre a',  os:'sobre os',  as:'sobre as' }
+};
+
+function eixoMin(x) {
+  var p1 = String(x).split(' ')[0];
+  if (/^[A-ZÀ-Ý0-9]{2,}$/.test(p1)) return x;          // SUAP, GPS, MU, SI
+  return x.charAt(0).toLowerCase() + x.slice(1);
+}
+
+/* junta `prep` a `x` contraindo o artigo inicial, se houver */
+function eixoArt(x, prep) {
+  if (!prep) return x;
+  var m = /^(o|a|os|as)\s+(.*)$/i.exec(x);
+  if (!m) return prep + ' ' + x;
+  return EIXO_CONTRACAO[prep][m[1].toLowerCase()] + ' ' + m[2];
+}
+
+function eixoNome(t) { return String(t.nome || '').split('(')[0].trim(); }
+function eixoNomeArt(t) { return eixoMin(eixoNome(t)); }
+function eixoNomeDe(t) { return eixoArt(eixoNomeArt(t), 'de'); }
+function eixoNomeEm(t) { return eixoArt(eixoNomeArt(t), 'em'); }
+
+function eixoTop(t, i) {
+  var lista = t.t || [];
+  if (!lista.length) return '[topico a definir]';
+  var bruto = String(lista[Math.min(i, lista.length - 1)] || '');
+  var x = bruto.split('(')[0].split(':')[0].trim().replace(/[;,]\s*$/, '');
+  return eixoMin(x);
+}
+
+/* Indices de topico que EXISTEM, sem repetir: nem toda trilha tem 5 topicos
+   (a T0B tem menos), e pedir t.t[3] numa delas deixava a frase com um buraco. */
+function eixoIdx(t, pedidos) {
+  var n = (t.t || []).length, usados = [];
+  pedidos.forEach(function (i) {
+    var j = (i < n) ? i : -1;
+    if (j < 0 || usados.indexOf(j) !== -1) {
+      j = -1;
+      for (var k = n - 1; k >= 0; k--) { if (usados.indexOf(k) === -1) { j = k; break; } }
+    }
+    if (j >= 0) usados.push(j);
+  });
+  return usados;
+}
+
+/* "topico A e topico B", pulando o que nao existe. `prep` ('de'|'em'|'sobre'|'')
+   contrai o artigo de cada item. */
+function eixoTops(t, pedidos, prep) {
+  return eixoIdx(t, pedidos).map(function (i) {
+    return eixoArt(eixoTop(t, i), prep);
+  }).join(' e ');
+}
+function eixoTopDe(t, i) { return eixoArt(eixoTop(t, i), 'de'); }
+function eixoTopEm(t, i) { return eixoArt(eixoTop(t, i), 'em'); }
+function eixoTopSobre(t, i) { return eixoArt(eixoTop(t, i), 'sobre'); }
+
 var EIXO_ANGULOS = {
   tecnico: function (t) { return [
-    { tag:'Operação direta', texto:`Aplicacao de ${t.nome.toLowerCase()} em processos reais de mineracao: ${t.t[2].toLowerCase()} e ${t.t[3].toLowerCase()} — conectando conceito fisico a operacoes industriais cotidianas do setor mineral.` },
-    { tag:'Segurança NR-22', texto:`${t.nome} como fundamento da seguranca operacional na mineracao: o desconhecimento de ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()} gera riscos reais de acidente. O dominio do conceito e pre-requisito pratico para a NR-22.` },
-    { tag:'Eficiência produtiva', texto:`Otimizacao de ${t.t[1].toLowerCase()} e ${t.t[3].toLowerCase()} pela aplicacao correta de ${t.nome.toLowerCase()}: cada percentual de eficiencia ganho representa impacto mensuravel no fluxo produtivo da planta mineral.` }
+    { tag:'Operação direta', texto:`Aplicacao ${eixoNomeDe(t)} em processos reais de mineracao: ${eixoTops(t,[2,3],'')} — conectando conceito fisico a operacoes industriais cotidianas do setor mineral.` },
+    { tag:'Segurança NR-22', texto:`${eixoNome(t)} como fundamento da seguranca operacional na mineracao: o desconhecimento ${eixoTops(t,[0,1],'de')} gera riscos reais de acidente. O dominio do conceito e pre-requisito pratico para a NR-22.` },
+    { tag:'Eficiência produtiva', texto:`Otimizacao ${eixoTops(t,[1,3],'de')} pela aplicacao correta ${eixoNomeDe(t)}: cada percentual de eficiencia ganho representa impacto mensuravel no fluxo produtivo da planta mineral.` }
   ]; },
 
   qualidade: function (t) { return [
-    { tag:'Controle de processo', texto:`${t.nome} como variavel de processo: ${t.t[2].toLowerCase()} e ${t.t[3].toLowerCase()} so ficam sob controle quando a grandeza e medida, registrada e comparada com a faixa especificada — e a diferenca entre operar e apenas produzir.` },
-    { tag:'Conformidade do produto', texto:`A especificacao do produto traduz ${t.nome.toLowerCase()} em requisito verificavel: ${t.t[0].toLowerCase()} define o que se mede, e ${t.t[1].toLowerCase()} define o criterio de aceitacao. Sem esse elo, conformidade vira opiniao.` },
-    { tag:'Melhoria contínua', texto:`Indicadores construidos sobre ${t.nome.toLowerCase()} mostram onde o processo perde: a variacao de ${t.t[1].toLowerCase()} e o custo de ${t.t[3].toLowerCase()} apontam a causa-raiz antes que ela chegue ao cliente.` }
+    { tag:'Controle de processo', texto:`${eixoNome(t)} como variavel de processo: medir, registrar e comparar com a faixa especificada e o que poe ${eixoTop(t,2)} sob controle — e a diferenca entre operar um processo e apenas produzir.` },
+    { tag:'Conformidade do produto', texto:`A especificacao traduz ${eixoNomeArt(t)} em requisito verificavel: ${eixoTopDe(t,0)} sai O QUE medir; da faixa aceitavel e do metodo de medida sai QUANDO o resultado e conforme. Sem esse elo, conformidade vira opiniao.` },
+    { tag:'Melhoria contínua', texto:`A dispersao observada ${eixoTopEm(t,1)} e o que o indicador captura: reduzir variacao antes de perseguir media e o caminho da melhoria continua — e o que impede o desvio de chegar ao cliente.` }
   ]; },
 
   didatico: function (t) { return [
-    { tag:'Obstáculo epistemológico', texto:`As concepcoes previas sobre ${t.nome.toLowerCase()} que o licenciando precisa reconhecer antes de ensinar: os erros classicos em ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()} nao sao descuido, sao um modelo mental coerente que resiste a aula expositiva.` },
-    { tag:'Transposição didática', texto:`O caminho do saber sabio ao saber ensinavel em ${t.nome.toLowerCase()}: o que se recorta de ${t.t[2].toLowerCase()}, o que se adia, e por que a ordem escolhida sustenta (ou trai) o conceito.` },
-    { tag:'Sequência de ensino', texto:`Como o futuro professor planeja a aula de ${t.nome.toLowerCase()}: a pergunta inicial, a atividade que produz a evidencia de ${t.t[0].toLowerCase()}, e o instrumento que mostra se a turma aprendeu ${t.t[1].toLowerCase()} — Bloom L4-L6, nao so lembrar.` }
+    { tag:'Obstáculo epistemológico', texto:`As concepcoes previas ${eixoTopSobre(t,0)} que o licenciando precisa reconhecer antes de ensinar: o erro classico aqui nao e descuido, e um modelo mental coerente que resiste a aula expositiva.` },
+    { tag:'Transposição didática', texto:`O caminho do saber sabio ao saber ensinavel ${eixoNomeEm(t)}: o que se recorta ${eixoTopDe(t,2)}, o que se adia para depois, e por que a ordem escolhida sustenta (ou trai) o conceito.` },
+    { tag:'Sequência de ensino', texto:`Como o futuro professor planeja a aula sobre ${eixoNomeArt(t)}: a pergunta inicial, a atividade que produz evidencia ${eixoTopDe(t,0)} e o instrumento que mostra se a turma aprendeu ${eixoTop(t,1)} — Bloom L4-L6, nao so lembrar.` }
   ]; },
 
   hist: function (t) { return [
-    { tag:'Aleijadinho & construção', texto:`Conexao com o patrimonio barroco de Ouro Preto: as solucoes construtivas de Aleijadinho e dos engenheiros coloniais revelam aplicacoes intuitivas de ${t.nome.toLowerCase()} — da estabilidade das fachadas ao dimensionamento de campanarios e estruturas de mineracao do seculo XVIII.` },
-    { tag:'Mineração colonial', texto:`A mineracao de ouro do seculo XVIII em Ouro Preto dependia de ${t.nome.toLowerCase()} para funcionar: as galerias, os sistemas de drenagem e os engenhos coloniais aplicavam os mesmos principios fisicos que os estudantes aprendem hoje — sem formalismo matematico, mas com precisao pratica notavel.` },
-    { tag:'Escola de Minas & UFOP', texto:`A Escola de Minas de Ouro Preto (1876) foi fundada para formalizar o conhecimento de ${t.nome.toLowerCase()} que os mineradores ja aplicavam intuitivamente. Esse percurso — da pratica empirica a teoria sistematizada — e o mesmo que o estudante faz nesta trilha.` }
+    { tag:'Aleijadinho & construção', texto:`Conexao com o patrimonio barroco de Ouro Preto: as solucoes construtivas de Aleijadinho e dos engenheiros coloniais revelam aplicacoes intuitivas ${eixoNomeDe(t)} — da estabilidade das fachadas ao dimensionamento de campanarios e estruturas de mineracao do seculo XVIII.` },
+    { tag:'Mineração colonial', texto:`A mineracao de ouro do seculo XVIII em Ouro Preto dependia ${eixoNomeDe(t)} para funcionar: as galerias, os sistemas de drenagem e os engenhos coloniais aplicavam os mesmos principios fisicos que os estudantes aprendem hoje — sem formalismo matematico, mas com precisao pratica notavel.` },
+    { tag:'Escola de Minas & UFOP', texto:`A Escola de Minas de Ouro Preto (1876) foi fundada para formalizar o conhecimento ${eixoNomeDe(t)} que os mineradores ja aplicavam intuitivamente. Esse percurso — da pratica empirica a teoria sistematizada — e o mesmo que o estudante faz nesta trilha.` }
   ]; },
 
   cotidiano: function (t) { return [
-    { tag:'Vivência urbana', texto:`Experiencias do estudante de 15-16 anos morador de Ouro Preto: deslocamentos em ladeiras íngremes, observacao de maquinas em operacao, visitacao a minas e igrejas historicas — situacoes que envolvem ${t.t[0].toLowerCase()} sem que o estudante perceba a fisica presente.` },
-    { tag:'Transporte & mobilidade', texto:`O estudante que vai ao IFMG todos os dias experimenta ${t.nome.toLowerCase()} no onibus, na subida da ladeira, na mochila nas costas. Essas experiencias corporais sao a ancora cognitiva para os conceitos de ${t.t[0].toLowerCase()} e ${t.t[1].toLowerCase()}.` },
-    { tag:'Curiosidade tecnológica', texto:`Celular, fone de ouvido, camera: os dispositivos que os estudantes de 15-16 anos usam diariamente funcionam com base em ${t.nome.toLowerCase()}. Conectar o abstrato ao familiar e o primeiro passo para engajar a turma nos conceitos de ${t.t[0].toLowerCase()}.` }
+    { tag:'Vivência urbana', texto:`Experiencias do estudante de 15-16 anos morador de Ouro Preto: deslocamentos em ladeiras ingremes, observacao de maquinas em operacao, visitacao a minas e igrejas historicas — situacoes que envolvem ${eixoTop(t,0)} sem que o estudante perceba a fisica presente.` },
+    { tag:'Transporte & mobilidade', texto:`O estudante que vai ao IFMG todos os dias experimenta ${eixoNomeArt(t)} no onibus, na subida da ladeira, na mochila nas costas. Essas experiencias corporais sao a ancora cognitiva para ${eixoTops(t,[0,1],'')}.` },
+    { tag:'Curiosidade tecnológica', texto:`Celular, fone de ouvido, camera: os dispositivos que os estudantes de 15-16 anos usam diariamente funcionam com base ${eixoNomeEm(t)}. Conectar o abstrato ao familiar e o primeiro passo para engajar a turma ${eixoTopEm(t,0)}.` }
   ]; },
 
   metrologico: function (t) { return [
-    { tag:'Grandeza & unidade SI', texto:`Que grandeza ${t.nome.toLowerCase()} realmente mede, e em que unidade do SI: nomear a grandeza, escrever a unidade com a grafia correta e reconhecer as unidades derivadas envolvidas em ${t.t[0].toLowerCase()} e o primeiro ato de rigor.` },
-    { tag:'Incerteza & algarismos', texto:`Toda medida de ${t.t[1].toLowerCase()} vem com duvida: quantos algarismos significativos o instrumento sustenta, como a incerteza se propaga no calculo e por que um resultado sem incerteza nao e um resultado.` },
-    { tag:'Rastreabilidade & calibração', texto:`De onde vem a confianca no numero: o padrao, a calibracao do instrumento e a cadeia de rastreabilidade que liga a medida de ${t.t[2].toLowerCase()} feita em sala ao SI — e o que se perde quando essa cadeia se rompe.` }
+    { tag:'Grandeza & unidade SI', texto:`Que grandezas estao em jogo ${eixoTopEm(t,0)} e em que unidades do SI elas se escrevem: nomear a grandeza, grafar a unidade como se deve (m, s, m/s — nunca M/S) e reconhecer as unidades derivadas envolvidas e o primeiro ato de rigor.` },
+    { tag:'Incerteza & algarismos', texto:`Toda medida que alimenta ${eixoTop(t,1)} vem com duvida: quantos algarismos significativos o instrumento sustenta, como a incerteza se propaga no calculo e por que um resultado sem incerteza nao e um resultado.` },
+    { tag:'Rastreabilidade & calibração', texto:`De onde vem a confianca no numero: o padrao, a calibracao do instrumento e a cadeia de rastreabilidade que liga a medida feita na bancada ao SI — e o que se perde quando essa cadeia se rompe.` }
   ]; }
 };
 
