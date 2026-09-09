@@ -733,6 +733,22 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
   align-items: center;
   gap: 5px;
 }
+.onda-item { flex-wrap: wrap; }
+/* Selo do modelo e do esforco pre-programados para produzir o OA.
+   Fonte: _skill_cowork/modelos-por-oa-v2.md (matriz Modelos x OA). */
+.oa-selo {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  white-space: nowrap;
+  letter-spacing: .01em;
+}
+.oa-selo .oa-esf { color: var(--texto-sub); }
+.oa-m-fable  { color: var(--ouro-claro); }
+.oa-m-opus   { color: var(--azul); }
+.oa-m-sonnet { color: var(--verde-claro); }
+.oa-m-haiku  { color: var(--cinza); }
+.oa-analogia { color: var(--ouro); cursor: help; }
 .onda-item .dot {
   width: 6px;
   height: 6px;
@@ -2042,25 +2058,27 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
         </p>
         <div class="ondas-visual" id="ondas-visual">
           <div class="onda-col">
-            <div class="onda-header">Onda 1 — Texto Temático</div>
+            <div class="onda-header">Onda 1 &mdash; Texto Tem&aacute;tico</div>
             <div class="onda-body">
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> Camada 2</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> Camada 2<span class="oa-selo"><span class="oa-m-fable">Fable 5<span class="oa-analogia" title="Fora da matriz v2 &mdash; entra por analogia com o OA equivalente">&deg;</span></span> <span class="oa-esf">&middot; alto</span></span></div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~30 min/trilha</div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
-                <strong>Skill:</strong> /abertura-trilha
+                <strong>Skills:</strong> /abertura-trilha
               </div>
             </div>
           </div>
           <div class="onda-col">
-            <div class="onda-header">Onda 2 — Pré-Aula · Pré-Lab</div>
+            <div class="onda-header">Onda 2 &mdash; Pr&eacute;-Aula &middot; Pr&eacute;-Lab</div>
             <div class="onda-body">
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT Digital</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ouro)"></span> IT (Gemini)</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> MD</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> MC + CD</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> PP + TN</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> IG</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT<span class="oa-selo"><span class="oa-m-fable">Fable 5</span> <span class="oa-esf">&middot; alto</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TT Digital<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> IT (Gemini)<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> MD<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> MC<span class="oa-selo"><span class="oa-m-haiku">Haiku 4.5</span> <span class="oa-esf">&middot; baixo</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> CD<span class="oa-selo"><span class="oa-m-haiku">Haiku 4.5</span> <span class="oa-esf">&middot; baixo</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> PP<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TN<span class="oa-selo"><span class="oa-m-opus">Opus 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> IG<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~45 min/trilha</div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
                 <strong>Skills:</strong> /texto-tematico &rarr; /imagem-tematica-manual &rarr; /mapa-conceitual &rarr; /cartoes-didaticos &rarr; /ponto-de-partida &rarr; /testinho &rarr; /infografico
@@ -2068,11 +2086,12 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </div>
           </div>
           <div class="onda-col">
-            <div class="onda-header">Onda 3 — Aula · Lab</div>
+            <div class="onda-header">Onda 3 &mdash; Aula &middot; Lab</div>
             <div class="onda-body">
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> FA + DX</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> AP</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> PR</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> FA<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> DX<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5<span class="oa-analogia" title="Fora da matriz v2 &mdash; entra por analogia com o OA equivalente">&deg;</span></span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> AP<span class="oa-selo"><span class="oa-m-sonnet">Sonnet 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> PR<span class="oa-selo"><span class="oa-m-opus">Opus 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~30 min/trilha</div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
                 <strong>Skills:</strong> /folha-de-atividades &rarr; /apresentacao-trilha &rarr; /provinha
@@ -2080,11 +2099,11 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </div>
           </div>
           <div class="onda-col">
-            <div class="onda-header">Onda 4 — Pós-Aula · Pós-Lab</div>
+            <div class="onda-header">Onda 4 &mdash; P&oacute;s-Aula &middot; P&oacute;s-Lab</div>
             <div class="onda-body">
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TM</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TC</div>
-              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TR (A/B/C)</div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TM<span class="oa-selo"><span class="oa-m-opus">Opus 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TC<span class="oa-selo"><span class="oa-m-opus">Opus 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
+              <div class="onda-item"><span class="dot" style="background:var(--ok)"></span> TR (A/B/C)<span class="oa-selo"><span class="oa-m-opus">Opus 5</span> <span class="oa-esf">&middot; m&eacute;dio</span></span></div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">~40 min/trilha</div>
               <div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;">
                 <strong>Skills:</strong> /tarefa-minima &rarr; /tarefa-complementar &rarr; /trabalho
@@ -2092,6 +2111,16 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
             </div>
           </div>
         </div>
+        <p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.7;">
+          <strong style="color:var(--texto);">O selo &agrave; direita de cada OA &eacute; o modelo e o esfor&ccedil;o j&aacute; programados</strong> para produzi-lo &mdash;
+          o Claude n&atilde;o pergunta, aplica. Fonte: <span style="font-family:var(--mono);">_skill_cowork/modelos-por-oa-v2.md</span>
+          (matriz Modelos &times; OA v2) e a regra 4 da se&ccedil;&atilde;o 18 do CLAUDE.md da raiz para o esfor&ccedil;o
+          (<em>baixo</em> = mec&acirc;nico &middot; <em>m&eacute;dio</em> = deriva&ccedil;&atilde;o &middot; <em>alto</em> = TT e arquitetura).
+          <br><span class="oa-m-fable">Fable 5</span> &middot; <span class="oa-m-opus">Opus 5</span> &middot;
+          <span class="oa-m-sonnet">Sonnet 5</span> &middot; <span class="oa-m-haiku">Haiku 4.5</span>.
+          <span class="oa-analogia">&deg;</span> = OA fora da matriz v2, que entra por analogia com o equivalente da FC1
+          (DX e todos os OAs pr&oacute;prios da FE1). Reprovado 2&times; pelo autor, a 3.&ordf; tentativa sobe um tier (regra 14.7).
+        </p>
       </section>
 
       <section>
@@ -4380,17 +4409,68 @@ function renderSkills() {
 
 /* ── DISCIPLINA × CURSO ── */
 
+/* ── MODELO E ESFORCO PRE-PROGRAMADOS POR OA ──────────────────────────
+   Fonte: `_skill_cowork/modelos-por-oa-v2.md` (matriz Modelos x OA v2,
+   2026-08-19) + regra 4 da secao 18 do CLAUDE.md da raiz para o esforco
+   (baixo = mecanico · medio = derivacao · alto = TT/arquitetura).
+   `true` no 3.o campo = OA que NAO esta na matriz v2 e entra por analogia
+   com o OA equivalente da FC1 (marcado com ° no Painel). */
+var OA_MODELO = {
+  C2:  ['Fable 5', 'alto', true],
+  TT:  ['Fable 5', 'alto', false],
+  TTD: ['Sonnet 5', 'médio', false],
+  IT:  ['Sonnet 5', 'médio', false],
+  MD:  ['Sonnet 5', 'médio', false],
+  MC:  ['Haiku 4.5', 'baixo', false],
+  CD:  ['Haiku 4.5', 'baixo', false],
+  PP:  ['Sonnet 5', 'médio', false],
+  TN:  ['Opus 5', 'médio', false],
+  IG:  ['Sonnet 5', 'médio', false],
+  FA:  ['Sonnet 5', 'médio', false],
+  AP:  ['Sonnet 5', 'médio', false],
+  PR:  ['Opus 5', 'médio', false],
+  DX:  ['Sonnet 5', 'médio', true],
+  TM:  ['Opus 5', 'médio', false],
+  TC:  ['Opus 5', 'médio', false],
+  TR:  ['Opus 5', 'médio', false],
+  /* FE1 — a matriz v2 vale para a FC1; estes entram por analogia */
+  IP:  ['Sonnet 5', 'médio', true],
+  CS:  ['Sonnet 5', 'médio', true],
+  IE:  ['Haiku 4.5', 'baixo', true],
+  RB:  ['Sonnet 5', 'médio', true],
+  RM:  ['Opus 5', 'médio', true],
+  RC:  ['Opus 5', 'médio', true],
+  PI:  ['Opus 5', 'médio', true]
+};
+
+var OA_ROTULO = {
+  C2: 'Camada 2', TT: 'TT', TTD: 'TT Digital', IT: 'IT (Gemini)', MD: 'MD',
+  MC: 'MC', CD: 'CD', PP: 'PP', TN: 'TN', IG: 'IG', FA: 'FA', AP: 'AP',
+  PR: 'PR', DX: 'DX', TM: 'TM', TC: 'TC', TR: 'TR (A/B/C)',
+  IP: 'IP (Gemini)', CS: 'CS', IE: 'IE', RB: 'RB', RM: 'RM', RC: 'RC',
+  PI: 'PI (A/B/C)'
+};
+
+function oaSelo(sigla) {
+  var m = OA_MODELO[sigla];
+  if (!m) return '';
+  var classe = 'oa-m-' + m[0].split(' ')[0].toLowerCase();
+  var grau = m[2] ? '<span class="oa-analogia" title="Fora da matriz v2 — entra por analogia com o OA equivalente">°</span>' : '';
+  return '<span class="oa-selo"><span class="' + classe + '">' + m[0] + grau
+    + '</span> <span class="oa-esf">&middot; ' + m[1] + '</span></span>';
+}
+
 var FC_ONDAS = [
-  { titulo:'Onda 1 — Texto Temático', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
-  { titulo:'Onda 2 — Pré-Aula · Pré-Lab', items:['TT','TT Digital','IT (Gemini)','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico → /imagem-tematica-manual → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico' },
-  { titulo:'Onda 3 — Aula · Lab', items:['FA + DX','AP','PR'], tempo:'~30 min/trilha', skills:'/folha-de-atividades → /apresentacao-trilha → /provinha' },
-  { titulo:'Onda 4 — Pós-Aula · Pós-Lab', items:['TM','TC','TR (A/B/C)'], tempo:'~40 min/trilha', skills:'/tarefa-minima → /tarefa-complementar → /trabalho' }
+  { titulo:'Onda 1 — Texto Temático', items:['C2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
+  { titulo:'Onda 2 — Pré-Aula · Pré-Lab', items:['TT','TTD','IT','MD','MC','CD','PP','TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico → /imagem-tematica-manual → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico' },
+  { titulo:'Onda 3 — Aula · Lab', items:['FA','DX','AP','PR'], tempo:'~30 min/trilha', skills:'/folha-de-atividades → /apresentacao-trilha → /provinha' },
+  { titulo:'Onda 4 — Pós-Aula · Pós-Lab', items:['TM','TC','TR'], tempo:'~40 min/trilha', skills:'/tarefa-minima → /tarefa-complementar → /trabalho' }
 ];
 var FE_ONDAS = [
-  { titulo:'Onda 1 — Texto Temático', items:['Camada 2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
-  { titulo:'Onda 2 — Pré-Aula · Pré-Lab', items:['TT','IP (Gemini)','CS','IE','MD','MC + CD','PP + TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico-fe → /imagem-tematica-fe → /checklist-seguranca → /inventario-equipamento → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico (FE: gerar_ig_fe.py)' },
+  { titulo:'Onda 1 — Texto Temático', items:['C2'], tempo:'~30 min/trilha', skills:'/abertura-trilha' },
+  { titulo:'Onda 2 — Pré-Aula · Pré-Lab', items:['TT','IP','CS','IE','MD','MC','CD','PP','TN','IG'], tempo:'~45 min/trilha', skills:'/texto-tematico-fe → /imagem-tematica-fe → /checklist-seguranca → /inventario-equipamento → /mapa-conceitual → /cartoes-didaticos → /ponto-de-partida → /testinho → /infografico (FE: gerar_ig_fe.py)' },
   { titulo:'Onda 3 — Aula · Lab', items:['RB','AP','PR'], tempo:'~30 min/trilha', skills:'/roteiro-bancada → /apresentacao-trilha → /provinha' },
-  { titulo:'Onda 4 — Pós-Aula · Pós-Lab', items:['RM','RC','DX','PI (A/B/C)'], tempo:'~40 min/trilha', skills:'/relatorio-minimo → /relatorio-completo → /desafio-pedagogico → /projeto-investigativo' }
+  { titulo:'Onda 4 — Pós-Aula · Pós-Lab', items:['RM','RC','DX','PI'], tempo:'~40 min/trilha', skills:'/relatorio-minimo → /relatorio-completo → /desafio-pedagogico → /projeto-investigativo' }
 ];
 
 var FC_FLUXO = 'TT (Texto Temático) ─────────────────── ÂNCORA DE TUDO\n .md + .html (digital) + .pdf\n  │\n  ├─→ TT Digital (.html interativo)\n  ├─→ IT (.html digital, 12 imagens — Gemini manual)\n  ├─→ MD (.html digital, Resumo em Áudio — NotebookLM)\n  ├─→ MC (Mapa Conceitual) ──→ CD (Cartões)\n  ├─→ PP (Ponto de Partida) ──→ TN (Testinho 3 versões)\n  ├─→ IG (Infográfico Digital: painel + elemento vivo)\n  │\n  ├─→ FA (.html digital + .html impressa) ──→ DX (Desafio opcional)\n  ├─→ AP (Apresentação .html)\n  ├─→ PR (Provinha .html digital)\n  │\n  └─→ TM (Tarefa Mínima) ──→ TC (Complementar) ──→ TR (Trabalho A/B/C)\n       └── lê fragmento FI automaticamente';
@@ -4540,7 +4620,8 @@ function buildOndasHTML(ondas) {
   ondas.forEach(function(o) {
     h += '<div class="onda-col"><div class="onda-header">' + o.titulo + '</div><div class="onda-body">';
     o.items.forEach(function(it) {
-      h += '<div class="onda-item"><span class="dot" style="background:var(--ok)"></span> ' + it + '</div>';
+      h += '<div class="onda-item"><span class="dot" style="background:var(--ok)"></span> '
+        + (OA_ROTULO[it] || it) + oaSelo(it) + '</div>';
     });
     h += '<div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;">' + o.tempo + '</div>';
     h += '<div style="font-size:12px;color:var(--texto-sub);padding:4px 6px;border-top:1px solid var(--cinza-borda);margin-top:4px;"><strong>Skills:</strong> ' + o.skills + '</div>';
@@ -4564,9 +4645,6 @@ function buildTemaMap(d, ondaLabels) {
   h += '</tbody></table>';
   return h;
 }
-
-/* Snapshot FC1 ondas/fluxo originals */
-var FC1_ONDAS_HTML = document.getElementById('ondas-visual').innerHTML;
 
 /* Snapshot do Progresso Global da FC1 — o bloco vem do gerador
    (_scripts/atualizar_painel.py, marcador AUTO:PROGRESSO) e e lido do disco.
@@ -4685,12 +4763,9 @@ function loadDisciplina() {
     + '<div class="pg-legenda-item"><span class="wave-dot empty"></span> Pendente</div>'
     + '<span style="margin-left:auto;font-family:var(--mono);font-size:11px;opacity:.6;">' + ondaLegenda + '</span>';
 
-  /* 5. Ondas (Produção tab) */
-  if (disc === 'fc1') {
-    document.getElementById('ondas-visual').innerHTML = FC1_ONDAS_HTML;
-  } else {
-    document.getElementById('ondas-visual').innerHTML = buildOndasHTML(ondas);
-  }
+  /* 5. Ondas (Produção tab) — sempre pelo renderer, para o selo de modelo
+     e esforco sair da MESMA fonte (OA_MODELO) nas duas familias. */
+  document.getElementById('ondas-visual').innerHTML = buildOndasHTML(ondas);
 
   /* 6. Fluxo */
   document.getElementById('fluxo-content').textContent = isFE ? FE_FLUXO : FC_FLUXO;
