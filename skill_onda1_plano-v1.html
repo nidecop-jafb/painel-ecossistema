@@ -1632,10 +1632,44 @@ const TRILHAS_FE1 = {
   "T16":{ nome:"Projeto investigativo integrador", tema:5, t:["Escolha do problema e hipótese","Planejamento experimental e variáveis de controle","Coleta de dados com análise de incerteza","Relatório científico completo","Apresentação e defesa oral do projeto"]},
 };
 
+// ═══════════════════════════════════════════════════════════
+// DADOS INLINE — ILB (Introducao ao Laboratorio · Licenciatura em Fisica)
+// 12 trilhas: T0A e T0B (ambientacao) + T01-T10 · 6 Temas (0 a 5)
+// Fonte: _planejamento/LFI-ILB-Temas-e-Trilhas-v1.md (matriz-sintese) e
+//        LFI-ILB-Plano-de-Ensino-2026.2-v5.md (titulos e cronograma E1-E16).
+// Os topicos ficam VAZIOS de proposito: so a Camada 2 aprovada os define, e
+// a regra 5 do CLAUDE.md da ILB bloqueia OA sem ela. A T0A tem Camada 2 v3,
+// mas os topicos entram aqui quando o autor aprovar a matriz de topicos.
+// ═══════════════════════════════════════════════════════════
+const TEMAS_ILB = [
+  { num: 0, nome: "Antes da primeira medida", sub: "T0A · T0B", foco: "Ambientacao: laboratorio, seguranca e EPI, caderno de laboratorio e o Sistema Internacional de Unidades" },
+  { num: 1, nome: "Um numero e sua duvida", sub: "T01 · T02", foco: "Regua, trena, paquimetro, micrometro, balanca · tabela de uma coluna repetida · valor ± incerteza e propagacao em medida indireta" },
+  { num: 2, nome: "Quando o numero nao basta", sub: "T03 · T04", foco: "Transferidor, dinamometro, mesa de forcas · duas colunas acopladas · modulo, direcao e sentido; composicao vetorial" },
+  { num: 3, nome: "O mesmo encontro, duas causas", sub: "T05 · T06", foco: "Cronometro, sensores fotoeletricos, trilho · posicao × tempo · grafico, ajuste de reta e parabola, linearizacao" },
+  { num: 4, nome: "Movimento que nao e reto", sub: "T07 · T08", foco: "Plataforma giratoria, sensor de queda, lancador · periodica e par acoplado · contagem multipla e decomposicao de trajetoria" },
+  { num: 5, nome: "O que sobrevive a colisao", sub: "T09 · T10", foco: "Sensor de forca, para-choques, fotogates duplos · antes e depois · comparacao de estados e decisao sobre conservacao" },
+];
+
+const TRILHAS_ILB = {
+  "T0A":{ nome:"Boas-vindas a Fisica Experimental", tema:0, t:[] },
+  "T0B":{ nome:"Sistema Internacional de Unidades (SI)", tema:0, t:[] },
+  "T01":{ nome:"Qual e a sua altura?", tema:1, t:[] },
+  "T02":{ nome:"Qual e a densidade dos cilindros?", tema:1, t:[] },
+  "T03":{ nome:"Principais forcas da Mecanica Classica", tema:2, t:[] },
+  "T04":{ nome:"Equilibrio estatico de ponto material", tema:2, t:[] },
+  "T05":{ nome:"Encontro de pontos materiais", tema:3, t:[] },
+  "T06":{ nome:"Movimento produzido por forcas constantes", tema:3, t:[] },
+  "T07":{ nome:"Movimento Circular Uniforme (MCU)", tema:4, t:[] },
+  "T08":{ nome:"Queda e lancamentos", tema:4, t:[] },
+  "T09":{ nome:"Forcas impulsivas", tema:5, t:[] },
+  "T10":{ nome:"Leis de conservacao nas colisoes", tema:5, t:[] },
+};
+
 // Backup dos dados inline para restauração rápida
 const _INLINE_DATA = {
   fc1: { temas: TEMAS.slice(), trilhas: {...TRILHAS} },
   fe1: { temas: TEMAS_FE1.slice(), trilhas: {...TRILHAS_FE1} },
+  ilb: { temas: TEMAS_ILB.slice(), trilhas: {...TRILHAS_ILB} },
 };
 
 // Configuração por família de disciplina (FC vs FE)
@@ -2081,15 +2115,32 @@ let MATRIZ_PROT_TEMA = {
 // Os dados inline acima servem como fallback (FC1-MIN).
 // ═══════════════════════════════════════════════════════════
 
+/* Toda trilha precisa de 5 topicos para os geradores rodarem. Trilha sem
+   Camada 2 aprovada (as da ILB, por exemplo) chega com t: [] — completa-se com
+   um marcador visivel, que o autor troca ao aprovar a Camada 2. Nunca inventar
+   topico: o marcador tem de aparecer no texto gerado. */
+const TOPICO_PENDENTE = 'topico a definir na Camada 2';
+
+function normalizarTrilhas(trilhas) {
+  Object.keys(trilhas || {}).forEach(function (c) {
+    var t = trilhas[c];
+    t.t = Array.isArray(t.t) ? t.t.slice() : [];
+    t.semCamada2 = t.t.length === 0;
+    while (t.t.length < 5) t.t.push(TOPICO_PENDENTE + ' (' + (t.t.length + 1) + ')');
+  });
+  return trilhas;
+}
+
 async function carregarDadosJSON(disciplina, curso) {
   const statusEl = document.getElementById('status-dados');
   if(statusEl) statusEl.textContent = '⏳ Carregando...';
 
-  // Verificar se há dados inline disponíveis (fc1, fe1)
-  if(_INLINE_DATA[disciplina] && curso === 'min') {
+  // Dados inline disponíveis (fc1, fe1, ilb). A condição `curso === 'min'` saiu
+  // em 2026-09-09: a ILB é do curso `lfi` e caía no fallback, mostrando a FC1.
+  if(_INLINE_DATA[disciplina]) {
     const dados = _INLINE_DATA[disciplina];
     TEMAS = dados.temas.slice();
-    TRILHAS = {...dados.trilhas};
+    TRILHAS = normalizarTrilhas(JSON.parse(JSON.stringify(dados.trilhas)));
     MATRIZ_PROT_TEMA = dados.matriz_prot_tema || {};
     CITACOES_SUGESTOES = dados.citacoes || {};
     CITACOES_FALLBACK = dados.citacoes_fallback || {};
@@ -2116,7 +2167,7 @@ async function carregarDadosJSON(disciplina, curso) {
     }
 
     TEMAS = dados.temas;
-    TRILHAS = dados.trilhas;
+    TRILHAS = normalizarTrilhas(dados.trilhas);
     MATRIZ_PROT_TEMA = dados.matriz_prot_tema || {};
     CITACOES_SUGESTOES = dados.citacoes || {};
     CITACOES_FALLBACK = dados.citacoes_fallback || {};
@@ -2724,14 +2775,10 @@ function selecionarTrilha(code, chipEl) {
 
   document.getElementById('badge-trilha').textContent = code;
   document.getElementById('out-nome').textContent = t.nome;
-  const trilhaNum = parseInt(code.slice(1));
-  let posNaTema;
-  if(trilhaNum === 0) {
-    posNaTema = '1 de 1';
-  } else {
-    posNaTema = ((trilhaNum-1) % 6) + 1;
-    posNaTema = posNaTema + ' de 6';
-  }
+  /* posicao real dentro do tema: a FC1 tem 6 trilhas por tema, a ILB tem 2 e o
+     Tema 0 tem 2 (T0A e T0B) — contar em vez de assumir. */
+  const doTema = Object.keys(TRILHAS).filter(c => TRILHAS[c].tema === t.tema).sort();
+  const posNaTema = (doTema.indexOf(code) + 1) + ' de ' + doTema.length;
   document.getElementById('out-posicao').textContent = `Trilha ${posNaTema} do Tema ${t.tema}`;
   document.getElementById('out-tema').textContent = `Tema ${t.tema} — ${temaObj.nome} · ${temaObj.sub}`;
 
