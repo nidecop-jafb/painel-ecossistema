@@ -2218,17 +2218,17 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
         </p>
 
         <div style="border:1px solid var(--cinza-borda);background:var(--cinza-card);padding:16px;display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:10px;">
+          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Curso
+            <select id="preCurso" onchange="prePreencherDisciplinas()" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
+              <option value="">Todos</option>
+            </select>
+          </label>
           <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Disciplina
             <select id="preDisc" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
               <option value="FC1" selected>FC1 &mdash; F&iacute;sica Conceitual 1</option>
               <option value="FE1">FE1 &mdash; F&iacute;sica Experimental 1</option>
               <option value="FC2">FC2 &mdash; F&iacute;sica Conceitual 2</option>
               <option value="FC3">FC3 &mdash; F&iacute;sica Conceitual 3</option>
-            </select>
-          </label>
-          <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Curso
-            <select id="preCurso" onchange="prePreencherDisciplinas()" style="padding:8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);">
-              <option value="">Todos</option>
             </select>
           </label>
           <label style="font-size:12px;color:var(--texto-sub);display:flex;flex-direction:column;gap:4px;">Alvo
