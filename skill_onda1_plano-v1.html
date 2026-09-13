@@ -687,6 +687,10 @@ select option { background: var(--superficie); color: var(--texto); }
       <option value="fe2" disabled>FE2 — Física Experimental 2 (Termo+Ondas) ⏳</option>
       <option value="fe3" disabled>FE3 — Física Experimental 3 (Eletro+Moderna) ⏳</option>
     </optgroup>
+    <optgroup label="Licenciatura em Física">
+      <option value="ilb">ILB — Introdução ao Laboratório</option>
+      <option value="lme">LME — Laboratório de Mecânica</option>
+    </optgroup>
   </select>
   <select id="sel-curso" onchange="trocarDisciplinaCurso()" style="font-family:'DM Mono',monospace;font-size:12px;padding:5px 8px;border-radius:var(--r);border:1px solid var(--cinza-borda);background:var(--superficie);color:var(--texto);min-width:200px;">
     <option value="min">MIN — Técnico em Mineração</option>
@@ -1951,6 +1955,319 @@ const TRILHAS_ILB = {
 };
 
 // ═══════════════════════════════════════════════════════════
+// DADOS INLINE — LME (Laboratorio de Mecanica · Licenciatura em Fisica · 4.o periodo)
+// 13 trilhas: T0A e T0B + T01-T11 · 3 Temas (0 a 2)
+// Fonte: LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/LFI-LME-Temas-e-Trilhas-v1.md
+// Topicos VAZIOS de proposito: so a Camada 2 aprovada os define.
+// Elenco, professores e cenarios: os da ILB (a turma imaginada tem a mesma funcao).
+// ═══════════════════════════════════════════════════════════
+const TEMAS_LME = [
+  { num: 0, nome: "Boas-vindas", sub: "T0A · T0B", foco: "Seguranca, caderno de laboratorio, SI e ordens de grandeza" },
+  { num: 1, nome: "Entendendo as medidas", sub: "T01–T05", foco: "Nivelamento em tratamento de dados: incerteza, distribuicoes, retas e linearizacao (Lima; Zappa, 2014)" },
+  { num: 2, nome: "Brincando com Forças e Movimentos", sub: "T06–T11", foco: "O modelo da Mecanica posto a prova: Newton, forcas, plano inclinado, colisoes e hidrostatica" },
+];
+
+const TRILHAS_LME = {
+  "T0A":{ nome:"Primeiros Passos no Laboratório", tema:0, t:[] },
+  "T0B":{ nome:"A Régua do Mundo", tema:0, t:[] },
+  "T01":{ nome:"Como Medir as Coisas", tema:1, t:[] },
+  "T02":{ nome:"Lidando com a Incerteza", tema:1, t:[] },
+  "T03":{ nome:"Achando o Padrão na Bagunça", tema:1, t:[] },
+  "T04":{ nome:"Interpretando Linhas Retas", tema:1, t:[] },
+  "T05":{ nome:"Analisando Linhas Tortas", tema:1, t:[] },
+  "T06":{ nome:"Leis de Newton", tema:2, t:[] },
+  "T07":{ nome:"Pesando, Puxando, Empurrando e Esticando", tema:2, t:[] },
+  "T08":{ nome:"Boiando, Lixando, Amassando e Voando", tema:2, t:[] },
+  "T09":{ nome:"Subindo e Descendo em Rampas e Ladeiras", tema:2, t:[] },
+  "T10":{ nome:"Trombadas e Batidas", tema:2, t:[] },
+  "T11":{ nome:"A Física da Água Parada", tema:2, t:[] },
+};
+
+/* Epigrafes da LME — 3 por trilha (secao 21 da raiz). FONTE UNICA:
+   LFI_04_LME_Laboratorio_de_Mecanica/_scripts/gerar_citacoes_lme.py, que reescreve
+   este bloco. Nao editar a mao: rodar o script. `selo` = ✔/△/▣ da conferencia. */
+/* AUTO:CITACOES_LME:INICIO */
+const CITACOES_LME = {
+  "T0A": [
+    {
+      "tipo": "Filósofo",
+      "cit": "O homem, ministro e intérprete da natureza, faz e entende tanto quanto constata, pela observação dos fatos ou pelo trabalho da mente, sobre a ordem da natureza; não sabe nem pode mais.",
+      "atrib": "Francis Bacon",
+      "bio": "Francis Bacon (1561-1626). Inglês, filósofo e jurista. Propôs a observação metódica da natureza antes da teoria. Fonte: Novum Organum, 1620, livro I, aforismo I.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — cadernos de laboratório",
+      "cit": "O registro de bancada de 1899 a 1902, ainda radioativo, guardado em caixas de chumbo.",
+      "atrib": "Cadernos de laboratório, Marie Curie, 1899-1902",
+      "bio": "Marie Skłodowska-Curie (1867-1934). Polonesa-francesa, física e química. Nobel de Física (1903) e de Química (1911); descobriu o polônio e o rádio. Fonte: Cadernos de laboratório de Pierre e Marie Curie, Bibliothèque nationale de France.",
+      "selo": "▣ legenda de obra"
+    },
+    {
+      "tipo": "Obra — cadernetas de viagem",
+      "cit": "Sete cadernetas presas ao botão da camisa: 220 km de sertão mineiro anotados em 1952, antes do Grande Sertão.",
+      "atrib": "A Boiada, Guimarães Rosa, 1952",
+      "bio": "João Guimarães Rosa (1908-1967). Brasileiro, de Cordisburgo (MG), escritor e médico. Autor de Grande Sertão: Veredas e Corpo de Baile. Fonte: Cadernetas da viagem de 1952 (Fundo João Guimarães Rosa, IEB-USP), datilografadas como A Boiada 1 e 2.",
+      "selo": "▣ legenda de obra"
+    }
+  ],
+  "T0B": [
+    {
+      "tipo": "Pensador e educador",
+      "cit": "A todos os tempos, a todos os povos.",
+      "atrib": "Condorcet",
+      "bio": "Nicolas de Condorcet (1743-1794). Francês, matemático e filósofo. Relator do sistema métrico e da instrução pública. Fonte: Lema do sistema métrico decimal, 1791-1799.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Físico",
+      "cit": "Quando você pode medir aquilo de que fala, você sabe algo sobre isso.",
+      "atrib": "Lord Kelvin",
+      "bio": "William Thomson, Lord Kelvin (1824-1907). Britânico, físico. Deu nome à unidade de temperatura do SI. Fonte: Electrical Units of Measurement, 1883, in Popular Lectures and Addresses.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — sistema de medida",
+      "cit": "Uma medida harmônica à escala humana, aplicável universalmente.",
+      "atrib": "Le Modulor, Le Corbusier, 1948",
+      "bio": "Charles-Édouard Jeanneret, Le Corbusier (1887-1965). Suíço-francês, arquiteto. Criador do Modulor. Fonte: Sistema de proporções tirado do corpo humano e da sequência de Fibonacci.",
+      "selo": "▣ legenda de obra"
+    }
+  ],
+  "T01": [
+    {
+      "tipo": "Pensador",
+      "cit": "O homem é a medida de todas as coisas.",
+      "atrib": "Protágoras",
+      "bio": "Protágoras de Abdera (c. 490-420 a.C.). Grego, sofista. Autor do fragmento do \"homem-medida\". Fonte: Fragmento DK 80 B1, citado por Platão (Teeteto, 152a).",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Físico",
+      "cit": "O que observamos não é a natureza em si, mas a natureza exposta ao nosso método.",
+      "atrib": "Werner Heisenberg",
+      "bio": "Werner Heisenberg (1901-1976). Alemão, físico. Princípio da incerteza; Nobel de Física de 1932. Fonte: Physics and Philosophy, 1958.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — escultura",
+      "cit": "A figura refeita sem fim: quanto mais perto, menos ela fecha na medida.",
+      "atrib": "O Homem que Caminha, Alberto Giacometti, 1960",
+      "bio": "Alberto Giacometti (1901-1966). Suíço, escultor e pintor. Figuras humanas alongadas, refeitas sem fim. Fonte: Bronze, figura humana alongada e retrabalhada sem cessar.",
+      "selo": "▣ legenda de obra"
+    }
+  ],
+  "T02": [
+    {
+      "tipo": "Filósofo da ciência",
+      "cit": "O fato científico é conquistado, construído, constatado.",
+      "atrib": "Gaston Bachelard",
+      "bio": "Gaston Bachelard (1884-1962). Francês, filósofo da ciência. Obstáculo epistemológico e ruptura com o senso comum. Fonte: La formation de l'esprit scientifique, 1938.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Matemático e físico",
+      "cit": "Um sólido mais pesado que o fluido, pesado dentro dele, perde o peso do fluido que desloca.",
+      "atrib": "Arquimedes",
+      "bio": "Arquimedes de Siracusa (c. 287-212 a.C.). Grego, matemático e físico. Empuxo, alavanca e cálculo de volumes. Fonte: Sobre os corpos flutuantes, livro I, proposição 7.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Escultor",
+      "cit": "O melhor artista não tem ideia que um só mármore não contenha em si.",
+      "atrib": "Michelangelo",
+      "bio": "Michelangelo Buonarroti (1475-1564). Italiano, escultor, pintor e poeta. Autor das Rime, além do David e da Capela Sistina. Fonte: Rime, soneto 151, c. 1538-1544.",
+      "selo": "✔ conferido"
+    }
+  ],
+  "T03": [
+    {
+      "tipo": "Filósofo",
+      "cit": "Conceitos sem intuições são vazios; intuições sem conceitos são cegas.",
+      "atrib": "Immanuel Kant",
+      "bio": "Immanuel Kant (1724-1804). Alemão, filósofo. Crítica da Razão Pura; síntese entre empirismo e racionalismo. Fonte: Kritik der reinen Vernunft, 1781, A51/B75.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Físico",
+      "cit": "Força imprimida é a ação exercida sobre um corpo para mudar seu estado.",
+      "atrib": "Isaac Newton",
+      "bio": "Isaac Newton (1643-1727). Inglês, físico e matemático. Leis do movimento e gravitação universal. Fonte: Philosophiae Naturalis Principia Mathematica, 1687, Definição IV.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Artista",
+      "cit": "Aos setenta e três, entendi um pouco da estrutura real da natureza.",
+      "atrib": "Hokusai",
+      "bio": "Katsushika Hokusai (1760-1849). Japonês, artista do ukiyo-e. Autor da Grande Onda e das Cem Vistas do Monte Fuji. Fonte: Posfácio de Cem Vistas do Monte Fuji, 1834.",
+      "selo": "✔ conferido"
+    }
+  ],
+  "T04": [
+    {
+      "tipo": "Filósofa",
+      "cit": "Os movimentos naturais da alma obedecem a leis análogas às da gravidade.",
+      "atrib": "Simone Weil",
+      "bio": "Simone Weil (1909-1943). Francesa, filósofa. A gravidade e a graça, publicado após sua morte. Fonte: La pesanteur et la grâce, 1947 (póstumo).",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Matemático",
+      "cit": "Maravilha, e não é maravilha.",
+      "atrib": "Simon Stevin",
+      "bio": "Simon Stevin (1548-1620). Flamengo, matemático e engenheiro. Provou o equilíbrio no plano inclinado com a corrente de esferas. Fonte: De Beghinselen der Weeghconst, 1586 — divisa do clootcrans.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Artista",
+      "cit": "O \"Bicho\" não tem avesso.",
+      "atrib": "Lygia Clark",
+      "bio": "Lygia Clark (1920-1988). Brasileira, artista neoconcreta. Criadora dos Bichos, esculturas articuladas por dobradiças. Fonte: Bichos, texto da artista, 1960.",
+      "selo": "✔ conferido"
+    }
+  ],
+  "T05": [
+    {
+      "tipo": "Pensadora",
+      "cit": "O tempo não é um contínuo: é quebrado ao meio, no ponto em que ele está.",
+      "atrib": "Hannah Arendt",
+      "bio": "Hannah Arendt (1906-1975). Alemã naturalizada estadunidense, pensadora política. Entre o passado e o futuro. Fonte: Entre o passado e o futuro, 1961 — prefácio.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Matemático e filósofo",
+      "cit": "Dividir cada dificuldade em tantas parcelas quantas forem possíveis.",
+      "atrib": "René Descartes",
+      "bio": "René Descartes (1596-1650). Francês, filósofo e matemático. Criador da geometria analítica e do plano cartesiano. Fonte: Discours de la méthode, 1637, segunda parte.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — fotografia",
+      "cit": "O galope separado em instantes: o que o olho não alcança, a câmera fixa.",
+      "atrib": "The Horse in Motion, Eadweard Muybridge, 1878",
+      "bio": "Eadweard Muybridge (1830-1904). Britânico, fotógrafo. Decompôs o galope em fotografias sequenciais. Fonte: Série fotográfica, Palo Alto, 1878.",
+      "selo": "▣ legenda de obra"
+    }
+  ],
+  "T06": [
+    {
+      "tipo": "Educadora",
+      "cit": "As mãos são o instrumento da inteligência humana.",
+      "atrib": "Maria Montessori",
+      "bio": "Maria Montessori (1870-1952). Italiana, médica e educadora. Método Montessori e a educação pelo material concreto. Fonte: La mente del bambino (A mente absorvente), 1949.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — tratado",
+      "cit": "A força de um corpo em movimento é proporcional ao quadrado da sua velocidade.",
+      "atrib": "Institutions de physique, Émilie du Châtelet, 1740",
+      "bio": "Émilie du Châtelet (1706-1749). Francesa, física e matemática. Traduziu e comentou os Principia; defendeu a força viva (mv²). Fonte: Posição da força viva (mv²), defendida contra Dortous de Mairan.",
+      "selo": "▣ legenda de obra"
+    },
+    {
+      "tipo": "Artista",
+      "cit": "O movimento e a luz destroem a materialidade dos corpos.",
+      "atrib": "Umberto Boccioni",
+      "bio": "Umberto Boccioni (1882-1916). Italiano, pintor e escultor futurista. Formas Únicas da Continuidade no Espaço. Fonte: Manifesto técnico da pintura futurista, 1910.",
+      "selo": "✔ conferido"
+    }
+  ],
+  "T07": [
+    {
+      "tipo": "Pensador",
+      "cit": "Que é o tempo? Se ninguém me pergunta, eu sei; se quero explicar, não sei.",
+      "atrib": "Santo Agostinho",
+      "bio": "Agostinho de Hipona (354-430). Norte-africano, filósofo e teólogo. O livro XI das Confissões discute a natureza do tempo. Fonte: Confessiones, XI, 14.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Astrônomo",
+      "cit": "A geometria é única e eterna, resplandecendo na mente de Deus.",
+      "atrib": "Johannes Kepler",
+      "bio": "Johannes Kepler (1571-1630). Alemão, astrônomo. Leis do movimento planetário e a harmonia dos mundos. Fonte: Dissertatio cum Nuncio Sidereo, 1610.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — pintura",
+      "cit": "Círculos concêntricos que recomeçam sem nunca fechar.",
+      "atrib": "Rythme sans fin, Sonia Delaunay, 1934",
+      "bio": "Sonia Delaunay (1885-1979). Ucraniano-francesa, artista. Simultaneísmo; séries de círculos e ritmos concêntricos. Fonte: Série Rythme sans fin, 1934.",
+      "selo": "▣ legenda de obra"
+    }
+  ],
+  "T08": [
+    {
+      "tipo": "Educador e epistemólogo",
+      "cit": "A inteligência organiza o mundo organizando-se a si mesma.",
+      "atrib": "Jean Piaget",
+      "bio": "Jean Piaget (1896-1980). Suíço, epistemólogo. Epistemologia genética e os estágios do desenvolvimento. Fonte: La construction du réel chez l'enfant, 1937 — conclusão.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — tratado",
+      "cit": "Nenhuma parte da trajetória de um projétil é perfeitamente reta.",
+      "atrib": "Nova Scientia, Niccolò Tartaglia, 1537",
+      "bio": "Niccolò Tartaglia (1499-1557). Italiano, matemático. Primeiro estudo sistemático da trajetória de projéteis. Fonte: Primeiro tratado matemático de balística.",
+      "selo": "▣ legenda de obra"
+    },
+    {
+      "tipo": "Obra — pintura",
+      "cit": "A descida inteira sobreposta numa só tela: o movimento parado em camadas.",
+      "atrib": "Nu descendo uma escada n.º 2, Marcel Duchamp, 1912",
+      "bio": "Marcel Duchamp (1887-1968). Francês, artista. Nu descendo uma escada e os ready-mades. Fonte: Óleo sobre tela, Philadelphia Museum of Art.",
+      "selo": "▣ legenda de obra"
+    }
+  ],
+  "T09": [
+    {
+      "tipo": "Pensador",
+      "cit": "Não se entra duas vezes no mesmo rio.",
+      "atrib": "Heráclito",
+      "bio": "Heráclito de Éfeso (c. 540-480 a.C.). Grego, filósofo. O fluxo permanente e a unidade dos opostos. Fonte: Fragmento DK 22 B91, citado por Platão (Crátilo, 402a).",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Obra — tratado",
+      "cit": "No choque elástico, a velocidade com que os corpos se separam é a mesma com que se aproximaram.",
+      "atrib": "De motu corporum ex percussione, Christiaan Huygens, 1656",
+      "bio": "Christiaan Huygens (1629-1695). Neerlandês, físico e matemático. Resolveu a colisão elástica e criou o relógio de pêndulo. Fonte: Escrito em 1656, publicado postumamente em 1703.",
+      "selo": "▣ legenda de obra"
+    },
+    {
+      "tipo": "Fotógrafo",
+      "cit": "Fotografar é pôr na mesma mira a cabeça, o olho e o coração.",
+      "atrib": "Henri Cartier-Bresson",
+      "bio": "Henri Cartier-Bresson (1908-2004). Francês, fotógrafo. Cofundador da Magnum; formulou o instante decisivo. Fonte: Images à la sauvette (O instante decisivo), 1952 — prefácio.",
+      "selo": "✔ conferido"
+    }
+  ],
+  "T10": [
+    {
+      "tipo": "Filósofo",
+      "cit": "Cada coisa se esforça por perseverar em seu ser.",
+      "atrib": "Espinosa",
+      "bio": "Baruch de Espinosa (1632-1677). Neerlandês, filósofo. A Ética e o conceito de conatus. Fonte: Ethica, 1677, parte III, proposição 6.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Matemática",
+      "cit": "A cada simetria contínua corresponde uma lei de conservação.",
+      "atrib": "Teorema de Emmy Noether",
+      "bio": "Emmy Noether (1882-1935). Alemã, matemática. Seu teorema liga simetrias a leis de conservação. Fonte: Invariante Variationsprobleme, 1918.",
+      "selo": "✔ conferido"
+    },
+    {
+      "tipo": "Poeta",
+      "cit": "Eu canto porque o instante existe e a minha vida está completa.",
+      "atrib": "Cecília Meireles",
+      "bio": "Cecília Meireles (1901-1964). Brasileira, poeta e educadora. Viagem e o Romanceiro da Inconfidência. Fonte: Motivo, in Viagem, 1939.",
+      "selo": "✔ conferido"
+    }
+  ]
+};
+/* AUTO:CITACOES_LME:FIM */
+
+// ═══════════════════════════════════════════════════════════
 // NARRATIVA DA ILB — Camada 2 v3 da T0A, aprovada em 2026-09-07
 // O leitor da ILB e ADULTO e futuro professor: o protagonista e ele
 // proprio. O TT NAO abre com cena de personagens — abre falando com o
@@ -2078,6 +2395,9 @@ const _INLINE_DATA = {
   fc1: { temas: TEMAS.slice(), trilhas: {...TRILHAS} },
   fe1: { temas: TEMAS_FE1.slice(), trilhas: {...TRILHAS_FE1} },
   ilb: { temas: TEMAS_ILB.slice(), trilhas: {...TRILHAS_ILB}, citacoes: CITACOES_ILB,
+         protagonistas: PROTAGONISTAS_ILB, professores: PROFESSORES_ILB,
+         matriz_prot_tema: MATRIZ_PROT_ILB, cenarios: CENARIOS_ILB },
+  lme: { temas: TEMAS_LME.slice(), trilhas: {...TRILHAS_LME}, citacoes: CITACOES_LME,
          protagonistas: PROTAGONISTAS_ILB, professores: PROFESSORES_ILB,
          matriz_prot_tema: MATRIZ_PROT_ILB, cenarios: CENARIOS_ILB },
 };
@@ -3100,8 +3420,9 @@ function renderEpigrafes() {
     var DESTINO_ILB = ['1 · pensador(a)/educador(a) → abre o TT',
                        '2 · cientista → abre o Roteiro de Bancada',
                        '3 · artista → Ciência e Arte'];
-    var ilb = (typeof ehILB === 'function') && ehILB();
+    var ilb = ((typeof ehILB === 'function') && ehILB()) || _disciplinaAtual === 'lme';
     var label = ilb ? (DESTINO_ILB[i] || ('Epígrafe ' + (i + 1))) : ('Epígrafe ' + (i + 1));
+    if (c.selo) label += ' <span style="color:var(--texto-sub);font-size:11px;font-weight:600">' + c.selo + '</span>';
     if (isSel) label += ilb
       ? ' <span style="color:var(--verde-claro);font-size:11px;font-weight:600">NO EDITOR</span>'
       : ' <span style="color:var(--verde-claro);font-size:11px;font-weight:600">SELECIONADA</span>';
@@ -4631,6 +4952,7 @@ function rotuloOpcao() {
 
 const CURSO_SERIE_LABEL = {
   ilb: '2.\u00ba per\u00edodo \u00b7 Licenciatura em F\u00edsica \u00b7 IFMG-OP',
+  lme: '4.\u00ba per\u00edodo \u00b7 Licenciatura em F\u00edsica \u00b7 IFMG-OP',
   fc1: '1a s\u00e9rie \u00b7 T\u00e9cnico em Minera\u00e7\u00e3o Integrado ao Ensino M\u00e9dio \u00b7 IFMG-OP',
   fe1: '1a s\u00e9rie \u00b7 T\u00e9cnico em Minera\u00e7\u00e3o Integrado ao Ensino M\u00e9dio \u00b7 IFMG-OP'
 };
