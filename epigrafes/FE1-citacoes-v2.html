@@ -91,7 +91,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); line
 }
 </style>
 </head>
-<body>
+<body data-pagina="painel:epigrafes-fe1-citacoes-v2">
 <button class="btn-theme" onclick="toggleTheme()">tema</button>
 <div class="header">
   <div class="header-title">FE1 — Citacoes por Trilha</div>
@@ -489,5 +489,9 @@ window.addEventListener('message', function(ev) {
   ev.source.postMessage({ type: 'citacoesData', trilha: code, citacoes: result }, '*');
 });
 </script>
+<!-- CONTADOR:INICIO -->
+<script src="../contador-config.js"></script>
+<script src="../acessos.js"></script>
+<!-- CONTADOR:FIM -->
 </body>
 </html>

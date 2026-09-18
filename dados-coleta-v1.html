@@ -55,7 +55,7 @@ summary { cursor: pointer; font-size: 0.82rem; color: var(--ouro-claro); font-fa
 @media (max-width: 700px) { .pendlist { columns: 1; } }
 </style>
 </head>
-<body>
+<body data-pagina="painel:dados-coleta-v1">
 
 <div class="toolbar">
   <button class="btn" id="btnAtualizar" onclick="carregar()">Atualizar dados</button>
@@ -466,5 +466,9 @@ function render() {
   renderRisco();
 }
 </script>
+<!-- CONTADOR:INICIO -->
+<script src="contador-config.js"></script>
+<script src="acessos.js"></script>
+<!-- CONTADOR:FIM -->
 </body>
 </html>
