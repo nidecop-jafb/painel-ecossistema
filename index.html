@@ -2310,6 +2310,17 @@ function biBase() {
   return location.pathname.indexOf('painel-producao') !== -1
     ? '../_banco_itens/_figuras/' : 'banco-itens/';
 }
+function biPassos(it) {
+  // dois protocolos, dois conjuntos de rotulos: o C5 do problema de Fisica e
+  // o C5-FG do item argumentativo da Formacao Geral do ENADE
+  return (it && it.protocolo === 'C5-FG' && typeof BI_PASSOS_RCP_FG !== 'undefined')
+    ? BI_PASSOS_RCP_FG : BI_PASSOS_RCP;
+}
+function biTituloRCP(it) {
+  return (it && it.protocolo === 'C5-FG')
+    ? 'Resolução Científica do Problema (RCP) — Protocolo C5, Formação Geral'
+    : 'Resolução Científica do Problema (RCP) — Protocolo C5';
+}
 function biEsc(s) {
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -2366,9 +2377,11 @@ function biTextoParaCopiar(it) {
   }
   linhas.push('Prova oficial: ' + it.fonte.url_prova);
   if (it.resolucao) {
-    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA (RCP) - PROTOCOLO C5');
+    var rotulos = biPassos(it);
+    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA (RCP) - PROTOCOLO C5'
+      + (it.protocolo === 'C5-FG' ? ' (FORMACAO GERAL)' : ''));
     (it.resolucao.detalhada || []).forEach(function (texto, i) {
-      linhas.push((i + 1) + '. ' + (BI_PASSOS_RCP[i] || '') + ' - ' + texto);
+      linhas.push((i + 1) + '. ' + (rotulos[i] || '') + ' - ' + texto);
     });
     linhas.push('', 'RESOLUCAO CONDENSADA', it.resolucao.condensada || '');
   }
@@ -2410,9 +2423,10 @@ function biVerResolucao(id, tipo, botao) {
   if (!it || !it.resolucao) return;
   var html;
   if (tipo === 'detalhada') {
-    html = '<h4>Resolução Científica do Problema (RCP) — Protocolo C5</h4><ol>'
+    var rotulos = biPassos(it);
+    html = '<h4>' + biEsc(biTituloRCP(it)) + '</h4><ol>'
       + (it.resolucao.detalhada || []).map(function (texto, i) {
-          return '<li><b>' + biEsc(BI_PASSOS_RCP[i] || '') + '</b>'
+          return '<li><b>' + biEsc(rotulos[i] || '') + '</b>'
             + biEsc(texto) + '</li>';
         }).join('') + '</ol>';
   } else {
