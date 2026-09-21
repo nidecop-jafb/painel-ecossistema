@@ -2310,16 +2310,19 @@ function biBase() {
   return location.pathname.indexOf('painel-producao') !== -1
     ? '../_banco_itens/_figuras/' : 'banco-itens/';
 }
+function biQual(it) {
+  // os dois ramos da RCP: RCP-Quant (problema de Fisica, Protocolo C5) e
+  // RCP-Qual (item argumentativo, Formacao Geral)
+  return !!(it && it.protocolo === 'RCP-Qual');
+}
 function biPassos(it) {
-  // dois protocolos, dois conjuntos de rotulos: o C5 do problema de Fisica e
-  // o C5-FG do item argumentativo da Formacao Geral do ENADE
-  return (it && it.protocolo === 'C5-FG' && typeof BI_PASSOS_RCP_FG !== 'undefined')
-    ? BI_PASSOS_RCP_FG : BI_PASSOS_RCP;
+  return (biQual(it) && typeof BI_PASSOS_QUAL !== 'undefined')
+    ? BI_PASSOS_QUAL : BI_PASSOS_QUANT;
 }
 function biTituloRCP(it) {
-  return (it && it.protocolo === 'C5-FG')
-    ? 'Resolução Científica do Problema (RCP) — Protocolo C5, Formação Geral'
-    : 'Resolução Científica do Problema (RCP) — Protocolo C5';
+  return biQual(it)
+    ? 'Resolução Científica do Problema — RCP-Qual (Formação Geral)'
+    : 'Resolução Científica do Problema — RCP-Quant (Protocolo C5)';
 }
 function biEsc(s) {
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -2378,8 +2381,8 @@ function biTextoParaCopiar(it) {
   linhas.push('Prova oficial: ' + it.fonte.url_prova);
   if (it.resolucao) {
     var rotulos = biPassos(it);
-    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA (RCP) - PROTOCOLO C5'
-      + (it.protocolo === 'C5-FG' ? ' (FORMACAO GERAL)' : ''));
+    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA - ' + (biQual(it)
+      ? 'RCP-QUAL (FORMACAO GERAL)' : 'RCP-QUANT (PROTOCOLO C5)'));
     (it.resolucao.detalhada || []).forEach(function (texto, i) {
       linhas.push((i + 1) + '. ' + (rotulos[i] || '') + ' - ' + texto);
     });
@@ -2412,7 +2415,7 @@ function biCopiarFallback(texto, ok) {
 function biVerResolucao(id, tipo, botao) {
   var alvo = document.getElementById('bi-res-' + tipo + '-' + id);
   if (!alvo) return;
-  var rotulos = { detalhada: 'resolução passo a passo (RCP–C5)',
+  var rotulos = { detalhada: 'resolução passo a passo (RCP)',
                   condensada: 'resolução condensada' };
   if (alvo.innerHTML) {
     alvo.innerHTML = '';
@@ -2559,7 +2562,7 @@ function biRender() {
       + '<div class="bi-acoes">'
       +   '<button type="button" onclick="biCopiar(\'' + biEsc(it.id) + '\', this)">copiar item</button>'
       +   '<button type="button" onclick="biVerGabarito(\'' + biEsc(it.id) + '\', this)">' + (aberta ? 'ver resposta' : 'ver gabarito') + '</button>'
-      +   (it.resolucao ? '<button type="button" onclick="biVerResolucao(\'' + biEsc(it.id) + '\', \'detalhada\', this)">resolução passo a passo (RCP–C5)</button>' : '')
+      +   (it.resolucao ? '<button type="button" onclick="biVerResolucao(\'' + biEsc(it.id) + '\', \'detalhada\', this)">resolução passo a passo (RCP)</button>' : '')
       +   (it.resolucao ? '<button type="button" onclick="biVerResolucao(\'' + biEsc(it.id) + '\', \'condensada\', this)">resolução condensada</button>' : '')
       +   '<button type="button" onclick="biVerImagem(\'' + biEsc(it.id) + '\', this)">ver como foi impresso</button>'
       +   '<button type="button" onclick="biAbrirProva(\'' + biEsc(it.fonte.url_prova) + '\')">abrir a prova oficial (' + biEsc(it.fonte.orgao) + ')</button>'
