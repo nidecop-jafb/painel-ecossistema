@@ -2310,19 +2310,24 @@ function biBase() {
   return location.pathname.indexOf('painel-producao') !== -1
     ? '../_banco_itens/_figuras/' : 'banco-itens/';
 }
-function biQual(it) {
-  // os dois ramos da RCP: RCP-Quant (problema de Fisica, Protocolo C5) e
-  // RCP-Qual (item argumentativo, Formacao Geral)
-  return !!(it && it.protocolo === 'RCP-Qual');
+// Os ramos da RCP. Os terminados em -5 sao a versao curta do processo
+// seletivo do IFMG: as mesmas oito etapas agrupadas em cinco passos.
+var BI_RAMOS = {
+  'RCP-Quant': 'RCP-Quant (Protocolo C5)',
+  'RCP-Qual': 'RCP-Qual (Formação Geral)',
+  'RCP-Quant-5': 'RCP-Quant-5 (5 passos, processo seletivo)',
+  'RCP-Qual-5': 'RCP-Qual-5 (5 passos, processo seletivo)'
+};
+function biRamo(it) {
+  var p = it && it.protocolo;
+  return BI_RAMOS[p] ? p : 'RCP-Quant';
 }
 function biPassos(it) {
-  return (biQual(it) && typeof BI_PASSOS_QUAL !== 'undefined')
-    ? BI_PASSOS_QUAL : BI_PASSOS_QUANT;
+  return (typeof BI_PASSOS !== 'undefined' && BI_PASSOS[biRamo(it)])
+    || (typeof BI_PASSOS !== 'undefined' ? BI_PASSOS['RCP-Quant'] : []);
 }
 function biTituloRCP(it) {
-  return biQual(it)
-    ? 'Resolução Científica do Problema — RCP-Qual (Formação Geral)'
-    : 'Resolução Científica do Problema — RCP-Quant (Protocolo C5)';
+  return 'Resolução Científica do Problema — ' + BI_RAMOS[biRamo(it)];
 }
 function biEsc(s) {
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -2381,8 +2386,7 @@ function biTextoParaCopiar(it) {
   linhas.push('Prova oficial: ' + it.fonte.url_prova);
   if (it.resolucao) {
     var rotulos = biPassos(it);
-    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA - ' + (biQual(it)
-      ? 'RCP-QUAL (FORMACAO GERAL)' : 'RCP-QUANT (PROTOCOLO C5)'));
+    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA - ' + biRamo(it));
     (it.resolucao.detalhada || []).forEach(function (texto, i) {
       linhas.push((i + 1) + '. ' + (rotulos[i] || '') + ' - ' + texto);
     });
@@ -2667,6 +2671,10 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 .pre-acao { font-family: var(--mono); font-size: 11px; color: var(--ouro-claro); background: var(--fundo); border: 1px solid var(--cinza-borda); padding: 5px 10px; cursor: pointer; margin: 8px 6px 0 0; }
 .pre-acao:hover { border-color: var(--ouro-claro); }
 </style>
+<details class="pre-brief">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>metodo &middot; RCP em 5 passos para o processo seletivo do IFMG<span class="pre-meta">FC1 &middot; 2026-09-21</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Dar aos itens do processo seletivo do IFMG (cursos técnicos integrados) uma<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto · Skill: nenhuma <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-metodo-rcp-5-passos-ifmg-ps-2026-09-21.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-metodo-rcp-5-passos-ifmg-ps-2026-09-21.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-metodo-rcp-5-passos-ifmg-ps-2026-09-21.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-metodo-rcp-5-passos-ifmg-ps-2026-09-21.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-metodo-rcp-5-passos-ifmg-ps-2026-09-21.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>outro &middot; Banco de Itens como aplicativo de pen drive<span class="pre-meta">FC2 &middot; 2026-09-21</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Separar o banco do HTML do Painel num `dados.js` carregado por `&lt;script src&gt;` e,<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: alto · Skill: nenhuma <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/02_Fisica_Conceitual_2/_planejamento/_pre/PRE-outro-banco-de-itens-app-de-pen-drive-2026-09-21.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/02_Fisica_Conceitual_2/_planejamento/_pre/PRE-outro-banco-de-itens-app-de-pen-drive-2026-09-21.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/02_Fisica_Conceitual_2/_planejamento/_pre/PRE-outro-banco-de-itens-app-de-pen-drive-2026-09-21.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/02_Fisica_Conceitual_2/_planejamento/_pre/PRE-outro-banco-de-itens-app-de-pen-drive-2026-09-21.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/02_Fisica_Conceitual_2/_planejamento/_pre/PRE-outro-banco-de-itens-app-de-pen-drive-2026-09-21.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -3003,7 +3011,7 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-meta">FC1 &middot; 2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>84 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 7 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>85 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 8 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
