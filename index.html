@@ -2640,6 +2640,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <option value="banco-resolucoes">resolu&ccedil;&otilde;es (RCP)</option>
                 <option value="banco-aba">aba e app de pen drive</option>
                 <option value="banco-classificacao">classifica&ccedil;&atilde;o e metadados</option>
+                <option value="banco-texto-equacoes">texto e equa&ccedil;&otilde;es</option>
               </optgroup>
             </select>
           </label>
@@ -2678,7 +2679,7 @@ details.pre-brief > .pre-corpo { padding: 2px 12px 14px 32px; font-size: 12.5px;
 .pre-acao:hover { border-color: var(--ouro-claro); }
 </style>
 <details class="pre-brief">
-<summary><span class="pre-status pre-aprovado">APROVADO</span>painel &middot; o Banco de Itens como terceiro grupo do Alvo<span class="pre-meta">FC1 &middot; 2026-09-22</span></summary>
+<summary><span class="pre-status pre-executado">EXECUTADO</span>painel &middot; o Banco de Itens como terceiro grupo do Alvo<span class="pre-meta">FC1 &middot; 2026-09-22</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Dar ao seletor **Alvo** da aba Pré-Planejamento um terceiro `&lt;optgroup&gt;`, **Banco de<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: medio · Skill: nenhuma <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-alvo-banco-de-itens-2026-09-22.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-alvo-banco-de-itens-2026-09-22.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-alvo-banco-de-itens-2026-09-22.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-alvo-banco-de-itens-2026-09-22.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-alvo-banco-de-itens-2026-09-22.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
 <details class="pre-brief">
@@ -4322,6 +4323,14 @@ var PRE_ROTEIROS = {
     itens: 'a trilha T{NN} e o codigo M da matriz, mais trilhas secundarias; nivel de Bloom e dificuldade; ' +
            'nivel de ensino e serie; matriz, codigo e texto da habilidade oficial; a observacao que diz para que o item serve na trilha; ' +
            'se o item e de trilha ou de catalogo; o que o conferir_banco.py passa a exigir depois da mudanca.'
+  },
+  'banco-texto-equacoes': {
+    dica: 'Texto e equacoes: como o enunciado, as alternativas e a matematica do item saem do PDF oficial e aparecem na aba, no texto copiado e no pen drive.',
+    itens: 'quais itens estao com o texto incompleto ou so na imagem (campos alternativas_confiaveis e texto_na_imagem) e quantos sao; ' +
+           'se a equacao entra como texto corrido, como recorte da prova ou como notacao (LaTeX/MathML) e quem a escreve; ' +
+           'que simbolos precisam sobreviver (fracao, raiz, expoente, vetor, unidade do SI) e como ficam no botao copiar item; ' +
+           'se o app de pen drive continua funcionando offline, sem CDN, com a solucao escolhida; ' +
+           'se o texto se digita (proibido) ou se sai do PDF, e o que o conferir_banco.py passa a exigir e a avisar.'
   }
 };
 
