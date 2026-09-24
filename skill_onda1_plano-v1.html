@@ -1638,39 +1638,191 @@ let TRILHAS = {
   "M60":{ nome:"O Puxão Universal II- A Gravidade Local", tema:9, t:["Gravidade local ()","Campo gravitacional em profundidade","Variação com a latitude","Gravimetria em geologia","Peso em outros planetas"]},
 };
 
+/* AUTO:TRILHAS_FE1:INICIO */
 // ═══════════════════════════════════════════════════════════
 // DADOS INLINE — FE1 (Física Experimental 1)
-// 17 trilhas: T0A (metodologia) + T01-T16 · 6 Temas
-// Lab de Mecânica (todas) · Prefixo FE-
+// 14 trilhas em 4 Temas · Lab de Mecânica · Prefixo FE-
+// GERADO por 04_Física_Experimental_1/_scripts/gerar_trilhas_painel_fe1.py
+// a partir do Plano de Ensino v1 — nao editar a mao.
 // ═══════════════════════════════════════════════════════════
 const TEMAS_FE1 = [
-  { num: 0, nome: "Abertura", sub: "Metodologia Experimental", foco: "Método científico, escala/incerteza, gráficos, Caderno de Lab, EPI e NR-22" },
-  { num: 1, nome: "Fundamentos da Medida", sub: "T01-T05", foco: "Medidas-base (comprimento, massa, tempo) e cinemática experimental" },
-  { num: 2, nome: "Forças, Equilíbrio e Energia", sub: "T06-T11", foco: "Newtonianismo experimental: Hooke, atrito, vetores, equilíbrio, máquinas simples" },
-  { num: 3, nome: "Conservação", sub: "T12-T13", foco: "Leis de conservação (energia e quantidade de movimento) com medição direta" },
-  { num: 4, nome: "Fluidos", sub: "T14-T15", foco: "Pressão, empuxo e densidade — conexão com barragens e mineração" },
-  { num: 5, nome: "Projeto Integrador", sub: "T16", foco: "Projeto investigativo livre integrando conceitos dos Temas 1-4" },
+  {
+    "num": 0,
+    "nome": "Boas-vindas",
+    "sub": "T0A · T0B",
+    "foco": "Chegada ao Lab de Mecânica: método experimental, segurança (NR-22) e o registro da bancada"
+  },
+  {
+    "num": 1,
+    "nome": "Entendendo as medidas",
+    "sub": "T01–T05",
+    "foco": "Medida, incerteza e tratamento de dados: instrumentos, algarismos significativos, padrão estatístico, tabelas e gráficos, ajuste linear e não linear"
+  },
+  {
+    "num": 2,
+    "nome": "Brincando com Forças e Movimentos",
+    "sub": "T06–T11",
+    "foco": "Experimentos de forças e movimentos (leis de Newton, atrito, empuxo, plano inclinado, colisões, hidrostática), articulados à Física I"
+  },
+  {
+    "num": 3,
+    "nome": "Projeto Integrador",
+    "sub": "T12",
+    "foco": "Aplicação autônoma dos temas cursados: o estudante propõe o procedimento, mede e defende o resultado"
+  }
 ];
 
 const TRILHAS_FE1 = {
-  "T0A":{ nome:"Metodologia Experimental", tema:0, t:["O método científico experimental","Escala, incerteza e algarismos significativos","Construção e leitura de gráficos","Caderno de Laboratório","EPI e NR-22 no Lab de Mecânica"]},
-  "T01":{ nome:"Medições do comprimento de linhas", tema:1, t:["Instrumentos de medida de comprimento (régua, trena, paquímetro)","Leitura direta e estimativa do último algarismo","Incerteza instrumental e sensibilidade","Medições repetidas e média","Algarismos significativos na prática"]},
-  "T02":{ nome:"Medições da massa de objetos", tema:1, t:["Balança de dois pratos e balança digital","Calibração e zeragem","Massa de corpos regulares e irregulares","Propagação de incerteza em medidas de massa","Relação massa-volume (pré-densidade)"]},
-  "T03":{ nome:"Medições de instantes e intervalos de tempo", tema:1, t:["Cronômetro digital e tempo de reação","Instante vs. intervalo de tempo","Medições repetidas e dispersão","Incerteza do operador vs. incerteza instrumental","Sincronização e registro de eventos"]},
-  "T04":{ nome:"Movimento Retilíneo Uniforme (MRU)", tema:1, t:["Trilho de ar / rampa de baixa inclinação","Marcação de posições em intervalos iguais de tempo","Construção do gráfico x-t (reta)","Determinação experimental da velocidade","Comparação modelo teórico vs. dados experimentais"]},
-  "T05":{ nome:"Movimento Uniformemente Variado e queda livre", tema:1, t:["Rampa inclinada / queda guiada","Gráficos s-t, v-t e a-t experimentais","Determinação experimental de g","Propagação de incerteza no cálculo de g","Comparação com valor tabelado e discussão de erros"]},
-  "T06":{ nome:"Lei de Hooke e elasticidade das molas", tema:2, t:["Mola helicoidal + massas-padrão","Construção do gráfico F-x","Determinação da constante elástica k","Limite de elasticidade e deformação permanente","Associação de molas (série e paralelo)"]},
-  "T07":{ nome:"Atrito estático e cinético em rampas", tema:2, t:["Rampa graduada com transferidor","Determinação de μ_e (ângulo crítico)","Determinação de μ_c (movimento uniforme)","Influência da superfície e do material","Atrito em operações de britagem e transporte"]},
-  "T08":{ nome:"Plano inclinado e decomposição vetorial", tema:2, t:["Carrinho em rampa com dinamômetro","Medição de componentes P_x e P_y","Comparação: previsão teórica vs. medida experimental","Influência do ângulo na aceleração","Conexão com rampas de cava em mineração"]},
-  "T09":{ nome:"Equilíbrio de ponto material", tema:2, t:["Mesa de forças com três fios e dinamômetros","Medição de módulo e ângulo de cada força","Fechamento do polígono de forças","Verificação da condição de equilíbrio (R = 0)","Propagação de incerteza em medidas angulares"]},
-  "T10":{ nome:"Centro de gravidade em corpos extensos", tema:2, t:["Modelos 2D (chapas) e 3D (sólidos)","Método do fio de prumo","Determinação experimental do CG","Estabilidade e tombamento","Conexão com estabilidade de equipamentos de mineração"]},
-  "T11":{ nome:"Máquinas simples: alavancas e polias", tema:2, t:["Alavanca interfixa (balança de torques)","Polias fixas e móveis","Determinação da vantagem mecânica","Rendimento real vs. teórico","Máquinas simples no canteiro de obras e mineração"]},
-  "T12":{ nome:"Conservação de energia mecânica", tema:3, t:["Queda de corpo: medição de h e v_final","Cálculo de E_p inicial e E_c final","Comparação e discussão de perdas","Rampa curva (loop) — energia em pontos distintos","Propagação de incerteza em medidas energéticas"]},
-  "T13":{ nome:"Colisões em trilho de ar (1D)", tema:3, t:["Carrinhos com photogates","Medição de velocidades antes/depois","Colisão elástica: conservação de p e E_c","Colisão inelástica: conservação de p, perda de E_c","Coeficiente de restituição experimental"]},
-  "T14":{ nome:"Hidrostática: pressão em barragem-escala", tema:4, t:["Coluna d'água graduada com manômetro","Relação pressão × profundidade (Lei de Stevin)","Modelo de barragem em escala","Medição de força sobre superfície imersa","Conexão com barragens de rejeito (NR-22)"]},
-  "T15":{ nome:"Densidade de minérios (princípio de Arquimedes)", tema:4, t:["Balança + proveta (método do deslocamento)","Determinação da densidade de amostras","Identificação de minerais (hematita, quartzo, magnetita)","Empuxo e condição de flutuação","Separação densimétrica em beneficiamento mineral"]},
-  "T16":{ nome:"Projeto investigativo integrador", tema:5, t:["Escolha do problema e hipótese","Planejamento experimental e variáveis de controle","Coleta de dados com análise de incerteza","Relatório científico completo","Apresentação e defesa oral do projeto"]},
+  "T0A": {
+    "nome": "Primeiros Passos no Laboratório",
+    "tema": 0,
+    "t": [
+      "Metodo cientifico (o ciclo pergunta → hipotese → medida → analise → conclusao, adaptado a uma aula de 90 min)",
+      "Medida (o que e medir, o que e escala, o que e algarismo significativo)",
+      "Incerteza (toda medida tem erro; estimar incerteza e parte do dado)",
+      "Caderno de Laboratorio (o registro escrito da pratica e parte do produto, nao acessorio)",
+      "Seguranca (regras de uso do Lab de Mecanica IFMG-OP, construidas com os alunos, baseadas na NR-22 da mineracao)"
+    ]
+  },
+  "T0B": {
+    "nome": "A Régua do Mundo",
+    "tema": 0,
+    "t": []
+  },
+  "T01": {
+    "nome": "Como Medir as Coisas",
+    "tema": 1,
+    "t": [
+      "Comprimento e diâmetro de um tarugo de madeira com 4 instrumentos (régua dm, cm, mm e paquímetro), cada leitura com incerteza de escala",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: paquímetro digital; cálculo do volume"
+    ]
+  },
+  "T02": {
+    "nome": "Lidando com a Incerteza",
+    "tema": 1,
+    "t": [
+      "Densidade superficial do papel-cartão, ρ = m/(a·b), com propagação da incerteza",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: comparação entre balanças; segunda parte do roteiro"
+    ]
+  },
+  "T03": {
+    "nome": "Achando o Padrão na Bagunça",
+    "tema": 1,
+    "t": [
+      "Tempo de percurso do carrinho entre dois sensores, 20 repetições por bancada → média, desvio padrão, histograma",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: segunda configuração dos sensores"
+    ]
+  },
+  "T04": {
+    "nome": "Interpretando Linhas Retas",
+    "tema": 1,
+    "t": [
+      "Estudo Matemático dos Movimentos (Pontos A, B, C, D e E assinaldos no tubo transparente e espaçados de 10,0 cm um do outro., Escolha 1 : Origem das posições (A, B, C, D, E), Escolha 2 : Sinal positivo da velocidade (esfera descendo ou bolha subindo), Escolha 3 : Cronometro (zerado, não zerado) - Escolha 4 : Posição da esfera no insttne em que o cornometro foi disparado, Medições da posição e instantes em que a esfera passa por A, B, C, D e E (cornometro anlaógico, celular))",
+      "Fórmulas válidas para o movimento da esfera (Valor da velocidade da esfera (cm/s), Fórmula da posição da esfera (cm, s), Valor da aceleração da esfera (cm/s2))",
+      "Gráficos do Movimento Uniforme (Velocidade x tempo, Posição x tempo, Aceleração x tempo)",
+      "Movimento da bolha de ar (Formula da posição, Gráficos)",
+      "Encontro da esfera com a bolha (Modelo teórico (Fomula)  vs. dados experimentais (Medida), Analise do erro)"
+    ]
+  },
+  "T05": {
+    "nome": "Analisando Linhas Tortas",
+    "tema": 1,
+    "t": [
+      "Altura × tempo de queda da esfera, 5 alturas × 3 quedas → gráfico h × t² e valor de g",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: linearização log-log"
+    ]
+  },
+  "T06": {
+    "nome": "Leis de Newton",
+    "tema": 2,
+    "t": [
+      "Aceleração × força no trilho de ar, massa total constante (massas passam do carrinho ao porta-pesos), 4 pontos",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: a × 1/m (massa variável)"
+    ]
+  },
+  "T07": {
+    "nome": "Pesando, Puxando, Empurrando e Esticando",
+    "tema": 2,
+    "t": [
+      "Deformação × peso de uma mola, 8 massas (25 g e 10 g alternadas) → constante elástica",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: molas em série e em paralelo"
+    ]
+  },
+  "T08": {
+    "nome": "Boiando, Lixando, Amassando e Voando",
+    "tema": 2,
+    "t": [
+      "Coeficiente de atrito estático pelo ângulo crítico de um bloco numa rampa graduada, 2 superfícies × 5 repetições",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: atrito cinético; a alternativa UFJF-09"
+    ]
+  },
+  "T09": {
+    "nome": "Subindo e descendo em Rampas e Ladeiras",
+    "tema": 2,
+    "t": [
+      "Aceleração no trilho de ar inclinado para 4 ângulos → a × sen θ e valor de g",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: ângulos extras; comparação com T05"
+    ]
+  },
+  "T10": {
+    "nome": "Trombadas e Batidas",
+    "tema": 2,
+    "t": [
+      "Momento linear antes × depois de uma colisão perfeitamente inelástica, 3 combinações de massa",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: colisão elástica; energia cinética"
+    ]
+  },
+  "T11": {
+    "nome": "A Física da Água Parada",
+    "tema": 2,
+    "t": [
+      "Empuxo × volume imerso",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: pressão × profundidade"
+    ]
+  },
+  "T12": {
+    "nome": "Projeto investigativo integrador",
+    "tema": 3,
+    "t": [
+      "Escolha do problema e hipótese",
+      "Planejamento experimental e variáveis de controle",
+      "Coleta de dados com análise de incerteza",
+      "Relatório científico completo",
+      "Apresentação e defesa oral do projeto"
+    ]
+  }
 };
+/* AUTO:TRILHAS_FE1:FIM */
 
 // ═══════════════════════════════════════════════════════════
 // DADOS INLINE — ILB (Introducao ao Laboratorio · Licenciatura em Fisica)
@@ -3511,7 +3663,7 @@ function _aplicarCitacoes(cits) {
 }
 function carregarEpigrafesStandalone(trilhaCode) {
   if (window !== window.top) return;
-  var paths = { fc1: '../FC1-citacoes-v2.html', fe1: '../../../04_Fisica_Experimental_1/Trilhas_de_Aprendizagem/FE1-citacoes-v2.html' };
+  var paths = { fc1: '../FC1-citacoes-v2.html', fe1: '../../../04_Física_Experimental_1/_citacoes/FE1-citacoes-v2.html' };
   var path = paths[_disciplinaAtual] || paths.fc1;
   if (!_citacoesIframe) {
     _citacoesIframe = document.createElement('iframe');
