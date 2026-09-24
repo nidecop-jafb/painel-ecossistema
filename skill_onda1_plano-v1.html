@@ -629,6 +629,17 @@ select option { background: var(--superficie); color: var(--texto); }
   padding:6px 12px; border:1px solid var(--cinza-borda); background:var(--input-bg);
   cursor:pointer; user-select:none; }
 .opc-radio:has(input:checked) { border-color:var(--verde-claro); color:var(--verde-claro); }
+/* ── FE1: secoes Materiais e Simulacoes + modo Refinar Narrativa
+   (PRE-painel-refinar-narrativa-materiais-simulacoes-fe1-2026-09-23) ── */
+body:not(.modo-fe) .so-fe { display: none !important; }
+body:not(.modo-refinar) .so-refinar { display: none !important; }
+body.modo-refinar #sec4, body.modo-refinar #sec5, body.modo-refinar #sec6,
+body.modo-refinar #sec7, body.modo-refinar #sec8,
+body.modo-refinar #pl4, body.modo-refinar #pl5, body.modo-refinar #pl6,
+body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
+.modo-fe-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--input-bg);
+  border: 1px solid var(--cinza-borda); border-radius: var(--r); padding: 10px 16px; margin-bottom: 14px; }
+.refino-vigente { font-family: 'DM Mono', monospace; font-size: 12px; word-break: break-all; }
 </style>
 </head>
 <body data-pagina="painel:skill_onda1_plano-v1">
@@ -663,6 +674,8 @@ select option { background: var(--superficie); color: var(--texto); }
     <div class="prog-label" id="pl1" onclick="navegarSecao(1)">Epígrafe</div>
     <div class="prog-label" id="pl2" onclick="navegarSecao(2)">Conteúdo</div>
     <div class="prog-label" id="pl3" onclick="navegarSecao(3)">Narrativa</div>
+    <div class="prog-label so-fe" id="pl3m" onclick="navegarSecao('3m')">Materiais</div>
+    <div class="prog-label so-fe" id="pl3s" onclick="navegarSecao('3s')">Simulações</div>
     <div class="prog-label" id="pl4" onclick="navegarSecao(4)">Contextualização</div>
     <div class="prog-label" id="pl5" onclick="navegarSecao(5)">Lacunas</div>
     <div class="prog-label" id="pl6" onclick="navegarSecao(6)">Finalização</div>
@@ -700,6 +713,16 @@ select option { background: var(--superficie); color: var(--texto); }
     <option value="adm" disabled>ADM — Técnico em Administração ⏳</option>
   </select>
   <span id="status-dados" style="font-size:10px;color:var(--verde-claro);font-family:'DM Mono',monospace;">✓ FC1-MIN carregado</span>
+</div>
+
+<!-- ═══ MODO DO FORMULARIO — FE1: Criar | Refinar Narrativa ═══ -->
+<div class="modo-fe-bar so-fe" id="modo-fe-bar">
+  <span style="font-size:11px;font-weight:600;color:var(--ouro);white-space:nowrap;">✎ Modo</span>
+  <div class="modo-toggle" style="margin:0;">
+    <div class="modo-btn ativo" id="modo-criar-btn" onclick="setModoRefinar(false)">Criar Camada 2</div>
+    <div class="modo-btn" id="modo-refinar-btn" onclick="setModoRefinar(true)">Refinar Narrativa</div>
+  </div>
+  <span class="nota-info" style="margin:0;font-size:11px;">Refinar: escolha a trilha, revise Narrativa, Materiais e Simulações e copie o prompt no fim — só essas partes mudam, em v{N+1}.</span>
 </div>
 
 <!-- BANNER RESTAURAR SESSÃO -->
@@ -981,8 +1004,9 @@ select option { background: var(--superficie); color: var(--texto); }
       </div>
     </div>
 
-    <!-- Instrumentos de Medição da Trilha -->
-    <div class="campo-grupo" style="margin-top:12px;">
+    <!-- Instrumentos de Medição da Trilha (na FE1, movido para a seção Materiais por aplicarModoFE) -->
+    <div id="ancora-instr"></div>
+    <div class="campo-grupo" id="bloco-instr" style="margin-top:12px;">
       <div class="campo-label">Instrumentos de Medição da Trilha <span class="campo-auto-badge">Opcional — grandezas e características</span></div>
       <div class="nota-info" style="margin-bottom:10px;">Registre as grandezas e as características dos instrumentos de medição, dos sensores (catálogo CIDEPE) e das medições com celular que serão utilizados na Trilha de Aprendizagem. As informações entram na Camada 2 e orientam o Texto Temático.</div>
 
@@ -1011,9 +1035,10 @@ select option { background: var(--superficie); color: var(--texto); }
       <input type="text" id="instr-obs" placeholder="Outras características a registrar (ex.: incerteza, classe de exatidão, taxa de amostragem, condições de uso)…" style="width:100%;font-size:11px;padding:5px 8px;background:var(--input-bg);color:var(--texto);border:1px solid var(--cinza-borda);" onchange="salvarInstrumentos()">
     </div>
 
-    <!-- Simulações da Trilha (Protocolo SIM-v1) -->
-    <div class="campo-grupo" style="margin-top:12px;">
-      <div class="campo-label">Simulações da Trilha — PhET + Vascak <span class="campo-auto-badge">Protocolo SIM-v1 · pré-carga por trilha</span></div>
+    <!-- Simulações da Trilha (Protocolo SIM-v1) (na FE1, movido para a seção Simulações por aplicarModoFE) -->
+    <div id="ancora-sim"></div>
+    <div class="campo-grupo" id="bloco-sim" style="margin-top:12px;">
+      <div class="campo-label" id="sim-label">Simulações da Trilha — PhET + Vascak <span class="campo-auto-badge">Protocolo SIM-v1 · pré-carga por trilha</span></div>
       <div class="nota-info" style="margin-bottom:10px;">Bloco <strong>🎮 SIMULE</strong> por tópico do Texto Temático (máx. 1 simulação por tópico; todo bloco tem desafio de 3 minutos). Sugestões vêm do registro canônico <code>_dados/simulacoes-registro.json</code>; edite, remova ou acrescente. O prompt da Camada 2 leva o resultado.</div>
       <div id="sim-list"></div>
       <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
@@ -1049,6 +1074,69 @@ select option { background: var(--superficie); color: var(--texto); }
 
     <div class="btn-row">
       <button class="btn btn-ouro" id="btn-confirmar-narrativa" onclick="avancarSecao(3)">Confirmar narrativa ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECAO 3m - MATERIAIS (so FE1) ═══ -->
+<div class="secao so-fe" id="sec3m">
+  <div class="secao-header" onclick="toggleSecao('3m')">
+    <span class="secao-titulo" style="margin-left:0;">Materiais</span>
+    <span class="secao-campos">Materiais, consumíveis, instrumentos, sensores e celular — base do Inventário de Equipamento (IE)</span>
+    <span class="secao-chevron" aria-hidden="true">▾</span>
+  </div>
+  <div class="secao-body">
+    <div class="campo-grupo">
+      <div class="campo-label">Materiais e consumíveis <span class="campo-auto-badge">Item · quantidade por bancada · especificação</span></div>
+      <div class="nota-info" style="margin-bottom:10px;">Tudo o que vai para a bancada e não mede nada: suportes, corpos de prova, fios, fita, papel milimetrado, EPI. Junto com os instrumentos abaixo, forma o bloco <strong>Materiais e Instrumentos</strong> do prompt, de onde parte o Inventário de Equipamento (IE) da trilha.</div>
+      <div id="mat-list"></div>
+      <button class="btn" style="font-size:10px;padding:4px 10px;margin-top:6px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);" onclick="adicionarMaterial()">+ Material</button>
+    </div>
+    <div id="slot-fe-instr"></div>
+    <div class="btn-row">
+      <button class="btn btn-ouro" id="btn-confirmar-sec3m" onclick="confirmarSecaoFE('3m')">Confirmar materiais ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECAO 3s - SIMULACOES (so FE1) ═══ -->
+<div class="secao so-fe" id="sec3s">
+  <div class="secao-header" onclick="toggleSecao('3s')">
+    <span class="secao-titulo" style="margin-left:0;">Simulações</span>
+    <span class="secao-campos">UFC · Vascak · PhET · Própria (SM-v1) · Outra</span>
+    <span class="secao-chevron" aria-hidden="true">▾</span>
+  </div>
+  <div class="secao-body">
+    <div class="nota-info" id="sim-colecoes" style="margin-bottom:10px;"></div>
+    <div id="slot-fe-sim"></div>
+    <div class="btn-row">
+      <button class="btn btn-ouro" id="btn-confirmar-sec3s" onclick="confirmarSecaoFE('3s')">Confirmar simulações ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REFINAR NARRATIVA (so FE1, modo Refinar) ═══ -->
+<div class="secao so-fe so-refinar ativa" id="sec3r">
+  <div class="secao-header aberta" onclick="toggleSecao('3r')">
+    <span class="secao-titulo" style="margin-left:0;">Refinar Narrativa</span>
+    <span class="secao-campos">Prompt de reescrita da Camada 2 ou do TT vigente em v{N+1}</span>
+    <span class="secao-chevron" aria-hidden="true">▾</span>
+  </div>
+  <div class="secao-body aberta">
+    <div class="campo-grupo">
+      <div class="campo-label">O que refinar</div>
+      <div class="modo-toggle">
+        <div class="modo-btn ativo" id="refino-alvo-camada2" onclick="setAlvoRefino('camada2')">Camada 2</div>
+        <div class="modo-btn" id="refino-alvo-tt" onclick="setAlvoRefino('tt')">Texto Temático (TT)</div>
+      </div>
+    </div>
+    <div class="campo-grupo">
+      <div class="campo-label">Arquivo vigente <span class="campo-auto-badge">Maior v{N} fora de xx/ — gerar_trilhas_painel_fe1.py</span></div>
+      <div class="campo-readonly refino-vigente" id="refino-vigente">—</div>
+    </div>
+    <div class="nota-info">Mudam só <strong>Narrativa</strong> (seção 03), <strong>Materiais</strong> e <strong>Simulações</strong>; o resto do documento fica igual, palavra por palavra. A versão anterior vai para <code>xx/</code>.</div>
+    <div class="btn-row">
+      <button class="btn btn-ouro" id="btn-copiar-refino" onclick="copiarPromptRefino()">⧉ Copiar prompt de refino</button>
     </div>
   </div>
 </div>
@@ -1820,6 +1908,66 @@ const TRILHAS_FE1 = {
       "Relatório científico completo",
       "Apresentação e defesa oral do projeto"
     ]
+  }
+};
+
+// Camada 2 e TT vigentes (maior v{N} fora de xx/) — modo Refinar Narrativa
+const VIGENTES_FE1 = {
+  "T0A": {
+    "camada2": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-Camada2-v3.md",
+    "tt": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-TT-v8.md"
+  },
+  "T0B": {
+    "camada2": null,
+    "tt": null
+  },
+  "T01": {
+    "camada2": null,
+    "tt": null
+  },
+  "T02": {
+    "camada2": null,
+    "tt": null
+  },
+  "T03": {
+    "camada2": null,
+    "tt": null
+  },
+  "T04": {
+    "camada2": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-Camada2-v1.md",
+    "tt": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-TT-v5.md"
+  },
+  "T05": {
+    "camada2": null,
+    "tt": null
+  },
+  "T06": {
+    "camada2": null,
+    "tt": null
+  },
+  "T07": {
+    "camada2": null,
+    "tt": null
+  },
+  "T08": {
+    "camada2": null,
+    "tt": null
+  },
+  "T09": {
+    "camada2": null,
+    "tt": null
+  },
+  "T10": {
+    "camada2": null,
+    "tt": null
+  },
+  "T11": {
+    "camada2": null,
+    "tt": null
+  },
+  "T12": {
+    "camada2": null,
+    "tt": null
   }
 };
 /* AUTO:TRILHAS_FE1:FIM */
@@ -3076,6 +3224,7 @@ async function carregarDadosJSON(disciplina, curso) {
     _disciplinaAtual = disciplina;
     _cursoAtual = curso;
     try { aplicarCursoSerie(); aplicarFluxoILB(); } catch (e) {}
+    try { aplicarModoFE(); } catch (e) {}
 
     if(statusEl) statusEl.textContent = `✓ ${disciplina.toUpperCase()}-${curso.toUpperCase()} carregado (${Object.keys(TRILHAS).length} trilhas)`;
     return true;
@@ -3107,6 +3256,7 @@ async function carregarDadosJSON(disciplina, curso) {
     _disciplinaAtual = disciplina;
     _cursoAtual = curso;
     try { aplicarCursoSerie(); aplicarFluxoILB(); } catch (e) {}
+    try { aplicarModoFE(); } catch (e) {}
 
     if(statusEl) statusEl.textContent = `✓ ${disciplina.toUpperCase()}-${curso.toUpperCase()} carregado (${Object.keys(TRILHAS).length} trilhas)`;
     return true;
@@ -3244,6 +3394,7 @@ function salvarEstado() {
     });
     salvarInstrumentos();
     salvarSimulacoes();
+    salvarMateriais();
     // Salvar estado do orquestrador
     const orqChks = ['orq-tt-aprovado','orq-pre-concluido','orq-aula-concluido','orq-pos-concluido'];
     const orqState = {};
@@ -3269,6 +3420,8 @@ function confirmarRestaurar() {
   const trilhaSalva = localStorage.getItem(LS+'trilha');
   if(!trilhaSalva) return;
   fecharBannerRestaurar();
+  // selecionarTrilha() grava o estado com as listas ainda vazias: guardá-las antes
+  const listasSalvas = ['instrumentos', 'simulacoes', 'materiais'].map(k => [k, localStorage.getItem(LS + k)]);
   // Re-selecionar a trilha visualmente
   const chip = document.querySelector('#chips-trilha .chip');
   if(chip) {
@@ -3316,8 +3469,10 @@ function confirmarRestaurar() {
     const el = document.getElementById(id);
     if(el && val !== null) el.value = val;
   });
+  listasSalvas.forEach(([k, v]) => { if (v !== null) localStorage.setItem(LS + k, v); });
   restaurarInstrumentos();
   restaurarSimulacoes();
+  restaurarMateriais();
   // Restaurar seções concluídas
   try {
     const sc = JSON.parse(localStorage.getItem(LS+'secoesConcluidas') || '[]');
@@ -3326,6 +3481,7 @@ function confirmarRestaurar() {
       const sec = document.getElementById('sec'+n);
       if(sec) sec.classList.add('concluida');
     });
+    _marcarLabelsFE();
   } catch(e) {}
   // Restaurar estado do orquestrador
   try {
@@ -3796,6 +3952,7 @@ function selecionarTrilha(code, chipEl) {
   }
   // Atualiza label do botão "Exportar Tema"
   atualizarLabelExportTema();
+  try { renderRefino(); } catch (e) {}
 }
 
 // ─── Topicos ───────────────────────────────────────────────
@@ -4654,8 +4811,11 @@ const _NV = s => s || '[a definir]';
 
 function getInstrumentosOutput() {
   const d = coletarInstrumentos();
-  if (!d.medicao.length && !d.sensores.length && !d.celular.length && !d.obs) return '';
-  let out = '\nInstrumentos de medição da trilha:\n';
+  const mats = getMateriaisOutput();
+  if (!mats && !d.medicao.length && !d.sensores.length && !d.celular.length && !d.obs) return '';
+  let out = ehFE1()
+    ? '\nMateriais e Instrumentos da trilha (base do Inventário de Equipamento — IE, Onda 2 — Pré-Lab):\n' + mats
+    : '\nInstrumentos de medição da trilha:\n';
   if (d.medicao.length) {
     out += 'Instrumentos:\n' + d.medicao.map(i =>
       `  - Instrumento: ${_NV(i.nome)} · Grandeza: ${_NV(i.grandeza)} · Classe: ${_NV(i.classe)} · Faixa de medição: ${_NV(i.faixa)} · Resolução: ${_NV(i.resolucao)}`).join('\n') + '\n';
@@ -4674,8 +4834,11 @@ function getInstrumentosOutput() {
 
 function getInstrumentosMd() {
   const d = coletarInstrumentos();
-  if (!d.medicao.length && !d.sensores.length && !d.celular.length && !d.obs) return '';
-  let md = '- **Instrumentos de medição da trilha:**\n';
+  const mats = getMateriaisMd();
+  if (!mats && !d.medicao.length && !d.sensores.length && !d.celular.length && !d.obs) return '';
+  let md = ehFE1()
+    ? '- **Materiais e Instrumentos da trilha (base do IE):**\n' + mats
+    : '- **Instrumentos de medição da trilha:**\n';
   d.medicao.forEach(i => { md += `  - Instrumento — ${_NV(i.nome)} · Grandeza: ${_NV(i.grandeza)} · Classe: ${_NV(i.classe)} · Faixa de medição: ${_NV(i.faixa)} · Resolução: ${_NV(i.resolucao)}\n`; });
   d.sensores.forEach(i => { md += `  - Sensor — Código: ${_NV(i.codigo)} · ${_NV(i.nome)} · Faixa de medição/Escala: ${_NV(i.faixa)} · Resolução: ${_NV(i.resolucao)} · Classe: ${_NV(i.classe)}\n`; });
   d.celular.forEach(i => { md += `  - Celular — Grandeza: ${_NV(i.grandeza)} · Aplicativo: ${_NV(i.aplicativo)} · Unidade: ${_NV(i.unidade)} · Resolução: ${_NV(i.resolucao)} · Capacidade: ${_NV(i.capacidade)}\n`; });
@@ -4690,6 +4853,7 @@ function getInstrumentosMd() {
 const SIM_URL_PHET = 'https://phet.colorado.edu/sims/html/{slug}/latest/{slug}_all.html?locale=pt_BR';
 const SIM_URL_VASCAK = 'https://www.vascak.cz/?id=1&language=pt#kapitoly';
 const SIMULACOES_MAPA = {"fc1":{"T01":[{"topicos":[2],"fonte":"P","nome":"Energia na Pista de Skate: Básico","slug":"energy-skate-park-basics"}],"T02":[{"topicos":[2],"fonte":"P","nome":"Laboratório do Pêndulo","slug":"pendulum-lab"},{"topicos":[5],"fonte":"V","capitulo":"II","nome":"Coordenadas geográficas"}],"T03":[{"topicos":[3],"fonte":"V","capitulo":"II","nome":"Sistema Solar"}],"T04":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Paquímetro · Micrômetro"},{"topicos":[2],"fonte":"V","capitulo":"IV","nome":"Escalas de temperatura"}],"T05":[{"topicos":[3],"fonte":"V","capitulo":"II","nome":"Sistema Solar"}],"T06":[{"topicos":[1],"fonte":"P","nome":"Lab Dados de Projéteis","slug":"projectile-data-lab"}],"T07":[{"topicos":[1],"fonte":"V","capitulo":"I","nome":"Referenciais"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T08":[{"topicos":[1],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"},{"topicos":[3],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T09":[{"topicos":[1,2],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"},{"topicos":[4],"fonte":"V","capitulo":"II","nome":"Queda livre · Tubo de Newton"}],"T10":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T11":[{"topicos":[2,3],"fonte":"V","capitulo":"II","nome":"Queda livre"},{"topicos":[4],"fonte":"P","nome":"Movimento de Projétil","slug":"projectile-motion"}],"T12":[{"topicos":[1,2,3],"fonte":"V","capitulo":"I","nome":"Movimento"},{"topicos":[2],"fonte":"P","nome":"Gráfico de Cálculo","slug":"calculus-grapher"}],"T13":[{"topicos":[1,2],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Leis de Newton"}],"M14":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"M15":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Colisões"}],"M16":[{"topicos":[1],"fonte":"P","nome":"Laboratório de Força Gravitacional","slug":"gravity-force-lab"},{"topicos":[2],"fonte":"P","nome":"Balões e Eletricidade Estática","slug":"balloons-and-static-electricity"},{"topicos":[3],"fonte":"P","nome":"Monte um Núcleo","slug":"build-a-nucleus"}],"T14":[{"topicos":[1,2,3,4,5],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"M18":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"M19":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[4],"fonte":"P","nome":"Ímã e Bússola","slug":"magnet-and-compass"}],"T15":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Paralelogramo de forças"}],"M21":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[3],"fonte":"V","capitulo":"I","nome":"Plano inclinado"}],"M22":[{"topicos":[1,2,3],"fonte":"V","capitulo":"I","nome":"Movimento circular uniforme"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Polias"}],"M23":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Polias"}],"M24":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Movimento circular uniforme"},{"topicos":[2],"fonte":"P","nome":"Gravidade e Órbitas","slug":"gravity-and-orbits"}],"M25":[{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Forças fictícias"}],"T16":[{"topicos":[1,2],"fonte":"P","nome":"Forças e Movimento: Noções Básicas","slug":"forces-and-motion-basics"}],"T17":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Leis de Newton"}],"T18":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório de Força Gravitacional","slug":"gravity-force-lab"},{"topicos":[5],"fonte":"V","capitulo":"II","nome":"Aceleração da gravidade"}],"M29":[{"topicos":[1,2],"fonte":"P","nome":"Lei de Hooke","slug":"hookes-law"},{"topicos":[3],"fonte":"P","nome":"Massas e Molas","slug":"masses-and-springs"}],"M30":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Polias"}],"T19":[{"topicos":[2,3],"fonte":"P","nome":"Atrito","slug":"friction"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Atrito"}],"M32":[{"topicos":[1,2],"fonte":"P","nome":"Movimento de Projétil (resistência do ar)","slug":"projectile-motion"}],"M33":[{"topicos":[1],"fonte":"V","capitulo":"I","nome":"Momento de inércia"},{"topicos":[2],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"M34":[{"topicos":[1,2],"fonte":"P","nome":"Laboratório do Pêndulo","slug":"pendulum-lab"},{"topicos":[5],"fonte":"V","capitulo":"III","nome":"Ressonância"}],"T20":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Equilíbrio mecânico"}],"M36":[{"topicos":[1,2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"}],"M37":[{"topicos":[1,2,3,4],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"M38":[{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Centro de gravidade"},{"topicos":[4],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"M39":[{"topicos":[1,2,3,5],"fonte":"P","nome":"Balançando","slug":"balancing-act"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Alavanca"}],"M40":[{"topicos":[2,5],"fonte":"V","capitulo":"I","nome":"Alavanca · Polias"}],"T21":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Trabalho"},{"topicos":[4],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"}],"M42":[{"topicos":[1,2],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"}],"M43":[{"topicos":[1,2],"fonte":"P","nome":"Formas de Energia e Transformações","slug":"energy-forms-and-changes"}],"M44":[{"topicos":[3,4],"fonte":"P","nome":"Formas de Energia e Transformações","slug":"energy-forms-and-changes"},{"topicos":[3],"fonte":"V","capitulo":"IV","nome":"Ciclo de Carnot"}],"T22":[{"topicos":[1,2],"fonte":"P","nome":"Energia na Pista de Skate: Básico","slug":"energy-skate-park-basics"}],"T23":[{"topicos":[1,2],"fonte":"P","nome":"Massas e Molas","slug":"masses-and-springs"}],"T24":[{"topicos":[1,2,4],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"},{"topicos":[5],"fonte":"V","capitulo":"I","nome":"Conservação de energia"}],"M48":[{"topicos":[1,3],"fonte":"P","nome":"Formas de Energia e Transformações","slug":"energy-forms-and-changes"}],"M49":[{"topicos":[1,2,3],"fonte":"P","nome":"Sob Pressão","slug":"under-pressure"}],"M50":[{"topicos":[1,2,3],"fonte":"P","nome":"Densidade","slug":"density"}],"M51":[{"topicos":[1,2,3],"fonte":"V","capitulo":"I","nome":"Lei de Pascal"}],"M52":[{"topicos":[1,2,4],"fonte":"P","nome":"Sob Pressão","slug":"under-pressure"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Pressão hidrostática"}],"M53":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Experiência de Torricelli (fluidos)"},{"topicos":[4],"fonte":"P","nome":"Propriedades dos Gases","slug":"gas-properties"}],"T25":[{"topicos":[1,2,3,5],"fonte":"P","nome":"Flutuabilidade","slug":"buoyancy"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Princípio de Arquimedes"}],"M55":[{"topicos":[1,2],"fonte":"P","nome":"Gravidade e Órbitas","slug":"gravity-and-orbits"},{"topicos":[3],"fonte":"V","capitulo":"II","nome":"Sistema Solar · Constelações"}],"M56":[{"topicos":[1,2],"fonte":"P","nome":"Leis de Kepler","slug":"keplers-laws"}],"M57":[{"topicos":[1,2,4],"fonte":"P","nome":"Leis de Kepler","slug":"keplers-laws"}],"M58":[{"topicos":[1,2],"fonte":"P","nome":"Leis de Kepler","slug":"keplers-laws"},{"topicos":[4],"fonte":"P","nome":"Meu Sistema Solar","slug":"my-solar-system"}],"M59":[{"topicos":[1,2,4],"fonte":"P","nome":"Laboratório de Força Gravitacional","slug":"gravity-force-lab"},{"topicos":[4],"fonte":"V","capitulo":"II","nome":"Experimento de Cavendish"}],"M60":[{"topicos":[1,2,5],"fonte":"P","nome":"Laboratório de Força Gravitacional: Básico","slug":"gravity-force-lab-basics"},{"topicos":[2,3],"fonte":"V","capitulo":"II","nome":"Intensidade do campo gravitacional · Aceleração da gravidade"}]},"fe1":{"T0A":[{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Paquímetro · Micrômetro"}],"T01":[{"topicos":[1,2],"fonte":"V","capitulo":"I","nome":"Paquímetro · Micrômetro"}],"T02":[{"topicos":[5],"fonte":"P","nome":"Densidade","slug":"density"}],"T03":[{"topicos":[1,3],"fonte":"P","nome":"Laboratório do Pêndulo","slug":"pendulum-lab"}],"T04":[{"topicos":[2,3,4],"fonte":"V","capitulo":"I","nome":"Movimento"}],"T05":[{"topicos":[2,3],"fonte":"V","capitulo":"II","nome":"Queda livre · Tubo de Newton"},{"topicos":[4],"fonte":"P","nome":"Lab Dados de Projéteis","slug":"projectile-data-lab"}],"T06":[{"topicos":[2,3,5],"fonte":"P","nome":"Lei de Hooke","slug":"hookes-law"},{"topicos":[3],"fonte":"P","nome":"Massas e Molas: Básico","slug":"masses-and-springs-basics"}],"T07":[{"topicos":[2,3],"fonte":"P","nome":"Atrito","slug":"friction"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Plano inclinado"}],"T08":[{"topicos":[2,3],"fonte":"V","capitulo":"I","nome":"Plano inclinado"},{"topicos":[2],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"}],"T09":[{"topicos":[2,3,4],"fonte":"P","nome":"Adição de Vetores","slug":"vector-addition"},{"topicos":[3],"fonte":"V","capitulo":"I","nome":"Paralelogramo de forças"}],"T10":[{"topicos":[2,3,4],"fonte":"V","capitulo":"I","nome":"Centro de gravidade"},{"topicos":[4],"fonte":"P","nome":"Balançando","slug":"balancing-act"}],"T11":[{"topicos":[1,3],"fonte":"P","nome":"Balançando","slug":"balancing-act"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Alavanca · Polias"}],"T12":[{"topicos":[1,2,3,4],"fonte":"P","nome":"Energia na Pista de Skate","slug":"energy-skate-park"}],"T13":[{"topicos":[2,3,4,5],"fonte":"P","nome":"Laboratório de Colisões","slug":"collision-lab"}],"M14":[{"topicos":[1,2,4],"fonte":"P","nome":"Sob Pressão","slug":"under-pressure"},{"topicos":[2],"fonte":"V","capitulo":"I","nome":"Pressão hidrostática"}],"M15":[{"topicos":[1,2],"fonte":"P","nome":"Densidade","slug":"density"},{"topicos":[4],"fonte":"P","nome":"Flutuabilidade","slug":"buoyancy"},{"topicos":[4],"fonte":"V","capitulo":"I","nome":"Princípio de Arquimedes"}],"M16":[{"topicos":[1,2,3,4,5],"fonte":"P","nome":"catálogo inteiro — escolha justificada no relatório"}]}};
+const SIM_COLECOES_FE1 = {"UFC":"https://www.laboratoriovirtual.fisica.ufc.br/mecanica","Vascak":"https://www.vascak.cz/physicsanimations.php?l=pt","PhET":"https://phet.colorado.edu/pt_BR/simulations/filter?subjects=motion,work-energy-and-power,math-and-statistics&type=html"};
 // SIMULACOES:FIM
 
 function adicionarSimulacao(d) {
@@ -4699,16 +4863,30 @@ function adicionarSimulacao(d) {
   const row = document.createElement('div');
   row.className = 'sim-row';
   row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center;';
-  const fontes = ['PhET', 'Vascak', 'Outra'];
+  const fontes = ehFE1() ? ['UFC', 'Vascak', 'PhET', 'Própria (SM-v1)', 'Outra'] : ['PhET', 'Vascak', 'Outra'];
   const opts = fontes.map(f => `<option value="${f}"${d.fonte === f ? ' selected' : ''}>${f}</option>`).join('');
   row.innerHTML =
     _instrInput('sim-topicos', 'Tópicos (ex.: 1, 2)', '0.7 1 80px', d.topicos) +
-    `<select class="sim-fonte" style="flex:0.7 1 80px;${_INSTR_INPUT_STYLE}" onchange="salvarSimulacoes()">${opts}</select>` +
+    `<select class="sim-fonte" style="flex:0.7 1 80px;${_INSTR_INPUT_STYLE}" onchange="simFonteMudou(this)">${opts}</select>` +
     _instrInput('sim-nome', 'Nome da simulação', '1.6 1 140px', d.nome) +
     _instrInput('sim-url', 'URL', '1.6 1 140px', d.url) +
     _instrInput('sim-desafio', 'Desafio de 3 minutos (ação → o que observar)', '2 1 160px', d.desafio) +
+    _instrInput('sim-gesto', 'Gesto da prática que a simulação ensaia (SM-v1)', '2 1 200px', d.gesto) +
     _instrRemoveBtn().replace('salvarInstrumentos()', 'salvarSimulacoes()');
   list.appendChild(row);
+  simFonteMudou(row.querySelector('.sim-fonte'), !!d.url);
+}
+
+/* FE1: Própria (SM-v1) pede o gesto da prática; URL vazia recebe a da coleção. */
+function simFonteMudou(sel, carga) {
+  const row = sel && sel.closest('.sim-row');
+  if (!row) return;
+  const gesto = row.querySelector('.sim-gesto');
+  if (gesto) gesto.style.display = sel.value === 'Própria (SM-v1)' ? '' : 'none';
+  const url = row.querySelector('.sim-url');
+  if (!carga && ehFE1() && url && !url.value.trim() && typeof SIM_COLECOES_FE1 !== 'undefined' && SIM_COLECOES_FE1[sel.value])
+    url.value = SIM_COLECOES_FE1[sel.value];
+  if (!carga) salvarSimulacoes();
 }
 
 function carregarSimulacoesSugeridas(forcar) {
@@ -4722,7 +4900,7 @@ function carregarSimulacoesSugeridas(forcar) {
   mapa.forEach(e => {
     adicionarSimulacao({
       topicos: (e.topicos || []).join(', '),
-      fonte: e.fonte === 'P' ? 'PhET' : 'Vascak',
+      fonte: { P: 'PhET', V: 'Vascak', U: 'UFC', S: 'Própria (SM-v1)' }[e.fonte] || 'Outra',
       nome: e.nome + (e.capitulo ? ' (cap. ' + e.capitulo + ')' : ''),
       url: e.slug ? SIM_URL_PHET.replace(/\{slug\}/g, e.slug) : SIM_URL_VASCAK,
       desafio: ''
@@ -4738,6 +4916,7 @@ function coletarSimulacoes() {
   document.querySelectorAll('#sim-list .sim-row').forEach(r => {
     const sel = r.querySelector('.sim-fonte');
     const item = { topicos: v(r.querySelector('.sim-topicos')), fonte: sel ? sel.value : '', nome: v(r.querySelector('.sim-nome')), url: v(r.querySelector('.sim-url')), desafio: v(r.querySelector('.sim-desafio')) };
+    if (item.fonte === 'Própria (SM-v1)') item.gesto = v(r.querySelector('.sim-gesto'));
     if (item.nome || item.url) sims.push(item);
   });
   return sims;
@@ -4761,7 +4940,8 @@ function getSimulacoesOutput() {
   if (!sims.length) return '';
   let out = '\nSimulações da trilha (Protocolo SIM-v1 — inserir bloco 🎮 SIMULE no tópico indicado do TT):\n';
   sims.forEach(s => {
-    out += `  - Tópico(s) ${_NV(s.topicos)} · ${_NV(s.fonte)} · ${_NV(s.nome)}\n    URL: ${_NV(s.url)}\n    Desafio de 3 minutos: ${s.desafio || '[a redigir no TT: ação concreta → o que observar]'}\n`;
+    out += `  - Tópico(s) ${_NV(s.topicos)} · ${_NV(s.fonte)} · ${_NV(s.nome)}\n    URL: ${_NV(s.url)}\n    Desafio de 3 minutos: ${s.desafio || '[a redigir no TT: ação concreta → o que observar]'}\n`
+      + (s.fonte === 'Própria (SM-v1)' ? `    Gesto da prática (OA de Simulações SM-v1): ${_NV(s.gesto)}\n` : '');
   });
   return out;
 }
@@ -4770,8 +4950,235 @@ function getSimulacoesMd() {
   const sims = coletarSimulacoes();
   if (!sims.length) return '';
   let md = '- **Simulações da trilha (SIM-v1):**\n';
-  sims.forEach(s => { md += `  - Tópico(s) ${_NV(s.topicos)} · ${_NV(s.fonte)} · ${_NV(s.nome)} · ${_NV(s.url)}${s.desafio ? ' · Desafio: ' + s.desafio : ''}\n`; });
+  sims.forEach(s => { md += `  - Tópico(s) ${_NV(s.topicos)} · ${_NV(s.fonte)} · ${_NV(s.nome)} · ${_NV(s.url)}${s.desafio ? ' · Desafio: ' + s.desafio : ''}${s.gesto ? ' · Gesto da prática: ' + s.gesto : ''}\n`; });
   return md;
+}
+
+// ─── FE1: seções Materiais e Simulações + modo Refinar Narrativa ──────
+// Briefing: PRE-painel-refinar-narrativa-materiais-simulacoes-fe1-2026-09-23
+// Na FE1 os blocos Instrumentos e Simulações saem da Narrativa para as seções
+// 3m e 3s (movidos no DOM, mesmos ids); nas outras disciplinas voltam às âncoras.
+function ehFE1() {
+  return String(typeof _disciplinaAtual !== 'undefined' ? _disciplinaAtual : '').toLowerCase() === 'fe1';
+}
+
+function _moverBloco(idBloco, idDestino, depois) {
+  const bloco = document.getElementById(idBloco);
+  const dest = document.getElementById(idDestino);
+  if (!bloco || !dest) return;
+  if (depois) dest.parentNode.insertBefore(bloco, dest.nextSibling);
+  else dest.appendChild(bloco);
+}
+
+function aplicarModoFE() {
+  const fe = ehFE1();
+  document.body.classList.toggle('modo-fe', fe);
+  if (fe) {
+    _moverBloco('bloco-instr', 'slot-fe-instr');
+    _moverBloco('bloco-sim', 'slot-fe-sim');
+  } else {
+    _moverBloco('bloco-instr', 'ancora-instr', true);
+    _moverBloco('bloco-sim', 'ancora-sim', true);
+  }
+  const lbl = document.getElementById('sim-label');
+  if (lbl) lbl.firstChild.textContent = fe
+    ? 'Simulações da Trilha — UFC · Vascak · PhET · Própria (SM-v1) · Outra '
+    : 'Simulações da Trilha — PhET + Vascak ';
+  const col = document.getElementById('sim-colecoes');
+  if (col && typeof SIM_COLECOES_FE1 !== 'undefined') {
+    col.innerHTML = '<strong>Coleções:</strong> ' + Object.keys(SIM_COLECOES_FE1).map(k =>
+      `<a href="${SIM_COLECOES_FE1[k]}" target="_blank" rel="noopener" style="color:var(--ouro);">${k} ↗</a>`).join(' · ')
+      + ' — escolha a fonte na linha; URL vazia recebe a da coleção. <strong>Própria (SM-v1)</strong> é a simulação SVG+JS do OA de Simulações da trilha: diga o gesto da prática que ela ensaia.';
+  }
+  let refinar = false;
+  try { refinar = fe && localStorage.getItem(LS + 'modoRefinar') === '1'; } catch (e) {}
+  setModoRefinar(refinar, true);
+}
+
+// Materiais e consumíveis (só FE1)
+function adicionarMaterial(d) {
+  d = d || {};
+  const list = document.getElementById('mat-list');
+  if (!list) return;
+  const row = document.createElement('div');
+  row.className = 'mat-row';
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center;';
+  row.innerHTML = (
+    _instrInput('mat-item', 'Item (ex.: suporte universal)', '2 1 160px', d.item) +
+    _instrInput('mat-qtd', 'Qtd. por bancada', '0.6 1 80px', d.qtd) +
+    _instrInput('mat-espec', 'Especificação (ex.: haste de 60 cm)', '2 1 160px', d.espec) +
+    _instrRemoveBtn()).replace(/salvarInstrumentos\(\)/g, 'salvarMateriais()');
+  list.appendChild(row);
+}
+
+function coletarMateriais() {
+  const v = el => el ? el.value.trim() : '';
+  const mats = [];
+  document.querySelectorAll('#mat-list .mat-row').forEach(r => {
+    const item = { item: v(r.querySelector('.mat-item')), qtd: v(r.querySelector('.mat-qtd')), espec: v(r.querySelector('.mat-espec')) };
+    if (item.item) mats.push(item);
+  });
+  return mats;
+}
+
+function salvarMateriais() {
+  try { localStorage.setItem(LS + 'materiais', JSON.stringify(coletarMateriais())); } catch (e) {}
+}
+
+function restaurarMateriais() {
+  let mats;
+  try { mats = JSON.parse(localStorage.getItem(LS + 'materiais') || 'null'); } catch (e) { return; }
+  if (!mats || !mats.length) return;
+  const list = document.getElementById('mat-list');
+  if (list) list.innerHTML = '';
+  mats.forEach(d => adicionarMaterial(d));
+}
+
+function getMateriaisOutput() {
+  if (!ehFE1()) return '';
+  const mats = coletarMateriais();
+  if (!mats.length) return '';
+  return 'Materiais e consumíveis:\n' + mats.map(m =>
+    `  - Item: ${m.item} · Quantidade por bancada: ${_NV(m.qtd)} · Especificação: ${_NV(m.espec)}`).join('\n') + '\n';
+}
+
+function getMateriaisMd() {
+  if (!ehFE1()) return '';
+  return coletarMateriais().map(m =>
+    `  - Material — ${m.item} · Quantidade por bancada: ${_NV(m.qtd)} · Especificação: ${_NV(m.espec)}\n`).join('');
+}
+
+// Fluxo das seções novas: 3 → 3m → 3s → 4 (ou → Refinar)
+function _abrirSecao(id) {
+  const sec = document.getElementById('sec' + id);
+  if (!sec) return;
+  sec.classList.add('ativa');
+  const body = sec.querySelector('.secao-body');
+  const hd = sec.querySelector('.secao-header');
+  if (body) body.classList.add('aberta');
+  if (hd) hd.classList.add('aberta');
+  sec.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function _marcarLabelsFE() {
+  ['3m', '3s'].forEach(id => {
+    const lbl = document.getElementById('pl' + id);
+    if (lbl) lbl.classList.toggle('feito', estado.secoesConcluidas.has(id));
+  });
+}
+
+function confirmarSecaoFE(id) {
+  estado.secoesConcluidas.add(id);
+  const sec = document.getElementById('sec' + id);
+  sec.classList.remove('ativa');
+  sec.classList.add('concluida');
+  const btn = document.getElementById('btn-confirmar-sec' + id);
+  if (btn) {
+    btn.classList.remove('btn-ouro');
+    btn.classList.add('btn-verde');
+    btn.textContent = '✓ ' + btn.textContent.replace(/^✓\s*/, '').replace(/\s*▶$/, '');
+  }
+  _marcarLabelsFE();
+  if (id === '3m') _abrirSecao('3s');
+  else if (document.body.classList.contains('modo-refinar')) _abrirSecao('3r');
+  else _abrirSecao(4);
+  showToast((id === '3m' ? 'Materiais' : 'Simulações') + ' confirmados ✓');
+  salvarEstado();
+}
+
+// Modo Refinar Narrativa (só FE1)
+let _alvoRefino = 'camada2';
+
+function setModoRefinar(on, silencioso) {
+  on = !!on && ehFE1();
+  document.body.classList.toggle('modo-refinar', on);
+  const bc = document.getElementById('modo-criar-btn');
+  const br = document.getElementById('modo-refinar-btn');
+  if (bc) bc.classList.toggle('ativo', !on);
+  if (br) br.classList.toggle('ativo', on);
+  try { if (ehFE1()) localStorage.setItem(LS + 'modoRefinar', on ? '1' : '0'); } catch (e) {}
+  renderRefino();
+  if (!silencioso) showToast(on ? 'Modo Refinar Narrativa — só Narrativa, Materiais e Simulações' : 'Modo Criar Camada 2', 'ouro');
+}
+
+function setAlvoRefino(alvo) {
+  _alvoRefino = alvo === 'tt' ? 'tt' : 'camada2';
+  document.getElementById('refino-alvo-camada2')?.classList.toggle('ativo', _alvoRefino === 'camada2');
+  document.getElementById('refino-alvo-tt')?.classList.toggle('ativo', _alvoRefino === 'tt');
+  renderRefino();
+}
+
+function _vigenteRefino() {
+  if (!estado.trilha || typeof VIGENTES_FE1 === 'undefined') return null;
+  return (VIGENTES_FE1[estado.trilha] || {})[_alvoRefino] || null;
+}
+
+function renderRefino() {
+  const el = document.getElementById('refino-vigente');
+  if (!el) return;
+  const btn = document.getElementById('btn-copiar-refino');
+  if (!estado.trilha) { el.textContent = 'Selecione a trilha na seção 01'; if (btn) btn.disabled = true; return; }
+  const v = _vigenteRefino();
+  const rotulo = _alvoRefino === 'tt' ? 'TT' : 'Camada 2';
+  el.textContent = v ? '04_Física_Experimental_1/' + v
+    : `Nenhuma ${rotulo} da ${estado.trilha} no disco — não há o que refinar (use o modo Criar)`;
+  if (btn) btn.disabled = !v;
+}
+
+function gerarPromptRefino() {
+  const t = TRILHAS[estado.trilha] || {};
+  const tt = _alvoRefino === 'tt';
+  const vig = _vigenteRefino();
+  const tipo = tt ? 'TT' : 'Camada2';
+  const val = id => document.getElementById(id)?.value || '[a definir]';
+  const partes = tt ? `- **Narrativa:** reescrever o ATO I — O GANCHO e o ATO III — O FECHAMENTO com a ancoragem abaixo, no mesmo tamanho (±15%). Os tópicos do Ato II ficam como estão.
+- **Materiais:** box "Materiais da bancada" na abertura do ATO II, depois do parágrafo narrativo (substitui o box, se já existir): lista curta dos materiais e instrumentos abaixo.
+- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai. Própria (SM-v1) cita o OA de Simulações da trilha e o gesto da prática.
+- Só o .md: o .tex e o PDF saem depois pelo pipeline do TT, sob comando do autor.`
+    : `- **Narrativa:** reescrever a seção 3 (NARRATIVA) com a ancoragem abaixo, mantendo as subseções que ela já tem.
+- **Materiais:** subseção "Materiais e Instrumentos" no fim da seção 3 (substitui, se já existir), em tabela: Item · Quantidade por bancada · Especificação, e os instrumentos com Grandeza · Classe · Faixa de medição · Resolução. É a base do Inventário de Equipamento (IE) da trilha: a instrução do IE na seção de OAs derivados passa a citar esta subseção.
+- **Simulações:** subseção "Simulações" no fim da seção 3 (substitui, se já existir): Tópico · Fonte · Nome · URL · Desafio de 3 minutos; Própria (SM-v1) leva o gesto da prática.`;
+  return `# Refinar Narrativa — FE-${estado.trilha} · ${tt ? 'Texto Temático (TT)' : 'Camada 2'}
+
+Disciplina: FE1 — Física Experimental 1 · Trilha ${estado.trilha} — ${t.nome || ''}
+Origem: modo Refinar Narrativa do Painel (PRE-painel-refinar-narrativa-materiais-simulacoes-fe1-2026-09-23)
+
+## Arquivo
+Raiz: 3_Estudio/04_Física_Experimental_1/
+Vigente registrado pelo Painel: ${vig || '[nenhum]'}
+1. Confirme por glob a maior v{N} de FE-${estado.trilha}-${tipo}-v*.md fora de xx/. Se divergir do registrado, vale o disco — avise.
+2. Grave o resultado como v{N+1} na mesma pasta e mova a v{N} para xx/ da mesma pasta. Nunca sobrescreva.
+3. No cabeçalho, versão v{N+1}, data de hoje e a linha "Refino: Narrativa + Materiais + Simulações (Painel)".
+
+## O que muda (e só isto)
+${partes}
+
+## O que NÃO muda
+Todo o resto, palavra por palavra: identificação, conteúdo (5 tópicos), contextualização tripla, turma, imagens, OAs derivados, guias, referências, Uso de IA. Não renumerar seções.
+
+## Conferir antes de relatar
+- diff v{N} × v{N+1}: nenhuma linha alterada fora das 3 partes (mostrar o resumo do diff).
+- "Resolução Científica do Problema — Protocolo C5 (8 passos)", nunca C5 isolado; unidades SI em minúsculas (cm, s, m/s).
+- Sem commit antes da aprovação do autor.
+
+## Ancoragem narrativa (do formulário)
+Tipo de narrativa: ${estado.narrativaTipo || '[a definir]'}
+Professor personagem: ${estado.profsAtivos.length ? estado.profsAtivos.map(p => p.nome).join(' · ') : '[a definir]'}
+${getAncoragemProtagonista()}
+Cenário principal: ${estado.cenarioPrincipal || '[a definir]'}
+Cenário secundário: ${val('cenario-sec-edit')}
+Problema narrativo (Ato I): ${val('ato1-edit')}
+Resolução esperada (Ato III): ${val('ato3-edit')}
+${getInstrumentosOutput() || '\nMateriais e Instrumentos: [nenhum informado — manter os do documento]\n'}${getSimulacoesOutput() || '\nSimulações: [nenhuma informada — manter as do documento]\n'}`;
+}
+
+function copiarPromptRefino() {
+  if (!estado.trilha) { showToast('Selecione a trilha primeiro', 'erro'); return; }
+  if (!_vigenteRefino()) { showToast('Não há arquivo vigente para refinar', 'erro'); return; }
+  salvarEstado();
+  _copiarTexto(gerarPromptRefino())
+    .then(() => showToast('Prompt de refino copiado — cole no Claude Code', 'ouro'))
+    .catch(() => showToast('Não foi possível copiar', 'erro'));
 }
 
 function adicionarCenarioPrincipal() {
@@ -5396,7 +5803,9 @@ function avancarSecao(num) {
   document.getElementById('sec'+num).classList.remove('ativa');
   document.getElementById('sec'+num).classList.add('concluida');
   const next = num+1;
-  if(next<=6){
+  if(num===3 && ehFE1()){
+    _abrirSecao('3m');
+  } else if(next<=6){
     const secNext = document.getElementById('sec'+next);
     secNext.classList.add('ativa');
     const bodyNext = secNext.querySelector('.secao-body');
