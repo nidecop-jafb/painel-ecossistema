@@ -1134,7 +1134,12 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
       <div class="campo-label">Arquivo vigente <span class="campo-auto-badge">Maior v{N} fora de xx/ — gerar_trilhas_painel_fe1.py</span></div>
       <div class="campo-readonly refino-vigente" id="refino-vigente">—</div>
     </div>
-    <div class="nota-info">Mudam só <strong>Narrativa</strong> (seção 03), <strong>Materiais</strong> e <strong>Simulações</strong>; o resto do documento fica igual, palavra por palavra. A versão anterior vai para <code>xx/</code>.</div>
+    <div class="campo-grupo">
+      <div class="campo-label">O que reescrever <span class="campo-auto-badge">Só as partes marcadas mudam</span></div>
+      <div id="refino-partes" style="display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;"></div>
+    </div>
+    <div id="refino-editor"></div>
+    <div class="nota-info">Mudam só as partes marcadas; o resto do documento fica igual, palavra por palavra. A versão anterior vai para <code>xx/</code>.</div>
     <div class="btn-row">
       <button class="btn btn-ouro" id="btn-copiar-refino" onclick="copiarPromptRefino()">⧉ Copiar prompt de refino</button>
     </div>
@@ -1914,60 +1919,156 @@ const TRILHAS_FE1 = {
 // Camada 2 e TT vigentes (maior v{N} fora de xx/) — modo Refinar Narrativa
 const VIGENTES_FE1 = {
   "T0A": {
-    "camada2": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-Camada2-v3.md",
-    "tt": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-TT-v8.md"
+    "camada2": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-Camada2-v4.md",
+    "tt": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-TT-v8.md",
+    "dados": {
+      "camada2": {
+        "titulo": "Metodologia experimental: metodo cientifico, medida, incerteza e seguranca",
+        "duracao": 90,
+        "arco": [
+          {
+            "nome": "Apresentacao + porque da disciplina",
+            "min": 15
+          },
+          {
+            "nome": "Metodo cientifico aplicado a fisica",
+            "min": 20
+          },
+          {
+            "nome": "Medida em pares: altura nas 4 referencias",
+            "min": 20
+          },
+          {
+            "nome": "Construcao coletiva da seguranca + NR-22",
+            "min": 20
+          },
+          {
+            "nome": "Caderno de Laboratorio FE1 + cronograma",
+            "min": 15
+          }
+        ],
+        "detalhe": {
+          "titulo": "Bloco 3 em detalhe (a inovacao pratica)",
+          "texto": "Estudantes organizados em **duplas, trios ou quartetos** (4-5 grupos de 4 alunos). Cada grupo executa, em rotacao, a sequencia:\n\n1. **Estudante A se posiciona** de costas contra a parede, calcanhar tocando o rodape.\n2. **Estudante B mede** a altura de A na **Escala manual 1**, anota.\n3. **Estudante C mede** a altura de A na **Escala manual 2**, anota.\n4. **Estudante D (ou A) mede** a altura de A na **Escala manual 3**, anota.\n5. Em seguida, **conferem** com a **fita metrica colada na parede** (medida indireta — a fita serve de referencia).\n6. **Anotam as 4 medidas** no Caderno de Laboratorio (linha do nome do colega).\n7. **Trocam de posicao** — repetem ate todos terem 4 medidas da propria altura registradas.\n\nNo fim, cada estudante tem **4 numeros** para a sua altura. Pergunta-chave: **\"Por que sao diferentes? Qual e a sua altura, afinal?\"** → discussao guiada sobre **media, desvio e incerteza**."
+        }
+      },
+      "tt": {
+        "titulo": "Medir antes de afirmar",
+        "duracao": 90
+      }
+    }
   },
   "T0B": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T01": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T02": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T03": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T04": {
     "camada2": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-Camada2-v1.md",
-    "tt": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-TT-v5.md"
+    "tt": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-TT-v5.md",
+    "dados": {
+      "camada2": {
+        "titulo": "Movimento Retilíneo Uniforme (MRU)",
+        "duracao": null,
+        "arco": [],
+        "detalhe": null
+      },
+      "tt": {
+        "titulo": "A reta que o tempo desenha",
+        "duracao": 100
+      }
+    }
   },
   "T05": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T06": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T07": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T08": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T09": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T10": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T11": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   },
   "T12": {
     "camada2": null,
-    "tt": null
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
   }
 };
 /* AUTO:TRILHAS_FE1:FIM */
@@ -5086,8 +5187,23 @@ function confirmarSecaoFE(id) {
   salvarEstado();
 }
 
-// Modo Refinar Narrativa (só FE1)
+// Modo Refinar Narrativa (só FE1) — partes por caixa
+// Briefing: PRE-painel-refinar-titulo-conteudo-blocos-fe1-2026-09-24
+// O estado do card mora em LS por trilha+alvo (ifmg_camada2_refino_T0A_camada2) e só é
+// gravado pelos eventos do próprio card — nunca por salvarEstado(), que selecionarTrilha()
+// chama antes de restaurar a sessão.
 let _alvoRefino = 'camada2';
+let _refinoChave = '';
+let _refino = null;
+
+const REFINO_PARTES = [
+  ['titulo', 'Título'], ['conteudo', 'Conteúdo'], ['blocos', 'Blocos'],
+  ['narrativa', 'Narrativa'], ['materiais', 'Materiais'], ['simulacoes', 'Simulações']];
+/* [chave, nome, pode remover] — Segurança e C5 são obrigatórios na FE1 */
+const REFINO_BOXES_TT = [
+  ['explore', 'EXPLORE', true], ['simule', 'SIMULE', true], ['seguranca', 'Segurança', false],
+  ['arte', 'Ciência e Arte', true],
+  ['c5', 'Resolução Científica do Problema — Protocolo C5 (8 passos) resolvido', false]];
 
 function setModoRefinar(on, silencioso) {
   on = !!on && ehFE1();
@@ -5098,7 +5214,7 @@ function setModoRefinar(on, silencioso) {
   if (br) br.classList.toggle('ativo', on);
   try { if (ehFE1()) localStorage.setItem(LS + 'modoRefinar', on ? '1' : '0'); } catch (e) {}
   renderRefino();
-  if (!silencioso) showToast(on ? 'Modo Refinar Narrativa — só Narrativa, Materiais e Simulações' : 'Modo Criar Camada 2', 'ouro');
+  if (!silencioso) showToast(on ? 'Modo Refinar Narrativa — marque as partes a reescrever' : 'Modo Criar Camada 2', 'ouro');
 }
 
 function setAlvoRefino(alvo) {
@@ -5113,55 +5229,283 @@ function _vigenteRefino() {
   return (VIGENTES_FE1[estado.trilha] || {})[_alvoRefino] || null;
 }
 
+function _dadosVigente() {
+  if (!estado.trilha || typeof VIGENTES_FE1 === 'undefined') return null;
+  return (((VIGENTES_FE1[estado.trilha] || {}).dados) || {})[_alvoRefino] || null;
+}
+
+function _refinoPadrao() {
+  const d = _dadosVigente() || {};
+  const det = d.detalhe || {};
+  const boxes = {};
+  REFINO_BOXES_TT.forEach(b => { boxes[b[0]] = { acao: 'manter', instr: '' }; });
+  return {
+    partes: { titulo: false, conteudo: false, blocos: false, narrativa: true, materiais: true, simulacoes: true },
+    titulo: d.titulo || '',
+    arcoOn: false, arco: (d.arco || []).map(b => ({ nome: b.nome, min: b.min })),
+    detalheOn: false, detalheTitulo: det.titulo || '', detalhe: det.texto || '',
+    boxes: boxes
+  };
+}
+
+function _refinoLsChave() { return LS + 'refino_' + estado.trilha + '_' + _alvoRefino; }
+
+function _carregarRefino() {
+  const padrao = _refinoPadrao();
+  let salvo = null;
+  try { salvo = JSON.parse(localStorage.getItem(_refinoLsChave()) || 'null'); } catch (e) {}
+  _refino = salvo ? Object.assign(padrao, salvo) : padrao;
+  _refino.partes = Object.assign(_refinoPadrao().partes, _refino.partes || {});
+  _refino.boxes = Object.assign(_refinoPadrao().boxes, _refino.boxes || {});
+}
+
+function _esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+
+const _REF_IN = 'font-size:12px;padding:5px 8px;background:var(--fundo);color:var(--texto);border:1px solid var(--cinza-borda);';
+
+function _arcoSoma() { return _refino.arco.reduce((s, b) => s + (parseInt(b.min, 10) || 0), 0); }
+
+function _arcoSomaHtml() {
+  const d = _dadosVigente() || {};
+  const soma = _arcoSoma();
+  if (!d.duracao) return `Soma: <strong>${soma} min</strong> · duração não informada no documento (duracao_lab_min).`;
+  const ok = soma === d.duracao;
+  return `Soma: <strong style="color:${ok ? 'var(--verde-claro)' : 'var(--erro)'};">${soma} min</strong>`
+    + (ok ? ` = duração do documento (${d.duracao} min) ✓` : ` ⚠ diferente da duração do documento (${d.duracao} min)`);
+}
+
+function renderRefinoEditor() {
+  const partesEl = document.getElementById('refino-partes');
+  const ed = document.getElementById('refino-editor');
+  if (!partesEl || !ed) return;
+  if (!_refino) { partesEl.innerHTML = ''; ed.innerHTML = ''; return; }
+  const r = _refino, d = _dadosVigente() || {};
+  const tt = _alvoRefino === 'tt';
+  partesEl.innerHTML = REFINO_PARTES.map(([k, nome]) =>
+    `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" data-parte="${k}"${r.partes[k] ? ' checked' : ''}> ${nome}</label>`).join('');
+  const aviso = t => `<div class="nota-info" style="color:var(--ouro);margin:4px 0;">⚠ ${t}</div>`;
+  let h = '';
+  if (r.partes.titulo) {
+    h += `<div class="campo-grupo"><div class="campo-label">Título <span class="campo-auto-badge">Vigente: ${_esc(d.titulo || '—')}</span></div>`
+      + (d.titulo ? '' : aviso('Título não encontrado no arquivo vigente — preencher à mão.'))
+      + `<input type="text" id="refino-titulo" value="${_esc(r.titulo)}" style="width:100%;${_REF_IN}">`
+      + `<div class="nota-info" style="margin-top:4px;">O Plano de Ensino (§4) e os chips do Painel continuam com o nome antigo — o prompt avisa, não altera.</div></div>`;
+  }
+  if (r.partes.conteudo) {
+    h += `<div class="campo-grupo"><div class="campo-label">Conteúdo</div><div class="nota-info">Usa os 5 tópicos e assuntos da seção 02 do formulário. `
+      + (tt ? 'No TT, só os tópicos alterados têm título e texto reescritos.' : 'Na Camada 2, a seção 2 recebe os 5 tópicos.')
+      + ` <a href="#" onclick="navegarSecao(2);return false;" style="color:var(--ouro);">Ir para a seção 02 ↑</a></div></div>`;
+  }
+  if (r.partes.blocos && !tt) {
+    h += `<div class="campo-grupo"><div class="campo-label">Blocos</div>`
+      + `<label style="font-size:12px;display:flex;gap:6px;align-items:center;margin:6px 0;"><input type="checkbox" id="refino-arco-on"${r.arcoOn ? ' checked' : ''}> Arco da aula (3.3)</label>`;
+    if (r.arcoOn) {
+      if (!(d.arco || []).length) h += aviso('Arco da aula não encontrado no arquivo vigente — preencher à mão.');
+      h += '<div id="refino-arco">' + r.arco.map((b, i) =>
+        `<div class="refino-arco-row" style="display:flex;gap:6px;margin-bottom:5px;"><span style="font-size:11px;min-width:52px;align-self:center;">Bloco ${i + 1}</span>`
+        + `<input type="text" class="ra-nome" value="${_esc(b.nome)}" placeholder="Nome do bloco" style="flex:3;${_REF_IN}">`
+        + `<input type="number" class="ra-min" value="${_esc(b.min)}" min="0" style="flex:0 0 70px;${_REF_IN}"><span style="font-size:11px;align-self:center;">min</span>`
+        + `<button type="button" class="btn" data-ra-rm="${i}" style="font-size:9px;padding:3px 6px;background:transparent;border:1px solid var(--erro);color:var(--erro);">✕</button></div>`).join('')
+        + '</div>'
+        + `<button type="button" class="btn" id="refino-arco-add" style="font-size:10px;padding:4px 10px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);">+ Bloco</button>`
+        + `<div class="nota-info" id="refino-arco-soma" style="margin-top:6px;">${_arcoSomaHtml()}</div>`;
+    }
+    h += `<label style="font-size:12px;display:flex;gap:6px;align-items:center;margin:10px 0 6px;"><input type="checkbox" id="refino-detalhe-on"${r.detalheOn ? ' checked' : ''}> Bloco em detalhe (3.4)</label>`;
+    if (r.detalheOn) {
+      if (!d.detalhe) h += aviso('Bloco em detalhe não encontrado no arquivo vigente — preencher à mão.');
+      h += `<input type="text" id="refino-detalhe-titulo" value="${_esc(r.detalheTitulo)}" placeholder="Título (ex.: Bloco 3 em detalhe)" style="width:100%;margin-bottom:5px;${_REF_IN}">`
+        + `<textarea id="refino-detalhe" rows="9" style="width:100%;${_REF_IN}">${_esc(r.detalhe)}</textarea>`;
+    }
+    h += '</div>';
+  }
+  if (r.partes.blocos && tt) {
+    h += `<div class="campo-grupo"><div class="campo-label">Blocos do TT</div>` + REFINO_BOXES_TT.map(([k, nome, rm]) => {
+      const b = r.boxes[k];
+      const op = (v, t) => `<option value="${v}"${b.acao === v ? ' selected' : ''}>${t}</option>`;
+      return `<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">`
+        + `<span style="font-size:12px;flex:1 1 220px;">${nome}</span>`
+        + `<select class="rb-acao" data-box="${k}" style="flex:0 0 120px;${_REF_IN}">${op('manter', 'Manter')}${op('reescrever', 'Reescrever')}${rm ? op('remover', 'Remover') : ''}</select>`
+        + (b.acao === 'reescrever' ? `<input type="text" class="rb-instr" data-box="${k}" value="${_esc(b.instr)}" placeholder="Instrução: o que muda neste box" style="flex:2 1 260px;${_REF_IN}">` : '')
+        + '</div>';
+    }).join('') + '</div>';
+  }
+  if (r.partes.titulo || r.partes.blocos) {
+    h += `<button type="button" class="btn" id="refino-recarregar" style="font-size:10px;padding:4px 10px;margin-bottom:10px;background:transparent;border:1px solid var(--cinza-borda);color:var(--texto-sec);">↺ Recarregar título e blocos do arquivo vigente</button>`;
+  }
+  ed.innerHTML = h;
+  _atualizarBotaoRefino();
+}
+
+function _atualizarBotaoRefino() {
+  const btn = document.getElementById('btn-copiar-refino');
+  if (!btn) return;
+  const algumaParte = _refino && Object.values(_refino.partes).some(Boolean);
+  btn.disabled = !_vigenteRefino() || !algumaParte;
+}
+
+function _lerRefinoDom() {
+  if (!_refino) return;
+  document.querySelectorAll('#refino-partes input[data-parte]').forEach(c => { _refino.partes[c.dataset.parte] = c.checked; });
+  const v = id => document.getElementById(id);
+  if (v('refino-titulo')) _refino.titulo = v('refino-titulo').value;
+  if (v('refino-arco-on')) _refino.arcoOn = v('refino-arco-on').checked;
+  if (v('refino-arco')) _refino.arco = [...document.querySelectorAll('#refino-arco .refino-arco-row')].map(row => ({
+    nome: row.querySelector('.ra-nome').value, min: parseInt(row.querySelector('.ra-min').value, 10) || 0 }));
+  if (v('refino-detalhe-on')) _refino.detalheOn = v('refino-detalhe-on').checked;
+  if (v('refino-detalhe-titulo')) _refino.detalheTitulo = v('refino-detalhe-titulo').value;
+  if (v('refino-detalhe')) _refino.detalhe = v('refino-detalhe').value;
+  document.querySelectorAll('#refino-editor .rb-acao').forEach(s => { _refino.boxes[s.dataset.box].acao = s.value; });
+  document.querySelectorAll('#refino-editor .rb-instr').forEach(i => { _refino.boxes[i.dataset.box].instr = i.value; });
+}
+
+function salvarRefino() {
+  if (!_refino || !estado.trilha) return;
+  try { localStorage.setItem(_refinoLsChave(), JSON.stringify(_refino)); } catch (e) {}
+}
+
+/* Um só ouvinte para o card: digitar só grava; marcar/escolher redesenha o editor. */
+function _ligarEventosRefino() {
+  const card = document.getElementById('sec3r');
+  if (!card || card.dataset.ligado) return;
+  card.dataset.ligado = '1';
+  card.addEventListener('input', ev => {
+    if (!ev.target.closest('#refino-editor')) return;
+    _lerRefinoDom(); salvarRefino();
+    const soma = document.getElementById('refino-arco-soma');
+    if (soma && ev.target.classList.contains('ra-min')) soma.innerHTML = _arcoSomaHtml();
+  });
+  card.addEventListener('change', ev => {
+    const t = ev.target;
+    if (!t.closest('#refino-partes') && !t.closest('#refino-editor')) return;
+    _lerRefinoDom(); salvarRefino();
+    if (t.type === 'checkbox' || t.classList.contains('rb-acao')) renderRefinoEditor();
+  });
+  card.addEventListener('click', ev => {
+    const t = ev.target;
+    if (t.id === 'refino-arco-add') {
+      _lerRefinoDom(); _refino.arco.push({ nome: '', min: 0 }); salvarRefino(); renderRefinoEditor();
+    } else if (t.dataset && t.dataset.raRm !== undefined) {
+      _lerRefinoDom(); _refino.arco.splice(parseInt(t.dataset.raRm, 10), 1); salvarRefino(); renderRefinoEditor();
+    } else if (t.id === 'refino-recarregar') {
+      const p = _refinoPadrao();
+      _lerRefinoDom();
+      Object.assign(_refino, { titulo: p.titulo, arco: p.arco, detalheTitulo: p.detalheTitulo, detalhe: p.detalhe });
+      salvarRefino(); renderRefinoEditor();
+      showToast('Título e blocos recarregados do arquivo vigente', 'ouro');
+    }
+  });
+}
+
 function renderRefino() {
   const el = document.getElementById('refino-vigente');
   if (!el) return;
-  const btn = document.getElementById('btn-copiar-refino');
-  if (!estado.trilha) { el.textContent = 'Selecione a trilha na seção 01'; if (btn) btn.disabled = true; return; }
+  _ligarEventosRefino();
+  if (!estado.trilha) {
+    el.textContent = 'Selecione a trilha na seção 01';
+    _refino = null; _refinoChave = ''; renderRefinoEditor(); _atualizarBotaoRefino();
+    return;
+  }
   const v = _vigenteRefino();
   const rotulo = _alvoRefino === 'tt' ? 'TT' : 'Camada 2';
   el.textContent = v ? '04_Física_Experimental_1/' + v
     : `Nenhuma ${rotulo} da ${estado.trilha} no disco — não há o que refinar (use o modo Criar)`;
-  if (btn) btn.disabled = !v;
+  const chave = estado.trilha + '|' + _alvoRefino;
+  if (chave !== _refinoChave) { _refinoChave = chave; _carregarRefino(); renderRefinoEditor(); }
+  _atualizarBotaoRefino();
+}
+
+function _topicosRefino() {
+  const out = [];
+  for (let i = 0; i < 5; i++) {
+    const novo = lerTopicoCompleto(i);
+    const orig = (topicosOriginais[i] || '').trim();
+    out.push({ n: i + 1, novo: novo || orig, orig: orig, mudou: !!novo && novo.trim() !== orig });
+  }
+  return out;
 }
 
 function gerarPromptRefino() {
-  const t = TRILHAS[estado.trilha] || {};
+  _lerRefinoDom();
+  const r = _refino, t = TRILHAS[estado.trilha] || {}, d = _dadosVigente() || {};
   const tt = _alvoRefino === 'tt';
   const vig = _vigenteRefino();
   const tipo = tt ? 'TT' : 'Camada2';
   const val = id => document.getElementById(id)?.value || '[a definir]';
-  const partes = tt ? `- **Narrativa:** reescrever o ATO I — O GANCHO e o ATO III — O FECHAMENTO com a ancoragem abaixo, no mesmo tamanho (±15%). Os tópicos do Ato II ficam como estão.
-- **Materiais:** box "Materiais da bancada" na abertura do ATO II, depois do parágrafo narrativo (substitui o box, se já existir): lista curta dos materiais e instrumentos abaixo.
-- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai. Própria (SM-v1) cita o OA de Simulações da trilha e o gesto da prática.
-- Só o .md: o .tex e o PDF saem depois pelo pipeline do TT, sob comando do autor.`
-    : `- **Narrativa:** reescrever a seção 3 (NARRATIVA) com a ancoragem abaixo, mantendo as subseções que ela já tem.
-- **Materiais:** subseção "Materiais e Instrumentos" no fim da seção 3 (substitui, se já existir), em tabela: Item · Quantidade por bancada · Especificação, e os instrumentos com Grandeza · Classe · Faixa de medição · Resolução. É a base do Inventário de Equipamento (IE) da trilha: a instrução do IE na seção de OAs derivados passa a citar esta subseção.
-- **Simulações:** subseção "Simulações" no fim da seção 3 (substitui, se já existir): Tópico · Fonte · Nome · URL · Desafio de 3 minutos; Própria (SM-v1) leva o gesto da prática.`;
-  return `# Refinar Narrativa — FE-${estado.trilha} · ${tt ? 'Texto Temático (TT)' : 'Camada 2'}
+  const marcadas = REFINO_PARTES.filter(([k]) => r.partes[k]);
+  const muda = [];
+  let aviso = '';
 
-Disciplina: FE1 — Física Experimental 1 · Trilha ${estado.trilha} — ${t.nome || ''}
-Origem: modo Refinar Narrativa do Painel (PRE-painel-refinar-narrativa-materiais-simulacoes-fe1-2026-09-23)
+  if (r.partes.titulo) {
+    const novo = r.titulo.trim();
+    if (!novo || novo === (d.titulo || '').trim()) {
+      muda.push(`- **Título:** marcado, mas igual ao vigente ("${d.titulo || ''}") — manter.`);
+    } else {
+      muda.push(`- **Título:** trocar "${d.titulo || '[título atual]'}" por "${novo}" `
+        + (tt ? 'na capa, no título da trilha (H1), no sumário e onde o título completo aparecer.'
+              : 'no YAML (campo do título), no H1 e na tabela de identificação (e onde o título completo aparecer).'));
+      aviso = `\n## Aviso para o autor (não alterar)\nO Plano de Ensino (§4) e os chips do Painel continuam com o nome "${t.nome || ''}". Não mexer neles: registrar no relato que ficaram diferentes do título novo, para o autor decidir.\n`;
+    }
+  }
+  if (r.partes.conteudo) {
+    const tps = _topicosRefino();
+    const lista = tps.map(p => `  ${p.n}. ${p.novo}${p.mudou ? `  [ALTERADO — era: ${p.orig}]` : '  [igual]'}`).join('\n');
+    muda.push(tt
+      ? `- **Conteúdo:** reescrever título e texto do Ato II **só dos tópicos [ALTERADO]**; os [igual] ficam palavra por palavra. O que está entre ( ) são assuntos a cobrir, não entram no título.\n${lista}`
+      : `- **Conteúdo:** a seção 2 recebe os 5 tópicos abaixo (o que está entre ( ) são os assuntos).\n${lista}`);
+  }
+  if (r.partes.blocos && !tt) {
+    const sub = [];
+    if (r.arcoOn) {
+      const soma = _arcoSoma();
+      sub.push(`  - Arco da aula (3.3): substituir pelos blocos abaixo, no mesmo formato "Bloco N — nome (M min)". Soma ${soma} min`
+        + (d.duracao ? (soma === d.duracao ? ` = duracao_lab_min (${d.duracao}).` : ` — ATENÇÃO: diferente de duracao_lab_min (${d.duracao}); não corrigir sozinho, apontar no relato.`) : '.')
+        + '\n' + r.arco.map((b, i) => `    Bloco ${i + 1} — ${b.nome || '[a definir]'} (${b.min} min)`).join('\n'));
+    }
+    if (r.detalheOn) {
+      sub.push(`  - Bloco em detalhe (3.4): título "${r.detalheTitulo || '[a definir]'}" e o texto abaixo, revisado só na forma:\n"""\n${r.detalhe}\n"""`);
+    }
+    muda.push(sub.length ? '- **Blocos:**\n' + sub.join('\n') : '- **Blocos:** nenhuma subparte marcada — manter.');
+  }
+  if (r.partes.blocos && tt) {
+    const sub = REFINO_BOXES_TT.map(([k, nome]) => {
+      const b = r.boxes[k];
+      if (b.acao === 'remover') return `  - ${nome}: REMOVER o box (e a entrada no sumário, se houver).`;
+      if (b.acao === 'reescrever') return `  - ${nome}: REESCREVER — ${b.instr || '[instrução a definir]'}.`;
+      return `  - ${nome}: manter palavra por palavra.`;
+    });
+    muda.push('- **Blocos do TT:**\n' + sub.join('\n'));
+  }
+  if (r.partes.narrativa) {
+    muda.push(tt
+      ? '- **Narrativa:** reescrever o ATO I — O GANCHO e o ATO III — O FECHAMENTO com a ancoragem abaixo, no mesmo tamanho (±15%).'
+      : '- **Narrativa:** reescrever a seção 3 (NARRATIVA) com a ancoragem abaixo, mantendo as subseções que ela já tem.');
+  }
+  if (r.partes.materiais) {
+    muda.push(tt
+      ? '- **Materiais:** box "Materiais da bancada" na abertura do ATO II, depois do parágrafo narrativo (substitui o box, se já existir): lista curta dos materiais e instrumentos abaixo.'
+      : '- **Materiais:** subseção "Materiais e Instrumentos" no fim da seção 3 (substitui, se já existir), em tabela: Item · Quantidade por bancada · Especificação, e os instrumentos com Grandeza · Classe · Faixa de medição · Resolução. É a base do Inventário de Equipamento (IE) da trilha: a instrução do IE na seção de OAs derivados passa a citar esta subseção.');
+  }
+  if (r.partes.simulacoes) {
+    muda.push(tt
+      ? '- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai. Própria (SM-v1) cita o OA de Simulações da trilha e o gesto da prática.'
+      : '- **Simulações:** subseção "Simulações" no fim da seção 3 (substitui, se já existir): Tópico · Fonte · Nome · URL · Desafio de 3 minutos; Própria (SM-v1) leva o gesto da prática.');
+  }
+  if (tt) muda.push('- Só o .md: o .tex e o PDF saem depois pelo pipeline do TT, sob comando do autor.');
 
-## Arquivo
-Raiz: 3_Estudio/04_Física_Experimental_1/
-Vigente registrado pelo Painel: ${vig || '[nenhum]'}
-1. Confirme por glob a maior v{N} de FE-${estado.trilha}-${tipo}-v*.md fora de xx/. Se divergir do registrado, vale o disco — avise.
-2. Grave o resultado como v{N+1} na mesma pasta e mova a v{N} para xx/ da mesma pasta. Nunca sobrescreva.
-3. No cabeçalho, versão v{N+1}, data de hoje e a linha "Refino: Narrativa + Materiais + Simulações (Painel)".
+  const fixo = [];
+  if (!r.partes.titulo) fixo.push('título');
+  fixo.push(r.partes.titulo ? 'identificação (exceto o título)' : 'identificação');
+  if (!r.partes.conteudo) fixo.push(tt ? 'os tópicos do Ato II' : 'conteúdo (5 tópicos)');
+  if (!r.partes.blocos) fixo.push(tt ? 'os boxes (EXPLORE, SIMULE, Segurança, Ciência e Arte, C5)' : 'arco da aula e bloco em detalhe');
+  if (!r.partes.narrativa) fixo.push(tt ? 'Ato I e Ato III'
+    : (r.partes.blocos ? 'o texto narrativo da seção 3 (fora das subseções de blocos marcadas)' : 'a narrativa (seção 3)'));
+  if (!r.partes.materiais) fixo.push('materiais');
+  if (!r.partes.simulacoes) fixo.push('simulações');
+  fixo.push('contextualização tripla', 'turma', 'imagens', 'OAs derivados', 'guias', 'referências', 'Uso de IA');
 
-## O que muda (e só isto)
-${partes}
-
-## O que NÃO muda
-Todo o resto, palavra por palavra: identificação, conteúdo (5 tópicos), contextualização tripla, turma, imagens, OAs derivados, guias, referências, Uso de IA. Não renumerar seções.
-
-## Conferir antes de relatar
-- diff v{N} × v{N+1}: nenhuma linha alterada fora das 3 partes (mostrar o resumo do diff).
-- "Resolução Científica do Problema — Protocolo C5 (8 passos)", nunca C5 isolado; unidades SI em minúsculas (cm, s, m/s).
-- Sem commit antes da aprovação do autor.
-
-## Ancoragem narrativa (do formulário)
+  let anc = '';
+  if (r.partes.narrativa) {
+    anc += `\n## Ancoragem narrativa (do formulário)
 Tipo de narrativa: ${estado.narrativaTipo || '[a definir]'}
 Professor personagem: ${estado.profsAtivos.length ? estado.profsAtivos.map(p => p.nome).join(' · ') : '[a definir]'}
 ${getAncoragemProtagonista()}
@@ -5169,13 +5513,44 @@ Cenário principal: ${estado.cenarioPrincipal || '[a definir]'}
 Cenário secundário: ${val('cenario-sec-edit')}
 Problema narrativo (Ato I): ${val('ato1-edit')}
 Resolução esperada (Ato III): ${val('ato3-edit')}
-${getInstrumentosOutput() || '\nMateriais e Instrumentos: [nenhum informado — manter os do documento]\n'}${getSimulacoesOutput() || '\nSimulações: [nenhuma informada — manter as do documento]\n'}`;
+`;
+  }
+  if (r.partes.materiais) anc += getInstrumentosOutput() || '\nMateriais e Instrumentos: [nenhum informado — manter os do documento]\n';
+  if (r.partes.simulacoes) anc += getSimulacoesOutput() || '\nSimulações: [nenhuma informada — manter as do documento]\n';
+
+  return `# Refinar — FE-${estado.trilha} · ${tt ? 'Texto Temático (TT)' : 'Camada 2'}
+
+Disciplina: FE1 — Física Experimental 1 · Trilha ${estado.trilha} — ${t.nome || ''}
+Origem: modo Refinar do Painel (PRE-painel-refinar-titulo-conteudo-blocos-fe1-2026-09-24)
+Partes a reescrever: ${marcadas.map(p => p[1]).join(' · ')}
+
+## Arquivo
+Raiz: 3_Estudio/04_Física_Experimental_1/
+Vigente registrado pelo Painel: ${vig || '[nenhum]'}
+1. Confirme por glob a maior v{N} de FE-${estado.trilha}-${tipo}-v*.md fora de xx/. Se divergir do registrado, vale o disco — avise.
+2. Grave o resultado como v{N+1} na mesma pasta e mova a v{N} para xx/ da mesma pasta. Nunca sobrescreva.
+3. No cabeçalho, versão v{N+1}, data de hoje e a linha "Refino: ${marcadas.map(p => p[1]).join(' + ')} (Painel)".
+
+## O que muda (e só isto)
+${muda.join('\n')}
+
+## O que NÃO muda
+Todo o resto, palavra por palavra: ${fixo.join(', ')}. Não renumerar seções.
+${aviso}
+## Conferir antes de relatar
+- diff v{N} × v{N+1}: nenhuma linha alterada fora das partes marcadas (mostrar o resumo do diff).
+- "Resolução Científica do Problema — Protocolo C5 (8 passos)", nunca C5 isolado; unidades SI em minúsculas (cm, s, m/s).
+- Sem commit antes da aprovação do autor.
+${anc}`;
 }
 
 function copiarPromptRefino() {
   if (!estado.trilha) { showToast('Selecione a trilha primeiro', 'erro'); return; }
   if (!_vigenteRefino()) { showToast('Não há arquivo vigente para refinar', 'erro'); return; }
+  _lerRefinoDom();
+  if (!Object.values(_refino.partes).some(Boolean)) { showToast('Marque ao menos uma parte', 'erro'); return; }
   salvarEstado();
+  salvarRefino();
   _copiarTexto(gerarPromptRefino())
     .then(() => showToast('Prompt de refino copiado — cole no Claude Code', 'ouro'))
     .catch(() => showToast('Não foi possível copiar', 'erro'));
