@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentos da Disciplina</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Aba Documentos do Painel do Ecossistema (Ementa · Temas e Trilhas · Plano de Ensino × Criar · Refinar).
+     Briefing: PRE-painel-documentos-criar-refinar-fe1-2026-09-24 (04_Física_Experimental_1/_planejamento/_pre/).
+     Os documentos vigentes vem da zona AUTO:DOCUMENTOS (gerar_documentos_painel.py) — nao editar a mao. -->
+<style>
+:root {
+  --ouro: oklch(0.65 0.22 45);
+  --ouro-claro: oklch(0.72 0.19 45);
+  --ouro-bg: oklch(0.28 0.05 45);
+  --verde-claro: oklch(0.70 0.15 150);
+  --verde-bg: oklch(0.25 0.04 150);
+  --erro: oklch(0.60 0.22 25);
+  --cinza-borda: oklch(0.38 0.02 260);
+  --texto: oklch(0.93 0 0);
+  --texto-sub: oklch(0.70 0 0);
+  --superficie: oklch(0.22 0.02 260);
+  --fundo: oklch(0.12 0.02 260);
+  --input-bg: oklch(0.18 0.02 260);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--fundo); color: var(--texto); min-height: 100vh; font-size: 14px; line-height: 1.6; }
+.main { max-width: 900px; margin: 0 auto; padding: 18px 20px 60px; }
+.barra { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--input-bg);
+  border: 1px solid var(--cinza-borda); padding: 10px 16px; margin-bottom: 12px; }
+.barra-rotulo { font-size: 11px; font-weight: 600; color: var(--ouro); white-space: nowrap; min-width: 86px; }
+.toggle { display: flex; flex-wrap: wrap; gap: 0; }
+.toggle-btn { font-family: 'DM Mono', monospace; font-size: 12px; padding: 6px 14px; border: 1px solid var(--cinza-borda);
+  margin-right: -1px; cursor: pointer; color: var(--texto-sub); background: var(--fundo); user-select: none; }
+.toggle-btn:hover { color: var(--texto); }
+.toggle-btn.ativo { background: var(--ouro-bg); border-color: var(--ouro); color: var(--ouro); position: relative; z-index: 1; }
+.toggle-btn.desligado { opacity: .45; cursor: not-allowed; }
+.toggle-btn .selo { font-size: 10px; opacity: .8; margin-left: 6px; }
+.nota { font-size: 11px; color: var(--texto-sub); line-height: 1.55; }
+.cartao { background: var(--superficie); border: 1px solid var(--cinza-borda); padding: 16px 18px; margin-bottom: 14px; }
+.cartao h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; color: var(--ouro); margin-bottom: 10px; }
+.campo { margin-bottom: 12px; }
+.campo-label { font-size: 11px; font-weight: 600; color: var(--texto-sub); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.campo-label .badge { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: none; letter-spacing: 0; color: var(--verde-claro);
+  border: 1px solid var(--verde-claro); background: var(--verde-bg); padding: 0 6px; margin-left: 6px; font-weight: 400; }
+.valor { font-family: 'DM Mono', monospace; font-size: 12px; word-break: break-all; background: var(--input-bg);
+  border: 1px solid var(--cinza-borda); padding: 7px 10px; }
+.aviso { border: 1px solid var(--ouro); background: var(--ouro-bg); color: var(--ouro-claro); padding: 10px 14px; font-size: 13px; margin-bottom: 12px; }
+.aviso.erro { border-color: var(--erro); background: oklch(0.20 0.05 25); color: var(--erro); }
+.btn { font-family: 'DM Mono', monospace; font-size: 12px; padding: 8px 16px; border: 1px solid var(--ouro); background: var(--ouro-bg);
+  color: var(--ouro); cursor: pointer; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn-leve { font-size: 10px; padding: 4px 10px; border-color: var(--cinza-borda); background: transparent; color: var(--texto-sub); }
+textarea { width: 100%; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.45; padding: 8px;
+  background: var(--fundo); color: var(--texto); border: 1px solid var(--cinza-borda); resize: vertical; }
+.pe-sec { border: 1px solid var(--cinza-borda); padding: 10px 12px; margin-bottom: 10px; background: var(--input-bg); }
+.pe-sec.marcada { border-color: var(--ouro); }
+.pe-sec.faltando { border-color: var(--erro); }
+.pe-sec-head { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; flex-wrap: wrap; }
+.pe-sec-head input { accent-color: var(--ouro); width: 15px; height: 15px; cursor: pointer; }
+.pe-estado { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--texto-sub); margin-left: auto; }
+.pe-sec details { margin-top: 8px; }
+.pe-sec summary { font-size: 11px; color: var(--texto-sub); cursor: pointer; }
+.pe-texto { min-height: 140px; max-height: 420px; overflow: auto; margin-top: 6px; }
+.pe-instr { min-height: 44px; margin-top: 8px; font-family: 'DM Sans', sans-serif; }
+.pe-falta { font-size: 11px; color: var(--erro); margin-top: 4px; display: none; }
+.pe-sec.faltando .pe-falta { display: block; }
+.previa { font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.5; white-space: pre-wrap; word-break: break-word;
+  background: var(--fundo); border: 1px dashed var(--cinza-borda); padding: 10px 12px; color: var(--texto-sub); max-height: 320px; overflow: auto; }
+.linha-btn { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+.toast { position: fixed; bottom: 20px; right: 20px; background: var(--superficie); border: 1px solid var(--verde-claro); color: var(--verde-claro);
+  padding: 10px 16px; font-size: 13px; transform: translateY(80px); opacity: 0; transition: all .25s; z-index: 1000; max-width: 420px; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ouro { background: var(--ouro-bg); border-color: var(--ouro); color: var(--ouro); }
+.toast.erro { background: oklch(0.20 0.05 25); border-color: var(--erro); color: var(--erro); }
+@media (max-width: 560px) { .main { padding: 12px 12px 40px; } .barra-rotulo { min-width: 0; } }
+</style>
+</head>
+<body data-pagina="painel:documentos-v1">
+<div class="main">
+
+  <div class="barra">
+    <span class="barra-rotulo">Disciplina</span>
+    <div class="toggle" id="t-disc"></div>
+  </div>
+  <div class="barra">
+    <span class="barra-rotulo">Documento</span>
+    <div class="toggle" id="t-doc"></div>
+  </div>
+  <div class="barra">
+    <span class="barra-rotulo">Modo</span>
+    <div class="toggle" id="t-modo">
+      <div class="toggle-btn" role="button" tabindex="0" data-modo="criar">Criar</div>
+      <div class="toggle-btn" role="button" tabindex="0" data-modo="refinar">Refinar</div>
+    </div>
+    <span class="nota" id="modo-nota"></span>
+  </div>
+
+  <div class="aviso erro" id="aviso-disc" style="display:none;"></div>
+
+  <div id="corpo">
+    <div class="cartao">
+      <h2 id="doc-titulo">—</h2>
+      <div class="campo">
+        <div class="campo-label">Documento vigente <span class="badge">maior v{N} fora de xx/ — gerar_documentos_painel.py</span></div>
+        <div class="valor" id="doc-vigente">—</div>
+      </div>
+      <div class="campo">
+        <div class="campo-label">Nova versão</div>
+        <div class="valor" id="doc-proximo">—</div>
+      </div>
+      <div class="nota" id="doc-legado" style="display:none;"></div>
+    </div>
+
+    <!-- REFINAR — uma caixa por secao do vigente -->
+    <div class="cartao" id="painel-refinar">
+      <h2>Refinar por seção</h2>
+      <div class="aviso" id="pe-aviso" style="display:none;"></div>
+      <div class="campo">
+        <div class="campo-label">Seções <span class="badge" id="pe-contagem">0 marcadas</span></div>
+        <div id="pe-secoes"></div>
+      </div>
+      <div class="nota">Mudam só as seções marcadas; o resto do documento fica igual, palavra por palavra. A versão anterior vai para <code>xx/</code>. PDF, página do site e chips do Painel não são regerados — o prompt lista o que fica desatualizado.</div>
+      <div class="linha-btn">
+        <button class="btn" id="btn-copiar-refino" type="button">⧉ Copiar prompt de refino</button>
+      </div>
+    </div>
+
+    <!-- CRIAR — prompt da entrevista-autor (PRE-v1) -->
+    <div class="cartao" id="painel-criar">
+      <h2>Criar pelo Pré-Planejamento</h2>
+      <div class="nota" style="margin-bottom:10px;">Documento novo (ou versão nova feita do zero) passa pela entrevista do autor: o botão copia o prompt da skill <code>/entrevista-autor</code> com a disciplina, o documento e o lar do briefing já preenchidos. Nada é produzido até o autor responder “aprovado”.</div>
+      <div class="campo">
+        <div class="campo-label">O que se quer (1 frase, opcional)</div>
+        <textarea id="criar-assunto" rows="2" style="font-family:'DM Sans',sans-serif;font-size:13px;" placeholder="Ex.: reorganizar os temas em 3 blocos, conforme a matriz revisada"></textarea>
+      </div>
+      <div class="campo">
+        <div class="campo-label">Prompt</div>
+        <div class="previa" id="criar-previa"></div>
+      </div>
+      <div class="linha-btn">
+        <button class="btn" id="btn-copiar-criar" type="button">⧉ Copiar prompt da entrevista</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* AUTO:DOCUMENTOS:INICIO */
+// GERADO por Trilhas_de_Aprendizagem/_scripts/gerar_documentos_painel.py — nao editar a mao.
+const DOCUMENTOS = {
+ "fc1": {
+  "ementa": {
+   "arquivo": "01_Fisica_Conceitual_1/_planejamento/Ementa/FC1-Ementa-proposta-v3.md",
+   "versao": 3,
+   "proximo": "01_Fisica_Conceitual_1/_planejamento/Ementa/FC1-Ementa-proposta-v4.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Quadro da ementa proposta",
+     "texto": "| 1ª série | |\n|---|---|\n| **Código:** OPIMINE.0105 | **Nome da disciplina:** Física I |\n| **Carga horária total:** 60 h | **Abordagem metodológica:** Teórica · **Natureza:** Obrigatória |\n| **CH teórica:** 60 | **CH prática:** 0 |\n| **Pré-requisitos:** nenhum | **Co-requisito:** Física Experimental I (OPIMINE.0106) |\n\n**Ementa:**\nO conhecimento científico e a Física no mundo atual. As unidades de medida padrão, suas ordens de grandeza e a introdução a medidas. Cinemática: grandezas escalares e vetoriais, movimento e suas descrições. Leis de Newton e suas aplicações. Estática dos corpos. Impulso e quantidade de movimento. Trabalho e Energia, com suas leis de conservação. Hidrostática. Noções básicas de Gravitação. Todo conteúdo é construído a partir do conceito e do modelo mental (Hewitt), articulado aos experimentos de Física Experimental I, contextualizado simultaneamente nos processos da mineração, no patrimônio histórico-científico de Ouro Preto e no cotidiano do estudante.\n\n**Objetivo(s):**\n- Introduzir e contextualizar a Física no mundo atual;\n- Compreender códigos, símbolos e unidades de medida do Sistema Internacional;\n- Desenvolver a compreensão e aplicação da cinemática, das leis de Newton, leis de conservação de energia e momento, estática ao estudante para aplicação no seu dia a dia e para construir estratégias de enfrentamento de problemas relacionados com as tecnologias;\n- Familiarizar os alunos com a cinemática e leis de Newton com formalização matemática dada pela álgebra vetorial, simultaneamente buscando enfatizar o aprofundamento conceitual, com aspectos ligados à aplicação cotidiana e contextualização histórica;\n- Desenvolver a capacidade de investigar, partindo do conceito e do modelo mental antes da fórmula (Hewitt primeiro);\n- Articular a Física com o ensino profissional em Mineração;\n- Compreender a Física na vida cotidiana;\n- Desenvolver a capacidade de utilizar tabelas, gráficos, equações para expressão do saber físico e de elaborar sínteses;\n- Redigir a resolução de problemas segundo o protocolo formal de modelagem científica (Resolução Científica do Problema — Protocolo C5, 8 etapas), aplicado autonomamente pelo estudante no Trabalho (TR) de cada trilha;\n- Articular cada conceito teórico com o experimento correspondente de Física Experimental I;\n- Priorizar, em toda atividade, os níveis L4 (Analisar), L5 (Avaliar) e L6 (Criar) da Taxonomia de Bloom.\n\n**Bibliografia básica:**\n1. BONJORNO, J. R. **Identidade Saraiva: Física**. São Paulo: Saraiva, 2024.\n2. HEWITT, P. G. **Física conceitual**. 12. ed. Porto Alegre: Bookman, 2015.\n3. ALVARENGA, B.; MÁXIMO, A. **Curso de Física**. São Paulo: Ed. Scipione, v. 1, 2000.\n\n**Bibliografia complementar:**\n1. UNIVERSIDADE FEDERAL DO CEARÁ. **Laboratório virtual de física**: mecânica. Fortaleza: UFC, 2020. Disponível em: https://www.laboratoriovirtual.fisica.ufc.br/. Acesso em: 18 set. 2026.\n2. VAŠČÁK, V. **Physics at school**: I. Mechanics. Morávia: Vladimír Vaščák, [20--]. Disponível em: https://www.vascak.cz/?id=1&language=it#kapitola3. Acesso em: 18 set. 2026.\n3. UNIVERSITY OF COLORADO BOULDER. **PhET Interactive Simulations**: movimento; trabalho, energia e potência; fenômenos quânticos; matemática e estatística. Boulder: University of Colorado Boulder, 2002-. Disponível em: https://phet.colorado.edu/pt_BR/simulations/filter?subjects=motion,work-energy-and-power,quantum-phenomena,math-and-statistics&type=html. Acesso em: 18 set. 2026.\n\n**Bibliografia pedagógica e científica** (fundamenta o método da disciplina, não o conteúdo de Física):\n1. BLOOM, B. S. (org.). **O desenvolvimento de talentos na juventude**. Porto Alegre: Globo, 1988.\n2. PIAZZI, P. **Aprendendo inteligência**: manual de instruções do cérebro para estudantes em geral. São Paulo: Aleph, 2008.\n3. PIAZZI, P. **Inteligência em concursos**: manual de instruções do cérebro para concurseiros e universitários. São Paulo: Aleph, 2013.\n4. NICOLELIS, M. **O verdadeiro criador de tudo**: como o cérebro humano esculpiu o universo que conhecemos. São Paulo: Planeta, 2020."
+    },
+    {
+     "n": "2",
+     "titulo": "Justificativa da bibliografia",
+     "texto": "**Diagnóstico.** A bibliografia vigente do PPC para OPIMINE.0105 (básica: Alvarenga/Máximo, Guimarães/Boa, Helou/Gualter/Newton; complementar: Anjos, Fuke/Kazuhito, Nicolau *et al.*, Paraná, Ramalho/Nicolau/Toledo, Moderna Plus v. 1-3) é toda formada por livros-texto generalistas de Física do Ensino Médio, sem nenhuma referência que sustente o método próprio do projeto — conceito antes da fórmula (Hewitt), estudo ativo (Piazzi) e a notação do material didático oficial adotado pela rede (PNLD). O alinhamento com a ementa da FE1 (co-requisito, 2026-09-18) pede a mesma bibliografia-tronco nas duas disciplinas.\n\n### 2.1 Obras que saem\n\n| Obra | Onde estava | Por que sai |\n|---|---|---|\n| GUIMARÃES; BOA. *Física para o 2º grau*, v. 1 | Básica | Generalista de Ensino Médio, redundante com Alvarenga/Máximo, que permanece |\n| HELOU; GUALTER; NEWTON. *Tópicos da Física*, v. 1 | Básica | Substituído por HEWITT — sequência conceito-antes-da-fórmula, pilar 1 do projeto |\n| ANJOS. *Física para o Ensino Médio* | Complementar | Generalista, sem uso didático diferenciado no projeto |\n| FUKE; KAZUHITO. *Física para o Ensino Médio* | Complementar | Idem |\n| NICOLAU *et al.* *Física Ciência e Tecnologia* | Complementar | Idem |\n| PARANÁ. *Série Novo Ensino Médio* | Complementar | Idem |\n| RAMALHO; NICOLAU; TOLEDO. *Os Fundamentos da Física* | Complementar | Idem |\n| AMABIS *et al.* Moderna Plus — Ciências da Natureza, v. 1-3 | Complementar | Livro-texto de Ciências da Natureza integrado, não específico de Física; sem uso didático diferenciado no projeto |\n\n### 2.2 Obras que entram\n\n**Básica 1 — BONJORNO. *Identidade Saraiva: Física* (2024). Entra.**\nLivro didático oficial (PNLD 2026) adotado pela rede e pela FC1; fixa a simbologia (s, Δs, s₀, t₀) usada a partir da Trilha T08, evitando que o estudante veja notação divergente entre o material didático institucional e o material do projeto — mesma obra da básica 1 da ementa da FE1.\n\n**Básica 2 — HEWITT. *Física conceitual* (2015). Entra.**\nFundamenta diretamente o Pilar 1 do método FC1 (\"Hewitt primeiro\" — o conceito e o modelo mental precedem qualquer fórmula, regra invioável do CLAUDE.md). Substitui HELOU/GUALTER/NEWTON, que cobria o mesmo papel de livro-texto de referência sem essa ancoragem conceitual.\n\n**Básica 3 — ALVARENGA; MÁXIMO. *Curso de Física* (2000). Mantém.**\nÚnico livro-texto generalista do PPC preservado na básica, como referência formal de conteúdo (fórmulas, nomenclatura clássica) que complementa a abordagem conceitual de Hewitt e a notação PNLD de Bonjorno.\n\n**Complementares 1-3 — laboratórios virtuais da UFC, de Vaščák e PhET. Entram.**\nMesmos 3 recursos digitais adotados na ementa da FE1 (co-requisito): acesso gratuito, sem cadastro; simulações de Cinemática, leis de Newton, Trabalho e Energia e Hidrostática — os mesmos temas da FC1 — utilizáveis no Pré-aula e no Pós-aula do método Piazzi; PhET roda em português e em HTML5, inclusive no celular, compatível com o público de 15-16 anos do curso técnico integrado.\n\n**Bibliografia pedagógica e científica — categoria nova, sem equivalente na ementa vigente do PPC.**\nO PPC lista só bibliografia de conteúdo; esta categoria referencia a origem de cada regra pedagógica invioável fixada no CLAUDE.md da FC1: BLOOM fundamenta a priorização dos níveis L4-L6 (Analisar, Avaliar, Criar) em toda atividade; PIAZZI (as duas obras) fundamenta os 3 atos do método (Pré-aula 20 min → Aula 45 min → Pós-aula 20 min, \"Piazzi sempre\"); NICOLELIS soma o argumento de neurociência para a opção pelo conceito antes da fórmula. HEWITT não se repete aqui — já está na bibliografia básica, cumprindo o duplo papel de livro-texto de referência e fundamento pedagógico do Pilar 1."
+    },
+    {
+     "n": "3",
+     "titulo": "Critérios e procedimentos de avaliação",
+     "texto": "Regime institucional do IFMG (PPC, seção 8.3; Regulamento de Ensino, Resolução 01/2026, Art. 116-118), comum a todas as disciplinas do curso — não há peso específico de FC1 a definir nesta ementa:\n\n- Avaliação contínua e cumulativa, em 3 etapas por série: 30 pontos (1ª etapa), 35 (2ª) e 35 (3ª).\n- Nenhum instrumento avaliativo isolado ultrapassa 40% do total da etapa; no mínimo 2 tipos diversificados de instrumento por etapa (prova, trabalho, relatório, seminário, portfólio etc.).\n- Frequência mínima de 75% da carga horária e rendimento mínimo de 60% para aprovação.\n- Recuperação: 2 parciais (ao fim da 1ª e da 2ª etapa) + 1 final, para quem não atingir 60%.\n- Revisão de avaliação: até 2 dias úteis após o lançamento da nota, por professor diferente do titular.\n\n**Nota sobre carga horária (mesmo tratamento da ementa da FE1, 2026-09-18):** os dias de Provas Escritas (Etapa 1 e 2) e do Exame Final são dias letivos, mas SEM aula regular de nenhuma disciplina — Art. 41 (caput) do Regulamento de Ensino exige que componentes em formato de disciplina, caso da FC1, sejam organizados em semanas letivas regulares; a exceção do §2º do mesmo artigo vale só para componentes em formato distinto de disciplina. Essas datas não contam como carga horária letiva regular da FC1.\n\nO Plano de Ensino da FC1 (documento futuro, fora desta ementa) detalha como os instrumentos de FC1 — Texto Temático, Provinha, Trabalho (TR), etc. — se distribuem nessas 3 etapas."
+    },
+    {
+     "n": "4",
+     "titulo": "Anexo — Temas e trilhas (base do plano de ensino)",
+     "texto": "> **Atualizado na v3 (2026-09-19):** as 25 trilhas ativas passam a ser numeradas em sequência, **T01–T25**; a coluna \"Reserva\" usa o código da matriz de 60 (**M**). Correspondência: `_claude/07-matriz-de-60-trilhas.md`, tabela 7.1; briefing: `_planejamento/_pre/PRE-projeto-numeracao-sequencial-1a-edicao-2026-09-18.md`.\n>\n> **Atualizado na v2 (2026-09-18):** o autor decidiu que a 1ª edição do curso não roda as 60 trilhas da matriz completa — fica em **25 trilhas numeradas ativas** (mantendo os 9 temas, reduzindo dentro de cada um) **+ T0A + T0B de orientação** (T0C fica de reserva). As 35 trilhas numeradas fora do recorte (hoje M14…M60, em `Trilhas_de_Aprendizagem/_reserva_2a_edicao/`), mais T0C, continuam no disco como reserva para a 2ª edição — nenhuma é apagada. Matriz vigente: `_claude/07-matriz-de-60-trilhas.md` (seção 7 do CLAUDE.md da FC1); briefing de aprovação: `_planejamento/_pre/PRE-projeto-reducao-matriz-1a-edicao-2026-09-18.md`. 60 h teóricas do PPC continuam o valor institucional; a distribuição efetiva das 25 trilhas em aulas de 45 min é resolvida no Plano de Ensino.\n\n9 Temas, **25 trilhas ativas na 1ª edição** (de um total de 60 + 3 de orientação na matriz completa), 45 min/encontro:\n\n| Tema | Nome | Trilhas ativas (1ª edição) | Quant. | Reserva (2ª edição, código M da matriz de 60) |\n|---|---|---|---|---|\n| 1 | A Régua do Mundo | T01–T06 | 6 | — |\n| 2 | O Ritmo das Máquinas | T07–T12 | 6 | — |\n| 3 | A Força que Move o Minério | T13 · T14 | 2 | M14, M15, M16, M18 |\n| 4 | A Direção do Movimento | T15 | 1 | M19, M21–M24 |\n| 5 | O Diálogo das Forças | T16 · T17 · T18 · T19 | 4 | M25, M29, M30, M32–M34 |\n| 6 | A Ciência do Repouso | T20 | 1 | M36–M40 |\n| 7 | Energia, a Moeda na Transformação | T21 · T22 · T23 · T24 | 4 | M42–M44, M48 |\n| 8 | O Peso das Águas | T25 | 1 | M49–M53 |\n| 9 | Os Movimentos Celestes | *(nenhuma)* | 0 | M55–M60 (tema inteiro) |\n| — | Orientação (fora da numeração) | T0A · T0B | 2 | T0C |\n| **Total** | | | **25** *(+ T0A/T0B)* | 35 numeradas + T0C |\n\nCada trilha ativa segue os 3 atos do método (Pré-aula 20 min → Aula 45 min → Pós-aula 20 min) e integra os 3 eixos obrigatórios: mineração, histórico-cultural (Ouro Preto) e cotidiano do estudante. O Protocolo C5 (Resolução Científica do Problema, 8 etapas) é aplicado no Tipo 7 (Texto Temático) e no Trabalho (TR) de cada trilha.\n\n**Critério de escolha (Temas 3-8):** a 1ª Lei de Newton já é coberta em T13; prioridade às leis de Newton (2ª e 3ª), aos conceitos com aplicação direta em mineração (atrito em correia transportadora, empuxo em flotação, peso/massa em NR-22) e à sequência completa de energia mecânica (Trabalho → Energia Potencial Gravitacional → Energia Potencial Elástica → Conservação). O Tema 9 (Gravitação) fica reserva integral nesta edição.\n\n> Diferença entre a carga horária declarada (60 h) e a soma efetiva de 25 trilhas × 45 min confirmada e aceita pelo autor em 2026-09-18 — resolução da diferença fica para o Plano de Ensino, mesmo tratamento dado à FE1."
+    },
+    {
+     "n": "5",
+     "titulo": "Encaminhamento e coordenação",
+     "texto": "**Fluxo de aprovação (mesmo da ementa da FE1, 2026-09-18):** 1º **Coordenadoria da Área de Física (CODAFIS)** — área de origem da proposta — depois 2º **Coordenadoria da Área de Mineração (CODAMIN)** — área que detém o curso Técnico em Mineração Integrado.\n\nO(A) Coordenador(a) do Curso Técnico em Mineração Integrado ao Ensino Médio (vinculado à CODAMIN) é eleito(a) pelos docentes da área de Mineração do campus, com mandato de 2 anos. **Coordenador atual:** Salatiel Assis Resende (salatiel.resende@ifmg.edu.br).\n\nO PPC vigente (`IFMG-OP-MIN-PPC.pdf`, seção 8.5.1, Quadro III) ainda registra Ariana Cristina Santos Almeida — nomeada pela Portaria nº 84/2024 — porque o documento não foi atualizado após a troca de mandato; o nome corrente foi informado pelo autor e já é o adotado nos demais materiais do projeto (créditos dos OAs). Depois de CODAFIS e CODAMIN, eventual tramitação segue ao Colegiado do curso (PPC, seção 8.5.2)."
+    },
+    {
+     "n": "6",
+     "titulo": "Fontes",
+     "texto": "- Projeto Pedagógico do Curso Técnico em Mineração Integrado (`Biblioteca/Documentos/IFMG-OP-MIN-PPC.pdf`): matriz curricular, ementa vigente de OPIMINE.0105 (p. 31-32), coordenação e colegiado do curso (seção 8.5).\n- Regulamento de Ensino do IFMG (`Biblioteca/Documentos/IFMG-Regulamento de Ensino-2026.pdf` — Resolução do Conselho Superior 1, 27/01/2026, Anexo I): seção 8.3 do PPC (avaliação); Art. 41 (carga horária de componente em formato de disciplina) e Art. 116-118 (avaliação), conforme já conferidos na ementa da FE1.\n- `CLAUDE.md` da FC1 e `_claude/07-matriz-de-60-trilhas.md`, `_claude/08-pedagogia-3-pilares.md`, `_claude/12-bibliografia-basica.md`: identidade, carga horária, matriz de 9 temas/60 trilhas (com coluna \"Ativas na 1ª edição\"), regras invioláveis, os 3 pilares pedagógicos e a bibliografia básica do projeto.\n- Ementa proposta da FE1 v4 (`../04_Física_Experimental_1/_planejamento/Ementa/FE1-Ementa-proposta-v4.md`): molde de seções, fluxo de encaminhamento, referências complementares compartilhadas (UFC, Vaščák, PhET) e tratamento da diferença de carga horária.\n- `_planejamento/_pre/PRE-projeto-reducao-matriz-1a-edicao-2026-09-18.md`: briefing aprovado da redução de 60 para 25 trilhas ativas, com distribuição por tema e critério de escolha.\n- Alinhamento entre FC1 e FE1, composição das bibliografias, redução da matriz e tratamento da carga horária: instrução direta do autor (2026-09-18)."
+    }
+   ]
+  },
+  "temas": {
+   "arquivo": null,
+   "versao": 0,
+   "proximo": "01_Fisica_Conceitual_1/_planejamento/FC1-Temas-e-Trilhas-v1.md",
+   "secoes": []
+  },
+  "plano": {
+   "arquivo": "01_Fisica_Conceitual_1/_planejamento/PlanoDeEnsino/FC1-PlanoDeEnsino-proposta-v2.md",
+   "versao": 2,
+   "proximo": "01_Fisica_Conceitual_1/_planejamento/PlanoDeEnsino/FC1-PlanoDeEnsino-proposta-v3.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Identificação",
+     "texto": "| Campo | Valor |\n|---|---|\n| Disciplina | Física I (FC1) · `OPIMINE.0105` |\n| Curso · série | Técnico em Mineração Integrado ao Ensino Médio · 1ª série |\n| Carga horária (PPC) | 60 h · CH teórica 60 h |\n| Co-requisito | Física Experimental I (`OPIMINE.0106`) |\n| Turmas · diários SUAP | 📌 a definir — mesmas turmas da FE1 (I1OPIMINE1/2/3), conferir |\n| Encontro | 1 encontro semanal, 100 min (2 aulas) por trilha — 📌 dia da semana a definir pela grade horária oficial |\n| Ano letivo | 15/04/2026 a 16/02/2027 (Calendário Acadêmico IFMG-OP, versão 25/08/2026) |\n| Docentes | Julio Azevedo · Felipe Beato (colaborador) |"
+    },
+    {
+     "n": "2",
+     "titulo": "Ementa",
+     "texto": "Conforme a Ementa v2, sem alteração: conhecimento científico, unidades e medidas, Cinemática, leis de Newton, Estática, Impulso e quantidade de movimento, Trabalho e Energia, Hidrostática, noções de Gravitação — conceito antes da fórmula (Hewitt), articulado à FE1, contextualização tripla (mineração, Ouro Preto, cotidiano)."
+    },
+    {
+     "n": "3",
+     "titulo": "Objetivos",
+     "texto": "Conforme a Ementa v2, seção 1 — os 8 objetivos do PPC mais RCP–Protocolo C5 (8 etapas), articulação com a FE1 e priorização Bloom L4-L6 (Analisar, Avaliar, Criar) em toda atividade."
+    },
+    {
+     "n": "4",
+     "titulo": "Conteúdo programático — 25 trilhas ativas em 9 Temas (1ª edição)",
+     "texto": "| Tema | Nome | Trilhas ativas |\n|---|---|---|\n| — | Orientação | T0A · T0B |\n| 1 | A Régua do Mundo | T01–T06 |\n| 2 | O Ritmo das Máquinas | T07–T12 |\n| 3 | A Força que Move o Minério | T13 · T14 |\n| 4 | A Direção do Movimento | T15 |\n| 5 | O Diálogo das Forças | T16 · T17 · T18 · T19 |\n| 6 | A Ciência do Repouso | T20 |\n| 7 | Energia, a Moeda na Transformação | T21 · T22 · T23 · T24 |\n| 8 | O Peso das Águas | T25 |\n| 9 | Os Movimentos Celestes | *(fora da 1ª edição)* |\n\nFonte: `_claude/07-matriz-de-60-trilhas.md` (tabela 7.1 — correspondência com a matriz de 60) e `PRE-projeto-reducao-matriz-1a-edicao-2026-09-18.md` (critério de escolha)."
+    },
+    {
+     "n": "5",
+     "titulo": "Metodologia",
+     "texto": "Cada trilha segue os 3 atos do Método: **Pré-aula** (20 min, em casa) → **Aula** (100 min = 2 aulas, presencial) → **Pós-aula** (20 min, em casa).\n\n### 5.1 Orçamento do encontro de 100 min (vale para toda trilha)\n\n| Bloco | min | O que acontece |\n|---|---:|---|\n| Abertura · retomada do Pré-aula | 10 | conceito do dia (Hewitt primeiro), pergunta motivadora |\n| Desenvolvimento do Texto Temático (TT) | 60 | Atos I-II: gancho narrativo + contextualização tripla + equações |\n| Aplicação / exercício guiado | 20 | Bloom L4-L5, contextualização mineração/Ouro Preto |\n| Provinha (PR) | 10 | fechamento individual, autocorrigível |\n\n### 5.2 Instrumentos e pesos por trilha (aprovado pelo autor, 2026-09-18)\n\n| Momento | Instrumento | Nota? | Pontos/trilha |\n|---|---|---|---:|\n| Pré-aula | Texto Temático (TT), Resumo em Áudio (MD), Mapa Conceitual (MC) | Não — método de estudo | — |\n| Pré-aula | Ponto de Partida (PP) | Sim | 1,0 |\n| Pré-aula | Testinho (TN) | Sim | 1,0 |\n| Aula | Provinha (PR) | Sim | 1,0 |\n| Pós-aula | Tarefa Mínima (TM) | Sim | 1,0 |\n| Pós-aula | Tarefa Complementar (TC) | Sim | 1,0 |\n| Pós-aula | Trabalho (TR) — RCP–Protocolo C5 autônomo | **Bônus** | até +0,5, com teto no total da etapa |\n| | **Base por trilha** | | **5,0** |\n\nTotal de cada etapa = soma das bases (PP+TN+PR+TM+TC) das trilhas daquela etapa, escalado para caber em 30/35/35 pontos (regime institucional, Ementa v2 seção 3); o bônus de TR soma por cima, até o teto de 40% da etapa (Regulamento de Ensino)."
+    },
+    {
+     "n": "6",
+     "titulo": "Cronograma 2026",
+     "texto": "### 6.1 Datas do calendário que afetam o encontro semanal\n\n- **Etapas:** 1ª 15/04–11/07/2026 · 2ª 13/07–24/10/2026 · 3ª 26/10/2026–16/02/2027.\n- **Provas em bloco (sem aula regular de FC1 — Art. 41):** 03–11/07/2026 · 17–24/10/2026 · 28/01–04/02/2027.\n- **Férias docentes (sem aula):** 09–23/09/2026 · 04–08/01/2027.\n- **Recesso escolar (sem aula):** 21–31/12/2026.\n- **Feriados/suspensões que podem coincidir com o dia de FC1** (conferir contra a grade horária real): 20/04 recesso · 21/04 Tiradentes · 21-22/05 suspensão · 04/06 Corpus Christi · 08/07 Aniv. Ouro Preto · 12/10 N. Sra. Aparecida · 02/11 Finados · 15/11 Proclamação · 20/11 Consciência Negra · 07-08/12 recesso/feriado · 08-10/02/2027 Carnaval.\n- **Exames finais:** 19–25/02/2027 (fora do período deste plano).\n\n### 6.2 Já concluídas (T0A, T0B, T01-T10) — conferir no SUAP\n\n12 trilhas já foram ministradas (T0A, T0B + T01-T10) — cobrem a Orientação e o Tema 1 inteiro, mais T07-T10 do Tema 2. Foram aplicadas dentro da 1ª etapa e início da 2ª etapa (15/04 a set/2026, conforme os diários SUAP) — **este plano não reconstrói as datas exatas retroativamente**; a nota de cada uma entra na etapa em que foi de fato lançada no SUAP. **T11, T12 e T13** já têm OA produzido (`Painel: 13 trilhas × 15 OAs`) mas ainda **não foram ministradas** — entram no cronograma prospectivo abaixo, junto das trilhas ainda não produzidas.\n\n### 6.3 A partir de 2026-09-18 (planejado, 15 trilhas restantes)\n\nSemanas usáveis calculadas excluindo provas em bloco, férias docentes e recesso escolar (não dependem do dia da semana). Com a correção de T0A-T10 (em vez de T0A-T13), as 15 trilhas restantes ocupam TODAS as semanas letivas disponíveis até a prova em bloco da 3ª etapa — **sem folga de revisão ou reserva técnica** (ver pendência 5).\n\n| Semana de | Etapa | Trilha | Tema |\n|---|---|---|---|\n| 21/09/2026 *(parcial — letiva só a partir de 24/09; usável se o encontro cair 5.ª ou 6.ª-feira, a confirmar)* | 2ª | **T11** As Interações Fundamentais | 2 |\n| 28/09/2026 | 2ª | **T12** Análise Gráfica do Movimento | 2 |\n| 05/10/2026 | 2ª | **T13** Massa e Inércia | 3 |\n| 12/10/2026 | 2ª | **T14** Colisões e Conservação | 3 |\n| *(19/10: provas em bloco — sem aula)* | — | — | — |\n| 26/10/2026 | 3ª | **T15** Adição e Subtração Vetorial | 4 |\n| 02/11/2026 | 3ª | **T16** Causa e Efeito (2ª Lei) | 5 |\n| 09/11/2026 | 3ª | **T17** Ações e Reações (3ª Lei) | 5 |\n| 16/11/2026 | 3ª | **T18** Peso, Gravidade e Massa | 5 |\n| 23/11/2026 | 3ª | **T19** Normal e Atrito | 5 |\n| 30/11/2026 | 3ª | **T20** A Estática da Partícula | 6 |\n| 07/12/2026 | 3ª | **T21** O Trabalho de uma Força | 7 |\n| 14/12/2026 | 3ª | **T22** Energia Potencial Gravitacional | 7 |\n| *(21/12–31/12: recesso escolar — sem aula)* | — | — | — |\n| *(04/01–08/01: férias docentes — sem aula)* | — | — | — |\n| 11/01/2027 | 3ª | **T23** Energia Potencial Elástica | 7 |\n| 18/01/2027 | 3ª | **T24** Nada se Perde: Conservação da Energia Mecânica | 7 |\n| 25/01/2027 | 3ª | **T25** O Banho de Arquimedes: Empuxo e Flutuação | 8 |\n| *(28/01–04/02: provas em bloco 3ª etapa — sem aula)* | — | — | — |\n\nDepois de 04/02/2027 não há mais semana letiva regular antes do término da 3ª etapa (16/02/2027) e dos Exames Finais (19-25/02)."
+    },
+    {
+     "n": "7",
+     "titulo": "Recursos didáticos",
+     "texto": "Objetos de Aprendizagem por trilha (TT, MD, MC, PP, TN, PR, TM, TC, TR + imagens temáticas), publicados em https://nidecop-jafb.github.io/fc1-oa/ · Painel do Ecossistema (`painel-producao.html`) · Monitoria para acompanhamento de entregas."
+    },
+    {
+     "n": "8",
+     "titulo": "Recuperação",
+     "texto": "- **Recuperação parcial da 1ª etapa:** 18/07, 25/07, 01/08, 08/08, 15/08, 22/08 ou 29/08/2026 (datas institucionais, marcadas pela Coordenação).\n- **Recuperação parcial da 2ª etapa:** 07/11, 14/11, 28/11, 05/12, 12/12, 19/12/2026 ou 16/01/2027.\n- **Recuperação da 3ª etapa:** Exame Final, 19-25/02/2027."
+    },
+    {
+     "n": "9",
+     "titulo": "Pendências que este plano não resolve",
+     "texto": "1. **Dia da semana do encontro de FC1** não confirmado — os feriados de dia único (20/04, 21/04, 04/06, 08/07, 12/10, 02/11, 15/11, 20/11) só afetam a aula real se caírem no dia certo; conferir contra a grade horária oficial e ajustar o cronograma da seção 6.3 se necessário.\n2. **Turmas e diários SUAP de FC1** não confirmados nesta versão (assumido igual à FE1 — mesmos 118 estudantes, mesmas 3 turmas — a conferir).\n3. **Reconciliação de notas já lançadas (T0A-T13)** com a etapa exata (1ª ou início da 2ª) — só o SUAP tem o registro real; este plano não o reconstrói.\n4. **Escala das bases por etapa (5,0/trilha) para caber em 30/35/35** — depende de quantas trilhas cada etapa realmente acumulou (pendência 3); a fórmula de escala fica para quando as datas do dia da semana forem confirmadas.\n5. **Zero folga em todo o cronograma prospectivo** (15 trilhas para 15 semanas usáveis, 21/09/2026–25/01/2027) — nenhuma margem para revisão geral ou reserva técnica; qualquer semana perdida (feriado no dia certo, imprevisto) empurra a trilha seguinte para depois da prova em bloco correspondente. A semana de 21/09 é condicional (pendência 1) — se não for usável, o cronograma já nasce com 1 trilha sem semana."
+    },
+    {
+     "n": "10",
+     "titulo": "Bibliografia",
+     "texto": "Conforme a Ementa v2: básica (Bonjorno; Hewitt; Alvarenga e Máximo) · complementar (UFC, Vaščák, PhET) · pedagógica e científica (Bloom; Piazzi ×2; Nicolelis)."
+    }
+   ]
+  }
+ },
+ "fe1": {
+  "ementa": {
+   "arquivo": "04_Física_Experimental_1/_planejamento/Ementa/FE1-Ementa-proposta-v4.md",
+   "versao": 4,
+   "proximo": "04_Física_Experimental_1/_planejamento/Ementa/FE1-Ementa-proposta-v5.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Quadro da ementa proposta",
+     "texto": "| 1ª série | |\n|---|---|\n| **Código:** OPIMINE.0106 | **Nome da disciplina:** Física Experimental I |\n| **Carga horária total:** 30 h | **Abordagem metodológica:** Prática · **Natureza:** Obrigatória |\n| **CH teórica:** 0 | **CH prática:** 30 |\n| **Pré-requisitos:** nenhum | **Co-requisito:** Física I (OPIMINE.0105) |\n\n**Ementa:**\nO conhecimento científico e o método experimental. Medida, incerteza de medição e tratamento de dados: instrumentos, algarismos significativos, padrão estatístico, tabelas e gráficos, ajuste linear e não linear. Experimentos de forças e movimentos (leis de Newton, atrito, empuxo, plano inclinado, colisões, hidrostática), articulados aos conteúdos teóricos de Física I. Projeto integrador de aplicação autônoma dos temas cursados. Toda atividade experimental é contextualizada nos processos da mineração, no patrimônio histórico-científico de Ouro Preto e no cotidiano do estudante, e segue normas de segurança em laboratório (NR-22).\n\n**Objetivo(s):**\n- Compreender códigos, símbolos e unidades de medida do Sistema Internacional;\n- Operar instrumentos de medida e tratar medições e suas incertezas;\n- Auxiliar na compreensão dos conteúdos teóricos de Física I (mecânica e fluidos);\n- Desenvolver a capacidade de investigar, coletando dados antes de aplicar a fórmula;\n- Redigir relatório científico segundo o protocolo formal de modelagem científica (Resolução Científica do Problema — Protocolo C5, 8 etapas);\n- Articular a Física com o ensino profissional em Mineração;\n- Compreender a Física na vida cotidiana e no patrimônio histórico de Ouro Preto;\n- Utilizar tabelas, gráficos e equações para expressar o saber físico e elaborar sínteses;\n- Aplicar normas de segurança (NR-22) e procedimentos de laboratório em toda atividade experimental;\n- Aplicar de forma autônoma, no projeto integrador, os temas cursados ao longo da disciplina.\n\n**Bibliografia básica:**\n1. BONJORNO, J. R. **Identidade Saraiva: Física**. São Paulo: Saraiva, 2024.\n2. LIMA, C. R. A.; ZAPPA, F. **Análise de dados para laboratório de física**. Juiz de Fora: UFJF, 2014. 57 p. Disponível em: https://www2.ufjf.br/carlos_lima/wp-content/uploads/sites/520/2019/01/analisedados.pdf. Acesso em: 13 set. 2026.\n3. SANTORO, A. *et al*. **Estimativas e erros em experimentos de física**. 2. ed. Rio de Janeiro: EdUERJ, 2013.\n\n**Bibliografia complementar:**\n1. UNIVERSIDADE FEDERAL DO CEARÁ. **Laboratório virtual de física**: mecânica. Fortaleza: UFC, 2020. Disponível em: https://www.laboratoriovirtual.fisica.ufc.br/. Acesso em: 13 set. 2026.\n2. VAŠČÁK, V. **Physics at school**: I. Mechanics. Morávia: Vladimír Vaščák, [20--]. Disponível em: https://www.vascak.cz/?id=1&language=it#kapitola3. Acesso em: 13 set. 2026.\n3. UNIVERSITY OF COLORADO BOULDER. **PhET Interactive Simulations**: movimento; trabalho, energia e potência; fenômenos quânticos; matemática e estatística. Boulder: University of Colorado Boulder, 2002-. Disponível em: https://phet.colorado.edu/pt_BR/simulations/filter?subjects=motion,work-energy-and-power,quantum-phenomena,math-and-statistics&type=html. Acesso em: 13 set. 2026.\n\n**Bibliografia pedagógica e científica** (fundamenta o método da disciplina, não o conteúdo de Física):\n1. HEWITT, P. G. **Física conceitual**. 12. ed. Porto Alegre: Bookman, 2015.\n2. BLOOM, B. S. (org.). **O desenvolvimento de talentos na juventude**. Porto Alegre: Globo, 1988.\n3. PIAZZI, P. **Aprendendo inteligência**: manual de instruções do cérebro para estudantes em geral. São Paulo: Aleph, 2008.\n4. PIAZZI, P. **Inteligência em concursos**: manual de instruções do cérebro para concurseiros e universitários. São Paulo: Aleph, 2013.\n5. NICOLELIS, M. **O verdadeiro criador de tudo**: como o cérebro humano esculpiu o universo que conhecemos. São Paulo: Planeta, 2020."
+    },
+    {
+     "n": "2",
+     "titulo": "Justificativa da bibliografia",
+     "texto": "**Diagnóstico.** A bibliografia vigente do PPC para OPIMINE.0106 (básica: Alvarenga/Máximo, Guimarães/Boa, Helou/Gualter/Newton; complementar: Anjos, Fuke/Kazuhito, Nicolau *et al.*, Paraná, Ramalho/Nicolau/Toledo) é formada por livros-texto generalistas de Física do Ensino Médio — repetem a bibliografia de Física I (teórica, cursada em co-requisito) e não tratam de método experimental: incerteza de medição, propagação de erro, ajuste de curva. Com CH teórica 0 e CH prática 30, a FE1 precisa de bibliografia própria de laboratório, que é a que o estudante consulta ao montar tabela, estimar incerteza e escrever o relatório (RB / Protocolo C5).\n\n### 2.1 Obras que saem\n\n| Obra | Onde estava | Por que sai |\n|---|---|---|\n| ALVARENGA; MÁXIMO. *Curso de Física*, v. 1 | Básica | Livro-texto de teoria; permanece na bibliografia de Física I, cursada em co-requisito |\n| GUIMARÃES; BOA. *Física para o 2º grau*, v. 1 | Básica | Mesmo motivo |\n| HELOU; GUALTER; NEWTON. *Tópicos da Física*, v. 1 | Básica | Mesmo motivo |\n| ANJOS. *Física para o Ensino Médio* | Complementar | Livro de Ensino Médio generalista, redundante com Física I |\n| FUKE; KAZUHITO. *Física para o Ensino Médio* | Complementar | Idem |\n| NICOLAU *et al.* *Física Ciência e Tecnologia* | Complementar | Idem |\n| PARANÁ. *Série Novo Ensino Médio* | Complementar | Idem |\n| RAMALHO; NICOLAU; TOLEDO. *Os Fundamentos da Física* | Complementar | Idem |\n| VUOLO. *Fundamentos da teoria de erros* | Complementar (v3) | Retirado pelo autor em 2026-09-18 — sem substituto indicado |\n\n### 2.2 Obras que entram\n\n**Básica 1 — BONJORNO. *Identidade Saraiva: Física* (2024). Entra.**\nSubstitui os livros-texto saídos mantendo uma referência teórica de apoio, mas na simbologia do PNLD (s, Δs, s₀, t₀) já adotada no projeto a partir da Trilha T08 da disciplina-irmã FC1 — evita que a FE1 ensine com notação diferente da que o estudante vê no material didático oficial.\n\n**Básica 2 — LIMA; ZAPPA. *Análise de dados para laboratório de física* (UFJF, 2014). Entra.**\nCobre, num único texto gratuito, algarismos significativos, incerteza e propagação, gráficos lineares e ajuste por mínimos quadrados — exatamente a sequência do Tema 1 (Entendendo as medidas). Mesma obra adotada na ILB e na LME, o que garante linguagem comum entre os laboratórios da família Trilhas.\n\n**Básica 3 — SANTORO *et al*. *Estimativas e erros em experimentos de física* (EdUERJ, 2013). Entra.**\nTratamento de erros sistemáticos e estatísticos e propagação de incertezas, na mesma nomenclatura da ILB/LME.\n\n**Complementares 1-3 — laboratórios virtuais da UFC, de Vaščák e PhET. Entram.** Justificativa conjunta: acesso gratuito, sem cadastro; uso possível no Pré-Lab e no Pós-Lab, fora do horário de bancada; cobrem os experimentos de Mecânica dos Temas 1-2 (MRU/MRUV, leis de Newton, plano inclinado, colisões, hidrostática); o PhET roda em português e em HTML5, inclusive no celular, compatível com o público de 15-16 anos do curso técnico integrado.\n\n**Bibliografia pedagógica e científica — categoria nova, sem equivalente na ementa vigente do PPC.**\nO PPC lista só bibliografia de conteúdo; esta categoria referencia a origem de cada regra pedagógica inviolável fixada no CLAUDE.md da FE1: HEWITT (*Física conceitual*) fundamenta \"Hewitt primeiro\" — o conceito precede a fórmula; BLOOM fundamenta os níveis L2-L6 aplicados a toda atividade; PIAZZI (as duas obras) fundamenta as 3 paradas do método (Pré-Lab → Lab → Pós-Lab, \"Piazzi sempre\"); NICOLELIS soma o argumento de neurociência para a opção por \"dados antes da fórmula\" (regra 2 da FE1) — a experiência sensório-motora antes da abstração matemática."
+    },
+    {
+     "n": "3",
+     "titulo": "Critérios e procedimentos de avaliação",
+     "texto": "Regime institucional do IFMG (PPC, seção 8.3; Regulamento de Ensino, Resolução 01/2026, Art. 116-118), comum a todas as disciplinas do curso — não há peso específico de FE1 a definir nesta ementa:\n\n- Avaliação contínua e cumulativa, em 3 etapas por série: 30 pontos (1ª etapa), 35 (2ª) e 35 (3ª).\n- Nenhum instrumento avaliativo isolado ultrapassa 40% do total da etapa; no mínimo 2 tipos diversificados de instrumento por etapa (prova, trabalho, relatório, seminário, portfólio etc.).\n- Frequência mínima de 75% da carga horária e rendimento mínimo de 60% para aprovação.\n- Recuperação: 2 parciais (ao fim da 1ª e da 2ª etapa) + 1 final, para quem não atingir 60%.\n- Revisão de avaliação: até 2 dias úteis após o lançamento da nota, por professor diferente do titular.\n\n**Nota sobre carga horária (autor, 2026-09-18):** os dias de Provas Escritas (Etapa 1 e 2) e do Exame Final são dias letivos, mas SEM aula regular de nenhuma disciplina — Art. 41 (caput) do Regulamento de Ensino exige que componentes em formato de disciplina, caso da FE1, sejam organizados em semanas letivas regulares; a exceção do §2º do mesmo artigo vale só para componentes em formato distinto de disciplina. Por isso essas 6 aulas por data NÃO podem ser contadas como carga horária da FE1 (ver seção 4).\n\nO Plano de Ensino da FE1 (documento futuro, fora desta ementa) detalha como os instrumentos de FE1 — Roteiro de Bancada, relatório científico, etc. — se distribuem nessas 3 etapas."
+    },
+    {
+     "n": "4",
+     "titulo": "Anexo — Temas e trilhas (base do plano de ensino)",
+     "texto": "> Matriz revisada pelo autor em 2026-09-18 (v7.0 de `01_matriz_16_trilhas_FE1.md`): reduz de 5 para 3 Temas experimentais (Conservação e Fluidos saem do escopo da FE1); o Projeto Integrador VOLTA como T12/Tema 3, depois de confirmado (seção 3 acima) que dias de prova/exame final não fecham a carga horária. Carga horária institucional continua 30h; 14 trilhas a 100 min cobrem ~23,3h — ainda falta ~6,7h, em aberto para o Plano de Ensino.\n\n14 trilhas em 4 Temas, todas no Lab de Mecânica (Pavilhão de Física), 100 min/encontro, rodízio quinzenal por grupo:\n\n| Tema | Nome | Trilhas | Quant. |\n|---|---|---|---|\n| 0 | Boas-vindas ao mundo da Física Experimental | T0A Primeiros Passos no Laboratório · T0B A Régua do Mundo | 2 |\n| 1 | Entendendo as medidas | T01 Como Medir as Coisas · T02 Lidando com a Incerteza · T03 Achando o Padrão na Bagunça · T04 Interpretando Linhas Retas · T05 Analisando Linhas Tortas | 5 |\n| 2 | Brincando com Forças e Movimentos | T06 Leis de Newton · T07 Pesando, Puxando, Empurrando e Esticando · T08 Boiando, Lixando, Amassando e Voando · T09 Subindo e descendo em Rampas e Ladeiras · T10 Trombadas e Batidas · T11 A Física da Água Parada | 6 |\n| 3 | Projeto Integrador | T12 Projeto investigativo integrador | 1 |\n\nCada trilha segue as 3 paradas do método (Pré-Lab 20 min → Lab 100 min → Pós-Lab 40 min) e integra os 3 eixos obrigatórios: mineração, histórico-cultural (Ouro Preto) e cotidiano do estudante.\n\n> Código \"T12\" e a diferença de ~6,7h de carga horária confirmados e aceitos pelo autor em 2026-09-18 — resolução da diferença fica para o Plano de Ensino."
+    },
+    {
+     "n": "5",
+     "titulo": "Encaminhamento e coordenação",
+     "texto": "**Fluxo de aprovação (autor, 2026-09-18):** 1º **Coordenadoria da Área de Física (CODAFIS)** — área de origem da proposta — depois 2º **Coordenadoria da Área de Mineração (CODAMIN)** — área que detém o curso Técnico em Mineração Integrado.\n\nO(A) Coordenador(a) do Curso Técnico em Mineração Integrado ao Ensino Médio (vinculado à CODAMIN) é eleito(a) pelos docentes da área de Mineração do campus, com mandato de 2 anos. **Coordenador atual:** Salatiel Assis Resende (salatiel.resende@ifmg.edu.br).\n\nO PPC vigente (`IFMG-OP-MIN-PPC.pdf`, seção 8.5.1, Quadro III) ainda registra Ariana Cristina Santos Almeida — nomeada pela Portaria nº 84/2024 — porque o documento não foi atualizado após a troca de mandato; o nome corrente foi informado pelo autor e já é o adotado nos demais materiais do projeto (créditos dos OAs). Depois de CODAFIS e CODAMIN, eventual tramitação segue ao Colegiado do curso (PPC, seção 8.5.2)."
+    },
+    {
+     "n": "6",
+     "titulo": "Fontes",
+     "texto": "- Projeto Pedagógico do Curso Técnico em Mineração Integrado (`Biblioteca/Documentos/IFMG-OP-MIN-PPC.pdf`): matriz curricular (p. 24), ementa vigente de OPIMINE.0106 (p. 33-34), coordenação e colegiado do curso (seção 8.5, p. 109-110).\n- Regulamento de Ensino do IFMG (`Biblioteca/Documentos/IFMG-Regulamento de Ensino-2026.pdf` — Resolução do Conselho Superior 1, 27/01/2026, Anexo I): seção 8.3 do PPC (avaliação); lido integralmente (37 páginas) em 2026-09-18 para confirmar o Art. 41 (carga horária de componente em formato de disciplina) e os Art. 13/129 (exame final fora da contagem de dias letivos).\n- `CLAUDE.md` da FE1: identidade, carga horária, matriz de 4 temas/14 trilhas (revisada pelo autor em 2026-09-18), regras invioláveis (aprovadas pelo autor em 2026-06-24).\n- Ementa proposta da LME v3 (`LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/Ementa/`): referências LIMA/ZAPPA e SANTORO *et al.* e os 3 laboratórios virtuais, reaproveitados aqui para dar continuidade de linguagem entre os laboratórios da família Trilhas.\n- Fluxo de aprovação (CODAFIS → CODAMIN) e retirada do VUOLO: instrução direta do autor (2026-09-18)."
+    }
+   ]
+  },
+  "temas": {
+   "arquivo": "04_Física_Experimental_1/_planejamento/01_matriz_16_trilhas_FE1.md",
+   "versao": 0,
+   "legado": true,
+   "proximo": "04_Física_Experimental_1/_planejamento/FE1-Temas-e-Trilhas-v1.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "ESTRUTURA EM 4 TEMAS",
+     "texto": "| Tema | Nome                                          | Trilhas                                                              | Qtd |\n|------|-----------------------------------------------|-----------------------------------------------------------------------|-----|\n| **0** | Boas-vindas ao mundo da Fisica Experimental   | T0A Primeiros Passos no Laboratorio · T0B A Regua do Mundo             | 2   |\n| **1** | Entendendo as medidas                        | T01 Como Medir as Coisas · T02 Lidando com a Incerteza · T03 Achando o Padrao na Bagunca · T04 Interpretando Linhas Retas · T05 Analisando Linhas Tortas | 5   |\n| **2** | Brincando com Forcas e Movimentos             | T06 Leis de Newton · T07 Pesando, Puxando, Empurrando e Esticando · T08 Boiando, Lixando, Amassando e Voando · T09 Subindo e descendo em Rampas e Ladeiras · T10 Trombadas e Batidas · T11 A Fisica da Agua Parada | 6   |\n| **3** | Projeto Integrador                            | T12 Projeto investigativo integrador                                   | 1   |\n| —    | **Total**                                     | —                                                                       | **14 trilhas** (2 abertura + 11 experimentais + 1 projeto integrador) |\n\n**T0A — Primeiros Passos no Laboratorio.** Sessao zero de metodologia. Nao e experimento — entrega metodo cientifico, Caderno de Laboratorio, EPI e NR-22 (conteudo da v5.0, mantido).\n\n**T0B — A Regua do Mundo.** Conteudo experimental A DEFINIR PELO AUTOR (titulo novo, sem descricao herdada da v5.0).\n\n**T12 — Projeto investigativo integrador.** Reaproveita o conteudo do antigo T16 (v5.0): o estudante NAO recebe procedimento, **propoe** um; aplica o Protocolo C5 (RCP); passo Bloom L6 do ano. Trilha de encerramento da disciplina.\n\nCada trilha (T0A + T0B + T01-T11 + T12) ocupa **2 semanas consecutivas**: na semana N, um grupo executa; na semana N+1, o outro grupo executa a mesma trilha com a bancada ja montada."
+    },
+    {
+     "n": "2",
+     "titulo": "LABORATORIO UNICO",
+     "texto": "**Todas as 14 trilhas sao executadas no Lab de Mecanica (Pavilhao de Fisica).** Lab Quimica nao e usado pela FE1 — pertence a disciplina de Quimica, que ocorre no mesmo horario para o grupo alternado.\n\nBancada de FE1: ~18-21 alunos por aula em 4-5 bancadas de 4 alunos. Total: 119 estudantes em 6 turmas."
+    },
+    {
+     "n": "3",
+     "titulo": "TEMA 1 — ENTENDENDO AS MEDIDAS (T01-T05)",
+     "texto": "> **Pre-requisito:** T0A+T0B (abertura) concluidas. **Lab:** Fisica (todas).\n> **Titulos revisados 2026-09-18 — Foco do experimento abaixo e o da v5.0, PENDENTE DE REVISAO do autor (T02 e T03 divergem do titulo novo).**\n\n| Trilha     | Titulo                                                | Foco do experimento (v5.0 — a confirmar)                          |\n|------------|-------------------------------------------------------|--------------------------------------------------------------------|\n| **T01-FE** | Como Medir as Coisas                                  | Medir o comprimento de linhas reais ou imaginarias                |\n| **T02-FE** | Lidando com a Incerteza                               | (v5.0: medir massa de objetos — nao corresponde ao titulo novo)    |\n| **T03-FE** | Achando o Padrao na Bagunca                           | (v5.0: medir instantes e intervalos de tempo — nao corresponde ao titulo novo) |\n| **T04-FE** | Interpretando Linhas Retas                            | Trilho de ar / rampa baixa; relacao x-t linear (MRU)               |\n| **T05-FE** | Analisando Linhas Tortas                              | Rampa inclinada / queda guiada; grafico s-t, v-t, a-t; determinar g (MUV) |\n\n### Objetivo pedagogico do Tema 1\nA confirmar com o autor: os titulos novos apontam para uma sequencia de **tratamento de dados** (medida, incerteza, padrao/estatistica, ajuste linear, ajuste nao linear), no mesmo espirito do Tema 1 da ILB/LME — diferente da sequencia v5.0 (tres medidas-base: comprimento, massa, tempo)."
+    },
+    {
+     "n": "4",
+     "titulo": "TEMA 2 — BRINCANDO COM FORCAS E MOVIMENTOS (T06-T11)",
+     "texto": "> **Lab:** Fisica (todas).\n> **Titulos revisados 2026-09-18 — Foco do experimento abaixo e o da v5.0, a confirmar (T08 mudou de escopo, ver nota).**\n\n| Trilha     | Titulo                                                | Foco do experimento (v5.0 — a confirmar)                                  |\n|------------|-------------------------------------------------------|------------------------------------------------------------------------------|\n| **T06-FE** | Leis de Newton                                        | Mola + massas padrao; construir F-x; constante elastica (v5.0: Lei de Hooke) |\n| **T07-FE** | Pesando, Puxando, Empurrando e Esticando              | Rampa graduada; medir mu_e e mu_c (v5.0: atrito estatico e cinetico)        |\n| **T08-FE** | Boiando, Lixando, Amassando e Voando                  | (v5.0: plano inclinado e decomposicao vetorial — titulo novo sugere empuxo/atrito/deformacao/arrasto, a confirmar) |\n| **T09-FE** | Subindo e descendo em Rampas e Ladeiras               | Tres fios + dinamometros (mesa de forcas); fechar o poligono (v5.0: equilibrio de ponto material) |\n| **T10-FE** | Trombadas e Batidas                                   | Modelos 2D e 3D; fio de prumo, momento (v5.0: centro de gravidade)          |\n| **T11-FE** | A Fisica da Agua Parada                               | Vantagem mecanica em pe-de-cabra, talha, pa carregadeira (v5.0: maquinas simples) |\n\n### Objetivo pedagogico do Tema 2\nA confirmar com o autor: pelos titulos novos, T08 (boiar/lixar/amassar/voar) sugere empuxo + atrito + colisao inelastica + arrasto, e T11 (\"agua parada\") sugere hidrostatica — nenhum dos dois corresponde ao foco v5.0 dessas posicoes. A correspondencia trilha-a-trilha entre titulo novo e foco experimental precisa ser refeita pelo autor antes de qualquer OA."
+    },
+    {
+     "n": "5",
+     "titulo": "TEMA 3 — PROJETO INTEGRADOR (T12)",
+     "texto": "> **Lab:** Lab de Mecanica.\n\n| Trilha     | Titulo                                                | Foco do experimento                                                          |\n|------------|-------------------------------------------------------|--------------------------------------------------------------------------------|\n| **T12-FE** | Projeto investigativo integrador                      | Estudante propoe procedimento (3 versoes A/B/C); aplica protocolo C5          |\n\n### Objetivo pedagogico do Tema 3\nO estudante NAO recebe procedimento, **propoe** um. Esse e o passo Bloom L6 do ano. Conteudo identico ao antigo T16 da v5.0."
+    },
+    {
+     "n": "6",
+     "titulo": "LABORATORIO",
+     "texto": "| Lab              | Trilhas | %    |\n|------------------|---------|------|\n| Lab de Mecanica  | 14      | 100% |\n| Lab Quimica      | 0       | 0%   |\n| **Total**        | **14 trilhas** | 100% |\n\nTodas as 14 trilhas (T0A + T0B + T01-T11 + T12) ocorrem no Lab de Mecanica. Lab Quimica e usado pela disciplina de Quimica que ocorre no mesmo horario para o grupo alternado."
+    },
+    {
+     "n": "7",
+     "titulo": "CADENCIA DE TRILHAS POR SEMANA",
+     "texto": "```\nS01+S02:  T0A (Grupo B na S01, Grupo A na S02) — Primeiros Passos no Laboratorio\nS03+S04:  T0B (Grupo B na S03, Grupo A na S04) — A Regua do Mundo\nS05+S06:  T01 — Como Medir as Coisas\nS07+S08:  T02 — Lidando com a Incerteza\nS09+S10:  T03 — Achando o Padrao na Bagunca\nS11+S12:  T04 — Interpretando Linhas Retas\nS13+S14:  T05 — Analisando Linhas Tortas\nS15+S16:  T06 — Leis de Newton\nS17+S18:  T07 — Pesando, Puxando, Empurrando e Esticando\n(recesso de inverno)\nS19+S20:  T08 — Boiando, Lixando, Amassando e Voando\nS21+S22:  T09 — Subindo e descendo em Rampas e Ladeiras\nS23+S24:  T10 — Trombadas e Batidas\nS25+S26:  T11 — A Fisica da Agua Parada\nS27+S28:  T12 — Projeto investigativo integrador\n```\n\n**Cada trilha ocupa 2 semanas consecutivas:**\n- Semana N (impar): Grupo B executa no Lab de Mecanica.\n- Semana N+1 (par): Grupo A executa no Lab de Mecanica (bancada ja montada).\n\nA **bancada e montada uma unica vez** por trilha. O tecnico do Pavilhao desmonta apenas ao final da segunda semana.\n\n**Semanas de Provas Escritas (Etapa 1 e Etapa 2) e do Exame Final contam como dias letivos, mas NAO tem aula de bancada** (autor, 2026-09-18; confirmado pelo Regulamento de Ensino em 2026-09-18 — ver cabecalho desta versao) — essas semanas ficam fora da contagem S01-S28 acima e entram no calendario geral do ano, nao no calendario de trilhas.\n\nCalendario completo com datas: `_calendario/calendario_rotativo_A_B.md`."
+    },
+    {
+     "n": "8",
+     "titulo": "PRODUCAO DE OAs — ORDEM SUGERIDA",
+     "texto": "Para acelerar a producao, gerar as trilhas em **ondas por tema**:\n\n### Onda 1 — Camada 2 de todas as 14 trilhas (incluindo T0A e T0B)\n- Sessao 1: T0A + T0B + Tema 1 (T01-T05) — 7 Camadas 2\n- Sessao 2: Tema 2 (T06-T11) — 6 Camadas 2\n- Sessao 3: Tema 3 (T12) — 1 Camada 2\n\n### Onda 2 — TT + IE + CS + IG\nMesma divisao por tema. Cada TT gera as saidas narrativas em uma rodada.\n\n### Onda 3 — RB + AP + PR (materiais de aula)\nCada par de trilhas em uma sessao Cowork.\n\n### Onda 4 — RM + RC + PI (pos-lab)\nCada par em uma sessao.\n\n**Estimativa total:** a recalcular pelo autor para 14 trilhas (era 28-34 sessoes / 84-98h para 17)."
+    },
+    {
+     "n": "9",
+     "titulo": "ADAPTACAO PARA O CURSO TECNICO EM MINERACAO INTEGRADO",
+     "texto": "Todas as trilhas serao adaptadas ao **publico de 15-16 anos do tecnico integrado em Mineracao**:\n\n- **Aparato real** — usar equipamentos que existem no Lab de Mecanica IFMG-OP, nao laboratorio ideal. Listar substituicoes low-cost quando aplicavel (rampa de madeira no lugar de trilho de ar, regua escolar antes do paquimetro).\n- **Contexto mineiro** — toda trilha conecta o experimento a uma operacao real da mineracao (correia transportadora, britagem, barragem, lavra, flotacao, NR-22).\n- **Segurança ativa** — cada CHECK-SEG cita item da NR-22 + norma interna do Lab de Mecanica IFMG-OP.\n- **Cooperacao bancada-monitor** — monitor da Monitoria FC1 (ver projeto P1) faz papel de apoio na bancada, nunca como executor.\n- **Vocabulario acessivel** — sem jargao tecnico desnecessario; defina antes de usar termo de fisica experimental (incerteza, propagacao, algarismo significativo).\n- **Bancada repetida 2x** — explorar o fato de que cada trilha roda duas semanas: o professor pode refinar a aula entre o Grupo B (S impar) e o Grupo A (S par); PR (provinha) deve ter versoes A/B/C distintas para evitar \"vazamento\" entre grupos."
+    },
+    {
+     "n": "10",
+     "titulo": "PROXIMOS PASSOS",
+     "texto": "- [x] Aprovacao dos titulos e foco de cada trilha v5.0 (2026-06-24) — **SUPERSEDIDO em 2026-09-18** pela revisao de titulos (v6.0/v7.0)\n- [x] Verificar se dias de prova/exame final podem contar como carga horaria da FE1 (2026-09-18) — **NAO, confirmado pelo Regulamento de Ensino**\n- [x] Autor confirma o codigo do Projeto Integrador: \"T12\" (2026-09-18) — e aceita a diferenca de ~6,7h de carga horaria, a resolver no Plano de Ensino\n- [ ] Autor confirma o foco do experimento de cada trilha renomeada (T02, T03, T08, T09, T10, T11 — titulo novo diverge do foco v5.0, secoes 3-4)\n- [ ] Autor define o conteudo experimental de T0B (A Regua do Mundo)\n- [ ] Autor fornece, por trilha: lista de materiais reais + equipamentos + imagens de referencia\n- [ ] Adaptacao do conteudo de cada trilha para o publico-alvo (15-16 anos, Mineracao Integrado)\n- [ ] Gerar Camada 2 de T0A (piloto da disciplina)\n- [ ] Validar com Felipe + tecnicos dos dois laboratorios\n- [ ] Configurar curso `FIS1MIN1-LAB-26` no Moodle"
+    }
+   ]
+  },
+  "plano": {
+   "arquivo": "04_Física_Experimental_1/_planejamento/FE1-Plano-de-Ensino-2026-v2.md",
+   "versao": 2,
+   "proximo": "04_Física_Experimental_1/_planejamento/FE1-Plano-de-Ensino-2026-v3.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Identificação",
+     "texto": "| Campo | Valor |\n|---|---|\n| Disciplina | Física Experimental I (FE1) · `OPIMINE.0106` |\n| Curso · série | Técnico em Mineração Integrado ao Ensino Médio · 1ª série |\n| Carga horária (PPC) | 30 h · 36 aulas de 50 min · CH prática 30 h |\n| Co-requisito | Física I (`OPIMINE.0105`) |\n| Turmas · diários SUAP | I1OPIMINE1 (A 22097 · B 22682) · I1OPIMINE2 (A 22113 · B 22685) · I1OPIMINE3 (A 22129 · B 22686) · 118 estudantes |\n| Encontro | 100 min (2 aulas), rodízio quinzenal: um grupo no Lab de Mecânica (FIS 102), o outro em Química Experimental (QUI 102) · **turma 1: terça**, 9h e 10h · **turma 2: quinta**, 7h e 8h · **turma 3: sexta**, 7h e 8h |\n| Local | Laboratório de Mecânica — Pavilhão de Física |\n| Ano letivo | 15/04/2026 a 16/02/2027 (Calendário Acadêmico IFMG-OP, versão 25/08/2026) |\n| Docentes | Julio Azevedo · Felipe Beato (colaborador) |"
+    },
+    {
+     "n": "2",
+     "titulo": "Ementa",
+     "texto": "Conforme a Ementa v4, sem alteração: método experimental; medida, incerteza e tratamento de dados; experimentos de forças e movimentos; projeto integrador; contextualização tripla (mineração, Ouro Preto, cotidiano) e segurança (NR-22) em toda atividade."
+    },
+    {
+     "n": "3",
+     "titulo": "Objetivos",
+     "texto": "**Geral.** Tornar o estudante capaz de planejar e executar uma medição, tratar os dados e a incerteza, e usar o resultado para pôr à prova um modelo da Física I.\n\n**Específicos** (Bloom L2-L6): operar instrumentos e registrar leituras com algarismos significativos e incerteza de escala · construir tabela e gráfico e extrair o coeficiente de um ajuste linear ou linearizado · coletar dados antes de aplicar a fórmula · comparar o resultado medido com o previsto e explicar a diferença · redigir o relatório pela Resolução Científica do Problema — Protocolo C5 (8 passos) · propor, no Projeto Investigativo (PI), um procedimento próprio."
+    },
+    {
+     "n": "4",
+     "titulo": "Conteúdo programático — 14 trilhas em 4 Temas",
+     "texto": "| Tema | Trilhas |\n|---|---|\n| 0 · Boas-vindas | T0A Primeiros Passos no Laboratório · T0B A Régua do Mundo |\n| 1 · Entendendo as medidas | T01 Como Medir as Coisas · T02 Lidando com a Incerteza · T03 Achando o Padrão na Bagunça · T04 Interpretando Linhas Retas · T05 Analisando Linhas Tortas |\n| 2 · Brincando com Forças e Movimentos | T06 Leis de Newton · T07 Pesando, Puxando, Empurrando e Esticando · T08 Boiando, Lixando, Amassando e Voando · T09 Subindo e descendo em Rampas e Ladeiras · T10 Trombadas e Batidas · T11 A Física da Água Parada |\n| 3 · Projeto Integrador | T12 Projeto investigativo integrador |"
+    },
+    {
+     "n": "5",
+     "titulo": "Metodologia",
+     "texto": "Cada trilha segue as três paradas do Método: **Pré-Lab** (20 min, em casa) → **Lab** (100 min, bancada) → **Pós-Lab** (40 min, em casa). A bancada é montada uma vez por trilha e atende os dois grupos da turma em encontros consecutivos.\n\n### 5.1 Orçamento do encontro de 100 min (vale para toda trilha)\n\n| Bloco | min | O que acontece |\n|---|---:|---|\n| Abertura · Apresentação de Apoio (AP) | 5 | pergunta do dia, o que se mede e por quê |\n| Checklist de segurança do Roteiro de Bancada (RB) | 5 | assinatura antes de tocar no equipamento |\n| **Bancada — UMA medição central** | **60** | ~35 min de coleta + ~25 min de tabela e gráfico, na própria folha do RB |\n| Discussão das bancadas | 15 | resultados lado a lado, incerteza, o que o modelo previa |\n| Provinha (PR) | 10 | fechamento individual |\n| Desmontagem parcial e limpeza | 5 | bancada volta ao estado da montagem |\n\nRegra de corte: a medição que não cabe em 60 min de bancada é **cortada**, não comprimida — o trecho cortado vai para o Pós-Lab (simulação ou relatório).\n\n### 5.2 Estações A e B\n\nOs ~18-21 estudantes do grupo da semana se dividem em **duas estações idênticas** — mesma medição, mesmo kit — com 2 a 3 bancadas de 4 estudantes cada (4 a 5 kits iguais no total). A e B servem para dividir a turma e a atenção do professor; não há troca de estação durante o encontro. Quantidade real de kits por trilha: conferir no Inventário de Equipamento (IE) com o técnico do Pavilhão.\n\n### 5.3 Simulações\n\nDuas funções, em todas as trilhas: **Pré-Lab** (o estudante explora o fenômeno antes da bancada) e **reserva** (repõe a bancada de quem faltou ou de encontro perdido — não há semana-tampão presencial). Fontes: Laboratório Virtual da UFC, Vaščák (em português) e PhET (HTML5, em português)."
+    },
+    {
+     "n": "6",
+     "titulo": "Quadro de medições T01-T11",
+     "texto": "Fonte = roteiro testado da Biblioteca (`Biblioteca/UFC/`, `Biblioteca/UFJF/`). Os roteiros da UFC são, na maioria, para simulação; os da UFJF são de bancada real e fornecem a montagem.\n\n| Trilha | Medição central (uma grandeza) | Roteiro-fonte | Equipamento por kit | O que sai para o Pós-Lab |\n|---|---|---|---|---|\n| **T01** | Comprimento e diâmetro de um tarugo de madeira com 4 instrumentos (régua dm, cm, mm e paquímetro), cada leitura com incerteza de escala | `UFJF/UFJF-LabFisI-01_Pratica1.pdf` | tarugo, réguas de 5 dm / 50 cm / 500 mm, paquímetro | paquímetro digital; cálculo do volume |\n| **T02** | Densidade superficial do papel-cartão, ρ = m/(a·b), com propagação da incerteza | `UFJF/UFJF-LabFisI-03_pratica3.pdf` | papel-cartão, régua mm, paquímetro, balança | comparação entre balanças; segunda parte do roteiro |\n| **T03** | Tempo de percurso do carrinho entre dois sensores, 20 repetições por bancada → média, desvio padrão, histograma | `UFJF/UFJF-LabFisI-02_pratica2.pdf` | trilho de ar, carrinho, 2 sensores, cronômetro digital com disparador | segunda configuração dos sensores |\n| **T04** | Posição × tempo da bolha no tubo de óleo, cronômetro digital, 3 corridas × 5 marcas → reta s × t e velocidade | RB `FE-T04-RB-v3` + `UFC/…-13 MRU.pdf` + `UFJF/…-04_Pratica4_MRU.pdf` | tubo com óleo, esfera e bolha, régua, celular (cronômetro) | esfera, cronômetro analógico e corrida do encontro. **O RB v3 pede 12 corridas: acima do orçamento** |\n| **T05** | Altura × tempo de queda da esfera, 5 alturas × 3 quedas → gráfico h × t² e valor de g | `UFJF/…-05_Roteiro5_queda-livre.pdf` · `UFC/…-04 Queda Livre(-filmado).pdf` | painel vertical graduado, esfera, bobina de retenção, 2 sensores, cronômetro | linearização log-log |\n| **T06** | Aceleração × força no trilho de ar, massa total constante (massas passam do carrinho ao porta-pesos), 4 pontos | **sem roteiro de bancada testado**: montagem de `UFJF/…-04` + modelo de `UFC/…-05 Maquina de Atwood.pdf` e `…-08 Segunda Lei de Newton.pdf` | trilho de ar, carrinho, polia, porta-pesos, massas, 2 sensores | a × 1/m (massa variável). **Testar a montagem antes** |\n| **T07** | Deformação × peso de uma mola, 8 massas (25 g e 10 g alternadas) → constante elástica | `UFJF/…-06_Pratica6-Hooke.pdf` | base com haste, mola 14 cm, massas 25 g e 10 g, régua mm | molas em série e em paralelo |\n| **T08** | Coeficiente de atrito estático pelo ângulo crítico de um bloco numa rampa graduada, 2 superfícies × 5 repetições | **sem roteiro de bancada testado**: modelo de `UFC/…-06 Plano Inclinado.pdf` e `…-07 Leis de Newton.pdf` (simulações). Alternativa testada: `UFJF/…-09_Pratica9.pdf` (atrito em polia bloqueada — correia) | rampa com transferidor, bloco com 2 faces (madeira/lixa) | atrito cinético; a alternativa UFJF-09 |\n| **T09** | Aceleração no trilho de ar inclinado para 4 ângulos → a × sen θ e valor de g | `UFJF/…-08_pratica8medium.pdf` (texto do PDF com fonte ilegível — objetivo conferido, procedimento não) | trilho de ar, calços, carrinho, 2 sensores, cronômetro | ângulos extras; comparação com T05 |\n| **T10** | Momento linear antes × depois de uma colisão perfeitamente inelástica, 3 combinações de massa | `UFJF/…-07_Pratica7.pdf` | trilho de ar, carrinhos macho/fêmea, 2 cilindros de 50 g, 2 sensores, cronômetro | colisão elástica; energia cinética |\n| **T11** | Empuxo × volume imerso (trilha **por simulação** — ver 7.3) | **sem roteiro UFC/UFJF** | — | pressão × profundidade |\n\nT0A (metodologia), T0B (conteúdo experimental ainda a definir) e T12 (o estudante propõe o procedimento) ficam fora do quadro.\n\n### 6.1 Simulações por trilha (URLs conferidas em 18/09/2026)\n\nUFC = `https://www.laboratoriovirtual.fisica.ufc.br/` · Vaščák = `https://www.vascak.cz/data/android/physicsatschool/template.php?l=pt&f=` · PhET = `https://phet.colorado.edu/pt_BR/simulations/`\n\n| Trilha | UFC | Vaščák (`f=`) | PhET |\n|---|---|---|---|\n| T01 | `algarismos-significativos-1` | `mech_posuvka` (Paquímetro) | — |\n| T02 | `algarismos-significativos-2` | `mech_mikrometr` (Micrômetro) | — |\n| T03 | `tempodereacao` | — | `plinko-probability` · `center-and-variability` |\n| T04 | — | `mech_pohyb` (Movimento) | `graphing-lines` |\n| T05 | `queda-livre` | `gp_padostroj` (Teste de queda livre) | `curve-fitting` |\n| T06 | `segunda-lei-newton` · `maquina-de-atwood` | `mech_newton2` (Segunda lei de Newton) | `forces-and-motion-basics` |\n| T07 | — | — | `hookes-law` · `masses-and-springs` |\n| T08 | `plano-inclinado` · `leis-de-newton` | `mech_treni` (Atrito) | `friction` |\n| T09 | `plano-inclinado` | `mech_sily` (Plano inclinado) | — |\n| T10 | — | `mech_nepruzna` (Colisões inelásticas) | `collision-lab` |\n| T11 | — | `mech_archimedes` (Lei de Arquimedes) · `mech_hydrotlak` (Pressão hidrostática) | `buoyancy` · `under-pressure` · `density` |"
+    },
+    {
+     "n": "7",
+     "titulo": "Cronograma 2026",
+     "texto": "As datas vêm dos diários SUAP de cada turma (36 datas por diário, iguais nos Grupos A e B), conferidas com o Calendário Acadêmico. Cada data útil é de **um** grupo — 100 min de bancada —, em rodízio A/B. Semana de provas em bloco e sábado letivo ficam **sem bancada**.\n\n### 7.1 Datas do calendário que afetam cada dia\n\n- **Etapas:** 1ª 15/04-11/07/2026 · 2ª 13/07-24/10/2026 · 3ª 26/10/2026-16/02/2027.\n- **Provas em bloco (sem bancada):** 03-11/07/2026 · 17-24/10/2026 · 28/01-04/02/2027.\n- **Exames finais:** 19-25/02/2027.\n\n| | Terça · turma 1 | Quinta · turma 2 | Sexta · turma 3 |\n|---|---|---|---|\n| Provas em bloco | 07/07 · 20/10 · 02/02 | 09/07 · 22/10 · 28/01 e 04/02 | 03/07 e 10/07 · 23/10 · 29/01 |\n| Feriados e recessos | 21/04 · 08/12 · 22/12 e 29/12 · 09/02 | 04/06 · 24/12 e 31/12 | 01/05 · 05/06 · 20/11 · 25/12 e 01/01 |\n| Suspensão das atividades | — | 21/05 | 22/05 |\n| Dia letivo sem CH de disciplina | 21/07 (IV FestJEL) · 24/11 (Festival de Linguagens) | 08/10 (Semana de Ciência e Tecnologia) | 09/10 (Semana de Ciência e Tecnologia) |\n| Dia que conta como segunda-feira | — | 15/10 · 05/11 | — |\n| Férias docentes | 15 e 22/09 · 05/01 | 10 e 17/09 · 07/01 | 11 e 18/09 · 08/01 |\n| Sábado letivo equivalente (sem bancada) | 11/07 (prova) · 14/11 (recuperação) | 25/07 (recuperação) · 24/10 (prova) | 01/08 (recuperação) · 30/01 (prova) |\n| **Datas com bancada no ano** | **31** | **29** | **29** |\n\nDepois das provas da 3ª etapa ainda são letivas a quinta 11/02 e a sexta 12/02/2027, sem encontro previsto.\n\n### 7.2 Já ministrado (registro)\n\nT0A a T04 concluídas nos seis grupos. O rodízio é contado de trás para frente a partir da próxima data, que é do Grupo B nas três turmas.\n\n| Turma | 1ª etapa | Encontros | 2ª etapa, até as férias | Encontros |\n|---|---|---|---|---|\n| 1 (terça) | 28/04 a 30/06 · 10 datas | 5 B · 5 A | 14/07 a 08/09 · 8 datas | 4 B · 4 A |\n| 2 (quinta) | 16/04 a 02/07 · 10 datas | 5 B · 5 A | 16/07 a 03/09 · 8 datas | 4 B · 4 A |\n| 3 (sexta) | 17/04 a 26/06 · 8 datas | 4 B · 4 A | 17/07 a 04/09 · 8 datas | 4 B · 4 A |\n\n### 7.3 A partir de 24/09/2026 (planejado)\n\nEm cada turma o Grupo B abre a trilha e o A a repete no encontro seguinte da turma, com a bancada montada.\n\n**Turma 1 — terça**\n\n| Data | Grupo | Trilha | Etapa |\n|---|---|---|---|\n| 29/09 | B | T05 Analisando Linhas Tortas | 2ª |\n| 06/10 | A | T05 | 2ª |\n| 13/10 | B | T06 Leis de Newton | 2ª (nota na 3ª) |\n| 20/10 | — | provas em bloco — sem bancada (a T06 fica montada) | 2ª |\n| 27/10 | A | T06 | 3ª |\n| 03/11 | B | T07 Pesando, Puxando, Empurrando e Esticando | 3ª |\n| 10/11 | A | T07 | 3ª |\n| 17/11 | B | T08 Boiando, Lixando, Amassando e Voando | 3ª |\n| 24/11 | — | Festival de Linguagens — sem CH | 3ª |\n| 01/12 | A | T08 | 3ª |\n| 08/12 | — | feriado | 3ª |\n| 15/12 | B | T09 Subindo e descendo em Rampas e Ladeiras | 3ª |\n| 22/12-05/01 | — | recesso e férias docentes (a T09 fica montada) | 3ª |\n| 12/01/2027 | A | T09 | 3ª |\n| 19/01 | B | T10 Trombadas e Batidas | 3ª |\n| 26/01 | A | T10 | 3ª |\n| 02/02 | — | provas em bloco — sem bancada | 3ª |\n| 09/02 | — | Carnaval | 3ª |\n| 16/02 | B | encontro de fechamento: plantão do PI e reposição (sem trilha nova; o Grupo A não tem data correspondente) | 3ª |\n\n**Turma 2 — quinta**\n\n| Data | Grupo | Trilha | Etapa |\n|---|---|---|---|\n| 24/09 | B | T05 Analisando Linhas Tortas | 2ª |\n| 01/10 | A | T05 | 2ª |\n| 08/10 | — | Semana de Ciência e Tecnologia — sem CH | 2ª |\n| 15/10 | — | conta como segunda-feira | 2ª |\n| 22/10 | — | provas em bloco — sem bancada | 2ª |\n| 29/10 | B | T06 Leis de Newton | 3ª |\n| 05/11 | — | conta como segunda-feira (a T06 fica montada) | 3ª |\n| 12/11 | A | T06 | 3ª |\n| 19/11 | B | T07 Pesando, Puxando, Empurrando e Esticando | 3ª |\n| 26/11 | A | T07 | 3ª |\n| 03/12 | B | T08 Boiando, Lixando, Amassando e Voando | 3ª |\n| 10/12 | A | T08 | 3ª |\n| 17/12 | B | T09 Subindo e descendo em Rampas e Ladeiras | 3ª |\n| 24/12-07/01 | — | recesso e férias docentes (a T09 fica montada) | 3ª |\n| 14/01/2027 | A | T09 | 3ª |\n| 21/01 | B | T10 Trombadas e Batidas | 3ª |\n| 28/01 e 04/02 | — | provas em bloco — sem bancada | 3ª |\n\nO Grupo A da turma 2 não tem data para a T10: faz a **T10 por simulação** (Pré-Lab e Pós-Lab), entre 21/01 e 05/02.\n\n**Turma 3 — sexta**\n\n| Data | Grupo | Trilha | Etapa |\n|---|---|---|---|\n| 25/09 | B | T05 Analisando Linhas Tortas | 2ª |\n| 02/10 | A | T05 | 2ª |\n| 09/10 | — | Semana de Ciência e Tecnologia — sem CH | 2ª |\n| 16/10 | B | T06 Leis de Newton | 2ª (nota na 3ª) |\n| 23/10 | — | provas em bloco — sem bancada (a T06 fica montada) | 2ª |\n| 30/10 | A | T06 | 3ª |\n| 06/11 | B | T07 Pesando, Puxando, Empurrando e Esticando | 3ª |\n| 13/11 | A | T07 | 3ª |\n| 20/11 | — | feriado | 3ª |\n| 27/11 | B | T08 Boiando, Lixando, Amassando e Voando | 3ª |\n| 04/12 | A | T08 | 3ª |\n| 11/12 | B | T09 Subindo e descendo em Rampas e Ladeiras | 3ª |\n| 18/12 | A | T09 | 3ª |\n| 25/12-08/01 | — | recesso, feriado e férias docentes | 3ª |\n| 15/01/2027 | B | T10 Trombadas e Batidas | 3ª |\n| 22/01 | A | T10 | 3ª |\n| 29/01 | — | provas em bloco — sem bancada | 3ª |\n| 05/02 | B | encontro de fechamento: plantão do PI e reposição (sem trilha nova; o Grupo A não tem data correspondente) | 3ª |\n\n- **T11** entra **por simulação**, nas três turmas e nos dois grupos, depois da T09 de cada grupo e até 29/01 (Pré-Lab e Pós-Lab no Moodle): não sobra data de bancada para ela, e ela é a única trilha sem roteiro de bancada testado.\n- **T12 (PI):** lançado no encontro da T07 de cada grupo — turma 1: 03/11 (B) e 10/11 (A) · turma 2: 19/11 (B) e 26/11 (A) · turma 3: 06/11 (B) e 13/11 (A) —, desenvolvido no Pós-Lab e entregue até **05/02/2027**. Os encontros de fechamento (16/02 na turma 1 e 05/02 na turma 3, só Grupo B) servem de plantão.\n- **Montagens:** como as turmas estão defasadas, o Lab de Mecânica guarda **duas montagens ao mesmo tempo** nas semanas de 10-13/11 (T06 e T07), 17-19/11 (T07 e T08), 26-27/11 (T07 e T08), 10-11/12 (T08 e T09) e 12-15/01 (T09 e T10).\n\n### 7.4 Carga horária\n\n| | 1 B | 1 A | 2 B | 2 A | 3 B | 3 A |\n|---|---:|---:|---:|---:|---:|---:|\n| Presencial | 16 → 26,7 h | 15 → 25,0 h | 15 → 25,0 h | 14 → 23,3 h | 15 → 25,0 h | 14 → 23,3 h |\n| Simulação | T11 · 1,7 h | T11 · 1,7 h | T11 · 1,7 h | T10+T11 · 3,3 h | T11 · 1,7 h | T11 · 1,7 h |\n| PI no Pós-Lab | 3,3 h | 3,3 h | 3,3 h | 3,3 h | 3,3 h | 3,3 h |\n| **Total** | **31,7 h** | **30,0 h** | **30,0 h** | **30,0 h** | **30,0 h** | **28,3 h** |\n\nPresencial = encontros de 100 min · simulação = 1 encontro equivalente por trilha · PI no Pós-Lab = 2 encontros equivalentes.\n\nA conta só fecha 30 h se a CH não presencial (simulações e PI) for aceita, e o Grupo A da turma 3 fica em 28,3 h mesmo assim — ver seção 11, itens 1 e 3."
+    },
+    {
+     "n": "8",
+     "titulo": "Recursos didáticos",
+     "texto": "Os 16 Objetos de Aprendizagem (OAs) do método por trilha, publicados em https://nidecop-jafb.github.io/fe1-oa/ · Inventário de Equipamento (IE) por trilha · Roteiro de bancada · simulações da seção 6.1 · Site da FE1 e Monitoria para as entregas do Pós-Lab."
+    },
+    {
+     "n": "9",
+     "titulo": "Avaliação",
+     "texto": "Regime institucional (Ementa v4, seção 3): etapas de 30, 35 e 35 pontos; nenhum instrumento acima de 40% da etapa; no mínimo 2 tipos de instrumento por etapa; aprovação com 60% e 75% de frequência.\n\n### 9.1 Pontuação por trilha (proposta — o autor ajusta os pesos)\n\n| Parada | Instrumento | Pontos por trilha |\n|---|---|---:|\n| Pré-Lab | Ponto de Partida (PP) + Testinho (TN) | 0,5 |\n| Lab | Provinha (PR) | 1,0 |\n| Lab | Roteiro de Bancada (RB) preenchido | 1,0 |\n| Pós-Lab | Relatório Mínimo (RM) | 1,0 |\n| Pós-Lab | Relatório Completo (RC) | bônus: até +0,5, com teto no total da etapa |\n| | **Total por trilha** | **3,5** |\n\n### 9.2 Por etapa\n\n| Etapa | Pontos | Composição |\n|---|---:|---|\n| 1ª | 30 | registro: o lançado no SUAP (trilhas T0A em diante) |\n| 2ª | 35 | registro até 08/09 + T05 (3,5); conferir no SUAP |\n| 3ª | 35 | T06 a T11: 6 × 3,5 = **21** · PI = **14** (40% da etapa, teto do Regulamento) |\n\nA nota da T06 vai inteira para a 3ª etapa nos dois grupos, embora o Grupo B das turmas 1 e 3 faça a bancada em 13/10 e 16/10."
+    },
+    {
+     "n": "10",
+     "titulo": "Recuperação e reposição",
+     "texto": "| | Turma 1 (terça) | Turma 2 (quinta) | Turma 3 (sexta) |\n|---|---|---|---|\n| Recuperação parcial da 2ª etapa (A e B) | sábado **14/11/2026**, letivo equivalente a terça e reservado à recuperação | um dos sábados de recuperação sem dia correspondente (28/11, 05/12, 12/12, 19/12/2026 ou 16/01/2027), marcado pela Coordenação | idem turma 2 |\n| Recuperação da 3ª etapa | exame final, 19-25/02/2027 | idem | idem |\n| Encontro de fechamento (plantão do PI) | 16/02/2027, Grupo B | — | 05/02/2027, Grupo B |\n\n- **Reposição de bancada perdida:** por simulação da trilha (seção 6.1) + Relatório Mínimo (RM) sobre o dado real de uma bancada da mesma turma. Não há semana-tampão presencial.\n- **Grupo sem data para uma trilha** (T10 da turma 2 A; T11 em todos): simulação no Pré-Lab e no Pós-Lab, com a mesma pontuação da seção 9.1.\n- **Reposição presencial:** só pelo Plano B (apêndice), às sextas à tarde, se a Coordenação não aceitar a CH não presencial."
+    },
+    {
+     "n": "11",
+     "titulo": "Pendências que este plano não resolve",
+     "texto": "1. **CH não presencial sem base conferida.** O PPC só prevê CH não presencial para Estudos Orientados de dependência (p. 96). O Regulamento de Ensino está em PDF sem texto e não foi relido aqui. Sem autorização da Coordenação, a CH presencial fica em 26,7 h (1 B), 25,0 h (1 A, 2 B, 3 B) e 23,3 h (2 A, 3 A).\n2. **PI de 20% não cabe na 3ª etapa.** O teto de 40% da etapa limita o PI a 14 pontos (14% do ano).\n3. **Grupos A com menos encontros que o B** — 15 × 16 na turma 1, 14 × 15 nas turmas 2 e 3. O Grupo A da turma 3 fica em 28,3 h mesmo com a CH não presencial; só o Plano B iguala os seis grupos em 30 h.\n4. **Quinta 11/02 e sexta 12/02/2027 são letivas, mas ficam fora dos diários:** o SUAP fecha as 36 aulas antes delas. Se os diários forem estendidos, 11/02 dá a bancada da T10 à turma 2 A e 12/02 dá o fechamento à turma 3 A.\n5. **Diários SUAP × realidade:** os diários lançam 1 aula por data nos dois grupos, toda semana (o rodízio quinzenal de 2 aulas não aparece), e mantêm 21/05 (turma 2) e 22/05 (turma 3), dias de suspensão das atividades no calendário. Pendente da resposta da Diretoria/TI; nada é lançado na FE1 antes dela.\n6. **Total de estudantes:** a API do SUAP conta 123 participantes nos 6 diários; a lista de 06/08 tem 118 ativos (A 58 · B 60). A diferença de 5 bate com os ex-alunos cancelados da FC1 — não conferido um a um.\n7. **Medições sem roteiro de bancada testado:** T06 e T08 (montagens adaptadas, testar antes) e T11 (só simulação).\n8. **RB da T04 (v3) acima do orçamento de 60 min** — a revisão vira alvo da trilha.\n9. **Número de kits por estação** — conferir no IE com o técnico, contando as semanas com duas montagens (seção 7.3)."
+    },
+    {
+     "n": "12",
+     "titulo": "Bibliografia",
+     "texto": "Conforme a Ementa v4 (básica: Bonjorno; Lima e Zappa; Santoro *et al.* · complementar: UFC, Vaščák, PhET), mais os roteiros testados usados como fonte de medição:\n\n- DIAS, N. L. **Roteiros de mecânica** (01, 02, 04-14). Fortaleza: UFC, Laboratório Virtual de Física. `Biblioteca/UFC/`.\n- UNIVERSIDADE FEDERAL DE JUIZ DE FORA. **Laboratório de Física I**: práticas 1 a 9. Juiz de Fora: UFJF. `Biblioteca/UFJF/`."
+    }
+   ]
+  }
+ },
+ "ilb": {
+  "ementa": {
+   "arquivo": "LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/Ementa/LFI-ILB-Ementa-proposta-v2.md",
+   "versao": 2,
+   "proximo": "LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/Ementa/LFI-ILB-Ementa-proposta-v3.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Quadro da ementa proposta",
+     "texto": "| 2º período | |\n|---|---|\n| **Código:** OPLFISI.6086 | **Nome da disciplina:** Introdução ao Laboratório |\n| **Carga horária total:** 30 | **Abordagem metodológica:** Prática-laboratório · **Natureza:** Obrigatória |\n| **CH teórica:** 0 | **CH prática lab:** 30 |\n\n**Ementa:**\nMetodologia experimental. Avaliação e expressão de medições e de suas incertezas: unidades, ordens de grandeza, instrumentos de medida, algarismos significativos e operações, erros, tolerâncias e propagação de incertezas. Apresentação de tabelas e tipos de gráficos; linearização e ajuste de curvas aos dados experimentais, assistido por inteligência artificial. Redação de relatório científico. Aplicação desses procedimentos a experimentos de Mecânica Clássica: grandezas escalares e vetoriais, estática, cinemática e dinâmica do MRU, MRUV e MCU, quedas, lançamentos e colisões.\n\n**Objetivo(s):**\n- Compreender códigos, símbolos e unidades de medida do Sistema Internacional (SI);\n- Operar os instrumentos de medida do laboratório de ensino e aplicar procedimentos de medição, distinguindo precisão e exatidão;\n- Avaliar e expressar medições e suas incertezas, com algarismos significativos, estimativa de erros, tolerâncias e propagação de incertezas;\n- Apresentar resultados em tabelas e gráficos, linearizar dados e ajustar curvas a conjuntos de medidas;\n- Utilizar recursos de inteligência artificial como ferramenta de ajuste de curvas e de análise de dados experimentais, avaliando criticamente os resultados obtidos;\n- Redigir relatório científico segundo a estrutura e as convenções da comunicação em Física;\n- Desenvolver a capacidade de investigar, formulando hipóteses, planejando a medida e avaliando a plausibilidade dos resultados;\n- Aplicar esse conjunto de procedimentos a experimentos de Mecânica Clássica, elaborando sínteses.\n\n**Bibliografia básica:**\n1. CAMPOS, A. A.; ALVES, E. S.; SPEZIALI, N. L. **Física experimental básica na universidade**. 2. ed. Belo Horizonte: Editora UFMG, 2008.\n2. PIACENTINI, J. J. et al. **Introdução ao laboratório de física**. 2. ed. Florianópolis: Editora da UFSC, 2018.\n3. SANTORO, A. et al. **Estimativas e erros em experimentos de física**. 2. ed. Rio de Janeiro: EdUERJ, 2013.\n\n**Bibliografia complementar:**\n1. HEWITT, P. G. **Física conceitual**. 12. ed. Porto Alegre: Bookman, 2015.\n2. FEYNMAN, R. P.; LEIGHTON, R. B.; SANDS, M. L. **Feynman: lições de física**. Porto Alegre: Bookman, 2008. v. 1, 2 e 3.\n3. HALLIDAY, D.; RESNICK, R.; WALKER, J. **Fundamentos de física**: mecânica. 10. ed. Rio de Janeiro: LTC, 2016. v. 1."
+    },
+    {
+     "n": "2",
+     "titulo": "O que muda e por quê",
+     "texto": "Nada muda no cabeçalho: período, código, nome, carga horária (30 h, com CH teórica 0 e CH prática-laboratório 30), abordagem metodológica e natureza permanecem exatamente como estão na matriz em vigor. A proposta altera apenas ementa, objetivos e bibliografia.\n\n| Item | Vigente | Proposto | Por quê |\n|---|---|---|---|\n| Núcleo da ementa | Medidas, ordens de grandeza, algarismos significativos e operações, erros e tolerâncias, tipos de gráficos, linearização e ajustes de curvas | Preservado integralmente e reorganizado em três blocos — **avaliação e expressão de medições e de suas incertezas**, **apresentação de tabelas e gráficos**, **ajuste de curvas aos dados experimentais** —, com o acréscimo de unidades, instrumentos de medida e propagação de incertezas | O núcleo vigente está correto; a reorganização adota a nomenclatura da bibliografia básica proposta e explicita os três procedimentos que a disciplina de fato ensina |\n| Metodologia experimental | Ausente do texto | Abre a ementa | É o que a disciplina inaugura no curso: o modo de proceder no laboratório, antes de qualquer conteúdo de área |\n| Ajuste de curvas | Sem indicação de meio | **Assistido por inteligência artificial** | Ver seção 5 |\n| Relatório científico | Só nos objetivos | Também no parágrafo da ementa | Sendo produto avaliativo central de uma disciplina 100 % prática, deve constar do conteúdo, não apenas da intenção |\n| Campo experimental | Ausente | **Mecânica Clássica** | Os procedimentos de medida só se aprendem medindo algo; a Mecânica Clássica é o único campo acessível a quem está no 2º período, com montagens simples, grandezas diretamente mensuráveis e modelos que o estudante já traz da educação básica — ver seção 3 |\n| Objetivos | 5 itens | 8 itens | Os 5 vigentes preservados em sentido e reescritos com verbo de ação; os acrescentados cobrem instrumentos e precisão/exatidão, expressão de incertezas e uso crítico de inteligência artificial |\n| Bibliografia | 3 básicas + 5 complementares, quase todas de Física teórica geral | 3 básicas + 3 complementares, com dois manuais de laboratório e de erros na base | Ver seção 4 |"
+    },
+    {
+     "n": "3",
+     "titulo": "Relação com o Laboratório de Mecânica e com os demais laboratórios",
+     "texto": "A matriz em vigor tem quatro laboratórios obrigatórios de 30 h além da ILB, todos vinculados a uma disciplina teórica e todos com a mesma redação de ementa — \"realização de experimentos em congruência com a disciplina X; análise e apresentação de resultados\":\n\n| Código | Disciplina | Período | Vinculada a |\n|---|---|---|---|\n| OPLFISI.6088 | Laboratório de Mecânica | 4º | Mecânica I e II |\n| OPLFISI.6026 | Laboratório de Oscilações, Ondas e Termodinâmica | 5º | Oscilações, Ondas e Termodinâmica |\n| OPLFISI.6031 | Laboratório de Eletromagnetismo | 6º | Eletromagnetismo I e II |\n| OPLFISI.6039 | Laboratório de Física Moderna e Ótica | 8º | Física Moderna I, II e Ótica |\n\nA ILB é o **único laboratório da matriz sem vínculo com uma disciplina teórica** — não tem pré-requisito e ocorre no 2º período — e é **pré-requisito do Laboratório de Mecânica (6088)**. Sua função é propedêutica: instalar o método experimental que os quatro laboratórios seguintes vão supor pronto.\n\n**Método vs. teoria.** A ILB e o 6088 trabalham a mesma área, com finalidades distintas:\n\n| | ILB (6086) — 2º período | Laboratório de Mecânica (6088) — 4º período |\n|---|---|---|\n| Finalidade | Aprender a **medir**: avaliar e expressar incertezas, tabelar, traçar gráficos, ajustar curvas | Compreender o **conteúdo teórico**, por ementa \"em congruência com Mecânica I e II\" |\n| Papel do experimento | Veículo — dá objeto à medida | Objeto — verifica e ilustra a teoria |\n| Pré-requisito teórico | Nenhum: o estudante ainda não cursou Mecânica I | Mecânica I cursada, formalismo do cálculo disponível |\n| O que se avalia | Qualidade da medida e do relatório | Compreensão do fenômeno mecânico |\n\nMede-se o encontro de dois móveis para aprender a linearizar; mede-se a densidade de cilindros para aprender propagação de incertezas. A física de fundo é a que o estudante já traz da educação básica — daí a escolha da Mecânica Clássica e não de áreas que exigiriam teoria ainda não cursada.\n\nPor isso a proposta **não redistribui conteúdo entre disciplinas** e **não altera nenhuma outra ementa da matriz**. Ao contrário: ao explicitar o método na ementa da ILB, ela evita que 6088, 6026, 6031 e 6039 precisem reensinar tratamento de incertezas e construção de gráficos no lugar do seu próprio conteúdo."
+    },
+    {
+     "n": "4",
+     "titulo": "Reformulação da bibliografia",
+     "texto": "**Diagnóstico — incompatibilidade da lista vigente.** A bibliografia atual apoia-se quase toda em manuais gerais de Física teórica (Halliday, Tipler, Nussenzveig, Feynman, Hewitt, Alonso & Finn). São obras excelentes para cursos de teoria, mas não cobrem com a profundidade e o foco necessários os tópicos centrais desta ementa:\n\n- introdução às medidas, ordens de grandeza e algarismos significativos;\n- tratamento de erros, tolerâncias e propagação de incertezas;\n- construção e análise de tipos de gráficos, linearização de dados e ajustes de curvas;\n- redação de relatórios científicos.\n\nNesses manuais, a teoria de erros aparece em apêndices sucintos — suficiente para uma disciplina teórica que ocasionalmente estima incerteza, insuficiente para uma disciplina cujo conteúdo **é** a estimativa de incerteza.\n\n**Argumento de natureza e carga horária.** Sendo a ILB uma disciplina 100 % prática de laboratório (CH teórica 0 · CH prática 30 h), o estudante necessita de **guias metodológicos práticos de instrumentalização e tratamento de dados experimentais**, e não de livros-texto teóricos de tópicos gerais da Física. A bibliografia básica deve espelhar a natureza da disciplina — e é dela que sai a nomenclatura usada em todas as trilhas (seção 6).\n\n**Obras incluídas na bibliografia básica:**\n\n**1. PIACENTINI, J. J. et al. *Introdução ao laboratório de física*. 2. ed. Florianópolis: Editora da UFSC, 2018.**\n*Alinhamento com a ementa:* obra voltada especificamente às metodologias de laboratório de ensino. Trata de forma didática o manuseio de instrumentos, os procedimentos de medida, os conceitos de precisão e exatidão e o processo de confecção de relatórios científicos.\n*Justificativa:* atende diretamente aos objetivos de familiarizar os estudantes com instrumentos de medida e de desenvolver habilidades de escrita de relatório científico, servindo como manual prático de conduta e experimentação no laboratório.\n\n**2. SANTORO, A. et al. *Estimativas e erros em experimentos de física*. 2. ed. Rio de Janeiro: EdUERJ, 2013.**\n*Alinhamento com a ementa:* foco direto e aprofundado em tratamento estatístico de dados, incertezas, erros operacionais e sistemáticos, tolerâncias, representação gráfica, métodos de linearização e ajustes de curvas.\n*Justificativa:* supre o núcleo duro da ementa — \"erros e tolerâncias, tipos de gráficos, linearização e ajustes de curvas\" — com o rigor que os manuais gerais apenas tangenciam.\n\n**Obra mantida na básica.** CAMPOS; ALVES; SPEZIALI (*Física experimental básica na universidade*, UFMG) permanece: é a referência de física experimental básica já adotada por todos os laboratórios da matriz e garante continuidade de linguagem entre a ILB e as disciplinas 6088, 6026, 6031 e 6039.\n\n**Obras que descem para a complementar.** Hewitt, Feynman e Halliday (v. 1, mecânica) seguem úteis como consulta da física de fundo dos experimentos — o estudante do 2º período ainda não cursou Mecânica I —, mas na condição de apoio conceitual, não de referência metodológica. Halliday v. 1 atende a todas as trilhas, já que o campo experimental é integralmente a Mecânica Clássica. Tipler & Mosca, Chaves & Sampaio, Alonso & Finn e Nussenzveig saem da lista: são redundantes com Halliday para essa função e continuam disponíveis nas ementas das disciplinas teóricas correspondentes."
+    },
+    {
+     "n": "5",
+     "titulo": "Ajuste de curvas assistido por inteligência artificial",
+     "texto": "O ajuste de uma curva a um conjunto de medidas é conteúdo da ementa vigente e permanece. O que a proposta acrescenta é o **meio** pelo qual esse ajuste é feito e discutido em aula.\n\n**Por que na ementa, em redação genérica.** O parágrafo da ementa diz \"assistido por inteligência artificial\", sem nomear fornecedor: assim o texto oficial não envelhece a cada mudança de mercado nem endossa marca — decisão coerente com um documento de PPC, que dura anos.\n\n**Escolha tecnológica (registro para o colegiado).** Na execução da disciplina, o ajuste assistido será feito preferencialmente com tecnologias da **Anthropic** e do **Google**, pelas razões seguintes:\n- o estudante descreve o problema em linguagem natural, submete a tabela de medidas e obtém o ajuste com o raciocínio explicitado — o que transforma a ferramenta em objeto de análise, e não em caixa-preta que devolve um coeficiente;\n- é possível pedir à ferramenta que justifique o modelo escolhido, estime as incertezas dos parâmetros e critique o próprio resultado, exercício diretamente alinhado ao objetivo de avaliar a plausibilidade dos resultados;\n- são recursos disponíveis pelo navegador, sem instalação, licença de laboratório ou requisito de máquina — condição relevante para uma disciplina de 30 h no 2º período.\n\n**Formação crítica, não delegação.** O uso é sempre acompanhado da conferência do resultado pelo estudante: verificação da coerência dimensional, da ordem de grandeza e do comportamento dos resíduos. A ferramenta acelera o cálculo; a responsabilidade pelo resultado é de quem assina o relatório. Como se trata de futuros professores de Física, o exame do que a inteligência artificial faz bem e do que ela erra é, em si, conteúdo de formação.\n\n**Aplicativos dedicados ficam para os períodos seguintes.** Programas específicos de ajuste e análise (por exemplo SciDAVis e videoanálise) serão abordados nas disciplinas de laboratório dos períodos posteriores, quando o estudante já dominar o significado do que está sendo ajustado."
+    },
+    {
+     "n": "6",
+     "titulo": "Metodologia e organização das trilhas (anexo — base do plano de ensino)",
+     "texto": "A disciplina adota a metodologia de **Trilhas de Aprendizagem**, já em operação na Física Experimental 1 do Curso Técnico em Mineração deste campus, com **três paradas por trilha**: **Pré-Lab** (preparação e previsão), **Lab** (bancada, com Roteiro de Bancada — RB) e **Pós-Lab** (tratamento de dados e relatório).\n\nO **Texto Temático (TT)** de **cada uma das 11 trilhas** apresenta e aplica, na nomenclatura da bibliografia básica proposta, o mesmo eixo metodológico: **avaliação e expressão de medições e de suas incertezas · apresentação de tabelas e gráficos · ajuste de uma curva aos dados experimentais**. Muda o experimento de Mecânica; não muda o protocolo de medida.\n\n| Tema | Nome | Trilhas |\n|---|---|---|\n| 0 | Boas-vindas à Física Experimental | **T0A** — Física Experimental: PPC, matriz curricular, ementa, plano de curso, site da disciplina, metodologia (Trilhas de Aprendizagem e as 3 paradas), avaliações (pesos e pontuações), monitoria (site e WhatsApp) |\n| 1 | Grandezas escalares na Mecânica Clássica | **T01** Qual é a sua altura? · **T02** Qual é a densidade dos cilindros? |\n| 2 | Grandezas vetoriais na Mecânica Clássica | **T03** Quais são as principais forças estudadas na Mecânica Clássica? · **T04** O equilíbrio estático de ponto material (forças paralelas, forças oblíquas) |\n| 3 | Cinemática do MRU e do MRUV | **T05** Qual a posição e o instante do encontro de pontos materiais? · **T06** Que movimento é produzido pela ação de forças constantes? |\n| 4 | Dinâmica e cinemática do MCU, queda e lançamentos | **T07** Quais são as propriedades de um ponto material descrevendo Movimento Circular Uniforme? · **T08** Quais são as propriedades de uma queda e de lançamentos em campo gravitacional uniforme? |\n| 5 | Dinâmica impulsiva | **T09** Quais são as propriedades das forças impulsivas? · **T10** O que são e como se aplicam as leis de conservação no estudo das colisões? |"
+    },
+    {
+     "n": "7",
+     "titulo": "Nota de viabilidade",
+     "texto": "A ementa proposta é executável nas 30 h vigentes em **11 encontros de bancada — um por trilha — e 4 encontros de fechamento**, destinados a relatório, devolutiva e recuperação. O cronograma detalhado é objeto do plano de ensino, não desta proposta."
+    },
+    {
+     "n": "8",
+     "titulo": "Fontes",
+     "texto": "- Projeto Pedagógico do Curso de Licenciatura em Física, anexo 4 — ementa vigente da ILB (p. 64-65) e ementas de 6088, 6026, 6031 e 6039.\n- Matriz curricular em vigor, anexo 5 — matriz 2654 (2026.1 Oplfisi): códigos, períodos, cargas horárias e pré-requisitos.\n- Regulamento de Ensino do IFMG, 2026."
+    }
+   ]
+  },
+  "temas": {
+   "arquivo": "LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/LFI-ILB-Temas-e-Trilhas-v1.md",
+   "versao": 1,
+   "proximo": "LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/LFI-ILB-Temas-e-Trilhas-v2.md",
+   "secoes": [
+    {
+     "n": "0",
+     "titulo": "Nota de escopo — duas adaptações declaradas",
+     "texto": "O critério de agrupamento e o fio condutor aprovados na entrevista vieram do repertório da Física Conceitual 1 e da Física Experimental 1, disciplinas do Curso Técnico em Mineração. A ILB é da **Licenciatura em Física** e seus estudantes são graduandos, não adolescentes. Duas adaptações foram feitas, ambas reversíveis:\n\n| Item | Como veio | Como ficou aqui | Por quê |\n|---|---|---|---|\n| **Aplicação na mineração** | Eixo técnico da FC1/FE1 | **Mantido** como campo de aplicação de cada tema | O campus fica no Quadrilátero Ferrífero, e é o contexto que o licenciando vai encontrar na escola da região. Aparece como *onde este experimento se aplica*, nunca como conteúdo obrigatório da medida. |\n| **Sofia e Pedro** | Protagonistas estudantes da FC1/FE1, 15–16 anos | **Turma-alvo imaginada**, não os estudantes da ILB | O graduando da ILB aprende a medir e, na mesma trilha, projeta como levaria aquela medida para uma turma de ensino médio. É a dobra própria de uma licenciatura: aprender o método e a didática dele ao mesmo tempo. |"
+    },
+    {
+     "n": "1",
+     "titulo": "O fio condutor — o acervo que cresce",
+     "texto": "A pergunta da disciplina é uma só, e não muda: **como se mede, e quanta confiança se tem no que se mediu?** O que muda de tema para tema é o **acervo de instrumentos** que o estudante tem na mão — e, junto com ele, a **forma da tabela de coleta**.\n\nNenhum tema abandona o anterior: quem chega ao Tema 5 mede com régua, paquímetro, transferidor, dinamômetro, cronômetro e sensor de força ao mesmo tempo. O acervo é cumulativo, e é isso que dá ao semestre a forma de uma trajetória e não de uma lista.\n\n| Tema | Instrumentos que **entram** | Forma da tabela de coleta |\n|---|---|---|\n| **0** | — (reconhecimento do laboratório) | Caderno de laboratório: registro bruto, data, condições |\n| **1** | Régua milimetrada, trena, paquímetro, micrômetro, balança | **Uma coluna repetida** — n leituras da mesma grandeza; média e dispersão |\n| **2** | Transferidor, dinamômetro, mesa de forças, roldanas | **Duas colunas acopladas** — módulo e ângulo, ou componentes; a tabela ganha a segunda dimensão |\n| **3** | Cronômetro, sensores fotoelétricos, trilho, carrinhos | **Duas grandezas independentes** — posição e tempo; a primeira tabela que vira gráfico |\n| **4** | Plataforma giratória, sensor de queda, lançador de projéteis | **Grandeza periódica** e **par acoplado** — período por contagem múltipla; alcance e ângulo |\n| **5** | Sensor de força, para-choques (mola, ímã, velcro), fotogates duplos | **Antes e depois** — a tabela ganha estados, e a análise compara duas somas |\n\nO tratamento dos dados acompanha: no Tema 1 o produto é **um número com incerteza**; no Tema 3 passa a ser **um gráfico com uma reta ajustada**; no Tema 5 vira **uma decisão** — a grandeza se conservou, ou não, dentro da incerteza medida."
+    },
+    {
+     "n": "2",
+     "titulo": "Critério de agrupamento",
+     "texto": "Duas trilhas ficam no mesmo tema quando compartilham **a forma da tabela de coleta e o tratamento que ela exige** — não quando falam do mesmo capítulo de um livro de Mecânica.\n\nÉ por isso que T01 (altura) e T02 (densidade) são um tema só, embora uma meça comprimento e a outra massa e volume: as duas produzem uma coluna de leituras repetidas de uma grandeza escalar, e as duas terminam em valor ± incerteza. E é por isso que T05 e T06, que na ementa aparecem como \"MRU e MRUV\", são aqui o **mesmo experimento com duas causas** — a tabela é a mesma (posição × tempo), o que muda é a curva que se ajusta a ela.\n\nA aplicação no contexto do Quadrilátero Ferrífero entra como **destino** de cada tema: onde aquela medida aparece fora do laboratório, e que exemplo o futuro professor levaria para a sala de aula."
+    },
+    {
+     "n": "3",
+     "titulo": "Os temas",
+     "texto": "### Tema 0 — Antes da primeira medida\n**Trilhas:** T0A · Boas-vindas à Física Experimental — T0B · Sistema Internacional de Unidades (SI)\n\nO encontro que precede qualquer medição. Apresentam-se o Projeto Pedagógico do Curso, a ementa, o plano de ensino, o site da disciplina, a metodologia das três paradas, o sistema de avaliação e a monitoria. Reconhece-se o laboratório: onde fica cada instrumento, quais são as normas, que Equipamento de Proteção Individual (EPI) se usa e quando.\n\nAbre-se o **caderno de laboratório** — o registro bruto, datado, com as condições da medida. O estudante ainda não mede nada; aprende onde o dado nasce e por que ele precisa ser rastreável.\n\n> **Ao terminar a T0A, o estudante é capaz de:** circular pelo laboratório com segurança, localizar e nomear os instrumentos do acervo, e registrar em caderno uma observação de forma que outra pessoa possa repeti-la.\n\n> **T0B (criada em 2026-09-08, briefing `Trilhas/T0B_Sistema_Internacional_de_Unidades/_pre/PRE-t0b-pasta-si-ilb-2026-09-08.md`):** trilha nova,\n> imediatamente após a T0A (encontro E2, 06/10/2026). Conteúdo — o Sistema Internacional de\n> Unidades (SI) — **ainda não definido**; entra em Camada 2 própria, futura. Nasceu aqui só a\n> vaga na matriz e a pasta em `Trilhas/T0B_Sistema_Internacional_de_Unidades/`.\n\n---\n\n### Tema 1 — Um número e sua dúvida\n**Trilhas:** T01 · Qual é a sua altura? — T02 · Qual é a densidade dos cilindros?\n**Entram no acervo:** régua milimetrada, trena, paquímetro, micrômetro, balança\n\nO tema mais importante do semestre, porque instala o hábito que todos os outros supõem: **nenhuma medida é um número; toda medida é um número e uma dúvida.**\n\nEm **T01** o estudante mede a própria altura — uma grandeza que ele julga conhecer — e descobre que quatro pessoas medindo a mesma altura obtêm quatro valores. Aparecem a leitura da escala com o dígito duvidoso, os algarismos significativos, a média e a dispersão. É uma **medida direta**: o instrumento entrega a grandeza.\n\nEm **T02** a densidade não pode ser lida em nenhum instrumento. Ela se calcula a partir do diâmetro e da altura medidos com paquímetro e da massa medida na balança — e a incerteza de cada uma dessas três medidas se transmite ao resultado. É a **primeira medida indireta** e a primeira **propagação de incertezas**. O fecho da trilha é uma identificação: comparando a densidade obtida com a tabelada, de que material é o cilindro?\n\n**Onde se aplica:** a densidade separa hematita de quartzo — é o princípio por trás da concentração gravítica no beneficiamento de minério de ferro, e uma das medidas mais antigas do Quadrilátero Ferrífero. Na escola, é o experimento que transforma \"densidade é massa por volume\" de fórmula decorada em coisa medida.\n\n> **Ao terminar, o estudante é capaz de:** expressar uma medida como valor e incerteza, com algarismos significativos coerentes com a menor divisão do instrumento; e propagar as incertezas de uma medida indireta até o resultado final.\n\n---\n\n### Tema 2 — Quando o número não basta\n**Trilhas:** T03 · Principais forças da Mecânica Clássica — T04 · Equilíbrio estático de ponto material\n**Entram no acervo:** transferidor, dinamômetro, mesa de forças, roldanas, massas aferidas\n\nHá grandezas que um número não descreve. Para uma força, é preciso dizer também **a direção** — a reta ao longo da qual ela age — e, sobre essa reta, **o sentido**: uma das duas orientações possíveis. Duas forças de mesmo módulo e mesma direção, em sentidos opostos, se anulam; em sentidos iguais, somam. A tabela de coleta precisa então de mais de uma coluna por medida.\n\nEm **T03** o estudante mede com dinamômetro as forças que a Mecânica Clássica trata como fundamentais no laboratório: peso, normal, tração, atrito e força elástica. Cada uma ganha módulo, direção e sentido registrados.\n\nEm **T04** as forças passam a agir juntas sobre um mesmo ponto. Na mesa de forças, três trações puxam um anel; a pergunta é sob que condição ele fica parado. O estudante decompõe cada força em componentes, soma as componentes e verifica se o polígono fecha — **dentro da incerteza das medidas**, que é a parte que interessa. Um polígono que não fecha exatamente não reprova o experimento: quantifica-o.\n\n**Onde se aplica:** tração em cabo de içamento e em sustentação de estrutura; ângulo de repouso de pilha de estéril e estabilidade de talude. Na escola, a mesa de forças é a demonstração que faz vetor deixar de ser seta no quadro.\n\n> **Ao terminar, o estudante é capaz de:** medir uma força com módulo, direção e sentido; decompor e compor vetores a partir de dados experimentais; e julgar, com a incerteza na mão, se uma condição de equilíbrio foi verificada.\n\n---\n\n### Tema 3 — O mesmo encontro, duas causas\n**Trilhas:** T05 · Encontro de pontos materiais — T06 · Movimento produzido por forças constantes\n**Entra no acervo:** cronômetro, sensores fotoelétricos, trilho, carrinhos\n\nO tema tem uma única pergunta experimental — **onde e quando dois móveis se encontram?** — e a responde duas vezes, em contextos diferentes.\n\nEm **T05**, os móveis andam sem força resultante: a velocidade é constante e a posição cresce em linha reta com o tempo. O gráfico posição × tempo é uma reta, e o ajuste devolve a velocidade como **coeficiente angular, com incerteza**. O encontro é a interseção das duas retas — previsto pelo ajuste e conferido no trilho.\n\nEm **T06**, o mesmo trilho recebe uma força constante, aplicada por um fio que passa numa roldana e sustenta massas aferidas. A posição deixa de crescer em linha reta e o gráfico vira parábola. Aqui entra a **linearização**: representando a posição contra o quadrado do tempo, a parábola vira reta outra vez, e o coeficiente angular dá a aceleração.\n\nÉ a passagem central do semestre. Até aqui o estudante media grandezas; a partir daqui ele **ajusta um modelo a um conjunto de pontos** — e é neste tema que o ajuste assistido por inteligência artificial entra pela primeira vez, com a conferência obrigatória: a coerência dimensional do coeficiente, sua ordem de grandeza e o comportamento dos resíduos.\n\n**Onde se aplica:** velocidade de correia transportadora e tempo de percurso entre frente de lavra e britagem; encontro de dois veículos numa via de mina. Na escola, é o experimento que separa \"velocidade é distância sobre tempo\" de \"velocidade é a inclinação de um gráfico\".\n\n> **Ao terminar, o estudante é capaz de:** construir um gráfico posição × tempo a partir de dados próprios; ajustar reta e parábola; linearizar uma relação quadrática; e ler o coeficiente ajustado como grandeza física, com unidade e incerteza.\n\n---\n\n### Tema 4 — Movimento que não é reto\n**Trilhas:** T07 · Movimento Circular Uniforme (MCU) — T08 · Queda e lançamentos\n**Entram no acervo:** plataforma giratória, sensor de queda, lançador de projéteis, papel-carbono\n\nOs dois movimentos deste tema quebram a linha reta, cada um de um jeito, e cada um obriga a uma técnica de medida nova.\n\nEm **T07** o movimento se repete. A grandeza a medir é o **período**, e a técnica é a contagem múltipla: cronometrar vinte voltas e dividir por vinte reduz a incerteza do tempo de reação por um fator de vinte — o primeiro caso em que o estudante melhora a medida mudando o **procedimento**, não o instrumento. Dele saem frequência, velocidade angular e a força centrípeta medida no dinamômetro.\n\nEm **T08** o movimento acontece em duas dimensões ao mesmo tempo. Na queda, mede-se o tempo em função da altura e recupera-se a aceleração da gravidade local por linearização. No lançamento, o registro em papel-carbono dá o alcance em função do ângulo, e a análise separa o que é horizontal do que é vertical — duas descrições independentes que ocorrem simultaneamente.\n\n**Onde se aplica:** rotação de britador de cone e de moinho de bolas; trajetória do material que deixa a ponta de uma correia transportadora; queda de carga em silo. Na escola, o lançamento é o experimento que mostra que a componente horizontal não sabe da vertical.\n\n> **Ao terminar, o estudante é capaz de:** reduzir a incerteza de uma grandeza periódica por contagem múltipla; e tratar uma trajetória bidimensional decompondo-a em duas descrições independentes, cada uma com sua incerteza.\n\n---\n\n### Tema 5 — O que sobrevive à colisão\n**Trilhas:** T09 · Forças impulsivas — T10 · Leis de conservação nas colisões\n**Entram no acervo:** sensor de força, para-choques (mola, ímã, velcro), fotogates duplos\n\nO tema fecha o semestre com o tipo de pergunta mais exigente que a disciplina pode fazer: não \"quanto vale\", mas **\"esta grandeza se conservou?\"**.\n\nEm **T09** o estudante mede o que acontece durante o choque. A força impulsiva é intensa e dura muito pouco, o que a torna difícil de medir — e é justamente aí que a escolha do instrumento e do intervalo de amostragem passa a importar. Aparece o impulso como área sob a curva de força contra tempo.\n\nEm **T10** a tabela ganha **estados**: cada carrinho tem massa e velocidade antes e depois da colisão. Somam-se as quantidades de movimento antes, somam-se depois, e comparam-se as duas somas — **com as incertezas propagadas**. A conclusão não é \"conservou\" ou \"não conservou\", mas \"as duas somas são compatíveis dentro da incerteza\", que é uma frase de outra natureza. Repetindo com para-choque elástico e com acoplamento inelástico, o estudante vê a energia cinética não se conservar enquanto a quantidade de movimento se conserva — e precisa da incerteza para sustentar a diferença.\n\nAqui o ajuste de curvas termina de virar o que sempre foi: **um teste de hipótese**.\n\n**Onde se aplica:** impacto em britagem primária e dimensionamento de para-choque de vagoneta; qualquer processo em que a energia de um choque precisa ser absorvida. Na escola, a colisão de dois carrinhos é o experimento que dá sentido físico a uma lei de conservação.\n\n> **Ao terminar, o estudante é capaz de:** medir estados antes e depois de uma interação; propagar as incertezas até a comparação; e decidir, com critério quantitativo, se uma grandeza se conservou."
+    },
+    {
+     "n": "4",
+     "titulo": "Matriz-síntese",
+     "texto": "| Tema | Nome | Trilhas | Instrumentos que entram | Tabela | Competência ao terminar |\n|---|---|---|---|---|---|\n| **0** | Antes da primeira medida | T0A · T0B | — | Caderno de laboratório (T0A) · a definir (T0B) | Circular com segurança e registrar de forma rastreável (T0A); T0B aguarda Camada 2 |\n| **1** | Um número e sua dúvida | T01 · T02 | Régua, trena, paquímetro, micrômetro, balança | Uma coluna repetida | Valor ± incerteza; propagação em medida indireta |\n| **2** | Quando o número não basta | T03 · T04 | Transferidor, dinamômetro, mesa de forças | Duas colunas acopladas | Módulo, direção e sentido; composição vetorial |\n| **3** | O mesmo encontro, duas causas | T05 · T06 | Cronômetro, sensores fotoelétricos, trilho | Posição × tempo | Gráfico, ajuste de reta e parábola, linearização |\n| **4** | Movimento que não é reto | T07 · T08 | Plataforma giratória, sensor de queda, lançador | Periódica e par acoplado | Contagem múltipla; decomposição de trajetória |\n| **5** | O que sobrevive à colisão | T09 · T10 | Sensor de força, para-choques, fotogates duplos | Antes e depois | Comparação de estados; decisão sobre conservação |\n\n**Faixa de numeração — fixa:** T0A · T0B = Tema 0 · T01–T02 = Tema 1 · T03–T04 = Tema 2 · T05–T06 = Tema 3 · T07–T08 = Tema 4 · T09–T10 = Tema 5. (T0B acrescentada em 2026-09-08, sem deslocar a faixa das demais trilhas.)"
+    },
+    {
+     "n": "5",
+     "titulo": "Nota de viabilidade",
+     "texto": "A progressão é executável com acervo de laboratório de ensino de graduação e não exige equipamento de pesquisa. O ponto mais sensível é o **Tema 3**, que depende de trilho com sensores fotoelétricos ou de outro meio confiável de medir tempo em movimento: sem ele, o gráfico posição × tempo perde a qualidade necessária para o ajuste, e o Tema 3 é onde a disciplina vira o que ela promete ser. Se o acervo não tiver fotogates, a alternativa é o registrador de tempo com fita, que sustenta a mesma análise com incerteza maior.\n\nO **Tema 5** admite degradação controlada: sem sensor de força, T09 se apoia no dinamômetro e no impulso calculado pela variação da quantidade de movimento, e T10 permanece integralmente viável com fotogates e balança.\n\nA conferência item a item está na seção 7.2 do Plano de Ensino 2026.2-v1 e continua pendente do acervo real do laboratório do campus.\n\n---\n\nOuro Preto, 7 de setembro de 2026.\n\n**Prof. Julio Azevedo**\nLicenciatura em Física — IFMG, *Campus* Ouro Preto"
+    }
+   ]
+  },
+  "plano": {
+   "arquivo": "LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/LFI-ILB-Plano-de-Ensino-2026.2-v5.md",
+   "versao": 5,
+   "proximo": "LFI_02_ILB_Introducao_ao_Laboratorio/_planejamento/LFI-ILB-Plano-de-Ensino-2026.2-v6.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Identificação",
+     "texto": "| Campo | Valor |\n|---|---|\n| **Disciplina** | Introdução ao Laboratório (ILB) |\n| **Código** | `OPLFISI.6086` |\n| **Período** | 2º período |\n| **Natureza** | Obrigatória · Regular |\n| **Pré-requisito · co-requisito** | Nenhum |\n| **Carga horária total** | 30 h |\n| **CH teórica · CH prática-laboratório** | 0 h · 30 h |\n| **Abordagem metodológica** | Prática-laboratório |\n| **Semestre letivo** | 2026.2 |\n| **Horário** | Terça-feira, 19:00 às 20:40 |\n| **Período de aulas** | 29/09/2026 a 02/02/2027 |\n| **Encontros** | 16 encontros de 2 h-aula (50 min cada) — 2 de ambientação (T0A, T0B) · 10 de bancada · 4 de fechamento |\n| **Campo experimental** | Mecânica Clássica |\n| **Posição na matriz** | Único laboratório sem vínculo com disciplina teórica; pré-requisito do Laboratório de Mecânica (`OPLFISI.6088`) |"
+    },
+    {
+     "n": "2",
+     "titulo": "Ementa",
+     "texto": "> Metodologia experimental. Avaliação e expressão de medições e de suas incertezas: unidades, ordens de grandeza, instrumentos de medida, algarismos significativos e operações, erros, tolerâncias e propagação de incertezas. Apresentação de tabelas e tipos de gráficos; linearização e ajuste de curvas aos dados experimentais, assistido por inteligência artificial. Redação de relatório científico. Aplicação desses procedimentos a experimentos de Mecânica Clássica: grandezas escalares e vetoriais, estática, cinemática e dinâmica do MRU, MRUV e MCU, quedas, lançamentos e colisões."
+    },
+    {
+     "n": "3",
+     "titulo": "Objetivos formativos",
+     "texto": "### 3.1 Objetivo geral\n\nInstalar o método experimental que os quatro laboratórios seguintes da matriz vão supor pronto: aprender a **medir** — avaliar e expressar incertezas, tabelar, traçar gráficos, ajustar curvas e relatar — tomando a Mecânica Clássica como campo de aplicação.\n\n### 3.2 Objetivos específicos\n\n> Copiados **sem alteração** da ementa v2 aprovada — inclusive a expressão \"laboratório de\n> ensino\", que é o termo do texto oficial que vai ao PPC. No corpo do plano, o espaço é\n> nomeado **Laboratório de Mecânica do Pavilhão de Física** (o mesmo da Física Experimental 1).\n\n- Compreender códigos, símbolos e unidades de medida do Sistema Internacional (SI);\n- Operar os instrumentos de medida do laboratório de ensino e aplicar procedimentos de medição, distinguindo precisão e exatidão;\n- Avaliar e expressar medições e suas incertezas, com algarismos significativos, estimativa de erros, tolerâncias e propagação de incertezas;\n- Apresentar resultados em tabelas e gráficos, linearizar dados e ajustar curvas a conjuntos de medidas;\n- Utilizar recursos de inteligência artificial como ferramenta de ajuste de curvas e de análise de dados experimentais, avaliando criticamente os resultados obtidos;\n- Redigir relatório científico segundo a estrutura e as convenções da comunicação em Física;\n- Desenvolver a capacidade de investigar, formulando hipóteses, planejando a medida e avaliando a plausibilidade dos resultados;\n- Aplicar esse conjunto de procedimentos a experimentos de Mecânica Clássica, elaborando sínteses."
+    },
+    {
+     "n": "4",
+     "titulo": "Conteúdo programático",
+     "texto": "O conteúdo organiza-se em **5 temas** e **12 trilhas** (T0A, T0B e T01 a T10). O experimento muda a cada trilha; o protocolo de medida, não.\n\n| Tema | Nome | Trilhas |\n|---|---|---|\n| **0** | Antes da primeira medida | **T0A** — PPC, matriz curricular, ementa, plano de ensino, site da disciplina, metodologia, avaliação e monitoria · **T0B** — Sistema Internacional de Unidades (SI) *(conteúdo a definir em Camada 2 própria)* |\n| **1** | Grandezas escalares na Mecânica Clássica | **T01** Qual é a sua altura? · **T02** Qual é a densidade dos cilindros? |\n| **2** | Grandezas vetoriais na Mecânica Clássica | **T03** Principais forças estudadas na Mecânica Clássica · **T04** Equilíbrio estático de ponto material (forças paralelas e oblíquas) |\n| **3** | Cinemática do MRU e do MRUV | **T05** Posição e instante do encontro de pontos materiais · **T06** Movimento produzido por forças constantes |\n| **4** | Dinâmica e cinemática do MCU, queda e lançamentos | **T07** Propriedades do Movimento Circular Uniforme (MCU) · **T08** Queda e lançamentos em campo gravitacional uniforme |\n| **5** | Dinâmica impulsiva | **T09** Propriedades das forças impulsivas · **T10** Leis de conservação no estudo das colisões |\n\n### 4.1 Eixo metodológico — o que se repete em toda trilha\n\nCada uma das 10 trilhas de bancada (T01-T10) apresenta e aplica, na nomenclatura da bibliografia\nbásica, o mesmo eixo — T0A e T0B são ambientação, sem medição própria:\n\n1. **Avaliação e expressão de medições e de suas incertezas**;\n2. **Apresentação de tabelas e gráficos**;\n3. **Ajuste de uma curva aos dados experimentais**."
+    },
+    {
+     "n": "5",
+     "titulo": "Metodologia",
+     "texto": "A disciplina adota as **Trilhas de Aprendizagem**, metodologia já em operação na Física Experimental 1 deste campus, adaptada à graduação. Cada trilha tem **três paradas**:\n\n| Parada | Duração | Regime | O que acontece |\n|---|---|---|---|\n| **Pré-Lab** | 20 min | Assíncrono, antes do encontro | Leitura do Texto Temático (TT), previsão do resultado, conferência do Inventário de Equipamento (IE) e do checklist de segurança. O estudante chega sabendo o que vai medir e o que espera obter. |\n| **Lab** | 100 min | Presencial — terça, 19:00 às 20:40 | Execução na bancada com o **Roteiro de Bancada (RB)**. Montagem, medição, registro bruto dos dados em planilha e conferência de reprodutibilidade. |\n| **Pós-Lab** | 40 min | Assíncrono, após o encontro | Tratamento dos dados: incertezas, tabelas, gráficos, linearização e ajuste de curva. Dois relatórios: o **Relatório Mínimo (RM)**, de 1 página, até 1 dia após a prática, e o **Relatório Completo (RC)**, até 6 dias. |\n\n### 5.1 Princípios de condução\n\n1. **Segurança primeiro.** Todo Roteiro de Bancada (RB) abre com checklist assinável — normas do **Laboratório de Mecânica do Pavilhão de Física** e uso de Equipamento de Proteção Individual (EPI).\n2. **Dados antes da fórmula.** O estudante coleta antes de prever o resultado pela equação; a fórmula entra na análise, não na coleta.\n3. **Reprodutibilidade.** Todo procedimento deve ser executável por outra pessoa, sem o autor presente.\n4. **Inventário rastreável.** Cada trilha tem um Inventário de Equipamento (IE) — seção 7. **Sem inventário, sem aula.**\n5. **Método, não teoria.** O estudante do 2º período ainda não cursou Mecânica I: o experimento aqui é **veículo** para aprender a medir, não objeto de verificação da teoria. A física de fundo é a que ele traz da educação básica.\n\n### 5.2 Ajuste de curvas assistido por inteligência artificial\n\nO ajuste de curvas aos dados é feito com auxílio de ferramentas de inteligência artificial (preferencialmente Anthropic e Google), disponíveis pelo navegador, sem instalação nem licença de laboratório.\n\nO uso é **sempre** acompanhado da conferência do resultado pelo estudante: coerência dimensional, ordem de grandeza e comportamento dos resíduos. Pede-se à ferramenta que justifique o modelo escolhido, estime a incerteza dos parâmetros e critique o próprio resultado — o que a torna objeto de análise, e não caixa-preta. A ferramenta acelera o cálculo; a responsabilidade pelo resultado é de quem assina o relatório.\n\nAplicativos dedicados de ajuste e videoanálise (por exemplo SciDAVis) ficam para as disciplinas de laboratório dos períodos seguintes."
+    },
+    {
+     "n": "6",
+     "titulo": "Cronograma 2026.2",
+     "texto": "**16 encontros · terça-feira, 19:00 às 20:40 · 2 h-aula por encontro · 32 h-aula no total.**\n\n| # | Data | Tipo | Trilha / atividade |\n|---|---|---|---|\n| **E1** | 29/09/2026 | **Ambientação** | **T0A** Boas-vindas à Física Experimental — apresentação do PPC, da ementa, deste plano e do site; metodologia das três paradas; sistema de avaliação; monitoria. Reconhecimento do laboratório, normas de segurança e EPI |\n| **E2** | 06/10/2026 | **Ambientação** | **T0B** Sistema Internacional de Unidades (SI) — *conteúdo a definir em Camada 2 própria* |\n| **E3** | 13/10/2026 | Trilha | **T01** Qual é a sua altura? |\n| **E4** | 20/10/2026 | Trilha | **T02** Qual é a densidade dos cilindros? |\n| **E5** | 27/10/2026 | **Fechamento 1** | Oficina de relatório científico · devolutiva de T01 e T02 |\n| **E6** | 03/11/2026 | Trilha | **T03** Principais forças da Mecânica Clássica |\n| **E7** | 10/11/2026 | Trilha | **T04** Equilíbrio estático de ponto material |\n| **E8** | 17/11/2026 | Trilha | **T05** Encontro de pontos materiais |\n| **E9** | 24/11/2026 | **Fechamento 2** | Entrega e devolutiva dos relatórios de T03 a T05 |\n| **E10** | 01/12/2026 | Trilha | **T06** Movimento produzido por forças constantes |\n| **E11** | 08/12/2026 | Trilha | **T07** Movimento Circular Uniforme (MCU) |\n| **E12** | 15/12/2026 | Trilha | **T08** Queda e lançamentos |\n| — | 22/12/2026 · 29/12/2026 · 05/01/2027 | *Recesso* | *Recesso de fim de ano — sem aula* |\n| **E13** | 12/01/2027 | **Fechamento 3** | Entrega e devolutiva dos relatórios de T06 a T08 |\n| **E14** | 19/01/2027 | Trilha | **T09** Forças impulsivas |\n| **E15** | 26/01/2027 | Trilha | **T10** Leis de conservação nas colisões |\n| **E16** | 02/02/2027 | **Fechamento 4** | Relatório final, devolutiva geral e recuperação |\n\n### 6.1 Notas sobre o cronograma\n\n- O período 29/09/2026 a 02/02/2027 tem **19 terças-feiras**. Nenhum feriado nacional cai em terça nesse intervalo. Descontadas as três terças do recesso de fim de ano, restam os **16 encontros** acima — e ainda sobram 3 terças (09/02, 16/02, e a semana de 22/02 já fora do semestre) de folga antes do fim do semestre letivo.\n- Os encontros de fechamento estão distribuídos a cada 3 ou 4 trilhas, para que a devolutiva chegue enquanto a medida ainda está fresca.\n- **T0A (E1) e T0B (E2) são de ambientação, não de bancada:** T0A apresenta a disciplina, reconhece o laboratório e colhe a assinatura do termo de segurança; T0B apresenta o SI (conteúdo a definir). A primeira medição é da T01, em 13/10.\n- O retorno do recesso é em fechamento (Fechamento 3), não em bancada — mudou em relação à v4 porque a inserção da T0B deslocou toda a sequência em 1 semana.\n- **Recesso confirmado pelo autor no calendário acadêmico oficial (SUAP) do IFMG-OP para 2026.2:**\n  22/12/2026, 29/12/2026 e 05/01/2027. O semestre letivo vai de 24/09/2026 a 22/02/2027; os 16\n  encontros da ILB (com a T0B) terminam em 02/02/2027, dentro desse período, com margem de\n  3 semanas — confirmado pelo autor via SUAP em 2026-09-08 (alvo `PRE-t0b-pasta-si-ilb`)."
+    },
+    {
+     "n": "7",
+     "titulo": "Recursos didáticos e Inventário de Equipamento (IE)",
+     "texto": "### 7.1 Objetos de aprendizagem\n\n- **Texto Temático (TT)** — leitura da parada Pré-Lab, um por trilha;\n- **Roteiro de Bancada (RB)** — procedimento da parada Lab, com checklist de segurança assinável e tabela de coleta;\n  na **T0A** o RB é de *reconhecimento do laboratório*, sem tabela de coleta — acervo, planta e termo de segurança.\n  A folha pode ser impressa para levar à bancada, mas **o envio é digital**, com identificação por matrícula;\n- **Relatório Mínimo (RM)** — 1 página, **digital**, entregue **até 1 dia após a aula prática**;\n- **Relatório Completo (RC)** — **digital**, entregue **até 6 dias após a aula prática**; enquanto o site\n  da disciplina não recebe entregas, vai por e-mail para `julio.azevedo@ifmg.edu.br`, com matrícula e\n  trilha no assunto;\n- **Site da disciplina** — distribuição dos materiais, entrega de relatórios e canal de monitoria;\n- **Planilha eletrônica** e **ferramenta de inteligência artificial** para tratamento de dados e ajuste de curvas.\n\n### 7.2 Inventário de Equipamento por trilha\n\n> **Proposta a conferir com o inventário real do laboratório do campus.** Esta tabela é a base para o pedido de compra e para a verificação de viabilidade das montagens; nenhuma trilha vai a bancada antes da conferência.\n\n| Trilha | Equipamento e consumíveis previstos |\n|---|---|\n| **T0A** *(só apresentação, sem uso)* | Bancadas e armários do laboratório · EPI (óculos de proteção, jaleco) · extintor e kit de primeiros socorros · quadro de normas · amostra dos instrumentos para apresentação (régua, paquímetro, balança, cronômetro) |\n| **T0B** *(a definir — Camada 2 própria)* | Sem medição prevista; possíveis padrões/réplicas de unidades do SI para demonstração, a confirmar quando o conteúdo for definido |\n| **T01** | Trena de 5 m · régua de 1 m com escala milimetrada · fita métrica · esquadro · nível de bolha · fio de prumo · fita-crepe para marcação · planilha de coleta |\n| **T02** | Paquímetro (resolução 0,05 mm) · micrômetro (0,01 mm) · balança digital (0,01 g) · cilindros de materiais distintos (alumínio, latão, aço, PVC) · proveta graduada de 100 mL · água |\n| **T03** | Dinamômetros (1 N, 2 N, 5 N, 10 N) · conjunto de massas aferidas (10 g a 500 g) · molas helicoidais de constantes distintas · blocos com superfícies distintas para atrito · plano inclinado com transferidor · roldana · fio inextensível · suporte universal com garras e mufas |\n| **T04** | Mesa de forças com transferidor circular · roldanas móveis e anel central · porta-massas e massas aferidas · dinamômetros · transferidor e esquadro · nível de bolha |\n| **T05** | Trilho linear (ou trilho de ar) com escala milimetrada · dois carrinhos ou móveis de velocidade constante · sensores fotoelétricos e cronômetro digital · trena · nivelador |\n| **T06** | Trilho linear com carrinho · roldana de baixo atrito, fio e porta-massas · massas aferidas · sensores fotoelétricos ou registrador de tempo com fita · nível de bolha |\n| **T07** | Plataforma giratória de velocidade regulável · cronômetro · massa presa por fio a dinamômetro (força centrípeta) · régua e transferidor · marcação para contagem de voltas |\n| **T08** | Esferas de aço de massas e diâmetros distintos · régua vertical de 1 m em suporte · sensor de queda (eletroímã e sensor de impacto) ou cronômetro digital · lançador de projéteis com ângulo regulável · papel branco e papel-carbono para registro do alcance · fio de prumo |\n| **T09** | Trilho linear com dois carrinhos · para-choques de mola, elástico e ímãs · sensor de força ou dinamômetro · sensores fotoelétricos e cronômetro · massas aferidas para variar a massa dos carrinhos |\n| **T10** | Trilho linear (ou de ar) com dois carrinhos · acoplamento para colisão inelástica (velcro ou agulha e cortiça) · para-choque elástico (mola ou ímãs) · dois pares de sensores fotoelétricos · balança para aferir as massas · massas aferidas adicionais |\n\n**Comum a todas as trilhas:** EPI conforme o Roteiro de Bancada (RB) · planilha de coleta impressa · calculadora · computador ou telefone com acesso à internet para o ajuste de curvas."
+    },
+    {
+     "n": "8",
+     "titulo": "Sistema de avaliação",
+     "texto": "A avaliação é **processual** e acompanha as três paradas da metodologia. Os pesos espelham a estrutura da trilha: quem mede bem na bancada e quem relata bem pesam igual.\n\n| Parada | Peso | Instrumento | Como é avaliado | Devolutiva |\n|---|---|---|---|---|\n| **Pré-Lab** | **20 %** | Ficha de preparação do Texto Temático (TT): previsão do resultado, conferência do Inventário de Equipamento (IE) e do checklist de segurança | Entregue no início do encontro; avalia preparo, não acerto da previsão | No próprio encontro, na abertura |\n| **Lab** | **40 %** | Roteiro de Bancada (RB) preenchido, com a tabela de dados brutos e o registro do procedimento | Conduta de segurança · qualidade da montagem · registro completo e legível dos dados · reprodutibilidade | Ao final do encontro, na conferência da bancada |\n| **Pós-Lab · RM** | **15 %** | **Relatório Mínimo** — 1 página, digital, **até 1 dia após a prática** | Dado bruto completo · cálculo visível · resultado como ( valor ± incerteza ) unidade | No encontro seguinte |\n| **Pós-Lab · RC** | **25 %** | **Relatório Completo** — digital, **até 6 dias após a prática** | Tratamento de incertezas · tabelas e gráficos · linearização e ajuste de curva com conferência crítica do resultado da inteligência artificial · estrutura e redação | No encontro de fechamento seguinte |\n| | **100 %** | | | |\n\n> **Estes pesos valem das trilhas T01 a T10.** A **T0A e a T0B são encontros de ambientação**,\n> sem medição e sem Relatório Científico: neles cobra-se apenas a **presença** (e, na T0A, o\n> **termo de segurança assinado**, pré-requisito para entrar na bancada na T01). Quem faltar em\n> 29/09 assina o termo antes do encontro de 13/10, com a monitoria.\n\n### 8.1 Os dois relatórios\n\n**Relatório Mínimo (RM) — 15 %, até 1 dia após a prática.** Uma página, digital, com identificação\npor matrícula. Cobra três coisas: o dado bruto completo, na unidade do instrumento; o cálculo\nvisível; e o resultado expresso como ( valor ± incerteza ) unidade, com algarismos significativos\ncoerentes com a menor divisão. É o registro que impede o dado de esfriar.\n\n**Relatório Completo (RC) — 25 %, até 6 dias após a prática.** Digital; enquanto o site não recebe\nentregas, vai por e-mail para `julio.azevedo@ifmg.edu.br`, com matrícula e trilha no assunto.\n\nO relatório segue a estrutura e as convenções da comunicação em Física. São avaliados: expressão correta das medições com incerteza e algarismos significativos; apresentação de tabelas e gráficos; justificativa do modelo ajustado; e análise de plausibilidade do resultado. O uso de inteligência artificial deve ser declarado no relatório, com a indicação do que foi conferido pelo estudante.\n\n### 8.2 Frequência e aprovação\n\nA ILB é disciplina de curso de graduação em **regime de matrícula por componente curricular**\n(Regulamento de Ensino do IFMG, Resolução n.º 01/2026, Anexo I, Art. 62, I). Para esse regime, o\nRegulamento estabelece:\n\n- **Frequência mínima: 75 %** do total de horas do componente curricular (Art. 101).\n- **Rendimento mínimo para aprovação: 60 %** no componente curricular (Art. 124, II), somado à\n  frequência mínima do Art. 101 (Art. 124, I).\n- **Sistema de avaliação:** 1 única etapa por módulo semestral, com 100 pontos distribuídos ao\n  longo do módulo; nenhum instrumento avaliativo isolado pode ultrapassar 40 % do total da etapa\n  (Art. 118, I e Art. 116, §1º) — os pesos 20/40/40 desta disciplina respeitam esse limite.\n- **Recuperação:** exame final para quem não atingir 60 % de aproveitamento na etapa, aplicável ao\n  estudante que tenha o mínimo de 75 % de frequência (Art. 127, II e Art. 128)."
+    },
+    {
+     "n": "9",
+     "titulo": "Estratégia de recuperação",
+     "texto": "A recuperação é **contínua**, apoiada em três frentes:\n\n1. **Devolutiva nos encontros de fechamento (E5, E9, E13).** Cada relatório volta comentado; o estudante pode reapresentar a análise corrigida até o fechamento seguinte. Como o eixo metodológico se repete em toda trilha, o erro corrigido em uma trilha é aproveitado nas seguintes.\n2. **Monitoria.** Atendimento para tratamento de dados, construção de gráficos e redação de relatório, com canal divulgado no site da disciplina desde a T0A.\n3. **Recuperação no encontro E16 (02/02/2027).** Avaliação de recuperação sobre o eixo metodológico da disciplina — expressão de medições e incertezas, tabelas e gráficos, ajuste de curva —, aplicada a um conjunto de dados fornecido.\n\nEstudante que perder um encontro de bancada por motivo justificado repõe a coleta em horário combinado com a monitoria, usando o mesmo Roteiro de Bancada (RB)."
+    },
+    {
+     "n": "10",
+     "titulo": "Bibliografia",
+     "texto": "### 10.1 Básica\n\n1. CAMPOS, A. A.; ALVES, E. S.; SPEZIALI, N. L. **Física experimental básica na universidade**. 2. ed. Belo Horizonte: Editora UFMG, 2008.\n2. PIACENTINI, J. J. et al. **Introdução ao laboratório de física**. 2. ed. Florianópolis: Editora da UFSC, 2018.\n3. SANTORO, A. et al. **Estimativas e erros em experimentos de física**. 2. ed. Rio de Janeiro: EdUERJ, 2013.\n\n### 10.2 Complementar\n\n1. HEWITT, P. G. **Física conceitual**. 12. ed. Porto Alegre: Bookman, 2015.\n2. FEYNMAN, R. P.; LEIGHTON, R. B.; SANDS, M. L. **Feynman: lições de física**. Porto Alegre: Bookman, 2008. v. 1, 2 e 3.\n3. HALLIDAY, D.; RESNICK, R.; WALKER, J. **Fundamentos de física**: mecânica. 10. ed. Rio de Janeiro: LTC, 2016. v. 1."
+    },
+    {
+     "n": "11",
+     "titulo": "Pendências antes do encaminhamento",
+     "texto": "> A v2 já incorporou as três correções vindas da Camada 2 da T0A (ambientação sem medição,\n> sem Relatório Científico, sem os pesos 20/40/40 nessa trilha). A v3 resolveu as duas\n> pendências de prazo (recesso e frequência/nota), confirmadas pelo autor em 2026-09-08 —\n> alvo `PRE-conferencias-institucionais-ilb`. Resta uma pendência, sem prazo de 24/09.\n\n1. ~~Confirmar as datas do recesso de fim de ano~~ — **resolvido nesta versão** (seção 6.1).\n2. Conferir o Inventário de Equipamento com o acervo real do laboratório do campus (seção 7.2).\n   **Sem prazo de 24/09** — importa quando as trilhas forem à bancada, a partir de 13/10 (T01).\n3. ~~Preencher a frequência mínima e a nota mínima de aprovação~~ — **resolvido nesta versão**\n   (seção 8.2).\n4. **Camada 2 da T0B** — conteúdo do SI ainda não definido; entra numa entrevista futura,\n   quando o autor tiver o briefing pronto. **Sem prazo de 24/09** — o E2 (06/10) só precisa da\n   trilha pronta quando chegar.\n\n---\n\nOuro Preto, 8 de setembro de 2026.\n\n**Prof. Julio Azevedo**\nLicenciatura em Física — IFMG, *Campus* Ouro Preto"
+    }
+   ]
+  }
+ },
+ "lme": {
+  "ementa": {
+   "arquivo": "LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/Ementa/LFI-LME-Ementa-proposta-v3.md",
+   "versao": 3,
+   "proximo": "LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/Ementa/LFI-LME-Ementa-proposta-v4.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Quadro da ementa proposta",
+     "texto": "| 4º período | |\n|---|---|\n| **Código:** OPLFISI.6088 | **Nome da disciplina:** Laboratório de Mecânica |\n| **Carga horária total:** 30 | **Abordagem metodológica:** Prática-laboratório · **Natureza:** Obrigatória |\n| **CH teórica:** 0 | **CH prática lab:** 30 |\n| **Pré-requisitos:** OPLFISI.6086 Introdução ao Laboratório · OPLFISI.6018 Mecânica I | |\n\n**Ementa:**\nRealização de experimentos em congruência com as disciplinas Mecânica I e II, nos quais o modelo teórico é confrontado com o dado experimental. Avaliação e expressão de medições e de suas incertezas; propagação de incertezas. Apresentação de tabelas e gráficos; ajuste linear e não linear de curvas aos dados experimentais. Experimentos de leis de Newton; forças peso, elástica e de atrito; empuxo e arrasto; plano inclinado; colisões e conservação do momento linear; hidrostática. Análise e apresentação de resultados em relatório científico.\n\n**Objetivo(s):**\n- Realizar atividades experimentais relacionadas aos conteúdos de Mecânica I e II, confrontando previsões dos modelos teóricos com os dados medidos;\n- Operar instrumentos de medida e avaliar e expressar medições e suas incertezas, incluindo a propagação de incertezas;\n- Apresentar resultados em tabelas e gráficos e ajustar curvas lineares e não lineares aos dados, interpretando o significado físico dos parâmetros obtidos;\n- Aprofundar a compreensão dos conteúdos teóricos de Mecânica, avaliando os limites de validade dos modelos diante da incerteza experimental;\n- Redigir relatório científico segundo a estrutura e as convenções da comunicação em Física;\n- Utilizar laboratórios virtuais como preparação e extensão da atividade de bancada e como recurso para a futura prática docente.\n\n**Bibliografia básica:**\n1. LIMA, C. R. A.; ZAPPA, F. **Análise de dados para laboratório de física**. Juiz de Fora: UFJF, 2014. 57 p. Disponível em: https://www2.ufjf.br/carlos_lima/wp-content/uploads/sites/520/2019/01/analisedados.pdf. Acesso em: 13 set. 2026.\n2. CAMPOS, A. A.; ALVES, E. S.; SPEZIALI, N. L. **Física experimental básica na universidade**. 2. ed. Belo Horizonte: Editora UFMG, 2008.\n3. SANTORO, A. *et al*. **Estimativas e erros em experimentos de física**. 2. ed. Rio de Janeiro: EdUERJ, 2013.\n\n**Bibliografia complementar:**\n1. VUOLO, J. H. **Fundamentos da teoria de erros**. 2. ed. São Paulo: Edgard Blücher, 1996.\n2. UNIVERSIDADE FEDERAL DO CEARÁ. **Laboratório virtual de física**: mecânica. Fortaleza: UFC, 2020. Disponível em: https://www.laboratoriovirtual.fisica.ufc.br/. Acesso em: 13 set. 2026.\n3. VAŠČÁK, V. **Physics at school**: I. Mechanics. Morávia: Vladimír Vaščák, [20--]. Disponível em: https://www.vascak.cz/?id=1&language=it#kapitola3. Acesso em: 13 set. 2026.\n4. UNIVERSITY OF COLORADO BOULDER. **PhET Interactive Simulations**: movimento; trabalho, energia e potência; fenômenos quânticos; matemática e estatística. Boulder: University of Colorado Boulder, 2002-. Disponível em: https://phet.colorado.edu/pt_BR/simulations/filter?subjects=motion,work-energy-and-power,quantum-phenomena,math-and-statistics&type=html. Acesso em: 13 set. 2026."
+    },
+    {
+     "n": "2",
+     "titulo": "O que muda e por quê",
+     "texto": "Nada muda no cabeçalho: período, código, nome, carga horária (30 h, com CH teórica 0 e CH prática-laboratório 30), abordagem metodológica, natureza e pré-requisitos permanecem exatamente como estão na matriz em vigor. A proposta altera apenas ementa, objetivos e bibliografia.\n\n| Item | Vigente | Proposto | Por quê |\n|---|---|---|---|\n| Núcleo da ementa | \"Realização de experimentos em congruência com as disciplinas Mecânica I e II. Análise e apresentação de resultados.\" | Preservado integralmente, com os procedimentos e os experimentos nomeados | A redação vigente é idêntica à dos demais laboratórios e não diz o que se mede nem como; a proposta explicita os dois |\n| Papel do experimento | Implícito | O modelo teórico é **confrontado** com o dado | No 4º período, com Mecânica I cursada, o experimento deixa de ilustrar e passa a pôr a teoria à prova — o que só se faz com incerteza estimada |\n| Tratamento de dados | Só \"análise de resultados\" | Incertezas, propagação, gráficos, ajuste linear e não linear | Ver seção 3 (nivelamento) |\n| Experimentos | Não nomeados | Leis de Newton, forças, empuxo e arrasto, plano inclinado, colisões, hidrostática | Dá ao Colegiado a medida do que a disciplina cobre de Mecânica I e II |\n| Objetivos | 4 itens | 6 itens | Os 4 vigentes preservados em sentido e reescritos com verbo de ação; os acrescentados cobrem incerteza e ajuste de curvas, e laboratórios virtuais |\n| Bibliografia | 3 básicas + 5 complementares, todas de Física teórica geral | 3 básicas + 4 complementares, todas de método experimental | Ver seção 4 |"
+    },
+    {
+     "n": "3",
+     "titulo": "Relação com a Introdução ao Laboratório e com Mecânica I e II",
+     "texto": "**Experimento como objeto.** Na Introdução ao Laboratório (ILB, 6086, 2º período) o experimento é veículo: mede-se para aprender a medir. No Laboratório de Mecânica (6088, 4º período) o experimento é objeto: com Mecânica I cursada e Mecânica II em curso, o estudante chega com o modelo e o laboratório o põe à prova. A pergunta deixa de ser \"como expresso esta medida?\" e passa a ser \"o modelo explica este dado, dentro da incerteza?\".\n\n**Por que retomar o tratamento de dados (nivelamento).** A LME tem a ILB como pré-requisito, mas parte da turma cursou a ILB antes de sua reformulação, quando a disciplina não tratava de modo sistemático propagação de incertezas nem ajuste de curvas. Sem esse instrumental não há confronto possível entre modelo e dado. Por isso o Tema 1 (anexo, seção 6) retoma medida, incerteza, gráficos e ajuste — linear e não linear — antes dos experimentos de Mecânica do Tema 2. Não se trata de repetir a ILB, mas de garantir a toda a turma o mesmo ponto de partida.\n\n**Divisão de trabalho com as disciplinas teóricas.** A teoria de Mecânica permanece onde está: nas ementas e bibliografias de Mecânica I e II. O laboratório não reensina teoria; usa-a como hipótese a testar."
+    },
+    {
+     "n": "4",
+     "titulo": "Justificativa da bibliografia",
+     "texto": "**Diagnóstico.** A bibliografia vigente é composta por manuais gerais de Física teórica. São obras excelentes, mas repetem a bibliografia das disciplinas Mecânica I e II e tratam de teoria de erros, gráficos e ajuste de curvas apenas em apêndices. Uma disciplina de CH teórica 0 e CH prática 30 h precisa de guias de tratamento de dados experimentais, que é o que o estudante efetivamente consulta ao montar a tabela, estimar a incerteza e ajustar a curva do relatório.\n\n### 4.1 Obras que saem\n\n| Obra | Onde estava | Por que sai |\n|---|---|---|\n| HALLIDAY; RESNICK; WALKER. *Fundamentos de física*, v. 1 e 2 | Básica | Livro-texto de teoria; permanece na bibliografia de Mecânica I e II, que o estudante cursa em paralelo |\n| TIPLER; MOSCA. *Física para cientistas e engenheiros*, v. 1 | Básica | Mesmo motivo; redundante com Halliday para a função de teoria de fundo |\n| FEYNMAN; LEIGHTON; SANDS. *Lições de física* | Complementar | Aprofundamento conceitual de teoria, sem conteúdo de tratamento de dados |\n| HEWITT. *Física conceitual* | Complementar | Nível de educação básica; útil na ILB, não no 4º período |\n| CHAVES; SAMPAIO. *Física básica*, v. 1 | Complementar | Livro-texto de teoria, redundante com Mecânica I e II |\n| ALONSO; FINN. *Física: um curso universitário* | Complementar | Idem |\n| NUSSENZVEIG. *Curso de física básica*, v. 1 e 2 | Complementar | Idem |\n\n### 4.2 Obras que entram ou permanecem\n\n**Básica 1 — LIMA; ZAPPA. *Análise de dados para laboratório de física* (UFJF, 2014). Entra.**\nCobre, em um único texto, medidas e algarismos significativos, incertezas e sua propagação, gráficos lineares, método dos mínimos quadrados e gráficos de funções não lineares com linearização em escalas logarítmicas. É exatamente a sequência do Tema 1 e o instrumental exigido pelos ajustes do Tema 2. De acesso gratuito, está disponível a toda a turma desde o primeiro dia, sem depender de acervo.\n\n**Básica 2 — CAMPOS; ALVES; SPEZIALI. *Física experimental básica na universidade* (Editora UFMG, 2008). Permanece.**\nÚnica obra de método experimental da lista vigente. Traz roteiros de Mecânica e a orientação para o relatório, e é compartilhada com a ILB, o que garante continuidade de linguagem entre os dois laboratórios.\n\n**Básica 3 — SANTORO *et al*. *Estimativas e erros em experimentos de física* (EdUERJ, 2013). Entra.**\nTratamento aprofundado de erros sistemáticos e estatísticos, propagação de incertezas e ajuste de curvas. Também adotada na ILB, sustenta o nivelamento descrito na seção 3 com a mesma nomenclatura.\n\n**Complementar 1 — VUOLO. *Fundamentos da teoria de erros* (Blücher, 1996). Entra.**\nReferência clássica brasileira de teoria de erros, com o rigor estatístico (distribuições, mínimos quadrados, qui-quadrado) que o estudante consulta quando o ajuste não é linear ou quando precisa decidir se o modelo é compatível com os dados.\n\n**Complementares 2, 3 e 4 — laboratórios virtuais da UFC, de V. Vaščák e PhET (University of Colorado Boulder). Entram.** Justificativa conjunta:\n\n- **Acesso gratuito:** sem custo, licença ou cadastro para o IFMG e para os estudantes; rodam no navegador (o PhET em HTML5, também no celular).\n- **Pré-Lab e Pós-Lab:** o estudante prepara a montagem antes da bancada e repete ou estende a coleta depois dela, fora do horário do laboratório.\n- **Formação do licenciando:** são recursos que o futuro professor poderá usar em escolas sem laboratório de Física.\n- **Cobertura dos experimentos:** o Laboratório Virtual da UFC oferece simulações, experimentos filmados e roteiros de Mecânica (MRU, MRUV, queda livre, máquina de Atwood, plano inclinado, leis de Newton), muitos de autoria do Prof. Nildo Loiola Dias, que casam com o Tema 2; as animações de Vaščák cobrem a mesma Mecânica em linguagem visual; o PhET, traduzido para o português, soma simulações de movimento, de trabalho, energia e potência e de matemática e estatística — estas últimas apoiam o Tema 1 (distribuições, ajuste de curvas) — e de fenômenos quânticos, que abrem a ponte para os laboratórios dos períodos seguintes."
+    },
+    {
+     "n": "5",
+     "titulo": "Nota de viabilidade",
+     "texto": "A ementa proposta é executável nas 30 h vigentes em **13 encontros de bancada de 2 h — um por trilha — e 2 encontros de fechamento**, destinados a relatório e recuperação. O cronograma detalhado e os critérios de avaliação são objeto do plano de ensino, não desta proposta."
+    },
+    {
+     "n": "6",
+     "titulo": "Anexo — temas e trilhas (base do plano de ensino)",
+     "texto": "| Tema | Nome | Trilhas |\n|---|---|---|\n| 0 | Boas-vindas | **T0A** Primeiros Passos no Laboratório · **T0B** A Régua do Mundo |\n| 1 | Entendendo as medidas | **T01** Como Medir as Coisas · **T02** Lidando com a Incerteza · **T03** Achando o Padrão na Bagunça · **T04** Interpretando Linhas Retas · **T05** Analisando Linhas Tortas |\n| 2 | Brincando com Forças e Movimentos | **T06** Leis de Newton · **T07** Pesando, Puxando, Empurrando e Esticando · **T08** Lixando e Voando: Atrito e Arrasto · **T09** Subindo e Descendo em Rampas e Ladeiras · **T10** Trombadas e Batidas · **T11** A Física da Água Parada: Pressão e Empuxo |"
+    },
+    {
+     "n": "7",
+     "titulo": "Fontes",
+     "texto": "- Projeto Pedagógico do Curso de Licenciatura em Física, anexo 4 — ementa vigente de 6088 (p. 78).\n- Matriz curricular em vigor, anexo 5 — matriz 2654: código, período, carga horária e pré-requisitos.\n- Proposta de nova ementa da ILB, v2 (2026-09-07)."
+    }
+   ]
+  },
+  "temas": {
+   "arquivo": "LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/LFI-LME-Temas-e-Trilhas-v2.md",
+   "versao": 2,
+   "proximo": "LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/LFI-LME-Temas-e-Trilhas-v3.md",
+   "secoes": [
+    {
+     "n": "0",
+     "titulo": "Nota de escopo — duas adaptações declaradas",
+     "texto": "A LME é da **Licenciatura em Física**, 4º período; os estudantes já cursaram a Introdução ao Laboratório (ILB) e Mecânica I. Duas escolhas vêm do repertório da ILB e foram **adaptadas**, não copiadas:\n\n| Item | Na ILB | Aqui | Por quê |\n|---|---|---|---|\n| **Aplicação na mineração** | Destino da medida | **Destino do modelo** — onde a Mecânica testada na bancada decide algo fora do laboratório | O *campus* fica no Quadrilátero Ferrífero; é o exemplo que o licenciando levará à escola da região. Nunca é conteúdo obrigatório da medida. |\n| **Sofia e Pedro** | Turma-alvo imaginada | **Mesma função**, com uma pergunta a mais: *como eu mostraria a essa turma que o modelo pode falhar?* | Na LME o experimento é objeto; a dobra da licenciatura é ensinar não só a medir, mas a duvidar do modelo com base no dado. |"
+    },
+    {
+     "n": "1",
+     "titulo": "O fio condutor — o acervo que cresce",
+     "texto": "A pergunta da disciplina não muda: **o modelo explica o dado, dentro da incerteza?** O que muda é o **acervo** que o estudante tem na mão — instrumentos e forma da tabela — e, com ele, o que se consegue perguntar ao modelo.\n\nO acervo é cumulativo: quem chega à T11 usa régua, paquímetro, balança, cronômetro, sensores, dinamômetro e manômetro, e trata os dados com todas as ferramentas do Tema 1.\n\n| Trilha | Instrumentos que **entram** *(proposta, a conferir no acervo do laboratório)* | Forma da tabela de coleta |\n|---|---|---|\n| **T0A** | — (reconhecimento do laboratório) | Caderno de laboratório: registro bruto, data, condições |\n| **T0B** | Réguas, trena, balança; padrões e réplicas do SI | Grandeza · valor · unidade · potência de dez |\n| **T01** | Régua milimetrada, paquímetro, micrômetro | Uma leitura por instrumento, com resolução declarada |\n| **T02** | Balança digital, cronômetro | Uma coluna repetida — n leituras; valor ± incerteza e propagação |\n| **T03** | Cronômetro, contador (ensaios com muitas repetições) | Coluna longa → tabela de frequências e histograma |\n| **T04** | Trilho, sensores fotoelétricos, trena | Duas grandezas (x, y) → gráfico e reta ajustada |\n| **T05** | Pêndulo, massas, papel log (ou escala logarítmica) | Duas grandezas com relação não linear → linearização |\n| **T06** | Trilho com carrinho, roldana, porta-massas, máquina de Atwood | Força × aceleração — o modelo prevê a reta antes da coleta |\n| **T07** | Dinamômetros, molas, conjunto de massas | Força × deformação — Hooke e seu limite |\n| **T08** | Blocos de superfícies distintas, plano de atrito; tubo com fluido e esferas | Força normal × atrito · velocidade terminal × raio |\n| **T09** | Plano inclinado com transferidor, sensores fotoelétricos | Ângulo × aceleração — confronto com g sen θ (com e sem atrito) |\n| **T10** | Trilho com dois carrinhos, para-choques, sensores duplos, balança | Antes e depois — duas somas comparadas dentro da incerteza |\n| **T11** | Recipiente graduado, manômetro em U, dinamômetro, corpos imersos | Profundidade × pressão · volume imerso × empuxo |\n\nO produto do tratamento acompanha: no início do Tema 1 é **um número com incerteza**; no fim, **uma curva ajustada**; no Tema 2 vira **uma decisão** — a previsão da Mecânica é compatível com o ajuste, ou não?"
+    },
+    {
+     "n": "2",
+     "titulo": "Critério de agrupamento — a ordem da bibliografia",
+     "texto": "- **Tema 1 segue os capítulos de LIMA; ZAPPA (2014)**, um capítulo por trilha: é o livro-base do nivelamento em tratamento de dados.\n- **Tema 2 segue a sequência de Mecânica I e II**, na ordem dos roteiros do Laboratório Virtual da UFC e de CAMPOS; ALVES; SPEZIALI (2008): leis de Newton → forças → plano inclinado → colisões → hidrostática.\n- **Tema 0** prepara os dois: segurança e rastreabilidade (T0A), e unidades e ordens de grandeza, sem as quais nenhuma incerteza tem sentido (T0B).\n\nA aplicação no Quadrilátero Ferrífero entra como **destino** de cada trilha, não como critério."
+    },
+    {
+     "n": "3",
+     "titulo": "Os temas",
+     "texto": "### Tema 0 — Boas-vindas\n*Alternativa sugerida para o nome: \"Antes do primeiro dado\".*\n**Trilhas:** T0A · T0B · **Encontros:** E1, E2 · **Sem nota** (ambientação)\n\nApresentam-se o PPC, a ementa, o plano de ensino, o site, as três paradas, a avaliação e a monitoria; reconhece-se o laboratório compartilhado com a ILB e assina-se o termo de segurança. Em seguida, fixa-se a língua comum de toda medida: o Sistema Internacional de Unidades (SI) e as ordens de grandeza.\n\n| Trilha | Nome (alternativa sugerida) | Conteúdo e âncora | Aplicação na mineração | Ao terminar, o estudante é capaz de |\n|---|---|---|---|---|\n| **T0A** | Primeiros Passos no Laboratório *(Onde o dado nasce)* | Normas, EPI, acervo, caderno de laboratório · CAMPOS (2008) | Normas de segurança em laboratório e na mina (NR-22) como a mesma lógica de risco | Registrar uma observação em caderno de forma que outra pessoa a reproduza, cumprindo o checklist de segurança |\n| **T0B** | A Régua do Mundo *(Do grão à cava)* | SI, padrões, potências de dez, ordens de grandeza · `Biblioteca/BIPM/` | Do grão de minério (mm) à cava de mina (km): estimar ordens de grandeza de um processo | Converter unidades do SI e estimar a ordem de grandeza de uma grandeza antes de medi-la, justificando a estimativa |\n\n> **Ao terminar o Tema 0, o estudante é capaz de:** entrar na bancada com segurança e expressar qualquer grandeza no SI, com a ordem de grandeza esperada anotada antes da coleta.\n\n---\n\n### Tema 1 — Entendendo as medidas\n*Alternativa sugerida para o nome: \"O que o dado diz\".*\n**Trilhas:** T01–T05 · **Encontros:** E3–E7 · **Fechamento 1:** E8 · **Âncora:** LIMA; ZAPPA (2014), cap. 1–5, com SANTORO (2013) e VUOLO (1996) de apoio\n\nO nivelamento. Parte da turma cursou a ILB antes da reformulação; aqui todos chegam ao mesmo instrumental: do algarismo significativo ao ajuste não linear. O modelo ainda não é posto à prova — primeiro aprende-se a ouvir o que o dado diz.\n\n| Trilha | Nome (alternativa sugerida) | Capítulo-âncora | Aplicação na mineração | Ao terminar, o estudante é capaz de |\n|---|---|---|---|---|\n| **T01** | Como Medir as Coisas *(A menor divisão)* | Cap. 1 — Medidas físicas e apresentação de dados | Dimensão de amostras de rocha e de testemunhos de sondagem | Ler instrumentos com o dígito duvidoso, escrever o resultado com algarismos significativos corretos e apresentá-lo em tabela |\n| **T02** | Lidando com a Incerteza *(Quanto confiar no número)* | Cap. 2 — Estimativas e erros | Pesagem de minério: a incerteza da balança decide o valor da carga | Estimar incertezas de tipo A e B e propagá-las numa medida indireta, expressando ( valor ± incerteza ) unidade |\n| **T03** | Achando o Padrão na Bagunça *(A forma do acaso)* | Cap. 3 — Distribuições estatísticas | Distribuição granulométrica após a britagem | Construir histograma, calcular média e desvio padrão e reconhecer uma distribuição normal num conjunto de medidas |\n| **T04** | Interpretando Linhas Retas *(A reta que os dados escolhem)* | Cap. 4 — Gráficos de funções lineares | Correia transportadora em velocidade constante: posição × tempo | Traçar gráfico, ajustar reta por mínimos quadrados e dar significado físico e incerteza ao coeficiente angular |\n| **T05** | Analisando Linhas Tortas *(Endireitando a curva)* | Cap. 5 — Gráficos de funções não lineares | Leis de potência em cominuição e peneiramento | Linearizar relações de potência e exponenciais em escala logarítmica e extrair expoente e coeficiente com incerteza |\n\n> **Ao terminar o Tema 1, o estudante é capaz de:** transformar um conjunto de medidas repetidas em uma curva ajustada — linear ou não — com parâmetros acompanhados de incerteza, apresentados em tabela e gráfico.\n\n---\n\n### Tema 2 — Brincando com Forças e Movimentos\n*Alternativa sugerida para o nome: \"O modelo na berlinda\".*\n**Trilhas:** T06–T11 · **Encontros:** E9–E14 · **Fechamento 2 e recuperação:** E15 · **Âncoras:** Laboratório Virtual da UFC · CAMPOS (2008) · VAŠČÁK · PhET\n\nO experimento vira objeto. Cada trilha começa com a **previsão da Mecânica**, registrada antes da coleta, e termina com a **decisão**: o ajuste do Tema 1 é compatível com a previsão, dentro da incerteza? Se não, qual hipótese do modelo falhou?\n\n| Trilha | Nome (alternativa sugerida) | Experimento e âncora | Aplicação na mineração | Ao terminar, o estudante é capaz de |\n|---|---|---|---|---|\n| **T06** | Leis de Newton *(Força, massa e o que sobra)* | 2ª lei no trilho e máquina de Atwood · UFC 05, 07 e 08 | Vagoneta e guincho: força necessária para acelerar a carga | Prever a aceleração pela 2ª lei, medir, ajustar e decidir sobre a compatibilidade, identificando o atrito como hipótese violada quando houver |\n| **T07** | Pesando, Puxando, Empurrando e Esticando *(Até onde a mola aguenta)* | Peso, dinamômetro e lei de Hooke · CAMPOS (2008) | Molas de peneiras vibratórias e cabos de içamento | Determinar a constante elástica com incerteza e localizar, no gráfico, o limite de validade do modelo linear |\n| **T08** | Lixando e Voando: Atrito e Arrasto | Atrito estático e cinético; arrasto e velocidade terminal · CAMPOS (2008) · VAŠČÁK | Atrito na correia transportadora; sedimentação de partículas em polpa | Medir coeficientes de atrito e a velocidade terminal, e decidir entre modelos de arrasto linear e quadrático pelo ajuste |\n| **T09** | Subindo e Descendo em Rampas e Ladeiras *(A rampa não mente)* | Plano inclinado · UFC 06 | Rampas de acesso em mina a céu aberto | Confrontar a aceleração medida com g sen θ, com e sem atrito, e estimar o coeficiente de atrito pela discrepância |\n| **T10** | Trombadas e Batidas *(O que sobrevive à batida)* | Colisões elásticas e inelásticas; momento linear · CAMPOS (2008) · VAŠČÁK · PhET | Britador de impacto: energia dissipada na colisão | Comparar momento linear e energia cinética antes e depois, decidindo o que se conservou dentro da incerteza |\n| **T11** | A Física da Água Parada: Pressão e Empuxo | Pressão hidrostática (Stevin) e **empuxo** (Arquimedes) · CAMPOS (2008) · VAŠČÁK · PhET | Pressão na base de barragens de rejeito; empuxo e flotação | Verificar a lei de Stevin e o princípio de Arquimedes por ajuste, determinando a densidade do fluido com incerteza |\n\n> **T08 e T11 renomeadas (autor, 2026-09-13):** com o empuxo movido da T08 para a T11, os nomes passaram a ser **T08 — Lixando e Voando: Atrito e Arrasto** e **T11 — A Física da Água Parada: Pressão e Empuxo**.\n\n> **Ao terminar o Tema 2, o estudante é capaz de:** registrar a previsão de um modelo da Mecânica, medi-la, ajustar os dados e decidir — com base na incerteza — se o modelo explica o fenômeno, nomeando a hipótese que falhou quando não explica."
+    },
+    {
+     "n": "4",
+     "titulo": "Matriz-síntese",
+     "texto": "| Tema | Nome (alternativa) | Trilhas | Âncora | Produto do tratamento | Competência ao terminar |\n|---|---|---|---|---|---|\n| **0** | Boas-vindas *(Antes do primeiro dado)* | T0A · T0B | CAMPOS · BIPM | Registro rastreável e ordem de grandeza | Entrar na bancada com segurança e expressar grandezas no SI com a ordem de grandeza esperada |\n| **1** | Entendendo as medidas *(O que o dado diz)* | T01–T05 | LIMA; ZAPPA, cap. 1–5 | Número com incerteza → curva ajustada | Transformar medidas repetidas em curva ajustada, linear ou não, com incerteza nos parâmetros |\n| **2** | Brincando com Forças e Movimentos *(O modelo na berlinda)* | T06–T11 | UFC · CAMPOS · VAŠČÁK · PhET | Decisão sobre o modelo | Decidir, pela incerteza, se o modelo da Mecânica explica o dado e qual hipótese falhou |"
+    },
+    {
+     "n": "5",
+     "titulo": "Nota de viabilidade",
+     "texto": "As 13 trilhas cabem nos 15 encontros do Plano de Ensino 2026.2-v3: 2 de ambientação (E1–E2), 11 de bancada (E3–E7, E9–E14) e 2 de fechamento (E8, E15), com duas terças de reserva (02/02 e 16/02/2027). A lista de instrumentos da seção 1 é proposta: cada trilha só vai à bancada depois de o Inventário de Equipamento (IE) de sua Camada 2 ser conferido com o acervo do laboratório, compartilhado com a ILB."
+    }
+   ]
+  },
+  "plano": {
+   "arquivo": "LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/LFI-LME-Plano-de-Ensino-2026.2-v3.md",
+   "versao": 3,
+   "proximo": "LFI_04_LME_Laboratorio_de_Mecanica/_planejamento/LFI-LME-Plano-de-Ensino-2026.2-v4.md",
+   "secoes": [
+    {
+     "n": "1",
+     "titulo": "Identificação",
+     "texto": "| Campo | Valor |\n|---|---|\n| **Disciplina** | Laboratório de Mecânica (LME) |\n| **Código** | `OPLFISI.6088` |\n| **Período** | 4º período |\n| **Natureza** | Obrigatória · Regular |\n| **Pré-requisitos** | `OPLFISI.6086` Introdução ao Laboratório (ILB) · `OPLFISI.6018` Mecânica I |\n| **Carga horária total** | 30 h |\n| **CH teórica · CH prática-laboratório** | 0 h · 30 h |\n| **Abordagem metodológica** | Prática-laboratório |\n| **Semestre letivo** | 2026.2 (24/09/2026 a 22/02/2027) |\n| **Horário** | Terça-feira, 20:50 às 22:30 |\n| **Local** | Laboratório de Mecânica do Pavilhão de Física (logo após a ILB, no mesmo laboratório) |\n| **Período de aulas** | 29/09/2026 a 26/01/2027 · reserva 02/02 e 16/02/2027 |\n| **Encontros** | 15 encontros de 2 h-aula (50 min cada) — 2 de ambientação (T0A, T0B) · 11 de bancada · 2 de fechamento |\n| **Papel do experimento** | **Objeto** — o modelo da Mecânica é posto à prova contra o dado e a incerteza |"
+    },
+    {
+     "n": "2",
+     "titulo": "Ementa",
+     "texto": "> **Proposta de nova ementa — em análise pela Coordenação do Curso.** Até a aprovação, vale a ementa em vigor do PPC (p. 78): \"Realização de experimentos em congruência com as disciplinas Mecânica I e II. Análise e apresentação de resultados.\"\n\n> Realização de experimentos em congruência com as disciplinas Mecânica I e II, nos quais o modelo teórico é confrontado com o dado experimental. Avaliação e expressão de medições e de suas incertezas; propagação de incertezas. Apresentação de tabelas e gráficos; ajuste linear e não linear de curvas aos dados experimentais. Experimentos de leis de Newton; forças peso, elástica e de atrito; empuxo e arrasto; plano inclinado; colisões e conservação do momento linear; hidrostática. Análise e apresentação de resultados em relatório científico."
+    },
+    {
+     "n": "3",
+     "titulo": "Objetivos formativos",
+     "texto": "### 3.1 Objetivo geral\n\nPôr à prova, na bancada, os modelos da Mecânica estudados em Mecânica I e II: medir com incerteza estimada, ajustar o modelo aos dados e decidir, com base na incerteza, se ele explica o fenômeno — e relatar essa decisão em linguagem científica.\n\n### 3.2 Objetivos específicos\n\n> Copiados sem alteração da proposta de ementa v3.\n\n- Realizar atividades experimentais relacionadas aos conteúdos de Mecânica I e II, confrontando previsões dos modelos teóricos com os dados medidos;\n- Operar instrumentos de medida e avaliar e expressar medições e suas incertezas, incluindo a propagação de incertezas;\n- Apresentar resultados em tabelas e gráficos e ajustar curvas lineares e não lineares aos dados, interpretando o significado físico dos parâmetros obtidos;\n- Aprofundar a compreensão dos conteúdos teóricos de Mecânica, avaliando os limites de validade dos modelos diante da incerteza experimental;\n- Redigir relatório científico segundo a estrutura e as convenções da comunicação em Física;\n- Utilizar laboratórios virtuais como preparação e extensão da atividade de bancada e como recurso para a futura prática docente."
+    },
+    {
+     "n": "4",
+     "titulo": "Conteúdo programático",
+     "texto": "O conteúdo organiza-se em **3 temas** e **13 trilhas** (T0A, T0B e T01 a T11).\n\n| Tema | Nome | Trilhas |\n|---|---|---|\n| **0** | Boas-vindas | **T0A** Primeiros Passos no Laboratório · **T0B** A Régua do Mundo |\n| **1** | Entendendo as medidas | **T01** Como Medir as Coisas · **T02** Lidando com a Incerteza · **T03** Achando o Padrão na Bagunça · **T04** Interpretando Linhas Retas · **T05** Analisando Linhas Tortas |\n| **2** | Brincando com Forças e Movimentos | **T06** Leis de Newton · **T07** Pesando, Puxando, Empurrando e Esticando · **T08** Lixando e Voando: Atrito e Arrasto · **T09** Subindo e Descendo em Rampas e Ladeiras · **T10** Trombadas e Batidas · **T11** A Física da Água Parada: Pressão e Empuxo |\n\n### 4.1 Por que o Tema 1 retoma o tratamento de dados\n\nParte da turma cursou a Introdução ao Laboratório antes de sua reformulação, quando propagação de incertezas e ajuste de curvas não eram tratados de modo sistemático. O Tema 1 **nivela** a turma nesse instrumental — medida, incerteza, padrão nos dados, ajuste linear e não linear —, sem o qual não há confronto possível entre modelo e dado no Tema 2.\n\n### 4.2 O que se repete em toda trilha de bancada\n\n1. **Previsão do modelo** — o que a Mecânica diz que deve acontecer;\n2. **Medição com incerteza** — tabelas e gráficos na nomenclatura da bibliografia básica;\n3. **Ajuste e decisão** — o modelo é compatível com os dados, dentro da incerteza?"
+    },
+    {
+     "n": "5",
+     "titulo": "Metodologia",
+     "texto": "A disciplina adota as **Trilhas de Aprendizagem**, com os 16 Objetos de Aprendizagem (OAs) da Introdução ao Laboratório e da Física Experimental 1, adaptados à graduação. Cada trilha tem **três paradas**:\n\n| Parada | Duração | Regime | O que acontece |\n|---|---|---|---|\n| **Pré-Lab** | 20 min | Assíncrono, antes do encontro | Leitura do Texto Temático (TT), previsão do resultado pelo modelo, conferência do Inventário de Equipamento (IE) e do checklist de segurança; laboratório virtual quando indicado |\n| **Lab** | 100 min | Presencial — terça, 20:50 às 22:30 | Execução na bancada com o **Roteiro de Bancada (RB)**: montagem, medição, registro bruto dos dados e conferência de reprodutibilidade |\n| **Pós-Lab** | 40 min | Assíncrono, após o encontro | Tratamento dos dados, ajuste e confronto com o modelo. **Relatório Mínimo (RM)** até 1 dia após a prática e **Relatório Completo (RC)** até 6 dias |\n\n### 5.1 Princípios de condução\n\n1. **Segurança primeiro.** Todo Roteiro de Bancada (RB) abre com checklist assinável e uso de Equipamento de Proteção Individual (EPI).\n2. **O experimento é objeto.** A previsão do modelo é registrada antes da coleta; a análise decide se o dado a confirma, dentro da incerteza.\n3. **Reprodutibilidade.** Todo procedimento deve ser executável por outra pessoa, sem o autor presente.\n4. **Inventário rastreável.** Cada trilha tem um Inventário de Equipamento (IE). **Sem inventário, sem aula.**\n5. **Laboratório compartilhado.** A LME ocupa o laboratório logo após a ILB: montagens da LME são conferidas no início do encontro e desmontadas ao final.\n\n### 5.2 Laboratórios virtuais\n\nO Laboratório Virtual de Física da Universidade Federal do Ceará, as animações de V. Vaščák e as simulações PhET da University of Colorado Boulder (bibliografia complementar) são usados no Pré-Lab, para preparar a montagem, e no Pós-Lab, para repetir ou estender a coleta. São de acesso gratuito para o IFMG e para os estudantes, sem licença nem cadastro, e servem ao licenciando como recurso para a futura prática docente."
+    },
+    {
+     "n": "6",
+     "titulo": "Cronograma 2026.2",
+     "texto": "**15 encontros · terça-feira, 20:50 às 22:30 · 2 h-aula por encontro · 30 h-aula no total.**\n\n| # | Data | Tipo | Trilha / atividade |\n|---|---|---|---|\n| **E1** | 29/09/2026 | **Ambientação** | **T0A** Primeiros Passos no Laboratório — PPC, ementa, este plano, site, metodologia, avaliação, monitoria; normas de segurança e EPI |\n| **E2** | 06/10/2026 | **Ambientação** | **T0B** A Régua do Mundo |\n| **E3** | 13/10/2026 | Bancada | **T01** Como Medir as Coisas |\n| **E4** | 20/10/2026 | Bancada | **T02** Lidando com a Incerteza |\n| **E5** | 27/10/2026 | Bancada | **T03** Achando o Padrão na Bagunça |\n| **E6** | 03/11/2026 | Bancada | **T04** Interpretando Linhas Retas |\n| **E7** | 10/11/2026 | Bancada | **T05** Analisando Linhas Tortas |\n| **E8** | 17/11/2026 | **Fechamento 1** | Devolutiva do Tema 1 (relatórios de T01 a T05) |\n| **E9** | 24/11/2026 | Bancada | **T06** Leis de Newton |\n| **E10** | 01/12/2026 | Bancada | **T07** Pesando, Puxando, Empurrando e Esticando |\n| — | 08/12/2026 | *Feriado* | *Nossa Senhora da Conceição — sem aula* |\n| **E11** | 15/12/2026 | Bancada | **T08** Lixando e Voando: Atrito e Arrasto |\n| — | 22/12/2026 · 29/12/2026 | *Recesso* | *Recesso escolar (21 a 31/12) — sem aula* |\n| **E12** | 05/01/2027 | Bancada | **T09** Subindo e Descendo em Rampas e Ladeiras |\n| **E13** | 12/01/2027 | Bancada | **T10** Trombadas e Batidas |\n| **E14** | 19/01/2027 | Bancada | **T11** A Física da Água Parada: Pressão e Empuxo |\n| **E15** | 26/01/2027 | **Fechamento 2** | Devolutiva do Tema 2 e recuperação |\n| **R1** | 02/02/2027 | *Reserva* | Reposição — só se um encontro não ocorrer |\n| — | 09/02/2027 | *Feriado* | *Carnaval (08 a 10/02) — sem aula* |\n| **R2** | 16/02/2027 | *Reserva* | Reposição — só se um encontro não ocorrer |\n| — | 24 e 25/02/2027 | Exame final | Para quem não atingir 60 % (seção 8.2) |\n\n### 6.1 Notas sobre o cronograma\n\n- De 29/09/2026 a 16/02/2027 há **21 terças-feiras**. Não há aula em 4 delas: 08/12 (feriado), 22/12 e 29/12 (recesso escolar) e 09/02 (Carnaval). Das 17 que sobram, 15 recebem os encontros e 2 ficam de reserva.\n- Os fechamentos entram **no fim de cada Tema**: o Tema 1 é devolvido antes de começar a Mecânica, e o Tema 2 antes da recuperação.\n- A **Semana de Ciência e Tecnologia** (07 a 09/10) e a 1ª reunião de colegiados (07 a 16/10) não atingem terça-feira de aula. O dia 15/10 (quinta, contado como segunda) não altera o cronograma.\n- A reserva (R1, R2) só é usada se um encontro cair; sem uso, não há aula. O limite para lançamento das notas é 22/02/2027.\n- Fonte: Calendário Acadêmico IFMG-OP 2026, versão de 25/08/2026."
+    },
+    {
+     "n": "7",
+     "titulo": "Recursos didáticos",
+     "texto": "- **Texto Temático (TT)** — leitura do Pré-Lab, um por trilha;\n- **Roteiro de Bancada (RB)** — procedimento do Lab, com checklist de segurança e tabela de coleta; envio digital, com identificação por matrícula;\n- **Relatório Mínimo (RM)** e **Relatório Completo (RC)** — digitais, pelo canal divulgado no site na T0A;\n- **Site da disciplina** — https://nidecop-jafb.github.io/lme-oa/ — materiais, entregas e monitoria;\n- **Laboratórios virtuais** (seção 5.2) e **planilha eletrônica** para tratamento de dados e ajuste de curvas;\n- **Inventário de Equipamento (IE)** — definido por trilha na respectiva Camada 2, a conferir com o acervo do laboratório antes de cada encontro de bancada."
+    },
+    {
+     "n": "8",
+     "titulo": "Sistema de avaliação",
+     "texto": "A avaliação é **processual** e acompanha as três paradas.\n\n| Parada | Peso | Instrumento | Como é avaliado | Devolutiva |\n|---|---|---|---|---|\n| **Pré-Lab** | **20 %** | Ficha de preparação do Texto Temático (TT): previsão do modelo, conferência do Inventário de Equipamento (IE) e do checklist de segurança | Entregue no início do encontro; avalia preparo, não acerto da previsão | Na abertura do encontro |\n| **Lab** | **40 %** | Roteiro de Bancada (RB) preenchido, com dados brutos e registro do procedimento | Conduta de segurança · montagem · registro completo dos dados · reprodutibilidade | Ao final do encontro |\n| **Pós-Lab · RM** | **15 %** | **Relatório Mínimo** — 1 página, digital, **até 1 dia após a prática** | Dado bruto completo · cálculo visível · resultado como ( valor ± incerteza ) unidade | No encontro seguinte |\n| **Pós-Lab · RC** | **25 %** | **Relatório Completo** — digital, **até 6 dias após a prática** | Incertezas e sua propagação · tabelas e gráficos · ajuste linear ou não linear · confronto do modelo com o dado · estrutura e redação | No fechamento do Tema |\n| | **100 %** | | | |\n\n> **Estes pesos valem das trilhas T01 a T11.** **T0A e T0B são encontros de ambientação, sem nota**: cobra-se a presença e, na T0A, o termo de segurança assinado — pré-requisito para a bancada da T01. Quem faltar em 29/09 assina o termo antes de 13/10, com a monitoria.\n\n### 8.1 Os dois relatórios\n\n**Relatório Mínimo (RM) — 15 %.** Uma página, digital, com identificação por matrícula: dado bruto completo, cálculo visível e resultado com incerteza e algarismos significativos coerentes. É o registro que impede o dado de esfriar.\n\n**Relatório Completo (RC) — 25 %.** Segue a estrutura e as convenções da comunicação em Física. Avalia-se, além da expressão das medições, a **decisão sobre o modelo**: o ajuste é compatível com a previsão teórica dentro da incerteza? Se não, qual hipótese do modelo falhou?\n\n### 8.2 Frequência e aprovação\n\nRegulamento de Ensino do IFMG (Resolução n.º 01/2026, Anexo I), regime de matrícula por componente curricular:\n\n- **Frequência mínima: 75 %** do total de horas do componente curricular (Art. 101).\n- **Rendimento mínimo para aprovação: 60 %** (Art. 124, II), somado à frequência mínima (Art. 124, I).\n- **Etapa única** de 100 pontos; nenhum instrumento isolado ultrapassa 40 % (Art. 118, I e Art. 116, §1º) — o maior peso desta disciplina é 40 %.\n- **Exame final** (24 e 25/02/2027) para quem não atingir 60 %, com frequência mínima de 75 % (Art. 127, II e Art. 128)."
+    },
+    {
+     "n": "9",
+     "titulo": "Recuperação e reposição",
+     "texto": "1. **Devolutiva nos fechamentos (E8 e E15).** Cada relatório volta comentado; o estudante pode reapresentar a análise corrigida até o fechamento seguinte.\n2. **Monitoria.** Atendimento para tratamento de dados, gráficos e relatório, com canal divulgado no site desde a T0A.\n3. **Recuperação no E15 (26/01/2027).** Avaliação sobre o confronto entre modelo e dado — incerteza, gráfico, ajuste e decisão —, aplicada a um conjunto de dados fornecido.\n4. **Reposição de encontro.** Se um encontro não ocorrer, ele é reposto em **R1 (02/02/2027)** ou **R2 (16/02/2027)**. Estudante que perder um encontro de bancada por motivo justificado repõe a coleta com a monitoria, usando o mesmo Roteiro de Bancada (RB)."
+    },
+    {
+     "n": "10",
+     "titulo": "Bibliografia",
+     "texto": "### 10.1 Básica\n\n1. LIMA, C. R. A.; ZAPPA, F. **Análise de dados para laboratório de física**. Juiz de Fora: UFJF, 2014. 57 p. Disponível em: https://www2.ufjf.br/carlos_lima/wp-content/uploads/sites/520/2019/01/analisedados.pdf. Acesso em: 13 set. 2026.\n2. CAMPOS, A. A.; ALVES, E. S.; SPEZIALI, N. L. **Física experimental básica na universidade**. 2. ed. Belo Horizonte: Editora UFMG, 2008.\n3. SANTORO, A. *et al*. **Estimativas e erros em experimentos de física**. 2. ed. Rio de Janeiro: EdUERJ, 2013.\n\n### 10.2 Complementar\n\n1. VUOLO, J. H. **Fundamentos da teoria de erros**. 2. ed. São Paulo: Edgard Blücher, 1996.\n2. UNIVERSIDADE FEDERAL DO CEARÁ. **Laboratório virtual de física**: mecânica. Fortaleza: UFC, 2020. Disponível em: https://www.laboratoriovirtual.fisica.ufc.br/. Acesso em: 13 set. 2026.\n3. VAŠČÁK, V. **Physics at school**: I. Mechanics. Morávia: Vladimír Vaščák, [20--]. Disponível em: https://www.vascak.cz/?id=1&language=it#kapitola3. Acesso em: 13 set. 2026.\n4. UNIVERSITY OF COLORADO BOULDER. **PhET Interactive Simulations**: movimento; trabalho, energia e potência; fenômenos quânticos; matemática e estatística. Boulder: University of Colorado Boulder, 2002-. Disponível em: https://phet.colorado.edu/pt_BR/simulations/filter?subjects=motion,work-energy-and-power,quantum-phenomena,math-and-statistics&type=html. Acesso em: 13 set. 2026.\n\n---\n\nOuro Preto, 13 de setembro de 2026.\n\n**Prof. Julio Azevedo**\nLicenciatura em Física — IFMG, *Campus* Ouro Preto"
+    }
+   ]
+  }
+ }
+};
+/* AUTO:DOCUMENTOS:FIM */
+
+// ─── Aba Documentos — Ementa · Temas e Trilhas · Plano de Ensino × Criar · Refinar ──────
+// Briefing: PRE-painel-documentos-criar-refinar-fe1-2026-09-24
+// Refinar herda o modo Refinar Plano de Ensino do formulário do TT (PRE-painel-refinar-plano-de-ensino-
+// por-secao-2026-09-24): a numeração muda entre disciplinas e documentos — ler de DOCUMENTOS, nunca fixar.
+// Estado em LS por disciplina+documento+versão (ifmg_docs_fe1_plano_v2), gravado só pelos eventos do card.
+const LS = 'ifmg_docs_';
+const LS_PE_ANTIGO = 'ifmg_camada2_pe_';           // rascunho do modo antigo (skill_onda1_plano-v1.html)
+const DISCS = ['fc1', 'fe1', 'ilb', 'lme'];
+const DOCS = [['ementa', 'Ementa'], ['temas', 'Temas e Trilhas'], ['plano', 'Plano de Ensino']];
+const SITE = { fc1: 'fc1-oa', fe1: 'fe1-oa', ilb: 'ilb-oa', lme: 'lme-oa' };
+const PRE_SKILL = 'Trilhas_de_Aprendizagem/_skill_cowork/entrevista-autor/SKILL.md';
+const BRIEFING = 'PRE-painel-documentos-criar-refinar-fe1-2026-09-24';
+const GERADOR = '3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_scripts/gerar_documentos_painel.py';
+
+/* O que a entrevista levanta em cada documento — mesmo texto do PRE_ROTEIROS do painel-producao.html
+   (ementa, temas + trilhas, plano de curso). */
+const ROTEIRO = {
+  ementa: 'a ementa vigente (se houver) e de onde ela veio (PPC, colegiado); carga horaria e distribuicao; objetivos de aprendizagem; ' +
+    'conteudos por unidade; criterios de avaliacao e pesos; bibliografia basica e complementar; ' +
+    'o que precisa mudar em relacao a versao atual e por que; quem aprova a mudanca.',
+  temas: 'os temas ja existentes e o que muda; o criterio de agrupamento (conceito, aplicacao na mineracao, ordem do livro); ' +
+    'quantas trilhas por tema; a faixa de numeracao de cada um; o fio condutor que liga os temas; ' +
+    'o que o estudante deve saber ao terminar cada tema; em cada trilha, a numeracao (T{NN}), o titulo e os 5 topicos, ' +
+    'os conceitos-ancora e as lacunas que ela fecha, a contextualizacao tripla e a ordem de producao.',
+  plano: 'a ementa aprovada que ele deriva; numero de semanas e aulas por semana; datas de inicio, fim e das avaliacoes; ' +
+    'feriados e paradas do calendario academico; a distribuicao dos temas ao longo das semanas; ' +
+    'quando entra cada instrumento avaliativo; o que fica de reserva para reposicao.'
+};
+
+/* Derivados que ficam desatualizados quando o documento muda (o prompt só lista, não regera). */
+function derivados(disc, doc) {
+  const D = disc.toUpperCase(), s = SITE[disc];
+  if (doc === 'ementa') return [
+    `PDF da Ementa da ${D}`,
+    `Página da Ementa na aba Documentos do site ${s}`,
+    `Temas e Trilhas e Plano de Ensino da ${D}, se a mudança tocar temas, carga horária ou avaliação`];
+  if (doc === 'temas') return [
+    `Plano de Ensino da ${D} (temas e cronograma) e a seção "Anexo — Temas e trilhas" da Ementa`,
+    `Chips e trilhas do Painel` + (disc === 'fe1' ? ' (gerar_trilhas_painel_fe1.py)' : ''),
+    `Matriz de temas no CLAUDE.md da ${D}`];
+  return [
+    `PDF do Plano de Ensino da ${D}`,
+    `Página do Plano na aba Documentos do site ${s}`,
+    `Chips e dados do Painel que leem o Plano` + (disc === 'fe1' ? ' (gerar_trilhas_painel_fe1.py)' : '')];
+}
+
+const E = { disc: 'fe1', doc: 'plano', modo: 'refinar' };
+let _pe = null, _peChave = '';
+
+function _esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+function nomeDoc(doc) { return (DOCS.find(d => d[0] === doc) || [doc, doc])[1]; }
+function suportada() { return typeof DOCUMENTOS !== 'undefined' && DOCUMENTOS && E.disc in DOCUMENTOS; }
+function docAtual() { return suportada() ? DOCUMENTOS[E.disc][E.doc] : null; }
+function temVigente(d) { return !!(d && d.arquivo); }
+function rotuloVersao(d) { return d.legado ? 'sem versão no nome' : 'v' + d.versao; }
+
+function salvarUI() {
+  try { localStorage.setItem(LS + 'ui', JSON.stringify({ disc: E.disc, doc: E.doc, modo: E.modo })); } catch (e) {}
+}
+
+function iniciar() {
+  let ui = {};
+  try { ui = JSON.parse(localStorage.getItem(LS + 'ui') || '{}') || {}; } catch (e) {}
+  const q = new URLSearchParams(location.search);
+  E.disc = (q.get('disc') || ui.disc || 'fe1').toLowerCase();
+  if (DOCS.some(d => d[0] === ui.doc)) E.doc = ui.doc;
+  if (ui.modo === 'criar' || ui.modo === 'refinar') E.modo = ui.modo;
+
+  document.getElementById('t-disc').innerHTML = DISCS.map(d =>
+    `<div class="toggle-btn" role="button" tabindex="0" data-disc="${d}">${d.toUpperCase()}</div>`).join('');
+  document.getElementById('t-doc').innerHTML = DOCS.map(([k, n]) =>
+    `<div class="toggle-btn" role="button" tabindex="0" data-doc="${k}">${n}<span class="selo"></span></div>`).join('');
+  document.querySelectorAll('#t-disc .toggle-btn').forEach(b => b.addEventListener('click', () => trocarDisc(b.dataset.disc)));
+  document.querySelectorAll('#t-doc .toggle-btn').forEach(b => b.addEventListener('click', () => { E.doc = b.dataset.doc; salvarUI(); render(); }));
+  document.querySelectorAll('#t-modo .toggle-btn').forEach(b => b.addEventListener('click', () => {
+    if (b.classList.contains('desligado')) { showToast('Sem documento vigente — use Criar', 'erro'); return; }
+    E.modo = b.dataset.modo; salvarUI(); render();
+  }));
+  document.querySelectorAll('.toggle-btn').forEach(b => b.addEventListener('keydown', ev => {
+    if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); b.click(); }
+  }));
+  document.getElementById('btn-copiar-refino').addEventListener('click', copiarPromptRefino);
+  document.getElementById('btn-copiar-criar').addEventListener('click', copiarPromptCriar);
+  document.getElementById('criar-assunto').addEventListener('input', () => {
+    try { localStorage.setItem(LS + 'assunto_' + E.disc + '_' + E.doc, document.getElementById('criar-assunto').value); } catch (e) {}
+    renderCriar();
+  });
+  // O Painel avisa quando a disciplina muda sem recarregar o iframe
+  window.addEventListener('message', ev => {
+    const m = ev.data || {};
+    if (m.type === 'disciplina' && m.disc) trocarDisc(String(m.disc).toLowerCase());
+  });
+  render();
+}
+
+function trocarDisc(d) { E.disc = d; salvarUI(); render(); }
+
+function render() {
+  document.querySelectorAll('#t-disc .toggle-btn').forEach(b => b.classList.toggle('ativo', b.dataset.disc === E.disc));
+  const ok = suportada();
+  const av = document.getElementById('aviso-disc');
+  av.style.display = ok ? 'none' : '';
+  av.textContent = ok ? '' : 'Documentos disponíveis só para FC1, FE1, ILB e LME'
+    + (E.disc ? ' — a disciplina escolhida no Painel é ' + E.disc.toUpperCase() + '.' : '.');
+  document.getElementById('corpo').style.display = ok ? '' : 'none';
+  if (!ok) { _pe = null; _peChave = ''; return; }
+
+  document.querySelectorAll('#t-doc .toggle-btn').forEach(b => {
+    const d = DOCUMENTOS[E.disc][b.dataset.doc];
+    b.classList.toggle('ativo', b.dataset.doc === E.doc);
+    b.querySelector('.selo').textContent = temVigente(d) ? (d.legado ? '· legado' : '· v' + d.versao) : '· não encontrado';
+  });
+  const d = docAtual();
+  const refinarOk = temVigente(d);
+  if (!refinarOk && E.modo === 'refinar') E.modo = 'criar';
+  document.querySelectorAll('#t-modo .toggle-btn').forEach(b => {
+    b.classList.toggle('ativo', b.dataset.modo === E.modo);
+    b.classList.toggle('desligado', b.dataset.modo === 'refinar' && !refinarOk);
+  });
+  document.getElementById('modo-nota').textContent = E.modo === 'refinar'
+    ? 'Marque as seções, edite o texto ou escreva a instrução e copie o prompt — só elas mudam, em v{N+1}.'
+    : 'Copia o prompt da entrevista do autor (Pré-Planejamento) para este documento.';
+
+  document.getElementById('doc-titulo').textContent = nomeDoc(E.doc) + ' — ' + E.disc.toUpperCase();
+  document.getElementById('doc-vigente').textContent = refinarOk
+    ? '3_Estudio/' + d.arquivo + '  (' + rotuloVersao(d) + ')'
+    : 'não encontrado, use Criar';
+  document.getElementById('doc-proximo').textContent = '3_Estudio/' + d.proximo + '  (v' + (d.versao + 1) + ')';
+  const leg = document.getElementById('doc-legado');
+  leg.style.display = d.legado ? '' : 'none';
+  leg.textContent = d.legado ? 'Arquivo legado, sem versão no nome: o primeiro refino grava a v1 no padrão das outras disciplinas '
+    + '(-Temas-e-Trilhas-v{N}), move este arquivo para xx/ e atualiza o ponteiro no CLAUDE.md da disciplina.' : '';
+
+  document.getElementById('painel-refinar').style.display = E.modo === 'refinar' ? '' : 'none';
+  document.getElementById('painel-criar').style.display = E.modo === 'criar' ? '' : 'none';
+  if (E.modo === 'refinar') renderRefino(); else renderCriar();
+}
+
+// ─── Refinar ─────────────────────────────────────────────────────────────
+function _peLsChave(v) { return LS + E.disc + '_' + E.doc + '_v' + v; }
+
+function _carregarRefino(d) {
+  _pe = { marcas: {}, textos: {}, instr: {} };
+  let aviso = '';
+  try {
+    let salvo = JSON.parse(localStorage.getItem(_peLsChave(d.versao)) || 'null');
+    // rascunho do modo antigo (formulário do TT) — só o Plano de Ensino tinha; migra uma vez
+    const antigo = LS_PE_ANTIGO + E.disc + '_v' + d.versao;
+    if (!salvo && E.doc === 'plano' && localStorage.getItem(antigo)) {
+      salvo = JSON.parse(localStorage.getItem(antigo));
+      localStorage.setItem(_peLsChave(d.versao), JSON.stringify(salvo));
+      localStorage.removeItem(antigo);
+      aviso = 'Rascunho do Plano trazido do formulário do Texto Temático.';
+    }
+    if (salvo) _pe = Object.assign(_pe, salvo);
+    // rascunho de versão anterior do documento: descartado com aviso
+    const pref = LS + E.disc + '_' + E.doc + '_v';
+    const velhas = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.indexOf(pref) === 0 && k !== _peLsChave(d.versao)) velhas.push(k);
+    }
+    velhas.forEach(k => localStorage.removeItem(k));
+    if (velhas.length) aviso = 'Rascunho de ' + velhas.map(k => 'v' + k.slice(pref.length)).join(', ')
+      + ' descartado: o documento vigente agora é ' + rotuloVersao(d) + '.';
+  } catch (e) {}
+  const av = document.getElementById('pe-aviso');
+  av.textContent = aviso; av.style.display = aviso ? '' : 'none';
+}
+
+function salvarRefino() {
+  const d = docAtual();
+  if (!temVigente(d) || !_pe) return;
+  try { localStorage.setItem(_peLsChave(d.versao), JSON.stringify(_pe)); } catch (e) {}
+}
+
+function _peSecao(n) { return ((docAtual() || {}).secoes || []).find(s => s.n === n); }
+function _peTexto(n) { const s = _peSecao(n); return n in _pe.textos ? _pe.textos[n] : (s ? s.texto : ''); }
+function _peEditada(n) { const s = _peSecao(n); return !!s && n in _pe.textos && _pe.textos[n] !== s.texto; }
+function _peInstr(n) { return (_pe.instr[n] || '').trim(); }
+function _peFaltando(n) { return !!_pe.marcas[n] && !_peEditada(n) && !_peInstr(n); }
+
+function renderRefino() {
+  const d = docAtual();
+  const box = document.getElementById('pe-secoes');
+  const chave = E.disc + '|' + E.doc + '|' + d.versao;
+  if (chave === _peChave) { _peAtualizar(); return; }
+  _peChave = chave;
+  _carregarRefino(d);
+  if (!d.secoes.length) {
+    box.innerHTML = '<div class="nota">Nenhuma seção <code>## N. Título</code> no arquivo vigente.</div>';
+    _peAtualizar(); return;
+  }
+  box.innerHTML = d.secoes.map(s => `
+    <div class="pe-sec" data-n="${_esc(s.n)}">
+      <label class="pe-sec-head"><input type="checkbox" class="pe-marca">
+        <strong>§${_esc(s.n)}. ${_esc(s.titulo)}</strong><span class="pe-estado"></span></label>
+      <details><summary>Texto vigente — edite aqui (${s.texto.length} caracteres)</summary>
+        <textarea class="pe-texto" spellcheck="false"></textarea>
+        <div class="linha-btn" style="margin-top:4px;"><button type="button" class="btn btn-leve pe-restaurar">↺ Voltar ao texto vigente</button></div>
+      </details>
+      <textarea class="pe-instr" placeholder="O que mudar nesta seção (instrução para o Claude)"></textarea>
+      <div class="pe-falta">Seção marcada: edite o texto ou escreva a instrução.</div>
+    </div>`).join('');
+  box.querySelectorAll('.pe-sec').forEach(div => {
+    const n = div.dataset.n;
+    const marca = div.querySelector('.pe-marca'), txt = div.querySelector('.pe-texto');
+    const instr = div.querySelector('.pe-instr'), det = div.querySelector('details');
+    marca.checked = !!_pe.marcas[n];
+    txt.value = _peTexto(n);
+    instr.value = _pe.instr[n] || '';
+    if (marca.checked || _peEditada(n)) det.open = true;
+    marca.addEventListener('change', () => {
+      _pe.marcas[n] = marca.checked;
+      if (marca.checked) det.open = true;
+      salvarRefino(); _peAtualizar();
+    });
+    txt.addEventListener('input', () => {
+      const s = _peSecao(n);
+      if (txt.value === s.texto) delete _pe.textos[n]; else { _pe.textos[n] = txt.value; _pe.marcas[n] = true; marca.checked = true; }
+      salvarRefino(); _peAtualizar();
+    });
+    instr.addEventListener('input', () => {
+      _pe.instr[n] = instr.value;
+      if (instr.value.trim()) { _pe.marcas[n] = true; marca.checked = true; }
+      salvarRefino(); _peAtualizar();
+    });
+    div.querySelector('.pe-restaurar').addEventListener('click', () => {
+      delete _pe.textos[n]; txt.value = _peSecao(n).texto;
+      salvarRefino(); _peAtualizar();
+    });
+  });
+  _peAtualizar();
+}
+
+function _peAtualizar() {
+  const btn = document.getElementById('btn-copiar-refino');
+  const cont = document.getElementById('pe-contagem');
+  if (!_pe) { btn.disabled = true; cont.textContent = '0 marcadas'; return; }
+  let marcadas = 0;
+  document.querySelectorAll('#pe-secoes .pe-sec').forEach(div => {
+    const n = div.dataset.n, m = !!_pe.marcas[n];
+    if (m) marcadas++;
+    div.classList.toggle('marcada', m);
+    div.classList.toggle('faltando', _peFaltando(n));
+    const partes = [];
+    if (_peEditada(n)) partes.push('texto editado');
+    if (_peInstr(n)) partes.push('instrução');
+    div.querySelector('.pe-estado').textContent = m ? (partes.join(' + ') || 'marcada — falta dizer o que mudar') : 'fica igual';
+  });
+  cont.textContent = marcadas + (marcadas === 1 ? ' marcada' : ' marcadas');
+  btn.disabled = marcadas === 0;
+}
+
+function gerarPromptRefino() {
+  const d = docAtual();
+  const D = E.disc.toUpperCase(), N = nomeDoc(E.doc), v = d.versao, v1 = v + 1;
+  const de = d.legado ? 'arquivo legado' : 'v' + v;
+  const na = d.legado ? 'no arquivo legado' : 'na v' + v, da = d.legado ? 'do arquivo legado' : 'da v' + v;
+  const aa = d.legado ? 'ao arquivo legado' : 'à v' + v;
+  const marc = d.secoes.filter(s => _pe.marcas[s.n]);
+  const fixas = d.secoes.filter(s => !_pe.marcas[s.n]);
+  const nomeVig = d.arquivo.split('/').pop();
+  let p = `Refinar ${N} da ${D} — ${de} → v${v1}\n`
+    + `Briefing do modo: ${BRIEFING}\n\n`
+    + `Arquivo vigente: 3_Estudio/${d.arquivo}\n`
+    + `Nova versão:     3_Estudio/${d.proximo}\n`;
+  if (d.legado) {
+    p += `Versionamento: o vigente não tem versão no nome. Grave a v1 como arquivo NOVO no padrão -Temas-e-Trilhas-v{N} `
+      + `(caminho acima), com o título, o preâmbulo antes do §1 e todas as seções do vigente; mova ${nomeVig} para xx/ da mesma pasta (nunca sobrescrever nem apagar). `
+      + `Atualize o ponteiro no CLAUDE.md da ${D} (e nos arquivos que citam ${nomeVig} — procure com grep) para o arquivo novo.\n\n`;
+  } else {
+    p += `Versionamento: grave a v${v1} como arquivo NOVO, com o mesmo padrão de nome; mova a v${v} para xx/ `
+      + `da mesma pasta (nunca sobrescrever nem apagar).\n\n`;
+  }
+  p += `## O que muda (só estas seções)\n`;
+  marc.forEach(s => {
+    const ed = _peEditada(s.n), ins = _peInstr(s.n);
+    p += `\n### §${s.n}. ${s.titulo}\n`;
+    if (ed) p += `Texto novo (substitui por inteiro o corpo da seção ${na}; título e número ficam):\n<<<\n${_pe.textos[s.n]}\n>>>\n`;
+    if (ins) p += `Instrução: ${ins}\n`;
+    if (ed && ins) p += `Aplique a instrução sobre o texto novo acima.\n`;
+    else if (ins) p += `Reescreva a seção seguindo a instrução, partindo do texto ${da}.\n`;
+    else p += `Use o texto novo tal como está.\n`;
+  });
+  p += `\n## O que fica igual\n`
+    + (fixas.length ? `As seções ${fixas.map(s => '§' + s.n).join(', ')} ficam iguais ${aa}, palavra por palavra — `
+      + `inclusive número e título.` : `Nenhuma outra seção.`)
+    + ` Anexos em arquivo separado não são tocados. Se uma seção marcada exigir ajuste em outra, NÃO altere: liste a `
+    + `dependência no relato para o autor decidir.\n`
+    + `Cabeçalho do arquivo: atualize a versão (v${v1}), a data (hoje) e a linha "Muda em relação ${aa}", `
+    + `citando só as seções acima.\n\n`
+    + `## Derivados que ficam desatualizados (não regerar agora — listar no relato)\n`
+    + derivados(E.disc, E.doc).map(x => '- ' + x).join('\n') + '\n\n'
+    + `## Ao terminar\n`
+    + `- Rode python ${GERADOR} para o Painel passar a ler a v${v1}.\n`
+    + `- Mostre o diff ${de} × v${v1} por seção e confirme que só ${marc.map(s => '§' + s.n).join(', ')} ${marc.length > 1 ? 'mudaram' : 'mudou'}.\n`
+    + `- Gate: não commitar sem o "aprovado" do autor.\n`;
+  return p;
+}
+
+function copiarPromptRefino() {
+  const d = docAtual();
+  if (!temVigente(d) || !_pe) { showToast('Não há documento vigente para refinar', 'erro'); return; }
+  const marc = d.secoes.filter(s => _pe.marcas[s.n]);
+  if (!marc.length) { showToast('Marque ao menos uma seção', 'erro'); return; }
+  const falta = marc.filter(s => _peFaltando(s.n));
+  if (falta.length) {
+    _peAtualizar();
+    showToast('Falta o que mudar em ' + falta.map(s => '§' + s.n).join(', ') + ' — edite o texto ou escreva a instrução', 'erro');
+    document.querySelector(`#pe-secoes .pe-sec[data-n="${falta[0].n}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  salvarRefino();
+  _copiarTexto(gerarPromptRefino())
+    .then(() => showToast('Prompt de refino copiado (' + marc.length + (marc.length === 1 ? ' seção' : ' seções') + ') — cole no Claude Code', 'ouro'))
+    .catch(() => showToast('Não foi possível copiar', 'erro'));
+}
+
+// ─── Criar ───────────────────────────────────────────────────────────────
+function gerarPromptCriar() {
+  const d = docAtual();
+  const D = E.disc.toUpperCase(), N = nomeDoc(E.doc);
+  const pastaTrilhas = (E.disc === 'ilb' || E.disc === 'lme') ? 'Trilhas' : 'Trilhas_de_Aprendizagem';
+  let assunto = (document.getElementById('criar-assunto').value || '').trim().replace(/\.+$/, '');
+  if (!assunto) assunto = temVigente(d) ? `Criar a nova versao de ${N} da ${D}` : `Criar ${N} da ${D}`;
+  let p = 'Rode a skill /entrevista-autor (' + PRE_SKILL + '), protocolo PRE-v1.\n'
+    + 'Disciplina: ' + D + '. Alvo: ' + N.toLowerCase() + '. Assunto: ' + assunto + '.\n'
+    + 'Leia antes de perguntar (CLAUDE.md da pasta, feedback_lessons.md e o SKILL.md do OA, se houver) e me diga em 3 linhas o que ja esta decidido. '
+    + 'Depois pergunte SO o que falta, no maximo 3 rodadas de ate 5 perguntas, sempre com opcoes. '
+    + 'Grave a Instrucao Inicial em _planejamento/_pre/ da ' + D
+    + ' (a partir da raiz da disciplina, nao de dentro de ' + pastaTrilhas + '). Nao produza nada antes de eu responder "aprovado".\n';
+  if (temVigente(d)) {
+    p += 'Documento vigente: 3_Estudio/' + d.arquivo + ' (' + rotuloVersao(d) + '). O documento novo sai como 3_Estudio/'
+      + d.proximo + ' e o vigente vai para xx/ (nunca sobrescrever).\n';
+  } else {
+    p += 'Nao ha documento vigente: o arquivo novo sera 3_Estudio/' + d.proximo + ' (secoes numeradas "## N. Titulo", para o Painel ler).\n';
+  }
+  p += 'Neste alvo, levante especificamente: ' + ROTEIRO[E.doc];
+  return p;
+}
+
+function renderCriar() {
+  const ta = document.getElementById('criar-assunto');
+  const k = LS + 'assunto_' + E.disc + '_' + E.doc;
+  if (ta.dataset.chave !== k) {
+    ta.dataset.chave = k;
+    try { ta.value = localStorage.getItem(k) || ''; } catch (e) { ta.value = ''; }
+  }
+  document.getElementById('criar-previa').textContent = gerarPromptCriar();
+}
+
+function copiarPromptCriar() {
+  _copiarTexto(gerarPromptCriar())
+    .then(() => showToast('Prompt da entrevista copiado — cole no Claude Code', 'ouro'))
+    .catch(() => showToast('Não foi possível copiar', 'erro'));
+}
+
+// ─── Utilitários ─────────────────────────────────────────────────────────
+function _copiarTexto(txt) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(txt).catch(function () { return _copiarFallback(txt); });
+  }
+  return _copiarFallback(txt);
+}
+function _copiarFallback(txt) {
+  return new Promise(function (resolve, reject) {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy') ? resolve() : reject(); }
+    catch (e) { reject(e); }
+    document.body.removeChild(ta);
+  });
+}
+function showToast(msg, tipo) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (tipo === 'ouro' ? ' ouro' : '') + (tipo === 'erro' ? ' erro' : '');
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+iniciar();
+</script>
+<!-- CONTADOR:INICIO -->
+<script src="contador-config.js"></script>
+<script src="acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>

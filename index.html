@@ -1028,6 +1028,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       <div class="tab active" id="grp-visao" onclick="showTab('visao')">Vis&atilde;o Geral</div>
       <div class="tab" id="grp-cadastro" onclick="showTab('cadastro')">Cadastro</div>
       <div class="tab" id="grp-preplan" onclick="showTab('preplan')">Pr&eacute;-Planejamento</div>
+      <div class="tab" id="grp-documentos" onclick="showTab('documentos')">Documentos</div>
       <div class="tab" id="grp-projdoc" onclick="showTab('projdoc')">Projeto</div>
       <div class="tab" id="grp-producao" onclick="showTab('producao')">Produ&ccedil;&atilde;o</div>
       <div class="tab" id="grp-publicacao" onclick="showTab('distribuicao')">Publica&ccedil;&atilde;o</div>
@@ -2727,7 +2728,11 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (1)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">95 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (1)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">96 na lista</span></div>
+<details class="pre-brief" data-escopo="disciplina" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>painel &middot; Aba Documentos (Criar e Refinar ementa, temas e trilhas, plano de ensino)<span class="pre-selo">FE1</span><span class="pre-meta">2026-09-24</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar no Painel do Ecossistema a aba **Documentos**, logo depois de Pré-Planejamento, com três documentos por disciplina (**Ementa · Temas e Trilhas · Plano de Ensino**) e dois modos (**Criar · Refinar**). O modo Refinar Plano de Ensino sai do formulário do Texto Temático e passa a morar nela.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (aba nova do Painel + script generalizado)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="disciplina" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>painel &middot; Refinar o Plano de Ensino por seção (FE1, FC1, ILB, LME)<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-24</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar no formulário do Painel (`skill_onda1_plano-v1.html`) um modo **Refinar Plano de Ensino**. Nele, cada seção do Plano de Ensino vigente da disciplina tem a própria caixa Refinar, com o texto atual para editar e um campo de instrução. O botão gera o prompt que escreve a v{N+1}, e o que não for marcado fica igual, palavra por palavra.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (edição do Painel + script novo)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-refinar-plano-de-ensino-por-secao-2026-09-24.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-refinar-plano-de-ensino-por-secao-2026-09-24.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-refinar-plano-de-ensino-por-secao-2026-09-24.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-refinar-plano-de-ensino-por-secao-2026-09-24.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-refinar-plano-de-ensino-por-secao-2026-09-24.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -3108,7 +3113,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>95 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 7 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>96 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 7 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -4229,6 +4234,24 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
     </div>
 
     <!-- ABA PROJETO -- documentos executivos das disciplinas (A4.28). -->
+    <!-- ABA DOCUMENTOS (2026-09-24 · PRE-painel-documentos-criar-refinar-fe1-2026-09-24):
+         Ementa · Temas e Trilhas · Plano de Ensino × Criar · Refinar, em iframe proprio.
+         Os vigentes vem de AUTO:DOCUMENTOS do documentos-v1.html (gerar_documentos_painel.py). -->
+    <div class="tab-content" id="tab-documentos">
+      <section style="padding:0;display:flex;flex-direction:column;height:calc(100vh - var(--header-h) - 48px);">
+        <div style="flex-shrink:0;background:var(--superficie);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--cinza-borda);gap:8px;">
+          <h2 class="section-title" style="margin:0;font-size:16px;white-space:nowrap;">Documentos &mdash; Ementa &middot; Temas e Trilhas &middot; Plano de Ensino</h2>
+          <button onclick="window.open('documentos-v1.html?disc=' + document.getElementById('sel-disciplina').value,'_blank')" style="font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--verde-bg);border:1px solid var(--verde-claro);color:var(--verde-claro);cursor:pointer;">Abrir em nova janela &#8599;</button>
+        </div>
+        <div style="padding:8px 16px 0;">
+          <div class="disc-bar" id="disc-bar-documentos"></div>
+        </div>
+        </div>
+        <iframe id="documentos-iframe" src="about:blank" data-src="documentos-v1.html" allow="clipboard-write; clipboard-read" style="width:100%;flex:1;min-height:0;border:none;display:block;background:var(--fundo);"></iframe>
+      </section>
+    </div>
+
     <div class="tab-content" id="tab-projdoc">
       <h2 class="section-title">Projeto</h2>
       <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;">Atualizacao semanal automatica: em breve. Por ora, os documentos executivos publicados:</p>
@@ -4276,6 +4299,7 @@ function showTab(id) {
     if (ifr) ifr.addEventListener('load', enviarCursoAoOnda1, { once: true });
     setTimeout(enviarCursoAoOnda1, 400);
   }
+  if (id === 'documentos') lazyLoadIframe('documentos-iframe');
   if (id === 'dados') lazyLoadIframe('dados-iframe');
   if (id === 'monitoria') lazyLoadIframe('monitoria-iframe');
   if (id === 'cadastro') { cadastroCarregar(); discCarregar(); finCarregar(); }
@@ -5813,7 +5837,7 @@ function copiarFallbackGuia(texto) {
 function lazyLoadIframe(iframeId) {
   var iframe = document.getElementById(iframeId);
   if (!iframe || !iframe.dataset.src) return;
-  if (iframeId === 'onda1-iframe') {
+  if (iframeId === 'onda1-iframe' || iframeId === 'documentos-iframe') {
     var disc = document.getElementById('sel-disciplina').value;
     var curso = document.getElementById('sel-curso').value;
     var wantSrc = iframe.dataset.src + '?disc=' + disc + '&curso=' + curso + '&embed=1';
@@ -6024,7 +6048,7 @@ function selectTrilhaPainel(code) {
    regra que o autor pediu em 2026-09-08. Cadastrar dispensa editar HTML.
    Sem rede, DISC_CACHE fica vazio e a barra explica o que falta. */
 
-var DISC_BARRAS = ['onda1', 'epigrafes', 'imagens', 'skills', 'qualidade'];
+var DISC_BARRAS = ['onda1', 'documentos', 'epigrafes', 'imagens', 'skills', 'qualidade'];
 
 function discHabilitadas() {
   if (!window.DISC_CACHE || !DISC_CACHE.length) return [];
@@ -10556,6 +10580,8 @@ function loadDisciplina() {
 
   var onda1Iframe = document.getElementById('onda1-iframe');
   if (onda1Iframe && onda1Iframe.src !== 'about:blank') lazyLoadIframe('onda1-iframe');
+  var docsIframe = document.getElementById('documentos-iframe');
+  if (docsIframe && docsIframe.src !== 'about:blank') lazyLoadIframe('documentos-iframe');
   setTimeout(enviarCursoAoOnda1, 250);
 
   try { DISC_BARRAS.forEach(renderBarraDisciplina); renderSkills(); } catch (e) {}
