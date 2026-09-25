@@ -3710,7 +3710,8 @@ function init() {
 function setData() {
   const d = new Date();
   const fmt = `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-  document.getElementById('out-data').textContent = fmt;
+  const el = document.getElementById('out-data');
+  if (el) el.textContent = fmt;
 }
 
 // ─── Chips de trilha ───────────────────────────────────────
