@@ -2728,7 +2728,19 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (1)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">96 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (4)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">99 na lista</span></div>
+<details class="pre-brief" data-escopo="projeto" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Interlocuções do RIF (sugestões, respostas, rodapé LME, link da Licenciatura)<span class="pre-selo pre-selo-proj" title="PRJ-0003 — Rumo ao IFMG (RIF)">PRJ-0003</span><span class="pre-meta">2026-09-25</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Projeto:</strong> PRJ-0003 — Rumo ao IFMG (RIF)<br><strong style="color:var(--texto);">Objetivo:</strong> Abrir no `rif-oa` um canal de sugestões (texto ou áudio), responder a elas todo dia com rascunho do Claude aprovado<br><strong style="color:var(--texto);">Equipe:</strong> Julio Azevedo — Coordenador(a) — sem remuneracao (2 h/semana) &middot; Felipe Beato — Colaborador(a) — sem remuneracao (2 h/semana) &middot; Monitor(a) 1 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana) &middot; Monitor(a) 2 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana)<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: medio · Skill: nenhuma (tarefa agendada via scheduled-tasks)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-interlocucoes-sugestoes-rodape-2026-09-25.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-interlocucoes-sugestoes-rodape-2026-09-25.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-interlocucoes-sugestoes-rodape-2026-09-25.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-interlocucoes-sugestoes-rodape-2026-09-25.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-interlocucoes-sugestoes-rodape-2026-09-25.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief" data-escopo="projeto" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Agenda de estudo do RIF<span class="pre-selo pre-selo-proj" title="PRJ-0003 — Rumo ao IFMG (RIF)">PRJ-0003</span><span class="pre-meta">2026-09-25</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Projeto:</strong> PRJ-0003 — Rumo ao IFMG (RIF)<br><strong style="color:var(--texto);">Objetivo:</strong> Criar no `rif-oa` a aba Agenda, um planejador semanal em que o estudante marca as sessões de 30 min da semana,<br><strong style="color:var(--texto);">Equipe:</strong> Julio Azevedo — Coordenador(a) — sem remuneracao (2 h/semana) &middot; Felipe Beato — Colaborador(a) — sem remuneracao (2 h/semana) &middot; Monitor(a) 1 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana) &middot; Monitor(a) 2 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana)<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: medio · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-agenda-estudo-2026-09-25.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-agenda-estudo-2026-09-25.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-agenda-estudo-2026-09-25.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-agenda-estudo-2026-09-25.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-agenda-estudo-2026-09-25.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief" data-escopo="projeto" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Rumo ao IFMG (RIF) na web e no pen drive<span class="pre-selo pre-selo-proj" title="PRJ-0003 — Rumo ao IFMG (RIF)">PRJ-0003</span><span class="pre-meta">2026-09-25</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Projeto:</strong> PRJ-0003 — Rumo ao IFMG (RIF)<br><strong style="color:var(--texto);">Objetivo:</strong> Pôr no ar o site `rif-oa` do projeto Rumo ao IFMG, no molde do `lme-oa`, com a casca completa, a T0A piloto e o<br><strong style="color:var(--texto);">Equipe:</strong> Julio Azevedo — Coordenador(a) — sem remuneracao (2 h/semana) &middot; Felipe Beato — Colaborador(a) — sem remuneracao (2 h/semana) &middot; Monitor(a) 1 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana) &middot; Monitor(a) 2 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana)<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: medio · Skill: nenhuma (derivacao do lme-oa por script)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-oa-web-pendrive-2026-09-25.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-oa-web-pendrive-2026-09-25.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-oa-web-pendrive-2026-09-25.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-oa-web-pendrive-2026-09-25.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-oa-web-pendrive-2026-09-25.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="disciplina" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>painel &middot; Aba Documentos (Criar e Refinar ementa, temas e trilhas, plano de ensino)<span class="pre-selo">FE1</span><span class="pre-meta">2026-09-24</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar no Painel do Ecossistema a aba **Documentos**, logo depois de Pré-Planejamento, com três documentos por disciplina (**Ementa · Temas e Trilhas · Plano de Ensino**) e dois modos (**Criar · Refinar**). O modo Refinar Plano de Ensino sai do formulário do Texto Temático e passa a morar nela.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (aba nova do Painel + script generalizado)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/04_Física_Experimental_1/_planejamento/_pre/PRE-painel-documentos-criar-refinar-fe1-2026-09-24.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -3113,7 +3125,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>96 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 7 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>99 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 7 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -4231,6 +4243,25 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
                style="font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);background:var(--input-bg);color:var(--texto);">
         <button type="button" class="pre-acao" onclick="finSalvar(this)">Salvar financiador</button>
       </div>
+
+      <!-- SUGESTOES DO RIF (F23 · PRJ-0003 · 2026-09-25): respostas as sugestoes anonimas do
+           rif-oa/sugestoes/. Rascunho diario do Claude (tarefa agendada); a equipe edita e aprova.
+           Aprovada = entra em rif-oa/agradecimentos/ na proxima geracao do site (resumo + resposta). -->
+      <h3 style="margin-top:36px;">Sugest&otilde;es do RIF &mdash; respostas (PRJ-0003)</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
+        Sugest&otilde;es an&ocirc;nimas enviadas em <span style="color:var(--ouro-claro);">rif-oa/sugestoes/</span>
+        (aba <span style="color:var(--ouro-claro);">sugestoes</span>, Origem = RIF). Todo dia o Claude escreve um
+        <strong style="color:var(--texto);">rascunho</strong>; voc&ecirc; edita e escolhe o status.
+        <strong style="color:var(--texto);">Aprovada</strong> publica em Agradecimentos s&oacute; o
+        <em>Resumo</em> e a <em>Resposta</em> &mdash; nunca o texto original nem o &aacute;udio.
+        &Aacute;udio: ou&ccedil;a no Drive e escreva voc&ecirc; a resposta.
+      </p>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
+        <button type="button" class="pre-acao" onclick="sugRifCarregar(this)">&#128273; Carregar sugest&otilde;es do RIF</button>
+        <label style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"><input type="checkbox" id="sugRifTodas" onchange="sugRifDesenhar()"> mostrar arquivadas</label>
+        <span id="sugRifStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
+      </div>
+      <div id="sugRifLista" style="max-width:1100px;"></div>
     </div>
 
     <!-- ABA PROJETO -- documentos executivos das disciplinas (A4.28). -->
@@ -5621,6 +5652,84 @@ function projExcluir(pj, btn) {
       projCarregar();
     })
     .catch(function (e) { projStatusUI('Falha ao excluir: ' + e.message, 'var(--erro)'); })
+    .finally(function () { btn.disabled = false; });
+}
+
+/* ---------- SUGESTOES DO RIF (F23) ---------- */
+var SUG_RIF = [];
+function sugRifStatusUI(msg, cor) {
+  var el = document.getElementById('sugRifStatus');
+  el.textContent = msg; el.style.color = cor || 'var(--texto-sub)';
+}
+function sugRifEsc(t) {
+  return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+  });
+}
+function sugRifCarregar(btn) {
+  var chave = cfgObterChave();
+  if (!chave) { sugRifStatusUI('Sem a chave da equipe a lista nao pode ser exibida.', 'var(--erro)'); return; }
+  if (btn) btn.disabled = true;
+  sugRifStatusUI('Buscando sugestoes do RIF...');
+  var url = COLETA_ENDPOINT + '?sugestoes_rif=1&chave=' + encodeURIComponent(chave);
+  return fetch(url).then(function (r) { return r.json(); })
+    .catch(function () {
+      return new Promise(function (ok) { setTimeout(ok, 1500); })
+        .then(function () { return fetch(url); }).then(function (r) { return r.json(); });
+    })
+    .then(function (res) {
+      if (!res || !res.ok) throw new Error((res && res.erro) || 'resposta invalida');
+      SUG_RIF = res.sugestoes || [];
+      sugRifDesenhar();
+      var novas = SUG_RIF.filter(function (s) { return !s.status; }).length;
+      sugRifStatusUI(SUG_RIF.length + ' sugestao(oes) · ' + novas + ' sem rascunho', 'var(--verde-claro)');
+    })
+    .catch(function (e) { sugRifStatusUI('Falha ao carregar: ' + e.message, 'var(--erro)'); })
+    .finally(function () { if (btn) btn.disabled = false; });
+}
+function sugRifDesenhar() {
+  var todas = document.getElementById('sugRifTodas').checked;
+  var cx = 'font-family:var(--mono);font-size:13px;padding:7px 8px;border:1px solid var(--cinza-borda);' +
+           'background:var(--input-bg);color:var(--texto);width:100%;box-sizing:border-box;';
+  var lista = SUG_RIF.slice().reverse().filter(function (s) { return todas || s.status !== 'arquivada'; });
+  document.getElementById('sugRifLista').innerHTML = lista.map(function (s) {
+    var i = SUG_RIF.indexOf(s);
+    var cor = s.status === 'aprovada' ? 'var(--verde-claro)' : (s.status === 'rascunho' ? 'var(--ouro-claro)' : 'var(--texto-sub)');
+    return '<div style="border:1px solid var(--cinza-borda);padding:12px 14px;margin-bottom:12px;">' +
+      '<div style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);margin-bottom:6px;">' +
+      sugRifEsc(s.recebida.replace('T', ' ')) + ' · ' + sugRifEsc(s.trilha || 'Geral') + ' · linha ' + s.linha +
+      ' · <strong style="color:' + cor + ';">' + sugRifEsc(s.status || 'nova') + '</strong></div>' +
+      (s.texto ? '<div style="white-space:pre-wrap;margin-bottom:8px;color:var(--texto);">' + sugRifEsc(s.texto) + '</div>' : '') +
+      (s.audio ? '<div style="margin-bottom:8px;"><a href="' + sugRifEsc(s.audio) + '" target="_blank" rel="noopener">&#127911; Ouvir no Drive</a></div>' : '') +
+      '<input id="sugRifResumo' + i + '" type="text" maxlength="300" placeholder="Resumo (1 frase, sem copiar o texto): Um estudante sugeriu..." style="' + cx + 'margin-bottom:6px;" value="' + sugRifEsc(s.resumo) + '">' +
+      '<textarea id="sugRifResposta' + i + '" rows="3" maxlength="1000" placeholder="Resposta da equipe (linguagem do 9.o ano)" style="' + cx + 'resize:vertical;">' + sugRifEsc(s.resposta) + '</textarea>' +
+      '<div style="display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap;">' +
+      '<button type="button" class="pre-acao" onclick="sugRifSalvar(' + i + ',\'rascunho\',this)">Salvar rascunho</button>' +
+      '<button type="button" class="pre-acao" onclick="sugRifSalvar(' + i + ',\'aprovada\',this)">&#10003; Aprovar e publicar</button>' +
+      '<button type="button" class="pre-acao" onclick="sugRifSalvar(' + i + ',\'arquivada\',this)">Arquivar</button>' +
+      '<span id="sugRifMsg' + i + '" style="font-family:var(--mono);font-size:12px;"></span></div></div>';
+  }).join('') || '<p style="color:var(--texto-sub);font-family:var(--mono);font-size:12px;">Nenhuma sugestao do RIF.</p>';
+}
+function sugRifSalvar(i, status, btn) {
+  var s = SUG_RIF[i], chave = cfgObterChave(), msg = document.getElementById('sugRifMsg' + i);
+  var resumo = document.getElementById('sugRifResumo' + i).value.trim();
+  var resposta = document.getElementById('sugRifResposta' + i).value.trim();
+  if (status === 'aprovada' && (!resumo || !resposta)) { msg.textContent = 'Preencha resumo e resposta antes de aprovar.'; msg.style.color = 'var(--erro)'; return; }
+  btn.disabled = true; msg.textContent = 'Gravando...'; msg.style.color = 'var(--texto-sub)';
+  fetch(COLETA_ENDPOINT, {
+    method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ tipo: 'SUGESTAO_RESPOSTA', chave: chave, linha: s.linha, recebida: s.recebida,
+                           resumo: resumo, resposta: resposta, status: status })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'rejeitado');
+      s.resumo = resumo; s.resposta = resposta; s.status = status;
+      sugRifDesenhar();
+      var m2 = document.getElementById('sugRifMsg' + i);
+      if (m2) { m2.textContent = status === 'aprovada' ? '✓ Aprovada — entra em Agradecimentos na proxima geracao do site (tarefa diaria).' : '✓ ' + status; m2.style.color = 'var(--verde-claro)'; }
+    })
+    .catch(function (e) { msg.textContent = 'Falha: ' + e.message; msg.style.color = 'var(--erro)'; })
     .finally(function () { btn.disabled = false; });
 }
 
