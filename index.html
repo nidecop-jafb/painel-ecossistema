@@ -2311,24 +2311,39 @@ function biBase() {
   return location.pathname.indexOf('painel-producao') !== -1
     ? '../_banco_itens/_figuras/' : 'banco-itens/';
 }
-// Os ramos da RCP. Os terminados em -5 sao a versao curta do processo
-// seletivo do IFMG: as mesmas oito etapas agrupadas em cinco passos.
+// A RCP em 5 passos (regra 5 A4.52), dois ramos. Resolucao escrita em 8
+// etapas aparece AGRUPADA sob os 5 rotulos, sem reescrever o texto
+// (PRE-site-pensamento-quantitativo-qualitativo-rcp-5-passos-2026-09-26).
 var BI_RAMOS = {
-  'RCP-Quant': 'RCP-Quant (Protocolo C5)',
-  'RCP-Qual': 'RCP-Qual (Formação Geral)',
-  'RCP-Quant-5': 'RCP-Quant-5 (5 passos, processo seletivo)',
-  'RCP-Qual-5': 'RCP-Qual-5 (5 passos, processo seletivo)'
+  'RCP-Quant': 'Pensamento Quantitativo',
+  'RCP-Qual': 'Pensamento Qualitativo',
+  'RCP-Quant-5': 'Pensamento Quantitativo',
+  'RCP-Qual-5': 'Pensamento Qualitativo'
 };
+// etapa antiga (0..7) -> passo (0..4): 1 | 2 | 3+4 | 5+6 | 7+8
+var BI_ENCAIXE_8_EM_5 = [0, 1, 2, 2, 3, 3, 4, 4];
 function biRamo(it) {
   var p = it && it.protocolo;
   return BI_RAMOS[p] ? p : 'RCP-Quant';
 }
+function biRamo5(it) {
+  return biRamo(it).indexOf('Qual') !== -1 ? 'RCP-Qual-5' : 'RCP-Quant-5';
+}
 function biPassos(it) {
-  return (typeof BI_PASSOS !== 'undefined' && BI_PASSOS[biRamo(it)])
-    || (typeof BI_PASSOS !== 'undefined' ? BI_PASSOS['RCP-Quant'] : []);
+  return (typeof BI_PASSOS !== 'undefined' && BI_PASSOS[biRamo5(it)]) || [];
+}
+function biGrupos(it) {
+  // [{rotulo, textos[]}] nos 5 passos, a partir da detalhada de 5 ou de 8
+  var rotulos = biPassos(it), det = (it.resolucao && it.resolucao.detalhada) || [];
+  var g = rotulos.map(function (r) { return { rotulo: r, textos: [] }; });
+  det.forEach(function (texto, i) {
+    var k = det.length === 8 ? BI_ENCAIXE_8_EM_5[i] : Math.min(i, g.length - 1);
+    if (g[k]) g[k].textos.push(texto);
+  });
+  return g;
 }
 function biTituloRCP(it) {
-  return 'Resolução Científica do Problema — ' + BI_RAMOS[biRamo(it)];
+  return 'Resolução Científica do Problema (RCP) — ' + BI_RAMOS[biRamo(it)];
 }
 function biEsc(s) {
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -2386,10 +2401,9 @@ function biTextoParaCopiar(it) {
   }
   linhas.push('Prova oficial: ' + it.fonte.url_prova);
   if (it.resolucao) {
-    var rotulos = biPassos(it);
-    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA - ' + biRamo(it));
-    (it.resolucao.detalhada || []).forEach(function (texto, i) {
-      linhas.push((i + 1) + '. ' + (rotulos[i] || '') + ' - ' + texto);
+    linhas.push('', 'RESOLUCAO CIENTIFICA DO PROBLEMA (RCP) - ' + BI_RAMOS[biRamo(it)]);
+    biGrupos(it).forEach(function (g, i) {
+      linhas.push((i + 1) + '. ' + g.rotulo + ' - ' + g.textos.join(' '));
     });
     linhas.push('', 'RESOLUCAO CONDENSADA', it.resolucao.condensada || '');
   }
@@ -2420,7 +2434,7 @@ function biCopiarFallback(texto, ok) {
 function biVerResolucao(id, tipo, botao) {
   var alvo = document.getElementById('bi-res-' + tipo + '-' + id);
   if (!alvo) return;
-  var rotulos = { detalhada: 'resolução passo a passo (RCP)',
+  var rotulos = { detalhada: 'resolução em 5 passos (RCP)',
                   condensada: 'resolução condensada' };
   if (alvo.innerHTML) {
     alvo.innerHTML = '';
@@ -2431,11 +2445,10 @@ function biVerResolucao(id, tipo, botao) {
   if (!it || !it.resolucao) return;
   var html;
   if (tipo === 'detalhada') {
-    var rotulos = biPassos(it);
     html = '<h4>' + biEsc(biTituloRCP(it)) + '</h4><ol>'
-      + (it.resolucao.detalhada || []).map(function (texto, i) {
-          return '<li><b>' + biEsc(rotulos[i] || '') + '</b>'
-            + biEsc(texto) + '</li>';
+      + biGrupos(it).map(function (g) {
+          return '<li><b>' + biEsc(g.rotulo) + '</b>'
+            + g.textos.map(biEsc).join('<br>') + '</li>';
         }).join('') + '</ol>';
   } else {
     html = '<h4>Resolução condensada</h4><p>'
@@ -2443,7 +2456,7 @@ function biVerResolucao(id, tipo, botao) {
   }
   alvo.innerHTML = '<div class="bi-res">' + html + '</div>';
   botao.textContent = 'ocultar ' + (tipo === 'detalhada'
-    ? 'o passo a passo' : 'a condensada');
+    ? 'os 5 passos' : 'a condensada');
 }
 function biAbrirProva(url) {
   // O INEP serve o PDF com CORS liberado; o visualizador renderiza na tela em
@@ -2567,7 +2580,7 @@ function biRender() {
       + '<div class="bi-acoes">'
       +   '<button type="button" onclick="biCopiar(\'' + biEsc(it.id) + '\', this)">copiar item</button>'
       +   '<button type="button" onclick="biVerGabarito(\'' + biEsc(it.id) + '\', this)">' + (aberta ? 'ver resposta' : 'ver gabarito') + '</button>'
-      +   (it.resolucao ? '<button type="button" onclick="biVerResolucao(\'' + biEsc(it.id) + '\', \'detalhada\', this)">resolução passo a passo (RCP)</button>' : '')
+      +   (it.resolucao ? '<button type="button" onclick="biVerResolucao(\'' + biEsc(it.id) + '\', \'detalhada\', this)">resolução em 5 passos (RCP)</button>' : '')
       +   (it.resolucao ? '<button type="button" onclick="biVerResolucao(\'' + biEsc(it.id) + '\', \'condensada\', this)">resolução condensada</button>' : '')
       +   '<button type="button" onclick="biVerImagem(\'' + biEsc(it.id) + '\', this)">ver como foi impresso</button>'
       +   '<button type="button" onclick="biAbrirProva(\'' + biEsc(it.fonte.url_prova) + '\')">abrir a prova oficial (' + biEsc(it.fonte.orgao) + ')</button>'
@@ -2728,7 +2741,15 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (11)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">106 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (12)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">108 na lista</span></div>
+<details class="pre-brief" data-escopo="disciplina" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Pensamento Quantitativo e Qualitativo — RCP em 5 passos<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-26</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Trocar, na FC1 e na FE1, as 8 etapas da RCP pelos **5 passos** em dois ramos (Pensamento<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (regra 5 + `metodo_estudo.py` + Banco + validadores + SKILL.md)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-pensamento-quantitativo-qualitativo-rcp-5-passos-2026-09-26.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-pensamento-quantitativo-qualitativo-rcp-5-passos-2026-09-26.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-pensamento-quantitativo-qualitativo-rcp-5-passos-2026-09-26.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-pensamento-quantitativo-qualitativo-rcp-5-passos-2026-09-26.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-pensamento-quantitativo-qualitativo-rcp-5-passos-2026-09-26.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief" data-escopo="projeto" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Lista das 12 trilhas na página Documentos (Ementa e Plano de Ensino) do rif-oa<span class="pre-selo pre-selo-proj" title="PRJ-0003 — Rumo ao IFMG (RIF)">PRJ-0003</span><span class="pre-meta">2026-09-26</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Projeto:</strong> PRJ-0003 — Rumo ao IFMG (RIF)<br><strong style="color:var(--texto);">Objetivo:</strong> Acrescentar à Ementa e Plano de Ensino (site e Plano v2) a lista das 12 trilhas, com código, semana, título, área e uma frase de descrição.<br><strong style="color:var(--texto);">Equipe:</strong> Julio Azevedo — Coordenador(a) — sem remuneracao (2 h/semana) &middot; Felipe Beato — Colaborador(a) — sem remuneracao (2 h/semana) &middot; Monitor(a) 1 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana) &middot; Monitor(a) 2 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana)<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Sonnet 5 · Esforco: medio · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-documentos-lista-trilhas-2026-09-26.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-documentos-lista-trilhas-2026-09-26.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-documentos-lista-trilhas-2026-09-26.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-documentos-lista-trilhas-2026-09-26.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-documentos-lista-trilhas-2026-09-26.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="projeto" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Coerência e fluidez do texto do Método no rif-oa (índice, aba Método, T0A)<span class="pre-selo pre-selo-proj" title="PRJ-0003 — Rumo ao IFMG (RIF)">PRJ-0003</span><span class="pre-meta">2026-09-26</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Projeto:</strong> PRJ-0003 — Rumo ao IFMG (RIF)<br><strong style="color:var(--texto);">Objetivo:</strong> Deixar coerente e fluido, em &quot;você&quot; e com a metáfora do degrau amarrada, todo o texto que apresenta o Método de Estudo no rif-oa (web e pen drive).<br><strong style="color:var(--texto);">Equipe:</strong> Julio Azevedo — Coordenador(a) — sem remuneracao (2 h/semana) &middot; Felipe Beato — Colaborador(a) — sem remuneracao (2 h/semana) &middot; Monitor(a) 1 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana) &middot; Monitor(a) 2 — Monitor(a) — sem remuneracao (voluntario(a); 2 h/semana)<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforco: medio · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-texto-metodo-coerencia-2026-09-26.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-texto-metodo-coerencia-2026-09-26.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-texto-metodo-coerencia-2026-09-26.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-texto-metodo-coerencia-2026-09-26.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/_projetos/PRJ-0003/_pre/PRE-site-rif-texto-metodo-coerencia-2026-09-26.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -3153,7 +3174,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/01_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>106 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 8 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>108 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 8 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
