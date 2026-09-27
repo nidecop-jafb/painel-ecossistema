@@ -632,6 +632,8 @@ select option { background: var(--superficie); color: var(--texto); }
 /* ── FE1: secoes Materiais e Simulacoes + modo Refinar Narrativa
    (PRE-painel-refinar-narrativa-materiais-simulacoes-fe1-2026-09-23) ── */
 body:not(.modo-fe) .so-fe { display: none !important; }
+/* Modo Refinar também na FC1 (PRE-painel-refinar-narrativa-fc1-2026-09-27) */
+body:not(.modo-refdisc) .so-refdisc { display: none !important; }
 body:not(.modo-refinar) .so-refinar { display: none !important; }
 body.modo-refinar #sec4, body.modo-refinar #sec5, body.modo-refinar #sec6,
 body.modo-refinar #sec7, body.modo-refinar #sec8,
@@ -715,14 +717,14 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
   <span id="status-dados" style="font-size:10px;color:var(--verde-claro);font-family:'DM Mono',monospace;">✓ FC1-MIN carregado</span>
 </div>
 
-<!-- ═══ MODO DO FORMULARIO — FE1: Criar | Refinar Narrativa ═══ -->
-<div class="modo-fe-bar so-fe" id="modo-fe-bar">
+<!-- ═══ MODO DO FORMULARIO — FC1 e FE1: Criar | Refinar Narrativa ═══ -->
+<div class="modo-fe-bar so-refdisc" id="modo-fe-bar">
   <span style="font-size:11px;font-weight:600;color:var(--ouro);white-space:nowrap;">✎ Modo</span>
   <div class="modo-toggle" style="margin:0;">
     <div class="modo-btn ativo" id="modo-criar-btn" onclick="setModoRefinar(false)">Criar Camada 2</div>
     <div class="modo-btn" id="modo-refinar-btn" onclick="setModoRefinar(true)">Refinar Narrativa</div>
   </div>
-  <span class="nota-info" style="margin:0;font-size:11px;">Refinar: escolha a trilha, revise Narrativa, Materiais e Simulações e copie o prompt no fim — só essas partes mudam, em v{N+1}.</span>
+  <span class="nota-info" id="modo-nota" style="margin:0;font-size:11px;">Refinar: escolha a trilha, revise Narrativa, Materiais e Simulações e copie o prompt no fim — só essas partes mudam, em v{N+1}.</span>
 </div>
 
 <!-- BANNER RESTAURAR SESSÃO -->
@@ -1115,8 +1117,8 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
   </div>
 </div>
 
-<!-- ═══ REFINAR NARRATIVA (so FE1, modo Refinar) ═══ -->
-<div class="secao so-fe so-refinar ativa" id="sec3r">
+<!-- ═══ REFINAR NARRATIVA (FC1 e FE1, modo Refinar) ═══ -->
+<div class="secao so-refdisc so-refinar ativa" id="sec3r">
   <div class="secao-header aberta" onclick="toggleSecao('3r')">
     <span class="secao-titulo" style="margin-left:0;">Refinar Narrativa</span>
     <span class="secao-campos">Prompt de reescrita da Camada 2 ou do TT vigente em v{N+1}</span>
@@ -2072,6 +2074,303 @@ const VIGENTES_FE1 = {
   }
 };
 /* AUTO:TRILHAS_FE1:FIM */
+
+/* AUTO:VIGENTES_FC1:INICIO */
+// GERADO por Trilhas_de_Aprendizagem/_scripts/gerar_vigentes_painel_fc1.py — nao editar a mao.
+// Camada 2 e TT vigentes da FC1 (maior v{N} fora de xx/) — modo Refinar Narrativa
+const VIGENTES_FC1 = {
+  "T01": {
+    "camada2": "T01_Fisica_uma_linguagem_basica_da_ciencia/T01-Camada2-v4.md",
+    "tt": null,
+    "dados": {
+      "camada2": {
+        "titulo": "Física, uma linguagem básica da ciência",
+        "arco": []
+      },
+      "tt": null
+    }
+  },
+  "T02": {
+    "camada2": "T02_Sistema_de_Numeracao_de_Base_12/T02-Camada2-v3.md",
+    "tt": "T02_Sistema_de_Numeracao_de_Base_12/Pre_Aula/T02-TT-v10.md",
+    "dados": {
+      "camada2": {
+        "titulo": "Sistema de Numeração de Base 12",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Sistema de Numeração de Base 12: dos Dedos ao GPS",
+        "rcp": "8"
+      }
+    }
+  },
+  "T03": {
+    "camada2": "T03_Sistema_de_Numeracao_de_Base_10/T03-Camada2-v2.md",
+    "tt": "T03_Sistema_de_Numeracao_de_Base_10/Pre_Aula/T03-TT-v9.md",
+    "dados": {
+      "camada2": {
+        "titulo": "Sistema de Numeração de Base 10",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Sistema de Numeração de Base 10",
+        "rcp": "8"
+      }
+    }
+  },
+  "T04": {
+    "camada2": "T04_O_SI_e_a_Metrologia_no_Brasil/T04-Camada2-v5.md",
+    "tt": null,
+    "dados": {
+      "camada2": {
+        "titulo": "O SI e a Metrologia no Brasil",
+        "arco": []
+      },
+      "tt": null
+    }
+  },
+  "T05": {
+    "camada2": "T05_Notacao_Cientifica/T05-Camada2-v1.md",
+    "tt": "T05_Notacao_Cientifica/Pre_Aula/T05-TT-v8.md",
+    "dados": {
+      "camada2": {
+        "titulo": "O SI e a Metrologia no Brasil",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Notação Científica: A Linguagem da Escala",
+        "rcp": "8"
+      }
+    }
+  },
+  "T06": {
+    "camada2": "T06_Ordem_de_Grandeza/T06-Camada2-v1.md",
+    "tt": "T06_Ordem_de_Grandeza/Pre_Aula/T06-TT-v9.md",
+    "dados": {
+      "camada2": {
+        "titulo": "",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Ordem de Grandeza",
+        "rcp": "8"
+      }
+    }
+  },
+  "T07": {
+    "camada2": "T07_Referencial_Posicao_e_Tempo/T07-Camada2-v1.md",
+    "tt": "T07_Referencial_Posicao_e_Tempo/Pre_Aula/T07-TT-v4.md",
+    "dados": {
+      "camada2": {
+        "titulo": "",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Referencial, Posição e Tempo",
+        "rcp": "8"
+      }
+    }
+  },
+  "T08": {
+    "camada2": "T08_Velocidade_Media_e_Instantanea/T08-Camada2-v2.md",
+    "tt": "T08_Velocidade_Media_e_Instantanea/Pre_Aula/T08-TT-v1.md",
+    "dados": {
+      "camada2": {
+        "titulo": "Velocidade Média e Instantânea",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Velocidade Média e Instantânea",
+        "rcp": "8"
+      }
+    }
+  },
+  "T09": {
+    "camada2": "T09_Aceleracao_Media_e_Instantanea/T09-Camada2-v1.md",
+    "tt": "T09_Aceleracao_Media_e_Instantanea/Pre_Aula/T09-TT-v3.md",
+    "dados": {
+      "camada2": {
+        "titulo": "",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Aceleração Média e Instantânea",
+        "rcp": "8"
+      }
+    }
+  },
+  "T0A": {
+    "camada2": null,
+    "tt": "T0A_Trilhas_de_Aprendizagem/Pre_Aula/T0A-TT-v3.md",
+    "dados": {
+      "camada2": null,
+      "tt": {
+        "titulo": "Trilhas de Aprendizagem na Física Conceitual",
+        "rcp": "8"
+      }
+    }
+  },
+  "T0B": {
+    "camada2": null,
+    "tt": "T0B_Uso_de_Tecnologias_Digitais/Pre_Aula/T0B-TT-v3.md",
+    "dados": {
+      "camada2": null,
+      "tt": {
+        "titulo": "Uso de Tecnologias Digitais — Claude Code e NotebookLM na Física",
+        "rcp": "8"
+      }
+    }
+  },
+  "T0C": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T10": {
+    "camada2": null,
+    "tt": "T10_O_Movimento_Uniforme_MU/Pre_Aula/T10-TT-v2.md",
+    "dados": {
+      "camada2": null,
+      "tt": {
+        "titulo": "O Movimento Uniforme (MU)",
+        "rcp": "8"
+      }
+    }
+  },
+  "T11": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T12": {
+    "camada2": "T12_Analise_Grafica_do_Movimento/T12-Camada2-v1.md",
+    "tt": null,
+    "dados": {
+      "camada2": {
+        "titulo": "",
+        "arco": []
+      },
+      "tt": null
+    }
+  },
+  "T13": {
+    "camada2": "T13_Massa_e_Inercia/T13-Camada2-v3.md",
+    "tt": "T13_Massa_e_Inercia/Pre_Aula/T13-TT-v1.md",
+    "dados": {
+      "camada2": {
+        "titulo": "",
+        "arco": []
+      },
+      "tt": {
+        "titulo": "Massa e Inércia",
+        "rcp": ""
+      }
+    }
+  },
+  "T14": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T15": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T16": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T17": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T18": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T19": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T20": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T21": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T22": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T23": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T24": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T25": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  }
+};
+/* AUTO:VIGENTES_FC1:FIM */
 
 // ═══════════════════════════════════════════════════════════
 // DADOS INLINE — ILB (Introducao ao Laboratorio · Licenciatura em Fisica)
@@ -3703,6 +4002,7 @@ function init() {
     renderCenarioCats();
     setData();
     restaurarEstado();
+    try { aplicarModoFE(); } catch (e) {}  /* FC1 padrão: barra Criar | Refinar */
     verificarDisciplinasDisponiveis();
   }
 }
@@ -5092,8 +5392,15 @@ function aplicarModoFE() {
       `<a href="${SIM_COLECOES_FE1[k]}" target="_blank" rel="noopener" style="color:var(--ouro);">${k} ↗</a>`).join(' · ')
       + ' — escolha a fonte na linha; URL vazia recebe a da coleção. <strong>Própria (SM-v1)</strong> é a simulação SVG+JS do OA de Simulações da trilha: diga o gesto da prática que ela ensaia.';
   }
+  const disc = _discRefino();
+  document.body.classList.toggle('modo-refdisc', !!disc);
+  const nota = document.getElementById('modo-nota');
+  if (nota) nota.textContent = disc === 'fc1'
+    ? 'Refinar: escolha a trilha, marque as partes (Título, Conteúdo, Blocos, Narrativa, Simulações) e copie o prompt no fim — só elas mudam, em v{N+1}.'
+    : 'Refinar: escolha a trilha, revise Narrativa, Materiais e Simulações e copie o prompt no fim — só essas partes mudam, em v{N+1}.';
+  _refinoChave = '';
   let refinar = false;
-  try { refinar = fe && localStorage.getItem(LS + 'modoRefinar') === '1'; } catch (e) {}
+  try { refinar = !!disc && localStorage.getItem(_modoRefinarLs()) === '1'; } catch (e) {}
   setModoRefinar(refinar, true);
 }
 
@@ -5197,23 +5504,49 @@ let _alvoRefino = 'camada2';
 let _refinoChave = '';
 let _refino = null;
 
-const REFINO_PARTES = [
+const REFINO_PARTES_FE1 = [
   ['titulo', 'Título'], ['conteudo', 'Conteúdo'], ['blocos', 'Blocos'],
   ['narrativa', 'Narrativa'], ['materiais', 'Materiais'], ['simulacoes', 'Simulações']];
 /* [chave, nome, pode remover] — Segurança e C5 são obrigatórios na FE1 */
-const REFINO_BOXES_TT = [
+const REFINO_BOXES_TT_FE1 = [
   ['explore', 'EXPLORE', true], ['simule', 'SIMULE', true], ['seguranca', 'Segurança', false],
   ['arte', 'Ciência e Arte', true],
   ['c5', 'Resolução Científica do Problema — Protocolo C5 (8 passos) resolvido', false]];
 
+// FC1 (PRE-painel-refinar-narrativa-fc1-2026-09-27): sem Materiais; Blocos da Camada 2 = arco Piazzi;
+// boxes do TT: [chave, nome, pode remover, só manter]
+const REFINO_PARTES_FC1 = [
+  ['titulo', 'Título'], ['conteudo', 'Conteúdo'], ['blocos', 'Blocos'],
+  ['narrativa', 'Narrativa'], ['simulacoes', 'Simulações']];
+const REFINO_BOXES_TT_FC1 = [
+  ['explore', 'EXPLORE', true], ['simule', 'SIMULE', true], ['arte', 'Ciência e Arte', true],
+  ['rcp', 'Problemas Interdisciplinares — Resolução Científica do Problema (RCP)', false],
+  ['ineditismo', 'INEDITISMO', false, true]];
+const PIAZZI_FC1 = { 'Pré-aula': 20, 'Aula': 45, 'Pós-aula': 20 };
+
+/* 'fc1' | 'fe1' | '' — disciplinas com modo Refinar */
+function _discRefino() {
+  const d = String(typeof _disciplinaAtual !== 'undefined' ? _disciplinaAtual : '').toLowerCase();
+  return d === 'fc1' || d === 'fe1' ? d : '';
+}
+function _ehFC1Refino() { return _discRefino() === 'fc1'; }
+function _refinoPartes() { return _ehFC1Refino() ? REFINO_PARTES_FC1 : REFINO_PARTES_FE1; }
+function _refinoBoxesTT() { return _ehFC1Refino() ? REFINO_BOXES_TT_FC1 : REFINO_BOXES_TT_FE1; }
+function _vigentesDisc() {
+  if (_ehFC1Refino()) return typeof VIGENTES_FC1 !== 'undefined' ? VIGENTES_FC1 : null;
+  return typeof VIGENTES_FE1 !== 'undefined' ? VIGENTES_FE1 : null;
+}
+/* Chaves LS da FE1 ficam como estavam; a FC1 ganha prefixo próprio (T0A, T04… existem nas duas) */
+function _modoRefinarLs() { return LS + (_ehFC1Refino() ? 'modoRefinar_fc1' : 'modoRefinar'); }
+
 function setModoRefinar(on, silencioso) {
-  on = !!on && ehFE1();
+  on = !!on && !!_discRefino();
   document.body.classList.toggle('modo-refinar', on);
   const bc = document.getElementById('modo-criar-btn');
   const br = document.getElementById('modo-refinar-btn');
   if (bc) bc.classList.toggle('ativo', !on);
   if (br) br.classList.toggle('ativo', on);
-  try { if (ehFE1()) localStorage.setItem(LS + 'modoRefinar', on ? '1' : '0'); } catch (e) {}
+  try { if (_discRefino()) localStorage.setItem(_modoRefinarLs(), on ? '1' : '0'); } catch (e) {}
   renderRefino();
   if (!silencioso) showToast(on ? 'Modo Refinar Narrativa — marque as partes a reescrever' : 'Modo Criar Camada 2', 'ouro');
 }
@@ -5226,30 +5559,45 @@ function setAlvoRefino(alvo) {
 }
 
 function _vigenteRefino() {
-  if (!estado.trilha || typeof VIGENTES_FE1 === 'undefined') return null;
-  return (VIGENTES_FE1[estado.trilha] || {})[_alvoRefino] || null;
+  const V = _vigentesDisc();
+  if (!estado.trilha || !V) return null;
+  return (V[estado.trilha] || {})[_alvoRefino] || null;
 }
 
 function _dadosVigente() {
-  if (!estado.trilha || typeof VIGENTES_FE1 === 'undefined') return null;
-  return (((VIGENTES_FE1[estado.trilha] || {}).dados) || {})[_alvoRefino] || null;
+  const V = _vigentesDisc();
+  if (!estado.trilha || !V) return null;
+  return (((V[estado.trilha] || {}).dados) || {})[_alvoRefino] || null;
+}
+
+function _arcoPiazziPadrao() {
+  return Object.keys(PIAZZI_FC1).map(a => ({ ato: a, nome: a, min: PIAZZI_FC1[a] }));
 }
 
 function _refinoPadrao() {
   const d = _dadosVigente() || {};
   const det = d.detalhe || {};
+  const fc = _ehFC1Refino();
   const boxes = {};
-  REFINO_BOXES_TT.forEach(b => { boxes[b[0]] = { acao: 'manter', instr: '' }; });
+  _refinoBoxesTT().forEach(b => { boxes[b[0]] = { acao: 'manter', instr: '' }; });
+  const partes = fc
+    ? { titulo: false, conteudo: false, blocos: false, narrativa: true, simulacoes: true }
+    : { titulo: false, conteudo: false, blocos: false, narrativa: true, materiais: true, simulacoes: true };
+  const arco = fc
+    ? ((d.arco || []).length ? d.arco.map(b => ({ ato: b.ato, nome: b.nome, min: b.min })) : _arcoPiazziPadrao())
+    : (d.arco || []).map(b => ({ nome: b.nome, min: b.min }));
   return {
-    partes: { titulo: false, conteudo: false, blocos: false, narrativa: true, materiais: true, simulacoes: true },
+    partes: partes,
     titulo: d.titulo || '',
-    arcoOn: false, arco: (d.arco || []).map(b => ({ nome: b.nome, min: b.min })),
+    arcoOn: fc, arco: arco,
     detalheOn: false, detalheTitulo: det.titulo || '', detalhe: det.texto || '',
     boxes: boxes
   };
 }
 
-function _refinoLsChave() { return LS + 'refino_' + estado.trilha + '_' + _alvoRefino; }
+function _refinoLsChave() {
+  return LS + 'refino_' + (_ehFC1Refino() ? 'fc1_' : '') + estado.trilha + '_' + _alvoRefino;
+}
 
 function _carregarRefino() {
   const padrao = _refinoPadrao();
@@ -5267,6 +5615,14 @@ const _REF_IN = 'font-size:12px;padding:5px 8px;background:var(--fundo);color:va
 function _arcoSoma() { return _refino.arco.reduce((s, b) => s + (parseInt(b.min, 10) || 0), 0); }
 
 function _arcoSomaHtml() {
+  if (_ehFC1Refino()) {
+    return Object.keys(PIAZZI_FC1).map(a => {
+      const soma = _refino.arco.filter(b => b.ato === a).reduce((s, b) => s + (parseInt(b.min, 10) || 0), 0);
+      const ok = soma === PIAZZI_FC1[a];
+      return `${a}: <strong style="color:${ok ? 'var(--verde-claro)' : 'var(--erro)'};">${soma} min</strong>`
+        + (ok ? ' ✓' : ` ⚠ esperado ${PIAZZI_FC1[a]} min`);
+    }).join(' · ') + ` · Total: <strong>${_arcoSoma()} min</strong>`;
+  }
   const d = _dadosVigente() || {};
   const soma = _arcoSoma();
   if (!d.duracao) return `Soma: <strong>${soma} min</strong> · duração não informada no documento (duracao_lab_min).`;
@@ -5282,7 +5638,7 @@ function renderRefinoEditor() {
   if (!_refino) { partesEl.innerHTML = ''; ed.innerHTML = ''; return; }
   const r = _refino, d = _dadosVigente() || {};
   const tt = _alvoRefino === 'tt';
-  partesEl.innerHTML = REFINO_PARTES.map(([k, nome]) =>
+  partesEl.innerHTML = _refinoPartes().map(([k, nome]) =>
     `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" data-parte="${k}"${r.partes[k] ? ' checked' : ''}> ${nome}</label>`).join('');
   const aviso = t => `<div class="nota-info" style="color:var(--ouro);margin:4px 0;">⚠ ${t}</div>`;
   let h = '';
@@ -5297,7 +5653,21 @@ function renderRefinoEditor() {
       + (tt ? 'No TT, só os tópicos alterados têm título e texto reescritos.' : 'Na Camada 2, a seção 2 recebe os 5 tópicos.')
       + ` <a href="#" onclick="navegarSecao(2);return false;" style="color:var(--ouro);">Ir para a seção 02 ↑</a></div></div>`;
   }
-  if (r.partes.blocos && !tt) {
+  if (r.partes.blocos && !tt && _ehFC1Refino()) {
+    const atoOp = a => Object.keys(PIAZZI_FC1).map(x => `<option${x === a ? ' selected' : ''}>${x}</option>`).join('');
+    h += `<div class="campo-grupo"><div class="campo-label">Blocos — Arco da aula (Piazzi 20/45/20)</div>`
+      + (((d.arco || []).length) ? '' : aviso('Arco da aula (Piazzi) não encontrado na Camada 2 vigente — pré-carregado com 20/45/20.'))
+      + '<div id="refino-arco">' + r.arco.map((b, i) =>
+        `<div class="refino-arco-row" style="display:flex;gap:6px;margin-bottom:5px;flex-wrap:wrap;"><span style="font-size:11px;min-width:52px;align-self:center;">Bloco ${i + 1}</span>`
+        + `<select class="ra-ato" style="flex:0 0 100px;${_REF_IN}">${atoOp(b.ato)}</select>`
+        + `<input type="text" class="ra-nome" value="${_esc(b.nome)}" placeholder="Nome do bloco" style="flex:3 1 160px;${_REF_IN}">`
+        + `<input type="number" class="ra-min" value="${_esc(b.min)}" min="0" style="flex:0 0 70px;${_REF_IN}"><span style="font-size:11px;align-self:center;">min</span>`
+        + `<button type="button" class="btn" data-ra-rm="${i}" style="font-size:9px;padding:3px 6px;background:transparent;border:1px solid var(--erro);color:var(--erro);">✕</button></div>`).join('')
+      + '</div>'
+      + `<button type="button" class="btn" id="refino-arco-add" style="font-size:10px;padding:4px 10px;background:var(--ouro-bg);border:1px solid var(--ouro);color:var(--ouro);">+ Bloco</button>`
+      + `<div class="nota-info" id="refino-arco-soma" style="margin-top:6px;">${_arcoSomaHtml()}</div></div>`;
+  }
+  if (r.partes.blocos && !tt && !_ehFC1Refino()) {
     h += `<div class="campo-grupo"><div class="campo-label">Blocos</div>`
       + `<label style="font-size:12px;display:flex;gap:6px;align-items:center;margin:6px 0;"><input type="checkbox" id="refino-arco-on"${r.arcoOn ? ' checked' : ''}> Arco da aula (3.3)</label>`;
     if (r.arcoOn) {
@@ -5320,12 +5690,12 @@ function renderRefinoEditor() {
     h += '</div>';
   }
   if (r.partes.blocos && tt) {
-    h += `<div class="campo-grupo"><div class="campo-label">Blocos do TT</div>` + REFINO_BOXES_TT.map(([k, nome, rm]) => {
+    h += `<div class="campo-grupo"><div class="campo-label">Blocos do TT</div>` + _refinoBoxesTT().map(([k, nome, rm, soManter]) => {
       const b = r.boxes[k];
       const op = (v, t) => `<option value="${v}"${b.acao === v ? ' selected' : ''}>${t}</option>`;
       return `<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px;">`
         + `<span style="font-size:12px;flex:1 1 220px;">${nome}</span>`
-        + `<select class="rb-acao" data-box="${k}" style="flex:0 0 120px;${_REF_IN}">${op('manter', 'Manter')}${op('reescrever', 'Reescrever')}${rm ? op('remover', 'Remover') : ''}</select>`
+        + `<select class="rb-acao" data-box="${k}" style="flex:0 0 120px;${_REF_IN}">${op('manter', 'Manter')}${soManter ? '' : op('reescrever', 'Reescrever')}${rm ? op('remover', 'Remover') : ''}</select>`
         + (b.acao === 'reescrever' ? `<input type="text" class="rb-instr" data-box="${k}" value="${_esc(b.instr)}" placeholder="Instrução: o que muda neste box" style="flex:2 1 260px;${_REF_IN}">` : '')
         + '</div>';
     }).join('') + '</div>';
@@ -5351,6 +5721,7 @@ function _lerRefinoDom() {
   if (v('refino-titulo')) _refino.titulo = v('refino-titulo').value;
   if (v('refino-arco-on')) _refino.arcoOn = v('refino-arco-on').checked;
   if (v('refino-arco')) _refino.arco = [...document.querySelectorAll('#refino-arco .refino-arco-row')].map(row => ({
+    ...(row.querySelector('.ra-ato') ? { ato: row.querySelector('.ra-ato').value } : {}),
     nome: row.querySelector('.ra-nome').value, min: parseInt(row.querySelector('.ra-min').value, 10) || 0 }));
   if (v('refino-detalhe-on')) _refino.detalheOn = v('refino-detalhe-on').checked;
   if (v('refino-detalhe-titulo')) _refino.detalheTitulo = v('refino-detalhe-titulo').value;
@@ -5380,11 +5751,12 @@ function _ligarEventosRefino() {
     if (!t.closest('#refino-partes') && !t.closest('#refino-editor')) return;
     _lerRefinoDom(); salvarRefino();
     if (t.type === 'checkbox' || t.classList.contains('rb-acao')) renderRefinoEditor();
+    else if (t.classList.contains('ra-ato')) { const sm = document.getElementById('refino-arco-soma'); if (sm) sm.innerHTML = _arcoSomaHtml(); }
   });
   card.addEventListener('click', ev => {
     const t = ev.target;
     if (t.id === 'refino-arco-add') {
-      _lerRefinoDom(); _refino.arco.push({ nome: '', min: 0 }); salvarRefino(); renderRefinoEditor();
+      _lerRefinoDom(); _refino.arco.push(_ehFC1Refino() ? { ato: 'Aula', nome: '', min: 0 } : { nome: '', min: 0 }); salvarRefino(); renderRefinoEditor();
     } else if (t.dataset && t.dataset.raRm !== undefined) {
       _lerRefinoDom(); _refino.arco.splice(parseInt(t.dataset.raRm, 10), 1); salvarRefino(); renderRefinoEditor();
     } else if (t.id === 'refino-recarregar') {
@@ -5408,7 +5780,7 @@ function renderRefino() {
   }
   const v = _vigenteRefino();
   const rotulo = _alvoRefino === 'tt' ? 'TT' : 'Camada 2';
-  el.textContent = v ? '04_Física_Experimental_1/' + v
+  el.textContent = v ? (_ehFC1Refino() ? '01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/' : '04_Física_Experimental_1/') + v
     : `Nenhuma ${rotulo} da ${estado.trilha} no disco — não há o que refinar (use o modo Criar)`;
   const chave = estado.trilha + '|' + _alvoRefino;
   if (chave !== _refinoChave) { _refinoChave = chave; _carregarRefino(); renderRefinoEditor(); }
@@ -5426,13 +5798,14 @@ function _topicosRefino() {
 }
 
 function gerarPromptRefino() {
+  if (_ehFC1Refino()) return gerarPromptRefinoFC1();
   _lerRefinoDom();
   const r = _refino, t = TRILHAS[estado.trilha] || {}, d = _dadosVigente() || {};
   const tt = _alvoRefino === 'tt';
   const vig = _vigenteRefino();
   const tipo = tt ? 'TT' : 'Camada2';
   const val = id => document.getElementById(id)?.value || '[a definir]';
-  const marcadas = REFINO_PARTES.filter(([k]) => r.partes[k]);
+  const marcadas = REFINO_PARTES_FE1.filter(([k]) => r.partes[k]);
   const muda = [];
   let aviso = '';
 
@@ -5468,7 +5841,7 @@ function gerarPromptRefino() {
     muda.push(sub.length ? '- **Blocos:**\n' + sub.join('\n') : '- **Blocos:** nenhuma subparte marcada — manter.');
   }
   if (r.partes.blocos && tt) {
-    const sub = REFINO_BOXES_TT.map(([k, nome]) => {
+    const sub = REFINO_BOXES_TT_FE1.map(([k, nome]) => {
       const b = r.boxes[k];
       if (b.acao === 'remover') return `  - ${nome}: REMOVER o box (e a entrada no sumário, se houver).`;
       if (b.acao === 'reescrever') return `  - ${nome}: REESCREVER — ${b.instr || '[instrução a definir]'}.`;
@@ -5541,6 +5914,135 @@ ${aviso}
 ## Conferir antes de relatar
 - diff v{N} × v{N+1}: nenhuma linha alterada fora das partes marcadas (mostrar o resumo do diff).
 - "Resolução Científica do Problema — Protocolo C5 (8 passos)", nunca C5 isolado; unidades SI em minúsculas (cm, s, m/s).
+- Sem commit antes da aprovação do autor.
+${anc}`;
+}
+
+// Prompt de refino da FC1 (PRE-painel-refinar-narrativa-fc1-2026-09-27)
+function gerarPromptRefinoFC1() {
+  _lerRefinoDom();
+  const r = _refino, t = TRILHAS[estado.trilha] || {}, d = _dadosVigente() || {};
+  const tt = _alvoRefino === 'tt';
+  const vig = _vigenteRefino();
+  const tipo = tt ? 'TT' : 'Camada2';
+  const val = id => document.getElementById(id)?.value || '[a definir]';
+  const marcadas = REFINO_PARTES_FC1.filter(([k]) => r.partes[k]);
+  const muda = [];
+  let aviso = '';
+
+  if (r.partes.titulo) {
+    const novo = r.titulo.trim();
+    if (!novo || novo === (d.titulo || '').trim()) {
+      muda.push(`- **Título:** marcado, mas igual ao vigente ("${d.titulo || ''}") — manter.`);
+    } else {
+      muda.push(`- **Título:** trocar "${d.titulo || '[título atual]'}" por "${novo}" `
+        + (tt ? 'no título da trilha (o "##" logo abaixo de "# Trilha de Aprendizagem NN"), na capa, no sumário e onde o título completo aparecer.'
+              : 'no YAML (campo nome), no H1, na linha "Trilha:" da seção 1 e onde o título completo aparecer.'));
+      aviso = `\n## Aviso para o autor (não alterar)\nO Plano de Ensino e os chips do Painel continuam com o nome "${t.nome || ''}". Não mexer neles: registrar no relato que ficaram diferentes do novo título.\n`;
+    }
+  }
+  if (r.partes.conteudo) {
+    const tps = _topicosRefino();
+    const lista = tps.map(p => `  ${p.n}. ${p.novo}${p.mudou ? `  [ALTERADO — era: ${p.orig}]` : '  [igual]'}`).join('\n');
+    muda.push(tt
+      ? `- **Conteúdo:** reescrever título e texto do Ato II **só dos tópicos [ALTERADO]**; os [igual] ficam palavra por palavra. O que está entre ( ) são assuntos a cobrir, não entram no título.\n${lista}`
+      : `- **Conteúdo:** a seção 2 recebe os 5 tópicos abaixo (o que está entre ( ) são os assuntos).\n${lista}`);
+  }
+  if (r.partes.blocos && !tt) {
+    const somas = Object.keys(PIAZZI_FC1).map(a => [a, r.arco.filter(b => b.ato === a).reduce((s, b) => s + (parseInt(b.min, 10) || 0), 0)]);
+    const fora = somas.filter(([a, s]) => s !== PIAZZI_FC1[a]);
+    const ordem = Object.keys(PIAZZI_FC1);
+    const arco = r.arco.slice().sort((x, y) => ordem.indexOf(x.ato) - ordem.indexOf(y.ato));
+    muda.push('- **Blocos — Arco da aula (Piazzi):** subseção "### Arco da aula (Piazzi)" no fim da seção 3 (substitui, se já existir), '
+      + 'uma linha por bloco, exatamente no formato abaixo (o Painel lê esse formato de volta):\n'
+      + arco.map((b, i) => `    - ${b.ato} · Bloco ${i + 1} — ${b.nome || '[a definir]'} (${b.min} min)`).join('\n')
+      + '\n  Somas: ' + somas.map(([a, s]) => `${a} ${s} min`).join(' · ')
+      + (fora.length ? ` — ATENÇÃO: ${fora.map(([a]) => a).join(', ')} fora de 20/45/20; não corrigir sozinho, apontar no relato.` : ' = 20/45/20.'));
+  }
+  if (r.partes.blocos && tt) {
+    const sub = REFINO_BOXES_TT_FC1.map(([k, nome]) => {
+      const b = r.boxes[k];
+      if (b.acao === 'remover') return `  - ${nome}: REMOVER o box (e a entrada no sumário e no Índice das IT, se houver).`;
+      if (b.acao === 'reescrever') return `  - ${nome}: REESCREVER — ${b.instr || '[instrução a definir]'}.`
+        + (k === 'arte' ? ' Seguir a estrutura obrigatória da seção 15 (_claude/15-ciencia-e-arte-estrutura-obrigatoria-a.md).' : '');
+      return `  - ${nome}: manter palavra por palavra${k === 'rcp' ? ' (exceto a migração da RCP abaixo)' : ''}.`;
+    });
+    muda.push('- **Blocos do TT:**\n' + sub.join('\n'));
+  }
+  if (r.partes.narrativa) {
+    muda.push(tt
+      ? '- **Narrativa:** reescrever o ATO I — O GANCHO e o ATO III — O FECHAMENTO com a ancoragem abaixo, no mesmo tamanho (±15%).'
+      : '- **Narrativa:** reescrever a seção 3 (Ancoragem Narrativa) com a ancoragem abaixo, mantendo as subseções que ela já tem; marcadores de rascunho entre [ ] viram texto final (falas, problema e resolução).');
+  }
+  if (r.partes.simulacoes) {
+    muda.push(tt
+      ? '- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai.'
+      : '- **Simulações:** subseção "### Simulações" no fim da seção 3 (substitui, se já existir): Tópico · Fonte · Nome · URL · Desafio de 3 minutos.');
+  }
+  if (tt) {
+    const rcp = d.rcp;
+    const migra = '- **RCP — migrar para os 5 passos (regra 5 do CLAUDE.md da raiz, A4.52):** cada resolução modelo dos Problemas Interdisciplinares passa aos 5 passos do ramo certo — '
+      + 'Pensamento Quantitativo (O que a questão quer? · O que eu tenho? · Qual é o desenho? · Minha solução · Confiro e respondo) ou '
+      + 'Pensamento Qualitativo (O que a questão quer? · O que eu tenho? · Como eu separo as afirmações? · Julgo uma por uma · Confiro e respondo) — '
+      + 'seguidos da **resolução condensada**. Texto canônico: 01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_scripts/metodo_estudo.py (RCP_*); '
+      + 'ramo qualitativo: _banco_itens/RCP-na-Formacao-Geral-do-ENADE-v1.md. Nada se corta: 1←Interpretação · 2←Inventário · 3←Hipóteses + Representação visual · '
+      + '4←Equações + Cálculo com unidades · 5←Análise + Responda o que foi pedido; números, unidades e respostas ficam iguais. '
+      + 'A tabela do protocolo de 8 etapas vira a tabela dos 5 passos. Não regerar imagem: listar no relato as legendas e linhas do Índice das IT que citam "oito etapas" (ex.: IT-11).';
+    if (rcp === '5') muda.push('- **RCP:** o vigente já está nos 5 passos — manter (salvo instrução no box RCP acima).');
+    else if (rcp === '8') muda.push(migra);
+    else muda.push(migra.replace('- **RCP — migrar', '- **RCP (formato não detectado pelo Painel — conferir; se houver resolução em 8 etapas) — migrar'));
+    muda.push('- Só o .md: o .tex, o PDF 14x21 e o TT digital saem depois pelas skills próprias, sob comando do autor.');
+  }
+
+  const fixo = [];
+  if (!r.partes.titulo) fixo.push('título');
+  fixo.push(r.partes.titulo ? 'identificação (exceto o título)' : 'identificação');
+  if (!r.partes.conteudo) fixo.push(tt ? 'os tópicos do Ato II' : 'conteúdo (5 tópicos)');
+  if (!r.partes.blocos) fixo.push(tt ? 'os boxes (EXPLORE, SIMULE, Ciência e Arte, Problemas Interdisciplinares, INEDITISMO)' : 'arco da aula');
+  if (tt && r.partes.blocos) fixo.push('INEDITISMO (canônico)');
+  if (!r.partes.narrativa) fixo.push(tt ? 'Ato I e Ato III'
+    : (r.partes.blocos || r.partes.simulacoes ? 'o texto narrativo da seção 3 (fora das subseções marcadas)' : 'a narrativa (seção 3)'));
+  if (!r.partes.simulacoes) fixo.push('simulações');
+  fixo.push(tt ? 'epígrafe' : 'contextualização tripla e Ciência-Arte (4 e 4b)', 'lacunas', 'imagens', 'referências', 'nota de IA');
+
+  let anc = '';
+  if (r.partes.narrativa) {
+    anc += `\n## Ancoragem narrativa (do formulário)
+Tipo de narrativa: ${estado.narrativaTipo || '[a definir]'}
+Professor personagem: ${estado.profsAtivos.length ? estado.profsAtivos.map(p => p.nome).join(' · ') : '[a definir]'}
+${getAncoragemProtagonista()}
+Cenário principal: ${estado.cenarioPrincipal || '[a definir]'}
+Cenário secundário: ${val('cenario-sec-edit')}
+Problema narrativo (Ato I): ${val('ato1-edit')}
+Resolução esperada (Ato III): ${val('ato3-edit')}
+`;
+  }
+  if (r.partes.simulacoes) anc += getSimulacoesOutput() || '\nSimulações: [nenhuma informada — manter as do documento]\n';
+
+  const partesTxt = marcadas.map(p => p[1]).join(' · ') + (tt ? ' · RCP em 5 passos' : '');
+  return `# Refinar — ${estado.trilha} · ${tt ? 'Texto Temático (TT)' : 'Camada 2'}
+
+Disciplina: FC1 — Física Conceitual 1 · Trilha ${estado.trilha} — ${t.nome || ''}
+Origem: modo Refinar do Painel (PRE-painel-refinar-narrativa-fc1-2026-09-27)
+Partes a reescrever: ${partesTxt}
+
+## Arquivo
+Raiz: 3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/
+Vigente registrado pelo Painel: ${vig || '[nenhum]'}
+1. Confirme por glob a maior v{N} de ${estado.trilha}-${tipo}-v*.md na pasta da trilha, fora de xx/, _descarte/ e .claude/. Se divergir do registrado, vale o disco — avise.
+2. Grave o resultado como v{N+1} na mesma pasta e mova a v{N} para xx/ da mesma pasta. Nunca sobrescreva.
+3. No cabeçalho, versão v{N+1}, data de hoje e a linha "Refino: ${partesTxt.replace(/ · /g, ' + ')} (Painel)".
+
+## O que muda (e só isto)
+${muda.join('\n')}
+
+## O que NÃO muda
+Todo o resto, palavra por palavra: ${fixo.join(', ')}. Não renumerar seções.
+${aviso}
+## Conferir antes de relatar
+- diff v{N} × v{N+1}: nenhuma linha alterada fora das partes marcadas${tt ? ' e da migração da RCP' : ''} (mostrar o resumo do diff).
+- "Resolução Científica do Problema (RCP)" por extenso na primeira ocorrência; "passo" só para os 5; unidades SI em minúsculas (cm, s, m/s); direção ≠ sentido.
+- Depois de gravar: python 01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_scripts/gerar_vigentes_painel_fc1.py (o Painel passa a mostrar a v{N+1}).
 - Sem commit antes da aprovação do autor.
 ${anc}`;
 }
@@ -6181,6 +6683,8 @@ function avancarSecao(num) {
   const next = num+1;
   if(num===3 && ehFE1()){
     _abrirSecao('3m');
+  } else if(num===3 && document.body.classList.contains('modo-refinar')){
+    _abrirSecao('3r');
   } else if(next<=6){
     const secNext = document.getElementById('sec'+next);
     secNext.classList.add('ativa');
