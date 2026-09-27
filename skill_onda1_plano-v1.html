@@ -634,6 +634,10 @@ select option { background: var(--superficie); color: var(--texto); }
 body:not(.modo-fe) .so-fe { display: none !important; }
 /* Modo Refinar também na FC1 (PRE-painel-refinar-narrativa-fc1-2026-09-27) */
 body:not(.modo-refdisc) .so-refdisc { display: none !important; }
+/* FC1 em Refinar: o card lê o arquivo vigente; as seções do modo Criar saem de cena */
+body.modo-refinar.refino-fc1 #sec2, body.modo-refinar.refino-fc1 #sec3,
+body.modo-refinar.refino-fc1 #pl1, body.modo-refinar.refino-fc1 #pl2, body.modo-refinar.refino-fc1 #pl3,
+body.modo-refinar.refino-fc1 .so-criar { display: none !important; }
 body:not(.modo-refinar) .so-refinar { display: none !important; }
 body.modo-refinar #sec4, body.modo-refinar #sec5, body.modo-refinar #sec6,
 body.modo-refinar #sec7, body.modo-refinar #sec8,
@@ -789,7 +793,7 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
     <hr class="divider">
 
     <!-- Epígrafes da trilha — carregadas automaticamente via postMessage -->
-    <div class="campo-grupo">
+    <div class="campo-grupo so-criar">
       <div class="campo-label" style="font-size:14px;font-weight:600;">
         Ep&iacute;grafes da Trilha
         <span class="campo-auto-badge">Autom&aacute;tico &mdash; sem repeti&ccedil;&atilde;o</span>
@@ -804,7 +808,7 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
       </div>
     </div>
 
-    <div class="btn-row">
+    <div class="btn-row so-criar">
       <button class="btn btn-ouro" id="btn-confirmar-sec1" onclick="avancarSecao(1)">Confirmar e avançar ▶</button>
     </div>
   </div>
@@ -1141,6 +1145,7 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
       <div id="refino-partes" style="display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;"></div>
     </div>
     <div id="refino-editor"></div>
+    <div id="slot-fc-sim"></div>
     <div class="nota-info">Mudam só as partes marcadas; o resto do documento fica igual, palavra por palavra. A versão anterior vai para <code>xx/</code>.</div>
     <div class="btn-row">
       <button class="btn btn-ouro" id="btn-copiar-refino" onclick="copiarPromptRefino()">⧉ Copiar prompt de refino</button>
@@ -2085,7 +2090,9 @@ const VIGENTES_FC1 = {
     "dados": {
       "camada2": {
         "titulo": "Física, uma linguagem básica da ciência",
-        "arco": []
+        "arco": [],
+        "topicos": [],
+        "narrativa": ""
       },
       "tt": null
     }
@@ -2096,11 +2103,27 @@ const VIGENTES_FC1 = {
     "dados": {
       "camada2": {
         "titulo": "Sistema de Numeração de Base 12",
-        "arco": []
+        "arco": [],
+        "topicos": [
+          "Dos Dedos das Mãos aos Símbolos (falanges como ábaco, base 12 babilônica, divisores de 12 vs 10, frações exatas, artesãos de Ouro Preto, régua duodecimal de Seu Geraldo)",
+          "Medindo o Tempo (ciclos astronômicos, segundo no SI — definição atômica césio-133, 1 dia = 86 400 s, 1 ano ≈ 31 556 926 s, relógios coloniais das torres do Carmo e do Pilar, retardo em detonações — ms na NR-22)",
+          "Medindo o Ângulo (grau e radiano, 360° = 2π rad, minutos e segundos de arco, babilônios e o círculo de 360°, engenheiros coloniais de Ouro Preto séc. XVIII, Gorceix e a Escola de Minas 1876, teodolito, erro angular em galerias)",
+          "O GPS e o Google Earth (trilateração por satélite, c = 299 792 458 m/s, precisão GPS civil ±3–5 m vs RTK ±1 cm, formato DMS e DD, coordenadas do Largo do Coimbra: 20°23'32\"S 43°30'18\"W, ANM e georreferenciamento, Google Earth Pro e KML)",
+          "Medindo Azimutes e Rumo (azimute 0°–360° horário a partir do Norte, rumo 0°–90° por quadrante, contra-azimute = azimute + 180°, bússola magnética Brunton/Silva, orientação de galerias subterrâneas, NR-22 e plantas de lavra, haul trucks autônomos)"
+        ],
+        "narrativa": "**Professor autor:** Felipe\n- 35 anos, 1,80 m, pele branca, cabelo curto liso castanho, costeleta curta, barba curta bem feita, olhos castanho-escuros, óculos metal retangular.\n- Aparece no Ato I na Feirinha de Pedra-Sabão como quem já estava ali — com xícara de café, observando a cena chegar ao ponto certo.\n\n**Modo protagonistas:** Individual (Pedro) com coadjuvantes Sofia e Lucas\n\n**1. 👦 Pedro** — protagonista principal\n- Filho de engenheiro de minas · Criativo e analítico · Tom: prático, direto\n- Perfil: mente voltada para viabilidade e gestão estratégica; pergunta \"pra que serve?\" antes de aceitar qualquer teoria.\n- Descritor visual: estudante brasileiro, 16 anos, pele branca, cabelos lisos e pretos, olhos castanho-escuros, uniforme IFMG.\n\n**2. 👩 Sofia** — coadjuvante (abre caderno instintivamente, observa e anota)\n- Curiosa e determinada · Tom: perguntadora, observadora.\n\n**3. 🧑‍🎨 Lucas** (Lucas) — coadjuvante (conecta ao sino, ao tempo histórico)\n- Reflexiva, faz conexões históricas · Tom: paciente, reflexiva.\n\n**Cenário principal:** Feirinha de Pedra-Sabão · Largo do Coimbra · Ouro Preto\n- Bancas de artesanato de pedra-sabão às margens da Igreja São Francisco de Assis.\n- Artesão Seu Geraldo — cabelos brancos, mãos grandes, 40 anos esculpindo pedra-sabão.\n- Régua artesanal de madeira escura com divisão duodecimal (12 marcas por palmo, subdivisões de 5 em 5).\n- Coordenadas GPS do Largo: 20°23'32\"S · 43°30'18\"W (exibidas no celular do Prof. Felipe no Ato I).\n- Neve e sino da Igreja do Pilar — referência sonora que atravessa o Ato I e o Ato III.\n\n**Cenário secundário:** Exterior urbano de Ouro Preto — Rua Cláudio Manoel e Rua Randolfo Bretas (percurso de Pedro até o Largo).\n\n**Problema narrativo — Ato I:**\nPedro desce a Rua Cláudio Manoel numa manhã de sábado de maio com névoa e chega ao Largo do Coimbra. Na banca de Seu Geraldo, artesão de pedra-sabão, encontra uma régua artesanal dividida não em centímetros, mas em doze partes por palmo — com subdivisões de cinco em cinco. \"Um terço de doze é quatro exato, um quarto é três exato. Com dez, você trava.\" Pedro segura a régua e não sabe ao certo o que está olhando. Sofia e Lucas chegam. O Prof. Felipe surge de trás de um toldo com café na mão, pega a régua, levanta a mão aberta e aponta para as falanges: \"Contem.\" Pedro olha — três falanges por dedo, quatro dedos: doze. Felipe abre o GPS no celular (20°23'32\"S 43°30'18\"W): \"O mesmo sistema inventado pelos babilônios há quatro mil anos. Essa régua e esse GPS falam a mesma língua.\" Pedro sente que está diante de algo muito antigo que não havia percebido antes.\n\n**Resolução — Ato III:**\nO sino da Igreja do Pilar bate doze vezes quando Pedro, Sofia e Lucas se preparam para ir embora. Pedro pede a esfera de pedra-sabão polida que Seu Geraldo havia terminado: \"Doze reais.\" Pedro ri, paga e fica olhando a feirinha inteira — bancas, artesãos, celulares com GPS. Sofia relê as anotações: \"Dedos das mãos, tempo, ângulos, GPS, azimutes — e tudo saiu de uma mão com o polegar livre.\" O Prof. Felipe, já se afastando: \"Beleza em matemática é aquilo que funciona com elegância. O 12 funciona há quatro milênios.\" Antes de sumir na Rua Cláudio Manoel, anuncia a próxima trilha: \"Os ponteiros do relógio e as correias transportadoras falam o mesmo idioma. Você vai aprender a ouvi-los.\" (Gancho para T03 — O Ritmo das Máquinas.)\n\n---"
       },
       "tt": {
         "titulo": "Sistema de Numeração de Base 12: dos Dedos ao GPS",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Dos Dedos das Mãos aos Símbolos",
+          "Medindo o Tempo",
+          "Medindo o Ângulo",
+          "O GPS e o Google Earth",
+          "Medindo Azimutes e Rumo"
+        ],
+        "narrativa": "**Professor autor:** Felipe\n- 35 anos, 1,80 m, pele branca, cabelo curto liso castanho, costeleta curta, barba curta bem feita, olhos castanho-escuros, óculos metal retangular.\n- Aparece no Ato I na Feirinha de Pedra-Sabão como quem já estava ali — com xícara de café, observando a cena chegar ao ponto certo.\n\n**Modo protagonistas:** Individual (Pedro) com coadjuvantes Sofia e Lucas\n\n**1. 👦 Pedro** — protagonista principal\n- Filho de engenheiro de minas · Criativo e analítico · Tom: prático, direto\n- Perfil: mente voltada para viabilidade e gestão estratégica; pergunta \"pra que serve?\" antes de aceitar qualquer teoria.\n- Descritor visual: estudante brasileiro, 16 anos, pele branca, cabelos lisos e pretos, olhos castanho-escuros, uniforme IFMG.\n\n**2. 👩 Sofia** — coadjuvante (abre caderno instintivamente, observa e anota)\n- Curiosa e determinada · Tom: perguntadora, observadora.\n\n**3. 🧑‍🎨 Lucas** (Lucas) — coadjuvante (conecta ao sino, ao tempo histórico)\n- Reflexiva, faz conexões históricas · Tom: paciente, reflexiva.\n\n**Cenário principal:** Feirinha de Pedra-Sabão · Largo do Coimbra · Ouro Preto\n- Bancas de artesanato de pedra-sabão às margens da Igreja São Francisco de Assis.\n- Artesão Seu Geraldo — cabelos brancos, mãos grandes, 40 anos esculpindo pedra-sabão.\n- Régua artesanal de madeira escura com divisão duodecimal (12 marcas por palmo, subdivisões de 5 em 5).\n- Coordenadas GPS do Largo: 20°23'32\"S · 43°30'18\"W (exibidas no celular do Prof. Felipe no Ato I).\n- Neve e sino da Igreja do Pilar — referência sonora que atravessa o Ato I e o Ato III.\n\n**Cenário secundário:** Exterior urbano de Ouro Preto — Rua Cláudio Manoel e Rua Randolfo Bretas (percurso de Pedro até o Largo).\n\n**Problema narrativo — Ato I:**\nPedro desce a Rua Cláudio Manoel numa manhã de sábado de maio com névoa e chega ao Largo do Coimbra. Na banca de Seu Geraldo, artesão de pedra-sabão, encontra uma régua artesanal dividida não em centímetros, mas em doze partes por palmo — com subdivisões de cinco em cinco. \"Um terço de doze é quatro exato, um quarto é três exato. Com dez, você trava.\" Pedro segura a régua e não sabe ao certo o que está olhando. Sofia e Lucas chegam. O Prof. Felipe surge de trás de um toldo com café na mão, pega a régua, levanta a mão aberta e aponta para as falanges: \"Contem.\" Pedro olha — três falanges por dedo, quatro dedos: doze. Felipe abre o GPS no celular (20°23'32\"S 43°30'18\"W): \"O mesmo sistema inventado pelos babilônios há quatro mil anos. Essa régua e esse GPS falam a mesma língua.\" Pedro sente que está diante de algo muito antigo que não havia percebido antes.\n\n**Resolução — Ato III:**\nO sino da Igreja do Pilar bate doze vezes quando Pedro, Sofia e Lucas se preparam para ir embora. Pedro pede a esfera de pedra-sabão polida que Seu Geraldo havia terminado: \"Doze reais.\" Pedro ri, paga e fica olhando a feirinha inteira — bancas, artesãos, celulares com GPS. Sofia relê as anotações: \"Dedos das mãos, tempo, ângulos, GPS, azimutes — e tudo saiu de uma mão com o polegar livre.\" O Prof. Felipe, já se afastando: \"Beleza em matemática é aquilo que funciona com elegância. O 12 funciona há quatro milênios.\" Antes de sumir na Rua Cláudio Manoel, anuncia a próxima trilha: \"Os ponteiros do relógio e as correias transportadoras falam o mesmo idioma. Você vai aprender a ouvi-los.\" (Gancho para T03 — O Ritmo das Máquinas.)\n\n---"
       }
     }
   },
@@ -2110,11 +2133,27 @@ const VIGENTES_FC1 = {
     "dados": {
       "camada2": {
         "titulo": "Sistema de Numeração de Base 10",
-        "arco": []
+        "arco": [],
+        "topicos": [
+          "Dos dedos das mãos aos símbolos (numa mão cada \"dobradiça do dedo\" levantado vale uma unidade na outa vale dezenas;",
+          "Números x Algarismos (os algarimos decimais, os grupos de 10, as ordens decimais maiores do que 1; as ordens decimais menores do 1)",
+          "Numeros decimais (parte inteira, parte decimal, virgula como separador, leitura de números decimais)",
+          "Medições de comprimento com réguas (dm [0 a 5]; inch [0 a 20]; cm [0 a 50]-inch [0 a 20]; mm [0 a 500] e inch [0 a 20])",
+          "Algarismos Significativos (Algarismos Corretos, Algarismo Duvidoso, Escrita do Resultado de uma Medida, Regras para Identificar Algarismos Significativos no Resultado de Medidas)"
+        ],
+        "narrativa": "Autores: Julio\nModo: Trio\n  1. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  2. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Filha de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexiva · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Praca da Estacao\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Praca da Estacao, Sofia e Pedro e Lucas se deparam com um fenômeno relacionado a dos dedos das mãos aos símbolos que exige perspectivas diferentes para ser compreendido.\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de dos dedos das mãos aos símbolos — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de dos dedos das mãos aos símbolos — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexiva):\n\"[Reação ao problema de dos dedos das mãos aos símbolos — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Sofia, Pedro, Lucas aplicam conscientemente os conceitos de sistema de numeração de base 10 — cruzando as perspectivas de perguntadora, observadora × prático, direto × paciente, reflexiva — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       },
       "tt": {
         "titulo": "Sistema de Numeração de Base 10",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Dos Dedos às Casas: a origem do sistema decimal",
+          "Números e Algarismos: a diferença que muda tudo",
+          "Números Decimais: vírgula, fração e o sistema posicional",
+          "Medições de Comprimento: da jarda ao metro, da polegada ao milímetro",
+          "Algarismos Significativos: precisão, incerteza e confiabilidade de medidas"
+        ],
+        "narrativa": "Autores: Julio\nModo: Trio\n  1. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  2. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Filha de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexiva · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Praca da Estacao\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Praca da Estacao, Sofia e Pedro e Lucas se deparam com um fenômeno relacionado a dos dedos das mãos aos símbolos que exige perspectivas diferentes para ser compreendido.\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de dos dedos das mãos aos símbolos — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de dos dedos das mãos aos símbolos — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexiva):\n\"[Reação ao problema de dos dedos das mãos aos símbolos — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Sofia, Pedro, Lucas aplicam conscientemente os conceitos de sistema de numeração de base 10 — cruzando as perspectivas de perguntadora, observadora × prático, direto × paciente, reflexiva — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       }
     }
   },
@@ -2124,7 +2163,15 @@ const VIGENTES_FC1 = {
     "dados": {
       "camada2": {
         "titulo": "O SI e a Metrologia no Brasil",
-        "arco": []
+        "arco": [],
+        "topicos": [
+          "MKS x SI (Sistemas de medição não decimais, A conveção do metro, A evolução do MKS até a criação do SI)",
+          "As Grandezas Fundamentais na Base do SI (Grandezas, Unidades de Medida, Símbolos, Instumentos de Medidas na Física e na Mineração)",
+          "Tabelas de unidades do SI (Mecânica, Ondulatória, Termologia, Óptica, Eletricidade, Físc Moderna)",
+          "Unidades em uso não pertencentes ao SI (Mecânica, Ondulatória, Termologia, Óptica, Eletricidade, Físc Moderna)",
+          "Quadro Geral de Unidades do SI no Brasil (Inmetro, Regras de Grafia, Regras de Pronuncia)"
+        ],
+        "narrativa": "Autores: Julio\nModo: Trio\n  1. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  2. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de artesã de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexivo · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Mina da Passagem (Mariana/OP)\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Mina da Passagem (Mariana/OP), Pedro e Sofia e Lucas se deparam com um fenômeno relacionado a o sistema internacional e o inmetro que exige perspectivas diferentes para ser compreendido.\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Pedro, Sofia, Lucas aplicam conscientemente os conceitos de o si e a metrologia no brasil — cruzando as perspectivas de prático, direto × perguntadora, observadora × paciente, reflexivo — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       },
       "tt": null
     }
@@ -2135,11 +2182,27 @@ const VIGENTES_FC1 = {
     "dados": {
       "camada2": {
         "titulo": "O SI e a Metrologia no Brasil",
-        "arco": []
+        "arco": [],
+        "topicos": [
+          "MKS x SI (Sistemas de medição não decimais, A conveção do metro, A evolução do MKS até a criação do SI)",
+          "As Grandezas Fundamentais na Base do SI (Grandezas, Unidades de Medida, Símbolos, Instumentos de Medidas na Física e na Mineração)",
+          "Tabelas de unidades do SI (Mecânica, Ondulatória, Termologia, Óptica, Eletricidade, Físc Moderna)",
+          "Unidades em uso não pertencentes ao SI (Mecânica, Ondulatória, Termologia, Óptica, Eletricidade, Físc Moderna)",
+          "Quadro Geral de Unidades do SI no Brasil (Inmetro, Regras de Grafia, Regras de Pronuncia)"
+        ],
+        "narrativa": "Autores: Julio\nModo: Trio\n  1. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  2. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de artesã de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexivo · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Mina da Passagem (Mariana/OP)\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Mina da Passagem (Mariana/OP), Pedro e Sofia e Lucas se deparam com um fenômeno relacionado a o sistema internacional e o inmetro que exige perspectivas diferentes para ser compreendido.\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Pedro, Sofia, Lucas aplicam conscientemente os conceitos de o si e a metrologia no brasil — cruzando as perspectivas de prático, direto × perguntadora, observadora × paciente, reflexivo — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       },
       "tt": {
         "titulo": "Notação Científica: A Linguagem da Escala",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Potências de 10: A Escada do Universo",
+          "Facilitação de Cálculos: Por que Não Escrever Todos os Zeros",
+          "Números Astronômicos na Produção Mineral",
+          "Todas as Operações com Notação Científica",
+          "Aplicação em Densidades"
+        ],
+        "narrativa": "Autores: Julio\nModo: Trio\n  1. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  2. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de artesã de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexivo · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Mina da Passagem (Mariana/OP)\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Mina da Passagem (Mariana/OP), Pedro e Sofia e Lucas se deparam com um fenômeno relacionado a o sistema internacional e o inmetro que exige perspectivas diferentes para ser compreendido.\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"[Reação ao problema de o sistema internacional e o inmetro — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Pedro, Sofia, Lucas aplicam conscientemente os conceitos de o si e a metrologia no brasil — cruzando as perspectivas de prático, direto × perguntadora, observadora × paciente, reflexivo — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       }
     }
   },
@@ -2148,12 +2211,28 @@ const VIGENTES_FC1 = {
     "tt": "T06_Ordem_de_Grandeza/Pre_Aula/T06-TT-v9.md",
     "dados": {
       "camada2": {
-        "titulo": "",
-        "arco": []
+        "titulo": "Ordem de Grandeza",
+        "arco": [],
+        "topicos": [
+          "Ordem de Grandeza (O que é? Para que serve? Estimativas de Fermi",
+          "Critérios para Estimar da Ordem de Grandeza (Média Aritmética, Média Geométrica)",
+          "Ordem de Grandeza das Escalas (Nuclear, Atômica,  Microscópica, Humana, Astronômica, Cosmológica)",
+          "O Tempo Geológico (Escala natural, Escala anual, Escala Mensal)",
+          "Constantes Físicas e a Previsão de Recursos em Pilhas"
+        ],
+        "narrativa": "- **Modo protagonistas:** Trio\n- **Lucas** (Filha de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.)\n- **Sofia** (Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.)\n- **Pedro** (Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.)\n- **Cenario principal:** Museu de Ciencia e Tecnica (UFOP)\n- **Cenario secundario:** Galeria subterranea de uma mina historica de Ouro Preto, onde os conceitos de ordem de grandeza se manifestam em escala real e em contexto de trabalho.\n- **Ato I (rascunho):** [CENÁRIO — MODO TRIO]\nEm Museu de Ciencia e Tecnica (UFOP), Lucas e Sofia e Pedro se deparam com um fenômeno relacionado a estimativas de fermi que exige perspectivas diferentes para ser compreendido.\n\n🧑‍🎨 Lucas (paciente, reflexiva):\n\"[Reação ao problema de estimativas de fermi — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de estimativas de fermi — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de estimativas de fermi — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\n- **Ato III (rascunho):** Lucas, Sofia, Pedro aplicam conscientemente os conceitos de ordem de grandeza — cruzando as perspectivas de paciente, reflexiva × perguntadora, observadora × prático, direto — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise."
       },
       "tt": {
         "titulo": "Ordem de Grandeza",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Ordem de Grandeza e Estimativas de Fermi",
+          "Critérios para Estimar: Média Aritmética e Geométrica",
+          "Escalas do Universo: do Núcleo Atômico ao Cosmos",
+          "O Tempo Geológico: a Escala do Quadrilátero Ferrífero",
+          "Constantes Físicas e Previsão de Recursos em Pilhas e Reservas"
+        ],
+        "narrativa": "- **Modo protagonistas:** Trio\n- **Lucas** (Filha de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.)\n- **Sofia** (Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.)\n- **Pedro** (Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.)\n- **Cenario principal:** Museu de Ciencia e Tecnica (UFOP)\n- **Cenario secundario:** Galeria subterranea de uma mina historica de Ouro Preto, onde os conceitos de ordem de grandeza se manifestam em escala real e em contexto de trabalho.\n- **Ato I (rascunho):** [CENÁRIO — MODO TRIO]\nEm Museu de Ciencia e Tecnica (UFOP), Lucas e Sofia e Pedro se deparam com um fenômeno relacionado a estimativas de fermi que exige perspectivas diferentes para ser compreendido.\n\n🧑‍🎨 Lucas (paciente, reflexiva):\n\"[Reação ao problema de estimativas de fermi — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de estimativas de fermi — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de estimativas de fermi — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\n- **Ato III (rascunho):** Lucas, Sofia, Pedro aplicam conscientemente os conceitos de ordem de grandeza — cruzando as perspectivas de paciente, reflexiva × perguntadora, observadora × prático, direto — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise."
       }
     }
   },
@@ -2162,12 +2241,28 @@ const VIGENTES_FC1 = {
     "tt": "T07_Referencial_Posicao_e_Tempo/Pre_Aula/T07-TT-v4.md",
     "dados": {
       "camada2": {
-        "titulo": "",
-        "arco": []
+        "titulo": "Referencial, Posição e Tempo",
+        "arco": [],
+        "topicos": [
+          "Relatividade do repouso e do movimento (Referencial como decisão consciente, Repouso relativo, Movimento relativo, Princípio de Galileu)",
+          "Coordenadas em túneis: descrevendo posição (Posição como número com sinal, Origem e sentido positivo, Deslocamento Δx = x_f − x_i, Posição negativa)",
+          "Instante e intervalo de tempo (Instante t como ponto na linha do tempo, Intervalo Δt = t_f − t_i, Analogia posição/deslocamento ↔ instante/intervalo)",
+          "Trajetória: o caminho percorrido (Trajetória como curva, Comprimento ℓ vs módulo do deslocamento |Δx|, Condição de igualdade ℓ = |Δx|, Dependência do referencial)",
+          "O tempo como dimensão técnica (Segundo SI — césio-133, Período e frequência T = 1/f, Prefixos ms/μs/ns, Precisão GPS e correção relativística)"
+        ],
+        "narrativa": "- **Modo protagonistas:** Solo\n- **Sofia** (Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.)\n- **Cenario principal:** Largo Marília de Dirceu, Ouro Preto — ao amanhecer, com caminhão de minério passando pela rua colonial\n- **Cenario secundario:** Galeria da Mina do Chico Rei — estacas de madeira coloniais marcando posição no escuro\n- **Ato I (rascunho):** [CENÁRIO — MODO SOLO]\nEm Largo Marília de Dirceu ao amanhecer, Sofia, Pedro e Lucas observam um caminhão-basculante carregado de cascalho que avança devagar pela rua colonial. Cada estudante descreve a posição do caminhão de forma diferente — porque cada um está num ponto diferente da calçada. O Prof. Felipe chega e provoca: \"Todos veem o mesmo caminhão. Nenhum dá a mesma posição. Quem está certo?\"\n\n👩 Sofia (curiosa, observadora):\n\"A posição muda dependendo de onde eu estou parada? Então 'onde o caminhão está' não é uma pergunta com resposta única?\"\n\n[PERGUNTA-GANCHO]\n\"Para descrever onde alguma coisa está, basta apontar — ou precisa dizer de onde você está apontando?\"\n- **Ato III (rascunho):** Sofia aplica conscientemente os cinco conceitos fundamentais — referencial, posição, instante, intervalo de tempo e trajetória — para descrever o percurso completo do caminhão no largo, demonstrando que a física nomeou o que os mineiros coloniais já faziam com estacas e sinos: localizar coisas no espaço e no tempo."
       },
       "tt": {
         "titulo": "Referencial, Posição e Tempo",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "A relatividade do repouso e do movimento",
+          "Coordenadas em túneis e galerias",
+          "Instante e intervalo de tempo",
+          "Trajetória: o caminho no espaço",
+          "O tempo como dimensão técnica na mineração"
+        ],
+        "narrativa": "- **Modo protagonistas:** Solo\n- **Sofia** (Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.)\n- **Cenario principal:** Largo Marília de Dirceu, Ouro Preto — ao amanhecer, com caminhão de minério passando pela rua colonial\n- **Cenario secundario:** Galeria da Mina do Chico Rei — estacas de madeira coloniais marcando posição no escuro\n- **Ato I (rascunho):** [CENÁRIO — MODO SOLO]\nEm Largo Marília de Dirceu ao amanhecer, Sofia, Pedro e Lucas observam um caminhão-basculante carregado de cascalho que avança devagar pela rua colonial. Cada estudante descreve a posição do caminhão de forma diferente — porque cada um está num ponto diferente da calçada. O Prof. Felipe chega e provoca: \"Todos veem o mesmo caminhão. Nenhum dá a mesma posição. Quem está certo?\"\n\n👩 Sofia (curiosa, observadora):\n\"A posição muda dependendo de onde eu estou parada? Então 'onde o caminhão está' não é uma pergunta com resposta única?\"\n\n[PERGUNTA-GANCHO]\n\"Para descrever onde alguma coisa está, basta apontar — ou precisa dizer de onde você está apontando?\"\n- **Ato III (rascunho):** Sofia aplica conscientemente os cinco conceitos fundamentais — referencial, posição, instante, intervalo de tempo e trajetória — para descrever o percurso completo do caminhão no largo, demonstrando que a física nomeou o que os mineiros coloniais já faziam com estacas e sinos: localizar coisas no espaço e no tempo."
       }
     }
   },
@@ -2177,11 +2272,27 @@ const VIGENTES_FC1 = {
     "dados": {
       "camada2": {
         "titulo": "Velocidade Média e Instantânea",
-        "arco": []
+        "arco": [],
+        "topicos": [
+          "Velocidade média: deslocamento dividido pelo tempo (Conceito físico, Fórmula de Cáculo: v_m = Δx/Δt, Unidades m/s e km/h, Conversão de unidades: regra da cadeia, Sinal da velocidade média)",
+          "Velocidade média em percursos compostos (Velocidade média total ≠ média aritmética das velocidades parciais, Trechos com tempos diferentes, Trechos com distâncias diferentes)",
+          "Velocidade instantânea: o conceito de limite (Δt cada vez menor, Conceito qualitativo de limite, Velocímetro como instrumento de medida de v instantânea, Radar de trânsito)",
+          "Movimento progressivo e retrógrado (v > 0 — progressivo, v < 0 — retrógrado, Relação com sentido positivo do referencial, Repouso instantâneo v = 0)",
+          "Velocidade como ferramenta de gestão na mineração (Velocidade de correia transportadora, Ciclo de transporte de caminhões, Vazão mássica como produto v × seção × densidade, Tempo de ciclo e produtividade)"
+        ],
+        "narrativa": "Autores: Julio (Personagem)\nModo: Trio\n  1. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  2. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexivo · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Viagem de Ônibus | Início: Rodoviária de Ouro Preto às 7:30 | Paradas: Rodoviária de Cachoeira do Campo (10 min); Rodoviária de Itabirito (10 min) | Fim: Rodoviária de Belo Horizonte às 9:30\nGoogle Maps: https://www.google.com/maps/search/?api=1&query=Viagem%20de%20%C3%94nibus%20%7C%20In%C3%ADcio%3A%20Rodovi%C3%A1ria%20de%20Ouro%20Preto%20%C3%A0s%207%3A30%20%7C%20Paradas%3A%20Rodovi%C3%A1ria%20de%20Cachoeira%20do%20Campo%20(10%20min)%3B%20Rodovi%C3%A1ria%20de%20Itabirito%20(10%20min)%20%7C%20Fim%3A%20Rodovi%C3%A1ria%20de%20Belo%20Horizonte%20%C3%A0s%209%3A30%2C%20Ouro%20Preto%2C%20MG%2C%20Brasil\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Viagem, Sofia e Pedro e Lucas se deparam com um fenômeno relacionado a velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) que exige perspectivas diferentes para ser compreendido.\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"[Reação ao problema de velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Sofia, Pedro, Lucas aplicam conscientemente os conceitos de velocidade média e instantânea — cruzando as perspectivas de perguntadora, observadora × prático, direto × paciente, reflexivo — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       },
       "tt": {
         "titulo": "Velocidade Média e Instantânea",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Velocidade média: o deslocamento dividido pelo tempo",
+          "Velocidade média em percursos compostos",
+          "Velocidade instantânea: o conceito de limite",
+          "Movimento progressivo e retrógrado",
+          "Velocidade como ferramenta de gestão na mineração"
+        ],
+        "narrativa": "Autores: Julio (Personagem)\nModo: Trio\n  1. 👩 Sofia (nome canônico)\n     Idade: 16 anos · Pronomes: ela/dela\n     Perfil: Curiosa e determinada; fio condutor científico do curso. Prefere fazer perguntas antes de agir. Rápida em traduzir conceito abstrato em imagem concreta. Motivação: provar que a mineração pode ser tecnológica, ética e respeitosa com o patrimônio histórico.\n     Tom: perguntadora, observadora · Uso típico: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação\n     Cenários favoritos: Praça Tiradentes, Escola de Minas (UFOP), igrejas do centro\n  2. 👦 Pedro (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de engenheiro de minas; criativo e analítico. Mente voltada para viabilidade e gestão estratégica. Pergunta 'pra que serve?' antes de aceitar qualquer teoria. Motivação: mostrar que ciência e técnica geram valor econômico sustentável.\n     Tom: prático, direto · Uso típico: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação\n     Cenários favoritos: Minas (Chico Rei, Passagem), oficinas, canteiros de obras\n  3. 🧑‍🎨 Lucas (nome canônico)\n     Idade: 16 anos · Pronomes: ele/dele\n     Perfil: Filho de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta 'quem pagou o custo humano dessa descoberta?'. Motivação: mostrar que a história da mineração é parte da física.\n     Tom: paciente, reflexivo · Uso típico: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação\n     Cenários favoritos: Museus (Inconfidência, Boulieu), Mina da Passagem, Quadrilátero Ferrífero\nCenario principal: Viagem de Ônibus | Início: Rodoviária de Ouro Preto às 7:30 | Paradas: Rodoviária de Cachoeira do Campo (10 min); Rodoviária de Itabirito (10 min) | Fim: Rodoviária de Belo Horizonte às 9:30\nGoogle Maps: https://www.google.com/maps/search/?api=1&query=Viagem%20de%20%C3%94nibus%20%7C%20In%C3%ADcio%3A%20Rodovi%C3%A1ria%20de%20Ouro%20Preto%20%C3%A0s%207%3A30%20%7C%20Paradas%3A%20Rodovi%C3%A1ria%20de%20Cachoeira%20do%20Campo%20(10%20min)%3B%20Rodovi%C3%A1ria%20de%20Itabirito%20(10%20min)%20%7C%20Fim%3A%20Rodovi%C3%A1ria%20de%20Belo%20Horizonte%20%C3%A0s%209%3A30%2C%20Ouro%20Preto%2C%20MG%2C%20Brasil\nCenario secundario: Laboratorio de fisica do IFMG-OP, com equipamentos de medicao e bancadas de experimentos — complementa a observacao de campo com dados controlados.\nProblema narrativo (Ato I): [CENÁRIO — MODO TRIO]\nEm Viagem, Sofia e Pedro e Lucas se deparam com um fenômeno relacionado a velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) que exige perspectivas diferentes para ser compreendido.\n\n👩 Sofia (perguntadora, observadora):\n\"[Reação ao problema de velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) — perspectiva: trilhas introdutórias, medidas, grandezas, ciências da natureza, energia, ondas, gravitação — 1-2 frases]\"\n\n👦 Pedro (prático, direto):\n\"[Reação ao problema de velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) — perspectiva: mecânica, dinâmica, máquinas simples, cinemática, forças, pressão hidráulica, orientação — 1-2 frases]\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"[Reação ao problema de velocidade média: deslocamento dividido pelo tempo (definição v_m = δx/δt, unidades m/s e km/h, conversão 1 m/s = 3,6 km/h, sinal da velocidade média) — perspectiva: geologia aplicada, química da mineração, escalas de tempo, contextualização histórica, fluidos, gravitação — 1-2 frases]\"\n\n[PERGUNTA-GANCHO]\n\"Como os três podem combinar suas perspectivas para resolver este problema?\"\nResolucao esperada (Ato III): Sofia, Pedro, Lucas aplicam conscientemente os conceitos de velocidade média e instantânea — cruzando as perspectivas de perguntadora, observadora × prático, direto × paciente, reflexivo — para calcular, justificar e comunicar coletivamente a solução ao problema do Ato I, demonstrando que problemas reais exigem múltiplas lentes de análise.\nAutores da trilha (para rodapé do TT): Julio"
       }
     }
   },
@@ -2190,12 +2301,28 @@ const VIGENTES_FC1 = {
     "tt": "T09_Aceleracao_Media_e_Instantanea/Pre_Aula/T09-TT-v3.md",
     "dados": {
       "camada2": {
-        "titulo": "",
-        "arco": []
+        "titulo": "Aceleração Média e Instantânea",
+        "arco": [],
+        "topicos": [
+          "Aceleração média: a taxa de variação da velocidade (Definição a_m = Δv/Δt, Unidade m/s², Sinal da aceleração, Analogia com velocidade média)",
+          "Acelerando e freando: o sinal da aceleração (Aceleração no sentido do movimento — acelera, Aceleração contrária ao movimento — freia, Movimento acelerado vs retardado, Independência do sinal de v e de a)",
+          "Aceleração instantânea e a sensação corporal (Conceito qualitativo de limite Δt → 0, Relação com força sentida pelo corpo, Inércia perceptiva — \"ser jogado para trás/frente\", Acelerômetro do celular)",
+          "A aceleração da gravidade e a queda livre (g ≈ 9,8 m/s² na superfície terrestre, Queda livre como MUV particular, Galileu e a independência da massa, Resistência do ar — condição de queda livre)",
+          "Aceleração em operações de mineração (Freios de emergência em caminhões fora-de-estrada, Gaiola do poço — arranque e frenagem, Centrífugas de laboratório — aceleração centrípeta, NR-22 e limites de desaceleração)"
+        ],
+        "narrativa": "- **Modo protagonistas:** Solo\n- **Lucas** (Filho de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta \"quem pagou o custo humano dessa descoberta?\". Motivação: mostrar que a história da mineração é parte da física.)\n- **Cenario principal:** Rampa de acesso à cava de uma mineração a céu aberto — caminhões fora-de-estrada (CAT 797F) subindo e descendo com carga de minério\n- **Cenario secundario:** Elevador do poço (gaiola) da Mina da Passagem, Mariana — descida de 120 m com paradas controladas\n- **Ato I (rascunho):** [CENÁRIO — MODO SOLO]\nNa rampa de acesso à cava, Lucas observa um caminhão CAT 797F carregado com 360 toneladas de minério iniciando a subida. O motorista solta o freio e o caminhão começa devagar — quase parado — e vai ganhando velocidade ao longo dos primeiros 200 metros. Depois de 45 segundos, o painel indica 25 km/h. O Prof. Felipe comenta: \"Ele saiu de 0 e chegou a 25 km/h em 45 segundos. Isso tem um nome.\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"Se a velocidade muda no tempo, estamos medindo a 'mudança da mudança'? A velocidade era sobre como a posição muda — agora estamos vendo como a própria velocidade muda?\"\n\n[PERGUNTA-GANCHO]\n\"Se velocidade é a taxa com que a posição muda, o que é a taxa com que a velocidade muda — e por que isso importa para quem freia 360 toneladas numa rampa?\"\n- **Ato III (rascunho):** Lucas aplica conscientemente os conceitos de aceleração média e instantânea para calcular a distância de frenagem de um caminhão carregado na rampa descendente — mostrando que a desaceleração máxima permitida pela NR-22 determina a distância mínima entre veículos na rampa, e que confundir aceleração média com instantânea pode subestimar o risco de colisão."
       },
       "tt": {
         "titulo": "Aceleração Média e Instantânea",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Movimentos de veículos no dia a dia",
+          "Aceleração: a taxa de variação da velocidade em relação ao tempo",
+          "Aceleração instantânea e a sensação corporal",
+          "A velocidade e a aceleração no salto de um paraquedista",
+          "Aceleração em operações de mineração"
+        ],
+        "narrativa": "- **Modo protagonistas:** Solo\n- **Lucas** (Filho de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta \"quem pagou o custo humano dessa descoberta?\". Motivação: mostrar que a história da mineração é parte da física.)\n- **Cenario principal:** Rampa de acesso à cava de uma mineração a céu aberto — caminhões fora-de-estrada (CAT 797F) subindo e descendo com carga de minério\n- **Cenario secundario:** Elevador do poço (gaiola) da Mina da Passagem, Mariana — descida de 120 m com paradas controladas\n- **Ato I (rascunho):** [CENÁRIO — MODO SOLO]\nNa rampa de acesso à cava, Lucas observa um caminhão CAT 797F carregado com 360 toneladas de minério iniciando a subida. O motorista solta o freio e o caminhão começa devagar — quase parado — e vai ganhando velocidade ao longo dos primeiros 200 metros. Depois de 45 segundos, o painel indica 25 km/h. O Prof. Felipe comenta: \"Ele saiu de 0 e chegou a 25 km/h em 45 segundos. Isso tem um nome.\"\n\n🧑‍🎨 Lucas (paciente, reflexivo):\n\"Se a velocidade muda no tempo, estamos medindo a 'mudança da mudança'? A velocidade era sobre como a posição muda — agora estamos vendo como a própria velocidade muda?\"\n\n[PERGUNTA-GANCHO]\n\"Se velocidade é a taxa com que a posição muda, o que é a taxa com que a velocidade muda — e por que isso importa para quem freia 360 toneladas numa rampa?\"\n- **Ato III (rascunho):** Lucas aplica conscientemente os conceitos de aceleração média e instantânea para calcular a distância de frenagem de um caminhão carregado na rampa descendente — mostrando que a desaceleração máxima permitida pela NR-22 determina a distância mínima entre veículos na rampa, e que confundir aceleração média com instantânea pode subestimar o risco de colisão."
       }
     }
   },
@@ -2206,7 +2333,15 @@ const VIGENTES_FC1 = {
       "camada2": null,
       "tt": {
         "titulo": "Trilhas de Aprendizagem na Física Conceitual",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "As Trilhas de Aprendizagem e seus Objetos de Aprendizagem",
+          "Os Temas e Assuntos das Trilhas de Aprendizagem",
+          "O Sistema Integrado de Avaliação",
+          "A Infraestrutura Digital para o Estudante",
+          "O Guia de Uso do Estudante"
+        ],
+        "narrativa": ""
       }
     }
   },
@@ -2217,7 +2352,15 @@ const VIGENTES_FC1 = {
       "camada2": null,
       "tt": {
         "titulo": "Uso de Tecnologias Digitais — Claude Code e NotebookLM na Física",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Mão na Massa: Criando o Agente \"Física + Inteligência\"",
+          "As Regras do Jogo: O Contrato Estudante ↔ Agente",
+          "Sob Medida: Personalizando para Física Conceitual e Experimental",
+          "NotebookLM: Seu Caderno de Estudos Inteligente",
+          "Memória de Longo Prazo: Revisão com Repetição Espaçada"
+        ],
+        "narrativa": ""
       }
     }
   },
@@ -2236,7 +2379,15 @@ const VIGENTES_FC1 = {
       "camada2": null,
       "tt": {
         "titulo": "O Movimento Uniforme (MU)",
-        "rcp": "8"
+        "rcp": "8",
+        "topicos": [
+          "Características do MU: velocidade constante, aceleração nula",
+          "Equação horária da posição no MU",
+          "Gráficos do MU: posição × tempo e velocidade × tempo",
+          "Encontro de móveis no MU",
+          "MU em sistemas de fluxo contínuo da mineração"
+        ],
+        "narrativa": ""
       }
     }
   },
@@ -2253,8 +2404,16 @@ const VIGENTES_FC1 = {
     "tt": null,
     "dados": {
       "camada2": {
-        "titulo": "",
-        "arco": []
+        "titulo": "Análise Gráfica do Movimento",
+        "arco": [],
+        "topicos": [
+          "O gráfico posição × tempo: leitura e interpretação (Reta com inclinação positiva = MU progressivo, Reta com inclinação negativa = MU retrógrado, Parábola = MUV, Horizontal = repouso, Inclinação = velocidade)",
+          "O gráfico velocidade × tempo: inclinação e área (Inclinação da curva = aceleração, Área sob a curva = deslocamento, Reta horizontal = MU, Reta inclinada = MUV, Cruzamento com eixo t = inversão de sentido)",
+          "O gráfico aceleração × tempo: MU e MUV (a = 0 — MU, a = constante ≠ 0 — MUV, Área sob curva a×t = variação de velocidade Δv, Transições bruscas vs graduais)",
+          "Transição entre tipos de movimento num mesmo gráfico (Trechos MU + MUV no mesmo percurso, Ponto de parada — v = 0 no gráfico, Mudança de sinal da velocidade — retrógrado, Identificação do tipo de movimento por trecho)",
+          "Telemetria de equipamentos: leitura profissional de gráficos (Tacógrafo legal — registro de velocidade de caminhões, Telemetria OBD — dados em tempo real, Gráficos de produção da usina, Decisão operacional baseada em dados gráficos)"
+        ],
+        "narrativa": "- **Modo protagonistas:** Solo\n- **Lucas** (Filho de artesão de pedra-sabão; carrega a herança afro-brasileira que edificou Ouro Preto. Paciente, faz conexões históricas, pergunta \"quem pagou o custo humano dessa descoberta?\". Motivação: mostrar que a história da mineração é parte da física.)\n- **Cenario principal:** Centro de Controle Operacional (CCO) da mineradora — sala com monitores exibindo telemetria em tempo real de 45 caminhões e 12 escavadeiras\n- **Cenario secundario:** Arquivo Público de Ouro Preto — registros coloniais de produção aurífera (tabelas manuscritas do séc. XVIII que poderiam ser graficadas)\n- **Ato I (rascunho):** [CENÁRIO — MODO SOLO]\nLucas visita o Centro de Controle Operacional com a turma. Na tela principal, um gráfico v×t mostra a viagem completa de um caminhão: saiu do ponto de carga, subiu a rampa (velocidade caindo), cruzou o platô (velocidade constante), desceu até o britador (velocidade subindo). O operador aponta para um pico anômalo e diz: \"Esse motorista excedeu 55 km/h na descida — o sistema alertou em tempo real.\" O Prof. Julio pergunta: \"Olhando só para esse gráfico, sem ver o caminhão, o que mais vocês conseguem descobrir?\"\n\n🧑‍🎨 Lucas (paciente, analítico):\n\"Se a inclinação é aceleração e a área é deslocamento... então esse gráfico sozinho conta a história inteira da viagem? Posição, velocidade, aceleração — tudo está aqui, escondido nas linhas?\"\n\n[PERGUNTA-GANCHO]\n\"Um único gráfico velocidade × tempo pode revelar onde o caminhão esteve, quanto acelerou, quanto percorreu e onde cometeu uma infração — como extrair tudo isso de linhas num papel?\"\n- **Ato III (rascunho):** Lucas recebe o gráfico v×t completo de um ciclo de transporte (carga → rampa → platô → descida → descarga) e extrai sistematicamente: aceleração de cada trecho (inclinação), deslocamento total (área), instante de velocidade máxima, trecho em MU, trecho em MUV e ponto de infração — demonstrando que a leitura de gráficos transforma dados brutos em diagnóstico operacional."
       },
       "tt": null
     }
@@ -2264,12 +2423,22 @@ const VIGENTES_FC1 = {
     "tt": "T13_Massa_e_Inercia/Pre_Aula/T13-TT-v1.md",
     "dados": {
       "camada2": {
-        "titulo": "",
-        "arco": []
+        "titulo": "Massa e Inércia",
+        "arco": [],
+        "topicos": [],
+        "narrativa": "### 3.1 Elenco desta trilha\n\n| Personagem | Papel | Modo | Observação |\n|---|---|---|---|\n| **Kwame** | Co-protagonista principal | Dualidade | **Primeira aparição no curso.** Introduzir naturalmente no Ato I. |\n| **Sofia** | Co-protagonista principal | Dualidade | Fio científico — já conhecido do leitor (T01, T04, T07, T10) |\n| **Pedro** | Secundário | Aparece no Tópico 5 | Voz técnica/aplicada |\n| **Lucas** | Secundária | Aparece no Tópico 1 | Comentário histórico-crítico |\n| **Barbara** | Secundária | Aparece no Tópico 5 | **Primeira aparição no curso.** Voz normativa/ambiental |\n| **Prof. Julio** | Autor-personagem | Ato I e III | Valida o conhecimento ancestral de Kwame com linguagem formal |\n\n> **Regra de apresentação:** Kwame e Barbara aparecem pela primeira vez nesta trilha.\n> O Ato I deve apresentá-los de forma natural, sem retrospectos forçados.\n> O leitor os conhece aqui — não há \"Kwame, que você já conhece de T01\".\n\n### 3.2 Cenários\n\n| Prioridade | Local | Uso narrativo |\n|---|---|---|\n| **Principal** | Museu de Ciência e Técnica — Escola de Minas (UFOP), Ouro Preto | Ato I: Kwame e Sofia diante de vagoneta histórica e correia transportadora em miniatura |\n| **Secundário 1** | Mina do Chico Rei — Ouro Preto | Tópico 1: referência histórica ao trabalho físico dos escravizados — peso real das vagonetas coloniais |\n| **Secundário 2** | Correia transportadora — região de Ouro Preto (Alcoa/contexto didático) | Tópicos 3–5: aplicação técnica contemporânea |\n| **Secundário 3** | Ônibus escolar na topografia acidentada de Ouro Preto | Cotidiano: inércia do corpo no freio brusco |\n\n### 3.3 Ato I — O Gancho\n\n**Cena de abertura:** Uma manhã fria de abril. Kwame e Sofia entram juntos no Museu de Ciência e Técnica da Escola de Minas. É a primeira vez que Kwame vem aqui — Sofia já conhece do campus, mas Kwame veio de Lavras Novas e é sua primeira visita ao museu.\n\nNo corredor central, há uma vagoneta de mineração do século XIX em exposição — pequena, de madeira reforçada, com trilhos de ferro enferrujados. Kwame para na frente dela e fica em silêncio.\n\n*\"Meu bisavô trabalhou com isso\"*, ele diz, sem olhar para Sofia. *\"Não aqui — lá no garimpo, em Lavras Novas. Ele dizia que pedra boa não para de rolar. Pedra ruim para sozinha. Levou anos aprendendo a diferença.\"*\n\nSofia franze a testa. *\"Pedra boa... e pedra ruim? O que ele queria dizer?\"*\n\n*\"Acho que tinha a ver com o peso. Com o que cada uma carregava por dentro.\"*\n\nO Prof. Julio se aproxima e ouve o final da conversa. Em vez de explicar, ele aponta para a correia transportadora em miniatura ao lado — e convida os dois a fazer um experimento: empurrar blocos de materiais diferentes sobre rodas e observar o que acontece depois que a mão para de empurrar.\n\nKwame empurra o bloco de ferro de 5 kg. Ele continua deslizando por mais de um metro. Sofia empurra o de madeira de 500 g. Ele para em menos de 20 cm.\n\n*\"Então...\"*, Kwame diz devagar, olhando para o bloco de ferro ainda em movimento, *\"...o ferro tem mais dessa coisa que meu bisavô chamava de 'peso por dentro'.\"*\n\nProf. Julio sorri. *\"Sua família passou gerações descobrindo isso na prática. Hoje vamos dar nome ao que eles já sabiam.\"*\n\n**Tom:** ancestral-científico; o conhecimento empírico de Kwame precede e motiva a formalização de Sofia; Prof. Julio valida sem substituir — ele nomeia o que Kwame já sentia.\n\n### 3.4 Distribuição dos Tópicos do Ato II\n\n| Tópico | Condutor(a) | Foco narrativo |\n|---|---|---|\n| T1 — Inércia | **Kwame** conduz | O conhecimento do bisavô garimpeiro como ponto de partida; Lucas entra com comentário sobre vagonetas na Mina do Chico Rei |\n| T2 — Massa inercial | **Sofia** conduz | Formalização científica; quadro comparativo Massa × Peso |\n| T3 — 2ª Lei | **Sofia** conduz | A equação F = m·a como linguagem para o que Kwame já sabia |\n| T4 — Força Peso | **Kwame** conduz | Peso do minério nas vagonetas coloniais; ancoragem histórica |\n| T5 — Análise de sistemas | **Kwame + Sofia** | Pedro e Barbara entram: Pedro com a correia técnica, Barbara com NR-22 |\n\n### 3.5 Ato III — O Fechamento\n\n**Cena:** De volta à frente da vagoneta histórica. Kwame a empurra levemente com dois dedos — e ela não se move. Ele empurra com a palma inteira — e ela desliza alguns centímetros nos trilhos enferrujados. Sofia registra a força estimada no caderno.\n\n*\"Agora eu sei o nome\"*, Kwame diz. *\"Inércia. Massa. Força resultante. Mas o conceito — esse meu bisavô já tinha.\"*\n\nProf. Julio olha para os dois: *\"A Física não inventou a inércia. Ela só aprendeu a medir o que a humanidade já vivia há séculos. Vocês dois acabaram de fazer o mesmo caminho — de direções opostas — e chegaram ao mesmo lugar.\"*\n\n**Convite:** Na próxima trilha (T14 — Colisões e Conservação), Kwame e Sofia vão descobrir o que acontece quando dois corpos se chocam — e o que se conserva mesmo quando tudo parece mudar.\n\n### 3.6 Entrelaçamento Ciência–Arte\n\n- **Pintura:** Diego Rivera — *Detroit Industry Murals* (1932–33). Os murais de Rivera mostram trabalhadores industriais como força coletiva em movimento. O peso dos corpos, a resistência dos materiais, a inércia das máquinas — tudo está representado com precisão visual que antecede a equação.\n- **Conexão:** A 2ª Lei de Newton (F = m·a) descreve o que Rivera pintou: massas em movimento, forças aplicadas por corpos humanos sobre matéria resistente. O mural é uma visualização intuitiva da inércia antes de qualquer fórmula.\n- **Vínculo local:** Cândido Portinari pintou *Café* (1935) com a mesma linguagem — corpos pesados carregando cargas pesadas. Ouro Preto tem esse paralelo na pintura barroca das igrejas: os anjos de Aleijadinho sustentam peso real em pedra-sabão, cada curva calculada (empiricamente) para o equilíbrio.\n\n---"
       },
       "tt": {
         "titulo": "Massa e Inércia",
-        "rcp": ""
+        "rcp": "",
+        "topicos": [
+          "Inércia e a 1ª Lei de Newton",
+          "Massa Inercial",
+          "A 2ª Lei de Newton",
+          "Força Peso",
+          "Análise de Sistemas: Equilíbrio e Desequilíbrio"
+        ],
+        "narrativa": "### 3.1 Elenco desta trilha\n\n| Personagem | Papel | Modo | Observação |\n|---|---|---|---|\n| **Kwame** | Co-protagonista principal | Dualidade | **Primeira aparição no curso.** Introduzir naturalmente no Ato I. |\n| **Sofia** | Co-protagonista principal | Dualidade | Fio científico — já conhecido do leitor (T01, T04, T07, T10) |\n| **Pedro** | Secundário | Aparece no Tópico 5 | Voz técnica/aplicada |\n| **Lucas** | Secundária | Aparece no Tópico 1 | Comentário histórico-crítico |\n| **Barbara** | Secundária | Aparece no Tópico 5 | **Primeira aparição no curso.** Voz normativa/ambiental |\n| **Prof. Julio** | Autor-personagem | Ato I e III | Valida o conhecimento ancestral de Kwame com linguagem formal |\n\n> **Regra de apresentação:** Kwame e Barbara aparecem pela primeira vez nesta trilha.\n> O Ato I deve apresentá-los de forma natural, sem retrospectos forçados.\n> O leitor os conhece aqui — não há \"Kwame, que você já conhece de T01\".\n\n### 3.2 Cenários\n\n| Prioridade | Local | Uso narrativo |\n|---|---|---|\n| **Principal** | Museu de Ciência e Técnica — Escola de Minas (UFOP), Ouro Preto | Ato I: Kwame e Sofia diante de vagoneta histórica e correia transportadora em miniatura |\n| **Secundário 1** | Mina do Chico Rei — Ouro Preto | Tópico 1: referência histórica ao trabalho físico dos escravizados — peso real das vagonetas coloniais |\n| **Secundário 2** | Correia transportadora — região de Ouro Preto (Alcoa/contexto didático) | Tópicos 3–5: aplicação técnica contemporânea |\n| **Secundário 3** | Ônibus escolar na topografia acidentada de Ouro Preto | Cotidiano: inércia do corpo no freio brusco |\n\n### 3.3 Ato I — O Gancho\n\n**Cena de abertura:** Uma manhã fria de abril. Kwame e Sofia entram juntos no Museu de Ciência e Técnica da Escola de Minas. É a primeira vez que Kwame vem aqui — Sofia já conhece do campus, mas Kwame veio de Lavras Novas e é sua primeira visita ao museu.\n\nNo corredor central, há uma vagoneta de mineração do século XIX em exposição — pequena, de madeira reforçada, com trilhos de ferro enferrujados. Kwame para na frente dela e fica em silêncio.\n\n*\"Meu bisavô trabalhou com isso\"*, ele diz, sem olhar para Sofia. *\"Não aqui — lá no garimpo, em Lavras Novas. Ele dizia que pedra boa não para de rolar. Pedra ruim para sozinha. Levou anos aprendendo a diferença.\"*\n\nSofia franze a testa. *\"Pedra boa... e pedra ruim? O que ele queria dizer?\"*\n\n*\"Acho que tinha a ver com o peso. Com o que cada uma carregava por dentro.\"*\n\nO Prof. Julio se aproxima e ouve o final da conversa. Em vez de explicar, ele aponta para a correia transportadora em miniatura ao lado — e convida os dois a fazer um experimento: empurrar blocos de materiais diferentes sobre rodas e observar o que acontece depois que a mão para de empurrar.\n\nKwame empurra o bloco de ferro de 5 kg. Ele continua deslizando por mais de um metro. Sofia empurra o de madeira de 500 g. Ele para em menos de 20 cm.\n\n*\"Então...\"*, Kwame diz devagar, olhando para o bloco de ferro ainda em movimento, *\"...o ferro tem mais dessa coisa que meu bisavô chamava de 'peso por dentro'.\"*\n\nProf. Julio sorri. *\"Sua família passou gerações descobrindo isso na prática. Hoje vamos dar nome ao que eles já sabiam.\"*\n\n**Tom:** ancestral-científico; o conhecimento empírico de Kwame precede e motiva a formalização de Sofia; Prof. Julio valida sem substituir — ele nomeia o que Kwame já sentia.\n\n### 3.4 Distribuição dos Tópicos do Ato II\n\n| Tópico | Condutor(a) | Foco narrativo |\n|---|---|---|\n| T1 — Inércia | **Kwame** conduz | O conhecimento do bisavô garimpeiro como ponto de partida; Lucas entra com comentário sobre vagonetas na Mina do Chico Rei |\n| T2 — Massa inercial | **Sofia** conduz | Formalização científica; quadro comparativo Massa × Peso |\n| T3 — 2ª Lei | **Sofia** conduz | A equação F = m·a como linguagem para o que Kwame já sabia |\n| T4 — Força Peso | **Kwame** conduz | Peso do minério nas vagonetas coloniais; ancoragem histórica |\n| T5 — Análise de sistemas | **Kwame + Sofia** | Pedro e Barbara entram: Pedro com a correia técnica, Barbara com NR-22 |\n\n### 3.5 Ato III — O Fechamento\n\n**Cena:** De volta à frente da vagoneta histórica. Kwame a empurra levemente com dois dedos — e ela não se move. Ele empurra com a palma inteira — e ela desliza alguns centímetros nos trilhos enferrujados. Sofia registra a força estimada no caderno.\n\n*\"Agora eu sei o nome\"*, Kwame diz. *\"Inércia. Massa. Força resultante. Mas o conceito — esse meu bisavô já tinha.\"*\n\nProf. Julio olha para os dois: *\"A Física não inventou a inércia. Ela só aprendeu a medir o que a humanidade já vivia há séculos. Vocês dois acabaram de fazer o mesmo caminho — de direções opostas — e chegaram ao mesmo lugar.\"*\n\n**Convite:** Na próxima trilha (T14 — Colisões e Conservação), Kwame e Sofia vão descobrir o que acontece quando dois corpos se chocam — e o que se conserva mesmo quando tudo parece mudar.\n\n### 3.6 Entrelaçamento Ciência–Arte\n\n- **Pintura:** Diego Rivera — *Detroit Industry Murals* (1932–33). Os murais de Rivera mostram trabalhadores industriais como força coletiva em movimento. O peso dos corpos, a resistência dos materiais, a inércia das máquinas — tudo está representado com precisão visual que antecede a equação.\n- **Conexão:** A 2ª Lei de Newton (F = m·a) descreve o que Rivera pintou: massas em movimento, forças aplicadas por corpos humanos sobre matéria resistente. O mural é uma visualização intuitiva da inércia antes de qualquer fórmula.\n- **Vínculo local:** Cândido Portinari pintou *Café* (1935) com a mesma linguagem — corpos pesados carregando cargas pesadas. Ouro Preto tem esse paralelo na pintura barroca das igrejas: os anjos de Aleijadinho sustentam peso real em pedra-sabão, cada curva calculada (empiricamente) para o equilíbrio.\n\n---"
       }
     }
   },
@@ -3820,8 +3989,8 @@ function confirmarRestaurar() {
   const trilhaSalva = localStorage.getItem(LS+'trilha');
   if(!trilhaSalva) return;
   fecharBannerRestaurar();
-  // selecionarTrilha() grava o estado com as listas ainda vazias: guardá-las antes
-  const listasSalvas = ['instrumentos', 'simulacoes', 'materiais'].map(k => [k, localStorage.getItem(LS + k)]);
+  // selecionarTrilha() grava o estado gerado por cima da sessão: guardar a sessão inteira antes
+  const sessaoSalva = _chavesSessao().map(k => [k, localStorage.getItem(k)]);
   // Re-selecionar a trilha visualmente
   const chip = document.querySelector('#chips-trilha .chip');
   if(chip) {
@@ -3829,6 +3998,7 @@ function confirmarRestaurar() {
       .find(c => c.textContent.trim() === trilhaSalva);
     if(alvo) selecionarTrilha(trilhaSalva, alvo);
   }
+  sessaoSalva.forEach(([k, v]) => { if (v !== null) localStorage.setItem(k, v); });
   // Restaurar protagonistas
   try {
     const pa = JSON.parse(localStorage.getItem(LS+'protsAtivos') || '[]');
@@ -3869,7 +4039,6 @@ function confirmarRestaurar() {
     const el = document.getElementById(id);
     if(el && val !== null) el.value = val;
   });
-  listasSalvas.forEach(([k, v]) => { if (v !== null) localStorage.setItem(LS + k, v); });
   restaurarInstrumentos();
   restaurarSimulacoes();
   restaurarMateriais();
@@ -3902,10 +4071,44 @@ function confirmarRestaurar() {
   showToast('Sessão restaurada: Trilha ' + trilhaSalva, 'ouro');
 }
 
+/* Sessão = tudo do prefixo LS, menos os rascunhos do modo Refinar (refino_*) e o modo escolhido
+   (modoRefinar*), que são por trilha e não vazam de uma para outra. */
+function _chavesSessao() {
+  return Object.keys(localStorage).filter(k => k.startsWith(LS) && !/^(refino_|modoRefinar)/.test(k.slice(LS.length)));
+}
+
+/* Trocar de trilha recarrega o formulário limpo: nada da trilha anterior (cenário, listas,
+   seções concluídas, textos) sobra nos campos. A trilha nova é aberta pelo init. */
+function _abrirTrilhaLimpa(code) {
+  try {
+    _chavesSessao().forEach(k => localStorage.removeItem(k));
+    localStorage.setItem(LS + 'abrirTrilha', JSON.stringify({ trilha: code, disc: _disciplinaAtual, curso: _cursoAtual }));
+  } catch (e) {}
+  estado.trilha = null;  /* o beforeunload (salvarEstado) não regrava a sessão antiga */
+  location.reload();
+}
+
+async function _abrirTrilhaPendente() {
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem(LS + 'abrirTrilha') || 'null'); localStorage.removeItem(LS + 'abrirTrilha'); } catch (e) {}
+  if (!p || !p.trilha) return;
+  if (!_embedMode && p.disc && (p.disc !== _disciplinaAtual || p.curso !== _cursoAtual)) {
+    const sd = document.getElementById('sel-disciplina'), sc = document.getElementById('sel-curso');
+    if (sd) sd.value = p.disc;
+    if (sc) sc.value = p.curso;
+    if (await carregarDadosJSON(p.disc, p.curso)) { renderChipsTrilha(); try { renderOASelect(); } catch (e) {} }
+  }
+  fecharBannerRestaurar();
+  const chip = [...document.querySelectorAll('#chips-trilha .chip')].find(c => c.textContent.trim() === p.trilha);
+  if (!chip) return;
+  selecionarTrilha(p.trilha, chip);
+  if (_embedMode && window.parent && window.parent !== window)
+    window.parent.postMessage({ type: 'trilhaSelecionada', trilha: p.trilha }, '*');
+}
+
 function limparEstado() {
-  Object.keys(localStorage)
-    .filter(k => k.startsWith(LS))
-    .forEach(k => localStorage.removeItem(k));
+  _chavesSessao().forEach(k => localStorage.removeItem(k));
+  estado.trilha = null;  /* sem isto o beforeunload regravava tudo e o "Nova Trilha" não limpava */
   /* Avisa o painel (modo embed) ANTES do reload, para ele limpar chips e ocultar o exportar */
   if (window.parent && window.parent !== window) {
     try { window.parent.postMessage({ type: 'trilhaLimpa' }, '*'); } catch (e) {}
@@ -3948,8 +4151,7 @@ function init() {
         document.querySelectorAll('#chips-trilha .chip').forEach(function(c) {
           if (c.textContent === code) chip = c;
         });
-        if (chip) {
-          selecionarTrilha(code, chip);
+        if (chip && selecionarTrilha(code, chip) !== false) {
           if (window.parent) window.parent.postMessage({ type: 'trilhaSelecionada', trilha: code }, '*');
         }
       } else if (ev.data.type === 'limparEstado') {
@@ -3994,7 +4196,10 @@ function init() {
       renderCenarioCats();
       setData();
       verificarDisciplinasDisponiveis();
+      _abrirTrilhaPendente();
     });
+    /* depois de um recarregamento (troca de trilha), o painel não reenvia o curso sozinho */
+    try { window.parent.postMessage({ type: 'pedirCursoContexto' }, '*'); } catch (e) {}
   } else {
     renderChipsTrilha();
     renderPerfis();
@@ -4004,6 +4209,7 @@ function init() {
     restaurarEstado();
     try { aplicarModoFE(); } catch (e) {}  /* FC1 padrão: barra Criar | Refinar */
     verificarDisciplinasDisponiveis();
+    _abrirTrilhaPendente();
   }
 }
 
@@ -4265,6 +4471,8 @@ function renderChipsTrilha() {
 }
 
 function selecionarTrilha(code, chipEl) {
+  if (estado.trilha && estado.trilha !== code) { _abrirTrilhaLimpa(code); return false; }
+  fecharBannerRestaurar();  /* escolher uma trilha descarta a sessão antiga oferecida no banner */
   document.querySelectorAll('#chips-trilha .chip').forEach(c=>c.classList.remove('selecionado'));
   chipEl.classList.add('selecionado');
   estado.trilha = code;
@@ -5547,6 +5755,13 @@ function setModoRefinar(on, silencioso) {
   if (bc) bc.classList.toggle('ativo', !on);
   if (br) br.classList.toggle('ativo', on);
   try { if (_discRefino()) localStorage.setItem(_modoRefinarLs(), on ? '1' : '0'); } catch (e) {}
+  const fc = on && _ehFC1Refino();
+  document.body.classList.toggle('refino-fc1', fc);
+  /* FC1: as simulações entram no card Refinar; fora dele voltam à Narrativa (a FE1 usa a seção 3s) */
+  if (_ehFC1Refino()) {
+    if (fc) { _moverBloco('bloco-sim', 'slot-fc-sim'); try { carregarSimulacoesSugeridas(false); } catch (e) {} }
+    else _moverBloco('bloco-sim', 'ancora-sim', true);
+  }
   renderRefino();
   if (!silencioso) showToast(on ? 'Modo Refinar Narrativa — marque as partes a reescrever' : 'Modo Criar Camada 2', 'ouro');
 }
@@ -5586,9 +5801,11 @@ function _refinoPadrao() {
   const arco = fc
     ? ((d.arco || []).length ? d.arco.map(b => ({ ato: b.ato, nome: b.nome, min: b.min })) : _arcoPiazziPadrao())
     : (d.arco || []).map(b => ({ nome: b.nome, min: b.min }));
+  const tps = (d.topicos || []).length === 5 ? d.topicos.slice() : ['', '', '', '', ''];
   return {
     partes: partes,
     titulo: d.titulo || '',
+    topicos: tps, narrativa: d.narrativa || '', narrInstr: '',
     arcoOn: fc, arco: arco,
     detalheOn: false, detalheTitulo: det.titulo || '', detalhe: det.texto || '',
     boxes: boxes
@@ -5648,7 +5865,21 @@ function renderRefinoEditor() {
       + `<input type="text" id="refino-titulo" value="${_esc(r.titulo)}" style="width:100%;${_REF_IN}">`
       + `<div class="nota-info" style="margin-top:4px;">O Plano de Ensino (§4) e os chips do Painel continuam com o nome antigo — o prompt avisa, não altera.</div></div>`;
   }
-  if (r.partes.conteudo) {
+  if (r.partes.conteudo && _ehFC1Refino()) {
+    h += `<div class="campo-grupo"><div class="campo-label">Conteúdo — 5 tópicos <span class="campo-auto-badge">Do arquivo vigente · ( ) = assuntos</span></div>`
+      + ((d.topicos || []).length === 5 ? '' : aviso('Os 5 tópicos não foram lidos do arquivo vigente — preencher à mão.'))
+      + r.topicos.map((tp, i) => `<div style="display:flex;gap:6px;margin-bottom:5px;"><span style="font-size:11px;min-width:18px;align-self:center;">${i + 1}.</span>`
+        + `<input type="text" class="rc-top" value="${_esc(tp)}" placeholder="Tópico ${i + 1} (assuntos)" style="flex:1;${_REF_IN}"></div>`).join('')
+      + '<div class="nota-info" style="margin-top:4px;">Mude só o que deve mudar; tópico igual ao vigente fica palavra por palavra.</div></div>';
+  }
+  if (r.partes.narrativa && _ehFC1Refino()) {
+    h += `<div class="campo-grupo"><div class="campo-label">Narrativa <span class="campo-auto-badge">Seção 3 da Camada 2 vigente</span></div>`
+      + (d.narrativa ? '' : aviso('Ancoragem narrativa não encontrada na Camada 2 vigente — cole ou escreva à mão.'))
+      + `<textarea id="refino-narr" rows="10" style="width:100%;${_REF_IN}">${_esc(r.narrativa)}</textarea>`
+      + `<div class="campo-label" style="margin-top:8px;">O que muda na narrativa</div>`
+      + `<textarea id="refino-narr-instr" rows="3" placeholder="Ex.: trocar o cenário para a Mina da Passagem; Pedro sai, entra Lucas; o Ato III fecha na correia transportadora" style="width:100%;${_REF_IN}">${_esc(r.narrInstr)}</textarea></div>`;
+  }
+  if (r.partes.conteudo && !_ehFC1Refino()) {
     h += `<div class="campo-grupo"><div class="campo-label">Conteúdo</div><div class="nota-info">Usa os 5 tópicos e assuntos da seção 02 do formulário. `
       + (tt ? 'No TT, só os tópicos alterados têm título e texto reescritos.' : 'Na Camada 2, a seção 2 recebe os 5 tópicos.')
       + ` <a href="#" onclick="navegarSecao(2);return false;" style="color:var(--ouro);">Ir para a seção 02 ↑</a></div></div>`;
@@ -5700,8 +5931,10 @@ function renderRefinoEditor() {
         + '</div>';
     }).join('') + '</div>';
   }
-  if (r.partes.titulo || r.partes.blocos) {
-    h += `<button type="button" class="btn" id="refino-recarregar" style="font-size:10px;padding:4px 10px;margin-bottom:10px;background:transparent;border:1px solid var(--cinza-borda);color:var(--texto-sec);">↺ Recarregar título e blocos do arquivo vigente</button>`;
+  const slotSim = document.getElementById('slot-fc-sim');
+  if (slotSim) slotSim.style.display = (_ehFC1Refino() && r.partes.simulacoes) ? '' : 'none';
+  if (r.partes.titulo || r.partes.blocos || (_ehFC1Refino() && (r.partes.conteudo || r.partes.narrativa))) {
+    h += `<button type="button" class="btn" id="refino-recarregar" style="font-size:10px;padding:4px 10px;margin-bottom:10px;background:transparent;border:1px solid var(--cinza-borda);color:var(--texto-sec);">↺ Recarregar do arquivo vigente</button>`;
   }
   ed.innerHTML = h;
   _atualizarBotaoRefino();
@@ -5719,6 +5952,10 @@ function _lerRefinoDom() {
   document.querySelectorAll('#refino-partes input[data-parte]').forEach(c => { _refino.partes[c.dataset.parte] = c.checked; });
   const v = id => document.getElementById(id);
   if (v('refino-titulo')) _refino.titulo = v('refino-titulo').value;
+  const tps = document.querySelectorAll('#refino-editor .rc-top');
+  if (tps.length) _refino.topicos = [...tps].map(i => i.value);
+  if (v('refino-narr')) _refino.narrativa = v('refino-narr').value;
+  if (v('refino-narr-instr')) _refino.narrInstr = v('refino-narr-instr').value;
   if (v('refino-arco-on')) _refino.arcoOn = v('refino-arco-on').checked;
   if (v('refino-arco')) _refino.arco = [...document.querySelectorAll('#refino-arco .refino-arco-row')].map(row => ({
     ...(row.querySelector('.ra-ato') ? { ato: row.querySelector('.ra-ato').value } : {}),
@@ -5762,7 +5999,8 @@ function _ligarEventosRefino() {
     } else if (t.id === 'refino-recarregar') {
       const p = _refinoPadrao();
       _lerRefinoDom();
-      Object.assign(_refino, { titulo: p.titulo, arco: p.arco, detalheTitulo: p.detalheTitulo, detalhe: p.detalhe });
+      Object.assign(_refino, { titulo: p.titulo, arco: p.arco, detalheTitulo: p.detalheTitulo, detalhe: p.detalhe,
+        topicos: p.topicos, narrativa: p.narrativa });
       salvarRefino(); renderRefinoEditor();
       showToast('Título e blocos recarregados do arquivo vigente', 'ouro');
     }
@@ -5925,7 +6163,6 @@ function gerarPromptRefinoFC1() {
   const tt = _alvoRefino === 'tt';
   const vig = _vigenteRefino();
   const tipo = tt ? 'TT' : 'Camada2';
-  const val = id => document.getElementById(id)?.value || '[a definir]';
   const marcadas = REFINO_PARTES_FC1.filter(([k]) => r.partes[k]);
   const muda = [];
   let aviso = '';
@@ -5942,8 +6179,12 @@ function gerarPromptRefinoFC1() {
     }
   }
   if (r.partes.conteudo) {
-    const tps = _topicosRefino();
-    const lista = tps.map(p => `  ${p.n}. ${p.novo}${p.mudou ? `  [ALTERADO — era: ${p.orig}]` : '  [igual]'}`).join('\n');
+    const vt = (d.topicos || []).length === 5 ? d.topicos : null;
+    const lista = r.topicos.map((tp, i) => {
+      const novo = tp.trim() || (vt ? vt[i] : '[a definir]');
+      if (!vt) return `  ${i + 1}. ${novo}  [conferir com o arquivo]`;
+      return `  ${i + 1}. ${novo}${novo !== vt[i].trim() ? `  [ALTERADO — era: ${vt[i]}]` : '  [igual]'}`;
+    }).join('\n');
     muda.push(tt
       ? `- **Conteúdo:** reescrever título e texto do Ato II **só dos tópicos [ALTERADO]**; os [igual] ficam palavra por palavra. O que está entre ( ) são assuntos a cobrir, não entram no título.\n${lista}`
       : `- **Conteúdo:** a seção 2 recebe os 5 tópicos abaixo (o que está entre ( ) são os assuntos).\n${lista}`);
@@ -5969,10 +6210,17 @@ function gerarPromptRefinoFC1() {
     });
     muda.push('- **Blocos do TT:**\n' + sub.join('\n'));
   }
+  const narrEditada = r.narrativa.trim() !== (d.narrativa || '').trim();
   if (r.partes.narrativa) {
-    muda.push(tt
-      ? '- **Narrativa:** reescrever o ATO I — O GANCHO e o ATO III — O FECHAMENTO com a ancoragem abaixo, no mesmo tamanho (±15%).'
-      : '- **Narrativa:** reescrever a seção 3 (Ancoragem Narrativa) com a ancoragem abaixo, mantendo as subseções que ela já tem; marcadores de rascunho entre [ ] viram texto final (falas, problema e resolução).');
+    const instr = r.narrInstr.trim() ? ` O que muda: ${r.narrInstr.trim()}.`
+      : (tt ? ' Sem instrução do autor: só revisar a forma, sem trocar elenco, cenário nem enredo.'
+            : ' Sem instrução do autor: só completar os marcadores de rascunho entre [ ] e dar fluidez, sem trocar elenco, cenário nem enredo.');
+    const base = tt ? 'da ancoragem abaixo (seção 3 da Camada 2 vigente' + (narrEditada ? ', editada no Painel)' : ')')
+                    : (narrEditada ? 'da ancoragem abaixo (editada no Painel)' : 'da própria seção 3 do arquivo');
+    muda.push((tt
+      ? '- **Narrativa:** reescrever o ATO I — O GANCHO e o ATO III — O FECHAMENTO a partir ' + base + ', no mesmo tamanho (±15%).'
+      : '- **Narrativa:** reescrever a seção 3 (Ancoragem Narrativa) a partir ' + base + ', mantendo as subseções que ela já tem; marcadores de rascunho entre [ ] viram texto final (falas, problema e resolução).')
+      + instr + ' Nada de elenco, cenário ou tema de outra trilha.');
   }
   if (r.partes.simulacoes) {
     muda.push(tt
@@ -6006,16 +6254,8 @@ function gerarPromptRefinoFC1() {
   fixo.push(tt ? 'epígrafe' : 'contextualização tripla e Ciência-Arte (4 e 4b)', 'lacunas', 'imagens', 'referências', 'nota de IA');
 
   let anc = '';
-  if (r.partes.narrativa) {
-    anc += `\n## Ancoragem narrativa (do formulário)
-Tipo de narrativa: ${estado.narrativaTipo || '[a definir]'}
-Professor personagem: ${estado.profsAtivos.length ? estado.profsAtivos.map(p => p.nome).join(' · ') : '[a definir]'}
-${getAncoragemProtagonista()}
-Cenário principal: ${estado.cenarioPrincipal || '[a definir]'}
-Cenário secundário: ${val('cenario-sec-edit')}
-Problema narrativo (Ato I): ${val('ato1-edit')}
-Resolução esperada (Ato III): ${val('ato3-edit')}
-`;
+  if (r.partes.narrativa && (tt || narrEditada) && r.narrativa.trim()) {
+    anc += `\n## Ancoragem narrativa (${narrEditada ? 'editada no Painel' : 'seção 3 da Camada 2 vigente'})\n"""\n${r.narrativa.trim()}\n"""\n`;
   }
   if (r.partes.simulacoes) anc += getSimulacoesOutput() || '\nSimulações: [nenhuma informada — manter as do documento]\n';
 
