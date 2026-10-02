@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1B5E20">
+<title>SUAP Ponto</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-suap-ponto-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icone-suap-ponto-192.png">
+<style>
+  :root { --verde:#1B5E20; --cinza:#455A64; --fundo:#F5F7F6; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,sans-serif; background:var(--fundo); color:#1c1c1c;
+         min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px; }
+  h1 { font-size:1.5rem; margin:8px 0 4px; }
+  #relogio { font-size:2.6rem; font-weight:700; margin:8px 0 24px; font-variant-numeric:tabular-nums; }
+  a.btn { display:block; width:100%; max-width:420px; text-align:center; text-decoration:none;
+          color:#fff; font-size:1.3rem; font-weight:700; padding:22px; border-radius:14px; margin:10px 0; }
+  .entrada { background:var(--verde); }
+  .saida { background:var(--cinza); }
+  p.nota { max-width:420px; font-size:.9rem; color:#555; text-align:center; margin-top:20px; }
+</style>
+</head>
+<body>
+  <img src="icone-suap-ponto.svg" alt="" width="72" height="72">
+  <h1>SUAP Ponto</h1>
+  <div id="relogio">--:--</div>
+  <a class="btn entrada" href="https://suap.ifmg.edu.br/ponto/registrar/">Registrar entrada</a>
+  <a class="btn saida" href="https://suap.ifmg.edu.br/ponto/registrar/">Registrar saída</a>
+  <p class="nota">O registro é feito no próprio SUAP, com a sua sessão. Use o Wi-Fi FUNCIONÁRIOS do campus.</p>
+<script>
+  function tic() {
+    var d = new Date();
+    document.getElementById('relogio').textContent =
+      d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+  tic(); setInterval(tic, 15000);
+</script>
+</body>
+</html>

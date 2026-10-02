@@ -1,0 +1,14 @@
+{
+  "name": "SUAP Ponto",
+  "short_name": "SUAP Ponto",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F7F6",
+  "theme_color": "#1B5E20",
+  "icons": [
+    { "src": "icone-suap-ponto-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icone-suap-ponto-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icone-suap-ponto.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
