@@ -23,7 +23,7 @@
   p.nota { max-width:420px; font-size:.9rem; color:#555; text-align:center; margin-top:20px; }
 </style>
 </head>
-<body>
+<body data-pagina="painel:ponto-index">
   <img src="icone-suap-ponto-192.png" alt="" width="72" height="72">
   <h1>SUAP Ponto</h1>
   <div id="relogio">--:--</div>
@@ -38,5 +38,9 @@
   }
   tic(); setInterval(tic, 15000);
 </script>
+<!-- CONTADOR:INICIO -->
+<script src="../contador-config.js"></script>
+<script src="../acessos.js"></script>
+<!-- CONTADOR:FIM -->
 </body>
 </html>
