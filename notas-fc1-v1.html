@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notas da 3.ª etapa — FC1</title>
+<!-- Aba "Notas 3.ª etapa" do Painel (iframe). Briefing: PRE-integracao-coletor-notas-3a-etapa-fc1-2026-10-10.
+     Le ?notas_fc1=1 do coletor da FC1 (F30) com a chave da equipe (a mesma da aba Analise, guardada so neste
+     navegador); lanca Provinha/TR (NOTA_FC1) e o dia do encontro de cada turma (ENCONTRO_FC1). -->
+<style>
+:root {
+  --ouro: oklch(0.65 0.22 45); --ouro-bg: oklch(0.28 0.05 45); --verde: oklch(0.70 0.15 150); --verde-bg: oklch(0.25 0.04 150);
+  --erro: oklch(0.62 0.21 25); --fundo: oklch(0.12 0.02 260); --card: oklch(0.17 0.02 260); --claro: oklch(0.22 0.02 260);
+  --borda: oklch(0.30 0.02 260); --texto: oklch(0.90 0.01 260); --suave: oklch(0.68 0.01 260); --mono: 'Courier New', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--fundo); color: var(--texto); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; padding: 20px; overflow-x: hidden; }
+h2 { font-family: var(--mono); font-size: 1rem; color: var(--ouro); text-transform: uppercase; letter-spacing: .05em; margin: 26px 0 10px; }
+p.nota { color: var(--suave); font-size: .82rem; margin: 6px 0; max-width: 80ch; }
+.toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.btn { background: var(--ouro); color: #000; border: none; font-family: var(--mono); font-weight: 700; padding: 9px 16px; cursor: pointer; font-size: .85rem; }
+.btn.sec { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
+.btn:disabled { opacity: .5; cursor: wait; }
+select, input[type=text], input[type=number] { background: var(--claro); color: var(--texto); border: 1px solid var(--borda); padding: 7px 9px; font-size: .85rem; }
+input[type=number] { width: 5.5em; }
+label.chk { font-size: .8rem; color: var(--suave); display: inline-flex; gap: 6px; align-items: center; }
+#aviso { font-family: var(--mono); font-size: .8rem; color: var(--suave); }
+#aviso.erro { color: var(--erro); }
+.caixa { overflow-x: auto; border: 1px solid var(--borda); margin-top: 10px; max-width: 100%; }
+table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+th, td { border-bottom: 1px solid var(--borda); padding: 6px 8px; text-align: center; white-space: nowrap; }
+th { background: var(--card); color: var(--ouro); font-family: var(--mono); font-weight: 700; position: sticky; top: 0; }
+td.nome { text-align: left; white-space: normal; min-width: 12em; }
+td.cel { cursor: pointer; font-family: var(--mono); }
+td.cel:hover, td.cel.sel { outline: 2px solid var(--ouro); outline-offset: -2px; }
+td.zero { color: var(--suave); }
+td.cheio { background: var(--verde-bg); color: var(--verde); }
+td.nota { font-weight: 700; color: var(--ouro); font-family: var(--mono); }
+#detalhe { display: none; background: var(--card); border: 1px solid var(--borda); padding: 14px 16px; margin-top: 12px; }
+#detalhe h3 { font-family: var(--mono); color: var(--ouro); font-size: .9rem; margin-bottom: 8px; }
+#detalhe dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: .85rem; }
+#detalhe dt { color: var(--suave); }
+#detalhe a { color: var(--verde); }
+.lanca { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+.enc { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 4px 0; }
+.enc b { font-family: var(--mono); min-width: 8em; display: inline-block; }
+.diag { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 8px; }
+.diag .card { background: var(--card); border: 1px solid var(--borda); padding: 10px 12px; font-size: .82rem; }
+.diag .card b { font-family: var(--mono); color: var(--ouro); }
+.barra { display: inline-block; height: 8px; background: var(--verde); vertical-align: middle; margin-left: 6px; }
+@media (max-width: 560px) { body { padding: 12px; } td.nome { min-width: 9em; } }
+</style>
+</head>
+<body data-pagina="painel:notas-fc1-v1">
+
+<div class="toolbar">
+  <button class="btn" id="btnCarregar" type="button">Carregar notas</button>
+  <select id="selTurma" aria-label="Turma"><option value="">Todas as turmas</option></select>
+  <button class="btn sec" id="btnSuap" type="button">Copiar para o SUAP</button>
+  <label class="chk"><input type="checkbox" id="chkTeste"> incluir a equipe (conferência)</label>
+  <button class="btn sec" id="btnChave" type="button" title="Trocar a chave guardada neste navegador">Chave</button>
+  <span id="aviso"></span>
+</div>
+<p class="nota">Tabela 5.5 do Plano de Ensino v3: aquecimento 1,0 e “Analise e refine” 1,0 por sessão (fora do prazo, 0,5), Provinha
+1,0 por encontro, Folha de Atividades 2,0 por tema pela situação registrada na Monitoria. Base 52 → nota de 0 a 35, mais o bônus
+do Trabalho (até 0,5 por tema), com teto de 35. Toque numa célula da trilha para ver o detalhe e lançar a Provinha e o Trabalho.</p>
+
+<div class="caixa"><table id="tab"><thead></thead><tbody></tbody></table></div>
+<div id="detalhe"></div>
+
+<h2>Dia do encontro de cada turma</h2>
+<p class="nota">Define o prazo: a Pré-aula vale 1,0 até o dia do encontro da trilha; a Pós-aula, até o encontro seguinte. Sem dia
+cadastrado, o prazo é o domingo da semana do encontro.</p>
+<div id="encontros"></div>
+
+<h2>Diagnóstico para a retomada da aula</h2>
+<div class="toolbar"><select id="selTrilha" aria-label="Trilha do diagnóstico"></select></div>
+<div class="diag" id="diag"></div>
+
+<script>
+var CFG = { url: 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec' };
+var CHAVE_KEY = 'fc1_chave_relatorio';   /* a mesma da aba Analise */
+var DIAS = ['', 'segunda', 'terça', 'quarta', 'quinta', 'sexta'];
+var DB = null, SEL = null;
+function $(id) { return document.getElementById(id); }
+function esc(s) { var d = document.createElement('div'); d.textContent = String(s == null ? '' : s); return d.innerHTML; }
+function num(x) { return (Math.round(x * 100) / 100).toString().replace('.', ','); }
+function aviso(m, erro) { var a = $('aviso'); a.textContent = m || ''; a.className = erro ? 'erro' : ''; }
+function chave(forcar) {
+  var c = '';
+  try { c = forcar ? '' : (localStorage.getItem(CHAVE_KEY) || ''); } catch (e) { c = ''; }
+  if (!c) {
+    c = (prompt('Digite a chave de acesso da equipe (fornecida pelo professor):') || '').trim();
+    if (c) { try { localStorage.setItem(CHAVE_KEY, c); } catch (e) { /* sem localStorage */ } }
+  }
+  return c;
+}
+function postar(dados) {
+  dados.chave = chave(false);
+  return fetch(CFG.url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(dados) })
+    .then(function (r) { return r.json(); });
+}
+
+function carregar() {
+  var c = chave(false);
+  if (!c) { aviso('Sem a chave, as notas não abrem.', true); return; }
+  $('btnCarregar').disabled = true; aviso('Carregando…');
+  fetch(CFG.url + '?notas_fc1=1&chave=' + encodeURIComponent(c) + ($('chkTeste').checked ? '&teste=1' : ''))
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      $('btnCarregar').disabled = false;
+      if (!d.ok) { aviso(d.erro || 'Erro ao carregar.', true); if (/chave/i.test(d.erro || '')) { try { localStorage.removeItem(CHAVE_KEY); } catch (e) {} } return; }
+      DB = d; montarTurmas(); desenhar(); encontros(); diagnostico();
+      aviso(d.alunos.length + ' estudantes · gerado em ' + new Date(d.gerado_em).toLocaleString('pt-BR'));
+    })
+    .catch(function () { $('btnCarregar').disabled = false; aviso('Sem conexão com o coletor.', true); });
+}
+
+function turmas() {
+  var t = {}; DB.alunos.forEach(function (a) { t[a.turma] = 1; }); return Object.keys(t).sort();
+}
+function montarTurmas() {
+  var s = $('selTurma'), atual = s.value;
+  s.innerHTML = '<option value="">Todas as turmas</option>' + turmas().map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('');
+  s.value = atual;
+  $('selTrilha').innerHTML = DB.trilhas.map(function (f) { return '<option>' + f[0] + '</option>'; }).join('');
+}
+function filtrados() {
+  var t = $('selTurma').value;
+  return DB.alunos.filter(function (a) { return !t || a.turma === t; })
+    .sort(function (x, y) { return (x.turma + x.nome).localeCompare(y.turma + y.nome, 'pt-BR'); });
+}
+function somaTrilha(c) {
+  return c ? c.aq[0] + c.aq[1] + c.rf[0] + c.rf[1] + (Number(c.pr) || 0) + c.fa : 0;
+}
+function maxTrilha(i) {   /* aquecimento + refine (2 sessoes; a T18 tem so a Pre) + Provinha + FA (de T12 em diante) */
+  var f = DB.trilhas[i]; return (f[3] ? 4 : 2) + 1 + (i > 0 ? 2 : 0);
+}
+function desenhar() {
+  var tr = DB.trilhas;
+  $('tab').querySelector('thead').innerHTML = '<tr><th>Turma</th><th>Estudante</th>' +
+    tr.map(function (f) { return '<th>' + f[0] + '</th>'; }).join('') + '<th>Base /52</th><th>Bônus</th><th>Nota /35</th></tr>';
+  $('tab').querySelector('tbody').innerHTML = filtrados().map(function (a) {
+    return '<tr><td>' + esc(a.turma) + '</td><td class="nome">' + esc(a.nome || a.ra) + '</td>' +
+      tr.map(function (f, i) {
+        var s = somaTrilha(a.t[f[0]]), cls = s === 0 ? 'zero' : (s >= maxTrilha(i) ? 'cheio' : '');
+        return '<td class="cel ' + cls + '" data-ra="' + esc(a.ra) + '" data-tr="' + f[0] + '">' + num(s) + '</td>';
+      }).join('') +
+      '<td>' + num(a.base) + '</td><td>' + num(a.bonus) + '</td><td class="nota">' + num(a.nota) + '</td></tr>';
+  }).join('') || '<tr><td colspan="13">Nenhum estudante nesta turma.</td></tr>';
+  if (SEL) { detalhe(SEL.ra, SEL.tr); }
+}
+
+function pts(v) { return v === 1 ? '1,0 (no prazo)' : (v === 0.5 ? '0,5 (atrasado)' : '0'); }
+function detalhe(ra, tr) {
+  var a = DB.alunos.filter(function (x) { return x.ra === ra; })[0], i = DB.trilhas.map(function (f) { return f[0]; }).indexOf(tr);
+  if (!a || i < 0) { return; }
+  SEL = { ra: ra, tr: tr };
+  [].forEach.call(document.querySelectorAll('td.cel'), function (td) { td.classList.toggle('sel', td.getAttribute('data-ra') === ra && td.getAttribute('data-tr') === tr); });
+  var f = DB.trilhas[i], c = a.t[tr] || { aq: [0, 0], rf: [0, 0], passo: ['', ''], foto: ['', ''], pr: '', tr: '', fa: 0, fa_sit: '' };
+  var linha = function (rot, k) {
+    return '<dt>' + rot + '</dt><dd>aquecimento ' + pts(c.aq[k]) + ' · refine ' + pts(c.rf[k]) +
+      (c.passo[k] !== '' ? ' · primeiro erro: ' + (Number(c.passo[k]) ? 'passo ' + c.passo[k] : 'não errou') : '') +
+      (c.foto[k] ? ' · <a href="' + esc(c.foto[k]) + '" target="_blank" rel="noopener">foto</a>' : '') + '</dd>';
+  };
+  var d = $('detalhe');
+  d.innerHTML = '<h3>' + esc(a.nome || a.ra) + ' · ' + esc(a.turma) + ' · ' + tr + '</h3><dl>' +
+    linha('Pré-aula (' + f[2] + ')', 0) + (f[3] ? linha('Pós-aula (' + f[3] + ')', 1) : '') +
+    '<dt>Provinha</dt><dd>' + (c.pr === '' ? 'não lançada' : num(c.pr)) + '</dd>' +
+    (i > 0 ? '<dt>Folha de Atividades</dt><dd>' + (c.fa_sit ? esc(c.fa_sit) + ' → ' + num(c.fa) : 'sem registro na Monitoria → 0') + '</dd>' : '') +
+    '<dt>Bônus do Trabalho</dt><dd>' + (c.tr === '' ? 'não lançado' : num(c.tr)) + '</dd></dl>' +
+    '<div class="lanca"><label>Provinha (0 a 1) <input type="number" id="inPr" min="0" max="1" step="0.1" value="' + (c.pr === '' ? '' : c.pr) + '"></label>' +
+    '<button class="btn" type="button" id="btnPr">Lançar</button>' +
+    '<label>Trabalho (0 a 0,5) <input type="number" id="inTr" min="0" max="0.5" step="0.1" value="' + (c.tr === '' ? '' : c.tr) + '"></label>' +
+    '<button class="btn" type="button" id="btnTr">Lançar</button></div>';
+  d.style.display = 'block';
+  $('btnPr').onclick = function () { lancar(ra, tr, 'pr', $('inPr').value); };
+  $('btnTr').onclick = function () { lancar(ra, tr, 'tr', $('inTr').value); };
+}
+function lancar(ra, tr, campo, valor) {
+  aviso('Lançando…');
+  postar({ tipo: 'NOTA_FC1', ra: ra, trilha: tr, campo: campo, valor: valor })
+    .then(function (r) { if (!r.ok) { aviso(r.erro || 'Recusado.', true); return; } aviso('Lançado. Atualizando…'); carregar(); })
+    .catch(function () { aviso('Sem conexão com o coletor.', true); });
+}
+
+function encontros() {
+  $('encontros').innerHTML = turmas().filter(function (t) { return t !== 'EQUIPE'; }).map(function (t) {
+    var d = DB.dias[t] || 0;
+    return '<div class="enc"><b>' + esc(t) + '</b><select data-turma="' + esc(t) + '">' +
+      DIAS.map(function (n, k) { return '<option value="' + k + '"' + (k === d ? ' selected' : '') + '>' + (k ? n + '-feira' : 'sem dia cadastrado') + '</option>'; }).join('') +
+      '</select><button class="btn sec" type="button" data-salvar="' + esc(t) + '">Salvar</button></div>';
+  }).join('') || '<p class="nota">Carregue as notas para ver as turmas.</p>';
+}
+
+function pct(n, d) { return d ? Math.round(100 * n / d) : 0; }
+function diagnostico() {
+  var tr = $('selTrilha').value || DB.trilhas[0][0], g = (DB.diag || {})[tr] || {};
+  var html = Object.keys(g).sort().filter(function (t) { return !$('selTurma').value || t === $('selTurma').value; }).map(function (t) {
+    var x = g[t], perg = function (p, rot) {
+      return '<div>' + rot + ' (' + p.n + ' envios): ' + p.q.map(function (q, k) {
+        var v = pct(q, p.n); return 'P' + (k + 1) + ' ' + v + '%<span class="barra" style="width:' + (v * 0.4) + 'px"></span>';
+      }).join(' · ') + '</div>';
+    };
+    var tot = x.passos.reduce(function (s, v) { return s + v; }, 0);
+    return '<div class="card"><b>' + esc(t) + ' · ' + tr + '</b>' + perg(x.pre, 'Pré-aula') + perg(x.pos, 'Pós-aula') +
+      '<div>Primeiro erro no refine (' + tot + '): ' + x.passos.map(function (v, k) { return (k ? 'passo ' + k : 'não errou') + ' ' + v; }).join(' · ') + '</div></div>';
+  }).join('');
+  $('diag').innerHTML = html || '<p class="nota">Nenhum envio ainda nesta trilha.</p>';
+}
+
+function copiarSuap() {
+  if (!DB) { aviso('Carregue as notas primeiro.', true); return; }
+  var txt = filtrados().filter(function (a) { return a.turma !== 'EQUIPE'; })
+    .map(function (a) { return a.ra + ';' + num(a.nota); }).join('\n');
+  var ok = function () { aviso('Copiado: ' + txt.split('\n').length + ' linhas RA;nota da turma filtrada.'); };
+  if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(txt).then(ok, function () { prompt('Copie:', txt); }); }
+  else { prompt('Copie:', txt); }
+}
+
+$('btnCarregar').onclick = carregar;
+$('btnChave').onclick = function () { chave(true); carregar(); };
+$('btnSuap').onclick = copiarSuap;
+$('chkTeste').onchange = function () { if (DB) { carregar(); } };
+$('selTurma').onchange = function () { if (DB) { desenhar(); diagnostico(); } };
+$('selTrilha').onchange = function () { if (DB) { diagnostico(); } };
+document.addEventListener('click', function (e) {
+  var td = e.target.closest('td.cel');
+  if (td) { detalhe(td.getAttribute('data-ra'), td.getAttribute('data-tr')); $('detalhe').scrollIntoView({ block: 'nearest' }); return; }
+  var b = e.target.closest('[data-salvar]');
+  if (b) {
+    var t = b.getAttribute('data-salvar'), dia = +document.querySelector('select[data-turma="' + t + '"]').value;
+    if (!dia) { aviso('Escolha o dia da semana da ' + t + '.', true); return; }
+    aviso('Salvando…');
+    postar({ tipo: 'ENCONTRO_FC1', turma: t, dia: dia }).then(function (r) { if (!r.ok) { aviso(r.erro || 'Recusado.', true); return; } aviso('Dia salvo. Atualizando…'); carregar(); })
+      .catch(function () { aviso('Sem conexão com o coletor.', true); });
+  }
+});
+try { if (localStorage.getItem(CHAVE_KEY)) { carregar(); } } catch (e) { /* sem localStorage */ }
+</script>
+<!-- CONTADOR:INICIO -->
+<script src="contador-config.js"></script>
+<script src="acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>
