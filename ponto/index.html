@@ -21,6 +21,14 @@
   .entrada { background:var(--verde); }
   .saida { background:var(--cinza); }
   p.nota { max-width:420px; font-size:.9rem; color:#555; text-align:center; margin-top:20px; }
+  button.rede { display:block; width:100%; max-width:420px; font-size:1.05rem; font-weight:700; padding:14px;
+                border-radius:14px; margin:18px 0 6px; background:#fff; color:var(--verde); border:2px solid var(--verde); }
+  #rede { max-width:420px; width:100%; font-size:.95rem; line-height:1.45; border-radius:12px; padding:12px 14px;
+          background:#fff; border:1px solid #cfd8dc; overflow-wrap:anywhere; }
+  #rede.ok { border-color:var(--verde); background:#E8F5E9; }
+  #rede.fora { border-color:#E65100; background:#FFF3E0; }
+  #rede ol { margin:6px 0 0; padding-left:20px; }
+  #rede button { margin-top:10px; font-size:.9rem; padding:8px 12px; border-radius:10px; border:1px solid #90A4AE; background:#fff; }
 </style>
 </head>
 <body data-pagina="painel:ponto-index">
@@ -29,7 +37,10 @@
   <div id="relogio">--:--</div>
   <a class="btn entrada" href="https://suap.ifmg.edu.br/ponto/registrar/">Registrar entrada</a>
   <a class="btn saida" href="https://suap.ifmg.edu.br/ponto/registrar/">Registrar saída</a>
-  <p class="nota">O registro é feito no próprio SUAP, com a sua sessão. Use o Wi-Fi FUNCIONÁRIOS do campus.</p>
+  <button type="button" class="rede" id="btnRede">Conferir rede</button>
+  <div id="rede" hidden aria-live="polite"></div>
+  <p class="nota">O registro é feito no próprio SUAP, com a sua sessão. Use o Wi-Fi FUNCIONÁRIOS do campus.
+  Se o SUAP disser "Você não está em um local autorizado", toque em Conferir rede.</p>
 <script>
   function tic() {
     var d = new Date();
@@ -37,6 +48,49 @@
       d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
   tic(); setInterval(tic, 15000);
+
+  /* Conferir rede: o SUAP aceita o ponto so pelo IP (IPv4) da rede do campus. Mostra por onde o celular sai.
+     Saidas conhecidas do campus (aba presenca_ips, 2026-10): 200.131.68.x. Nada e enviado alem da consulta do IP. */
+  var CAMPUS = /^200\.131\.68\.\d{1,3}$/;
+  function ip4() {
+    return fetch('https://api.ipify.org?format=json', { cache: 'no-store' }).then(function (r) { return r.json(); })
+      .then(function (j) { return j.ip; })
+      .catch(function () { return fetch('https://ipv4.icanhazip.com', { cache: 'no-store' }).then(function (r) { return r.text(); })
+        .then(function (s) { return s.trim(); }); });
+  }
+  function textoTI(ip) {
+    return 'Prezados, sou servidor do IFMG Campus Ouro Preto. No celular, conectado ao Wi-Fi FUNCIONÁRIOS, ' +
+      'o registro de ponto do SUAP recusa com "Acesso não permitido. Você não está em um local autorizado"; no PC, na mesma rede, funciona. ' +
+      'Nesse momento o celular saía pelo IP ' + ip + ' (' + new Date().toLocaleString('pt-BR') + '). ' +
+      'Podem incluir essa saída na lista de locais autorizados do ponto? Obrigado. Julio Azevedo';
+  }
+  function conferir() {
+    var box = document.getElementById('rede');
+    box.hidden = false; box.className = ''; box.textContent = 'Conferindo…';
+    ip4().then(function (ip) {
+      if (CAMPUS.test(ip)) {
+        box.className = 'ok';
+        box.innerHTML = '<strong>Rede do campus.</strong> O celular sai pelo IP ' + ip + '. Pode registrar o ponto.' +
+          '<br>Se o SUAP ainda recusar, a saída deste Wi-Fi precisa entrar na lista do ponto: ' +
+          '<button type="button" id="btnTI">Copiar mensagem para a TI</button>';
+        document.getElementById('btnTI').onclick = function () {
+          var t = textoTI(ip), b = this;
+          (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Mensagem copiada'; },
+            function () { window.prompt('Copie a mensagem:', t); });
+        };
+      } else {
+        box.className = 'fora';
+        box.innerHTML = '<strong>Fora da rede do campus.</strong> O celular está saindo pelo IP ' + ip +
+          ', que não é o do campus (por isso o SUAP recusa).<ol>' +
+          '<li>Desligue os <strong>dados móveis</strong> (barra de cima do celular).</li>' +
+          '<li>Desligue <strong>VPN</strong> ou "acelerador" de rede, se houver.</li>' +
+          '<li>Confira se o Wi-Fi conectado é o <strong>FUNCIONÁRIOS</strong>.</li></ol>' +
+          '<button type="button" id="btnDeNovo">Conferir de novo</button>';
+        document.getElementById('btnDeNovo').onclick = conferir;
+      }
+    }).catch(function () { box.className = 'fora'; box.textContent = 'Sem internet agora. Confira o Wi-Fi e toque de novo.'; });
+  }
+  document.getElementById('btnRede').addEventListener('click', conferir);
 </script>
 <!-- CONTADOR:INICIO -->
 <script src="../contador-config.js"></script>
