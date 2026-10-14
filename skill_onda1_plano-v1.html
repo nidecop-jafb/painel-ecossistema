@@ -1742,7 +1742,7 @@ let TRILHAS = {
 // ═══════════════════════════════════════════════════════════
 // DADOS INLINE — FE1 (Física Experimental 1)
 // 14 trilhas em 4 Temas · Lab de Mecânica · Prefixo FE-
-// GERADO por 04_Física_Experimental_1/_scripts/gerar_trilhas_painel_fe1.py
+// GERADO por TMI_01_FE1_Fisica_Experimental_1/_scripts/gerar_trilhas_painel_fe1.py
 // a partir do Plano de Ensino v1 — nao editar a mao.
 // ═══════════════════════════════════════════════════════════
 const TEMAS_FE1 = [
@@ -4427,7 +4427,7 @@ function _aplicarCitacoes(cits) {
 }
 function carregarEpigrafesStandalone(trilhaCode) {
   if (window !== window.top) return;
-  var paths = { fc1: '../FC1-citacoes-v2.html', fe1: '../../../04_Física_Experimental_1/_citacoes/FE1-citacoes-v2.html' };
+  var paths = { fc1: '../FC1-citacoes-v2.html', fe1: '../../../TMI_01_FE1_Fisica_Experimental_1/_citacoes/FE1-citacoes-v2.html' };
   var path = paths[_disciplinaAtual] || paths.fc1;
   if (!_citacoesIframe) {
     _citacoesIframe = document.createElement('iframe');
@@ -6018,7 +6018,7 @@ function renderRefino() {
   }
   const v = _vigenteRefino();
   const rotulo = _alvoRefino === 'tt' ? 'TT' : 'Camada 2';
-  el.textContent = v ? (_ehFC1Refino() ? '01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/' : '04_Física_Experimental_1/') + v
+  el.textContent = v ? (_ehFC1Refino() ? '01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/' : 'TMI_01_FE1_Fisica_Experimental_1/') + v
     : `Nenhuma ${rotulo} da ${estado.trilha} no disco — não há o que refinar (use o modo Criar)`;
   const chave = estado.trilha + '|' + _alvoRefino;
   if (chave !== _refinoChave) { _refinoChave = chave; _carregarRefino(); renderRefinoEditor(); }
@@ -6137,7 +6137,7 @@ Origem: modo Refinar do Painel (PRE-painel-refinar-titulo-conteudo-blocos-fe1-20
 Partes a reescrever: ${marcadas.map(p => p[1]).join(' · ')}
 
 ## Arquivo
-Raiz: 3_Estudio/04_Física_Experimental_1/
+Raiz: 3_Estudio/TMI_01_FE1_Fisica_Experimental_1/
 Vigente registrado pelo Painel: ${vig || '[nenhum]'}
 1. Confirme por glob a maior v{N} de FE-${estado.trilha}-${tipo}-v*.md fora de xx/. Se divergir do registrado, vale o disco — avise.
 2. Grave o resultado como v{N+1} na mesma pasta e mova a v{N} para xx/ da mesma pasta. Nunca sobrescreva.
