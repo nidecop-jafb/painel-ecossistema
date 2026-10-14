@@ -2081,7 +2081,7 @@ const VIGENTES_FE1 = {
 /* AUTO:TRILHAS_FE1:FIM */
 
 /* AUTO:VIGENTES_FC1:INICIO */
-// GERADO por Trilhas_de_Aprendizagem/_scripts/gerar_vigentes_painel_fc1.py — nao editar a mao.
+// GERADO por Trilhas/_scripts/gerar_vigentes_painel_fc1.py — nao editar a mao.
 // Camada 2 e TT vigentes da FC1 (maior v{N} fora de xx/) — modo Refinar Narrativa
 const VIGENTES_FC1 = {
   "T01": {
@@ -6018,7 +6018,7 @@ function renderRefino() {
   }
   const v = _vigenteRefino();
   const rotulo = _alvoRefino === 'tt' ? 'TT' : 'Camada 2';
-  el.textContent = v ? (_ehFC1Refino() ? '01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/' : 'TMI_01_FE1_Fisica_Experimental_1/') + v
+  el.textContent = v ? (_ehFC1Refino() ? 'TMI_01_FC1_Fisica_Conceitual_1/Trilhas/' : 'TMI_01_FE1_Fisica_Experimental_1/') + v
     : `Nenhuma ${rotulo} da ${estado.trilha} no disco — não há o que refinar (use o modo Criar)`;
   const chave = estado.trilha + '|' + _alvoRefino;
   if (chave !== _refinoChave) { _refinoChave = chave; _carregarRefino(); renderRefinoEditor(); }
@@ -6099,7 +6099,7 @@ function gerarPromptRefino() {
   }
   if (r.partes.simulacoes) {
     muda.push(tt
-      ? '- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai. Própria (SM-v1) cita o OA de Simulações da trilha e o gesto da prática.'
+      ? '- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (TMI_01_FC1_Fisica_Conceitual_1/Trilhas/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai. Própria (SM-v1) cita o OA de Simulações da trilha e o gesto da prática.'
       : '- **Simulações:** subseção "Simulações" no fim da seção 3 (substitui, se já existir): Tópico · Fonte · Nome · URL · Desafio de 3 minutos; Própria (SM-v1) leva o gesto da prática.');
   }
   if (tt) muda.push('- Só o .md: o .tex e o PDF saem depois pelo pipeline do TT, sob comando do autor.');
@@ -6224,7 +6224,7 @@ function gerarPromptRefinoFC1() {
   }
   if (r.partes.simulacoes) {
     muda.push(tt
-      ? '- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai.'
+      ? '- **Simulações:** bloco 🎮 SIMULE no fim de cada tópico indicado, no formato de 3 linhas do SIM-v1 (TMI_01_FC1_Fisica_Conceitual_1/Trilhas/_skill_cowork/protocolo-simulacoes-tt-v1.md); no máximo 1 por tópico; SIMULE que não estiver na lista sai.'
       : '- **Simulações:** subseção "### Simulações" no fim da seção 3 (substitui, se já existir): Tópico · Fonte · Nome · URL · Desafio de 3 minutos.');
   }
   if (tt) {
@@ -6232,7 +6232,7 @@ function gerarPromptRefinoFC1() {
     const migra = '- **RCP — migrar para os 5 passos (regra 5 do CLAUDE.md da raiz, A4.52):** cada resolução modelo dos Problemas Interdisciplinares passa aos 5 passos do ramo certo — '
       + 'Pensamento Quantitativo (O que a questão quer? · O que eu tenho? · Qual é o desenho? · Minha solução · Confiro e respondo) ou '
       + 'Pensamento Qualitativo (O que a questão quer? · O que eu tenho? · Como eu separo as afirmações? · Julgo uma por uma · Confiro e respondo) — '
-      + 'seguidos da **resolução condensada**. Texto canônico: 01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_scripts/metodo_estudo.py (RCP_*); '
+      + 'seguidos da **resolução condensada**. Texto canônico: TMI_01_FC1_Fisica_Conceitual_1/Trilhas/_scripts/metodo_estudo.py (RCP_*); '
       + 'ramo qualitativo: _banco_itens/RCP-na-Formacao-Geral-do-ENADE-v1.md. Nada se corta: 1←Interpretação · 2←Inventário · 3←Hipóteses + Representação visual · '
       + '4←Equações + Cálculo com unidades · 5←Análise + Responda o que foi pedido; números, unidades e respostas ficam iguais. '
       + 'A tabela do protocolo de 8 etapas vira a tabela dos 5 passos. Não regerar imagem: listar no relato as legendas e linhas do Índice das IT que citam "oito etapas" (ex.: IT-11).';
@@ -6267,7 +6267,7 @@ Origem: modo Refinar do Painel (PRE-painel-refinar-narrativa-fc1-2026-09-27)
 Partes a reescrever: ${partesTxt}
 
 ## Arquivo
-Raiz: 3_Estudio/01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/
+Raiz: 3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/Trilhas/
 Vigente registrado pelo Painel: ${vig || '[nenhum]'}
 1. Confirme por glob a maior v{N} de ${estado.trilha}-${tipo}-v*.md na pasta da trilha, fora de xx/, _descarte/ e .claude/. Se divergir do registrado, vale o disco — avise.
 2. Grave o resultado como v{N+1} na mesma pasta e mova a v{N} para xx/ da mesma pasta. Nunca sobrescreva.
@@ -6282,7 +6282,7 @@ ${aviso}
 ## Conferir antes de relatar
 - diff v{N} × v{N+1}: nenhuma linha alterada fora das partes marcadas${tt ? ' e da migração da RCP' : ''} (mostrar o resumo do diff).
 - "Resolução Científica do Problema (RCP)" por extenso na primeira ocorrência; "passo" só para os 5; unidades SI em minúsculas (cm, s, m/s); direção ≠ sentido.
-- Depois de gravar: python 01_Fisica_Conceitual_1/Trilhas_de_Aprendizagem/_scripts/gerar_vigentes_painel_fc1.py (o Painel passa a mostrar a v{N+1}).
+- Depois de gravar: python TMI_01_FC1_Fisica_Conceitual_1/Trilhas/_scripts/gerar_vigentes_painel_fc1.py (o Painel passa a mostrar a v{N+1}).
 - Sem commit antes da aprovação do autor.
 ${anc}`;
 }
@@ -7160,7 +7160,7 @@ Observacoes especificas: ${document.getElementById('obs-edit').value || '[a defi
 
 ### Passo 1 — Salvar esta Camada 2 (.md, raiz da pasta da trilha)
 
-1. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-Camada2-v*.md em Trilhas_de_Aprendizagem/${_pastaTriha()}/
+1. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-Camada2-v*.md em Trilhas/${_pastaTriha()}/
 2. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/ · se nao existir, salvar como v1 · NUNCA sobrescrever versao existente
 3. Nome: ${getFilePrefix()}${estado.trilha}-Camada2-v{N}.md · ajustar o campo "versao:" do YAML para o v{N} salvo
 4. Conteudo do arquivo: do YAML inicial ate o fim da secao 6 (excluir esta secao 7)
@@ -7168,9 +7168,9 @@ Observacoes especificas: ${document.getElementById('obs-edit').value || '[a defi
 ### Passo 2 — ONDA 1 · Texto Tematico (TT) com Fable 5
 
 1. Acionar a skill texto-tematico e ler o SKILL.md antes de gerar
-2. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-TT-v*.md em Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+2. Verificar via glob se ja existe ${getFilePrefix()}${estado.trilha}-TT-v*.md em Trilhas/${_pastaTriha()}/${getPasta('pre')}/
 3. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/ · se nao existir, salvar como v1
-4. Nome: ${getFilePrefix()}${estado.trilha}-TT-v{N}.md · Pasta: Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+4. Nome: ${getFilePrefix()}${estado.trilha}-TT-v{N}.md · Pasta: Trilhas/${_pastaTriha()}/${getPasta('pre')}/
 5. Gate (Karpathy): validar_tt.py PASS 15/15 + checklist_pre_entrega.py ${estado.trilha} TT PASS
 6. Entregar o TT .md e AGUARDAR a aprovacao do autor — nenhum outro OA antes disso (regra de ouro)
 
@@ -7503,7 +7503,7 @@ function _mostrarComandoClaude(label, pasta) {
   var el = document.getElementById('claude-cmd-status');
   if (!el) return;
   el.innerHTML = '<span style="color:var(--verde-claro);font-weight:700;">✓ ' + label + ' na área de transferência</span><br>'
-    + '<span style="color:var(--texto-sec);">Destino: Trilhas_de_Aprendizagem/' + pasta + '/</span><br>'
+    + '<span style="color:var(--texto-sec);">Destino: Trilhas/' + pasta + '/</span><br>'
     + '<span style="color:var(--texto);">Cole no Claude Code (Ctrl+V) → Enter</span>';
   el.style.display = 'block';
 }
@@ -7869,10 +7869,10 @@ Contextualização Tripla — ${rotuloOpcao()}:
 ${regrasFigurasTT()}
 ## Entrega (regra de versionamento CLAUDE.md seção 4)
 
-1. Verificar se já existe ${getFilePrefix()}${ctx.code}-TT-v*.md em Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+1. Verificar se já existe ${getFilePrefix()}${ctx.code}-TT-v*.md em Trilhas/${_pastaTriha()}/${getPasta('pre')}/
 2. Se existir v{N}, salvar como v{N+1} e mover o anterior para xx/
 3. Se não existir, salvar como v1
-4. Pasta destino: Trilhas_de_Aprendizagem/${_pastaTriha()}/${getPasta('pre')}/
+4. Pasta destino: Trilhas/${_pastaTriha()}/${getPasta('pre')}/
 5. Nome: ${getFilePrefix()}${ctx.code}-TT-v{N}.md
 
 Após confirmar a geração, aguarde aprovação do autor antes de gerar outros OAs.`;
