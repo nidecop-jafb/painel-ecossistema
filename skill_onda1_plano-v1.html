@@ -648,7 +648,7 @@ body.modo-refinar #pl7, body.modo-refinar #pl8 { display: none !important; }
 .refino-vigente { font-family: 'DM Mono', monospace; font-size: 12px; word-break: break-all; }
 </style>
 </head>
-<body data-pagina="painel:skill_onda1_plano-v1">
+<body>
 
 <!-- HEADER -->
 <div class="header">
@@ -2392,10 +2392,21 @@ const VIGENTES_FC1 = {
     }
   },
   "T11": {
-    "camada2": null,
+    "camada2": "T11_O_Movimento_Variado_MUV/T11-Camada2-v1.md",
     "tt": null,
     "dados": {
-      "camada2": null,
+      "camada2": {
+        "titulo": "O Movimento Variado (MUV)",
+        "arco": [],
+        "topicos": [
+          "Características do MUV: aceleração constante e não nula (Definição formal: a = constante ≠ 0, Diferença do MU — v muda uniformemente, MUV como modelo de rampas e queda livre, Acelerado vs retardado)",
+          "Equação horária da velocidade no MUV (Dedução v = v₀ + a·t, Velocidade inicial v₀, Previsão de velocidade futura, Instante de repouso v = 0)",
+          "Equação horária da posição no MUV (Dedução qualitativa x = x₀ + v₀·t + ½·a·t², Parábola no gráfico x×t, Deslocamento crescendo cada vez mais rápido, Comparação com MU — reta vs parábola)",
+          "Equação de Torricelli: velocidade sem tempo (Dedução v² = v₀² + 2·a·Δx, Utilidade quando Δt é desconhecido, Distância de frenagem, Evangelista Torricelli — aluno de Galileu)",
+          "MUV em rampas e frenagem na mineração (Caminhão em descida — g·sen(θ) como aceleração, Distância de parada em função de v₀ e a, Fator de segurança NR-22, Elevador de poço — arranque e parada)"
+        ],
+        "narrativa": "- **Modo protagonistas:** Solo\n- **Pedro** (Filho de técnico de manutenção; criativo e prático. Mente voltada para eficiência e segurança. Pergunta \"se der errado, quanto estrago faz?\" antes de aceitar qualquer processo. Motivação: mostrar que a física do MUV é a física da segurança em mineração.)\n- **Cenario principal:** Rampa de descida da cava (inclinação 10%, extensão 1,2 km) — caminhão CAT 797F carregado descendo com freio retardador\n- **Cenario secundario:** Roda d'água histórica do Ribeirão do Carmo (Ouro Preto) — aceleração e desaceleração de pás ao entrar e sair do fluxo de água\n- **Ato I (rascunho):** [CENÁRIO — MODO SOLO]\nPedro está na cabine do simulador de caminhão fora-de-estrada do centro de treinamento da mineradora. A tela mostra uma rampa descendente de 10% com 1,2 km de extensão. O instrutor desliga o freio retardador e o caminhão (360 t) começa a acelerar sozinho pela gravidade. Em 10 segundos, o velocímetro salta de 0 para 35 km/h. O Prof. Felipe intervém: \"Se a aceleração permanecer constante, em quantos metros ele atinge 80 km/h — o limite da rampa?\"\n\n👦 Pedro (prático, preocupado com segurança):\n\"A velocidade não para de subir enquanto o freio estiver desligado? Quer dizer que existe uma distância mínima para parar esse monstro — e se a rampa for mais curta que isso, não tem escapatória?\"\n\n[PERGUNTA-GANCHO]\n\"Se a velocidade cresce uniformemente, quanto espaço um caminhão de 360 toneladas precisa para parar — e o que acontece se a rampa acabar antes?\"\n- **Ato III (rascunho):** Pedro aplica as três equações do MUV e a equação de Torricelli para calcular a distância de frenagem do caminhão na rampa — partindo de 60 km/h com desaceleração de −1,2 m/s², encontra Δx ≈ 116 m. Compara com o espaçamento mínimo entre veículos exigido pela NR-22 (150 m) e conclui que a margem de segurança é de apenas 34 m — explicando por que a velocidade máxima na rampa é limitada a 40 km/h por procedimento operacional."
+      },
       "tt": null
     }
   },
@@ -8355,10 +8366,6 @@ document.addEventListener('DOMContentLoaded', init);
   } catch (e) {}
 })();
 </script>
-<!-- CONTADOR:INICIO -->
-<script src="contador-config.js"></script>
-<script src="acessos.js"></script>
-<!-- CONTADOR:FIM -->
 </body>
 </html>
                                   
