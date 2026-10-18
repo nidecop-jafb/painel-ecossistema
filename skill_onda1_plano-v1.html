@@ -1741,90 +1741,126 @@ let TRILHAS = {
 /* AUTO:TRILHAS_FE1:INICIO */
 // ═══════════════════════════════════════════════════════════
 // DADOS INLINE — FE1 (Física Experimental 1)
-// 14 trilhas em 4 Temas · Lab de Mecânica · Prefixo FE-
+// 15 trilhas em 3 Etapas · Lab de Mecânica · Prefixo FE-
 // GERADO por TMI_01_FE1_Fisica_Experimental_1/_scripts/gerar_trilhas_painel_fe1.py
-// a partir do Plano de Ensino v1 — nao editar a mao.
+// a partir da matriz v2 (caminhos_fe1) e do Plano de Ensino v4 — nao editar a mao.
 // ═══════════════════════════════════════════════════════════
 const TEMAS_FE1 = [
   {
-    "num": 0,
-    "nome": "Boas-vindas",
-    "sub": "T0A · T0B",
-    "foco": "Chegada ao Lab de Mecânica: método experimental, segurança (NR-22) e o registro da bancada"
-  },
-  {
     "num": 1,
-    "nome": "Entendendo as medidas",
-    "sub": "T01–T05",
-    "foco": "Medida, incerteza e tratamento de dados: instrumentos, algarismos significativos, padrão estatístico, tabelas e gráficos, ajuste linear e não linear"
+    "nome": "Metrologia",
+    "sub": "T0A–T0D",
+    "foco": "Chegada ao Lab de Mecânica e a medida: segurança (NR-22), Sistema Internacional, algarismos significativos, incerteza, tabela e gráfico, e o número π medido na bancada",
+    "rotulo": "Etapa"
   },
   {
     "num": 2,
-    "nome": "Brincando com Forças e Movimentos",
-    "sub": "T06–T11",
-    "foco": "Experimentos de forças e movimentos (leis de Newton, atrito, empuxo, plano inclinado, colisões, hidrostática), articulados à Física I"
+    "nome": "Forças, Torques, Resultante e Equilíbrio de Corpos em Repouso",
+    "sub": "T01–T04",
+    "foco": "Forças de contato e de campo, resultante nula no ponto material, máquinas simples e torque no equilíbrio do corpo extenso, articulados ao Tema 06 do livro",
+    "rotulo": "Etapa"
   },
   {
     "num": 3,
-    "nome": "Projeto Integrador",
-    "sub": "T12",
-    "foco": "Aplicação autônoma dos temas cursados: o estudante propõe o procedimento, mede e defende o resultado"
+    "nome": "Forças, Aceleração, Trabalho, Energia e Potência de Corpos em Movimento + Fluidos em Equilíbrio",
+    "sub": "T05–T11",
+    "foco": "Forças e aceleração (MRU, queda, MCU), energia, potência e rendimento, pressão e empuxo em líquidos, e o Projeto Integrador aplicado à Mineração",
+    "rotulo": "Etapa"
   }
 ];
 
 const TRILHAS_FE1 = {
   "T0A": {
     "nome": "Primeiros Passos no Laboratório",
-    "tema": 0,
+    "tema": 1,
     "t": [
-      "Metodo cientifico (o ciclo pergunta → hipotese → medida → analise → conclusao, adaptado a uma aula de 90 min)",
-      "Medida (o que e medir, o que e escala, o que e algarismo significativo)",
-      "Incerteza (toda medida tem erro; estimar incerteza e parte do dado)",
-      "Caderno de Laboratorio (o registro escrito da pratica e parte do produto, nao acessorio)",
-      "Seguranca (regras de uso do Lab de Mecanica IFMG-OP, construidas com os alunos, baseadas na NR-22 da mineracao)"
+      "O que os documentos oficiais revelam?",
+      "O que são as Trilhas de Aprendizagem, quantas paradas estratégicas e quantos Objetos de Aprendizagem cada parada contém?",
+      "Existe uma sequência para estudar que funciona bem, ou cada estudante escolhe por onde começar e como caminhar?",
+      "Como funciona o sistema de avaliação?",
+      "Como posso carregar os materiais e o método de estudo com segurança na minha mão?"
     ]
   },
   "T0B": {
-    "nome": "A Régua do Mundo",
-    "tema": 0,
-    "t": []
-  },
-  "T01": {
-    "nome": "Como Medir as Coisas",
+    "nome": "O Sistema Internacional de Unidades de Medida",
     "tema": 1,
     "t": [
-      "Comprimento e diâmetro de um tarugo de madeira com 4 instrumentos (régua dm, cm, mm e paquímetro), cada leitura com incerteza de escala",
+      "Comprimento, massa e tempo de objetos do laboratório, com a conversão para o SI",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: paquímetro digital; cálculo do volume"
+      "Pós-Lab: prefixos e notação científica"
+    ]
+  },
+  "T0C": {
+    "nome": "A Matemática das Medidas",
+    "tema": 1,
+    "t": [
+      "Algarismos significativos e incerteza de medidas repetidas, com tabela e gráfico",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: ajuste linear e linearização"
+    ]
+  },
+  "T0D": {
+    "nome": "O Número π (pi)",
+    "tema": 1,
+    "t": [
+      "Perímetro × diâmetro de objetos circulares → coeficiente angular = π",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: comparação com π e erro percentual"
+    ]
+  },
+  "T01": {
+    "nome": "Forças: Peso, Elástica, Tração, Empuxo, Compressão (Normal, Atrito) e Aerodinâmica (Sustentação, Arrasto)",
+    "tema": 2,
+    "t": [
+      "Deformação × peso de uma mola, 8 massas → constante elástica, com o dinamômetro calibrado pela própria mola",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: atrito estático pelo ângulo crítico; molas em série e em paralelo"
     ]
   },
   "T02": {
-    "nome": "Lidando com a Incerteza",
-    "tema": 1,
+    "nome": "Resultante das Forças no Equilíbrio Estático de Ponto Material",
+    "tema": 2,
     "t": [
-      "Densidade superficial do papel-cartão, ρ = m/(a·b), com propagação da incerteza",
+      "Trações em três fios no equilíbrio de um ponto (mesa de forças): soma vetorial das forças lidas nos dinamômetros, para 3 configurações de ângulo",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: comparação entre balanças; segunda parte do roteiro"
+      "Pós-Lab: decomposição em componentes; resultante nula com incerteza"
     ]
   },
   "T03": {
-    "nome": "Achando o Padrão na Bagunça",
-    "tema": 1,
+    "nome": "Máquinas Simples: Plano Inclinado e Polias",
+    "tema": 2,
     "t": [
-      "Tempo de percurso do carrinho entre dois sensores, 20 repetições por bancada → média, desvio padrão, histograma",
+      "Força paralela ao plano que equilibra um bloco × sen θ (plano inclinado) e vantagem mecânica de polia fixa, polia móvel e talha",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: segunda configuração dos sensores"
+      "Pós-Lab: rendimento das polias com atrito"
     ]
   },
   "T04": {
-    "nome": "Interpretando Linhas Retas",
-    "tema": 1,
+    "nome": "Centro de Massa, Torque, Resultante de Forças e Torques no Equilíbrio de Corpo Extenso",
+    "tema": 2,
+    "t": [
+      "Equilíbrio de uma barra apoiada: massa × braço dos dois lados (torque) e centro de massa por suspensão",
+      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
+      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
+      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
+      "Pós-Lab: barra com três forças; centro de massa de figura plana"
+    ]
+  },
+  "T05": {
+    "nome": "Forças e Aceleração: Esfera e Bolha em MRU num Tubo com Óleo Mineral, Carrinho Descendo uma Rampa e Esfera em Queda Livre",
+    "tema": 3,
     "t": [
       "Estudo Matemático dos Movimentos (Pontos A, B, C, D e E assinaldos no tubo transparente e espaçados de 10,0 cm um do outro., Escolha 1 : Origem das posições (A, B, C, D, E), Escolha 2 : Sinal positivo da velocidade (esfera descendo ou bolha subindo), Escolha 3 : Cronometro (zerado, não zerado) - Escolha 4 : Posição da esfera no insttne em que o cornometro foi disparado, Medições da posição e instantes em que a esfera passa por A, B, C, D e E (cornometro anlaógico, celular))",
       "Fórmulas válidas para o movimento da esfera (Valor da velocidade da esfera (cm/s), Fórmula da posição da esfera (cm, s), Valor da aceleração da esfera (cm/s2))",
@@ -1833,90 +1869,68 @@ const TRILHAS_FE1 = {
       "Encontro da esfera com a bolha (Modelo teórico (Fomula)  vs. dados experimentais (Medida), Analise do erro)"
     ]
   },
-  "T05": {
-    "nome": "Analisando Linhas Tortas",
-    "tema": 1,
-    "t": [
-      "Altura × tempo de queda da esfera, 5 alturas × 3 quedas → gráfico h × t² e valor de g",
-      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
-      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
-      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: linearização log-log"
-    ]
-  },
   "T06": {
-    "nome": "Leis de Newton",
-    "tema": 2,
+    "nome": "Forças e Aceleração em Corpos fazendo Curvas, o Movimento Circular Uniforme (MCU)",
+    "tema": 3,
     "t": [
-      "Aceleração × força no trilho de ar, massa total constante (massas passam do carrinho ao porta-pesos), 4 pontos",
+      "Período × raio de uma massa em movimento circular com força centrípeta fixa (rolha girando sobre um tubo, peso suspenso no fio) → F = m·4π²r/T²",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: a × 1/m (massa variável)"
+      "Pós-Lab: força × velocidade angular com raio fixo"
     ]
   },
   "T07": {
-    "nome": "Pesando, Puxando, Empurrando e Esticando",
-    "tema": 2,
+    "nome": "Formas de Energia, Fontes de Energia, Conversões, Transformação da Energia, Potência e Rendimento na Mecânica",
+    "tema": 3,
     "t": [
-      "Deformação × peso de uma mola, 8 massas (25 g e 10 g alternadas) → constante elástica",
+      "Energia potencial perdida × energia cinética ganha por um carrinho no trilho inclinado, para 4 alturas → rendimento",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: molas em série e em paralelo"
+      "Pós-Lab: potência de quem sobe uma escada; rendimento de máquinas da mineração"
     ]
   },
   "T08": {
-    "nome": "Boiando, Lixando, Amassando e Voando",
-    "tema": 2,
+    "nome": "Pressão, Pressão Atmosférica, Pressão em Líquidos em Equilíbrio e Máquinas Hidráulicas: Prensas e Elevadores Hidráulicos",
+    "tema": 3,
     "t": [
-      "Coeficiente de atrito estático pelo ângulo crítico de um bloco numa rampa graduada, 2 superfícies × 5 repetições",
+      "Pressão × profundidade num manômetro de tubo em U (Stevin) e força de saída × razão das áreas numa prensa de seringas (Pascal)",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: atrito cinético; a alternativa UFJF-09"
+      "Pós-Lab: elevador hidráulico; pressão atmosférica"
     ]
   },
   "T09": {
-    "nome": "Subindo e descendo em Rampas e Ladeiras",
-    "tema": 2,
+    "nome": "Densidade de Corpos, Densidade de Líquidos, Peso e Empuxo atuando sobre o Objeto, Flutuação dos Objetos em Líquidos em Equilíbrio",
+    "tema": 3,
     "t": [
-      "Aceleração no trilho de ar inclinado para 4 ângulos → a × sen θ e valor de g",
+      "Empuxo × volume imerso (dinamômetro e proveta) e densidade de sólidos e líquidos",
       "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
       "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
       "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: ângulos extras; comparação com T05"
+      "Pós-Lab: flutuação; densidade do minério × da ganga"
     ]
   },
   "T10": {
-    "nome": "Trombadas e Batidas",
-    "tema": 2,
+    "nome": "Projeto Integrador — Parte 1: Física Aplicada na Mineração",
+    "tema": 3,
     "t": [
-      "Momento linear antes × depois de uma colisão perfeitamente inelástica, 3 combinações de massa",
-      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
-      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
-      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: colisão elástica; energia cinética"
+      "Tema 1: A Riqueza Mineral no Quadrilátero Ferrífero",
+      "Tema 2: A Riqueza Mineral no Brasil",
+      "Escolha do problema e hipótese",
+      "Planejamento experimental e variáveis de controle",
+      "Coleta de dados com análise de incerteza"
     ]
   },
   "T11": {
-    "nome": "A Física da Água Parada",
-    "tema": 2,
-    "t": [
-      "Empuxo × volume imerso",
-      "Incerteza da medição (resolução do instrumento, medidas repetidas, valor ± incerteza)",
-      "Tabela e gráfico (unidade no cabeçalho, algarismos significativos)",
-      "Ajuste e coeficiente (reta ou linearização; comparação com o previsto pelo modelo)",
-      "Pós-Lab: pressão × profundidade"
-    ]
-  },
-  "T12": {
-    "nome": "Projeto investigativo integrador",
+    "nome": "Projeto Integrador — Parte 2: Física Aplicada na Mineração",
     "tema": 3,
     "t": [
-      "Escolha do problema e hipótese",
-      "Planejamento experimental e variáveis de controle",
-      "Coleta de dados com análise de incerteza",
+      "Tema 1: Questões ambientais, sociais e formas de exploração da riqueza mineral no Quadrilátero Ferrífero",
+      "Tema 2: Quais futuros seriam possíveis para a Mineração no Brasil?",
+      "Análise dos dados e comparação com o modelo",
       "Relatório científico completo",
       "Apresentação e defesa oral do projeto"
     ]
@@ -1926,37 +1940,37 @@ const TRILHAS_FE1 = {
 // Camada 2 e TT vigentes (maior v{N} fora de xx/) — modo Refinar Narrativa
 const VIGENTES_FE1 = {
   "T0A": {
-    "camada2": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-Camada2-v4.md",
-    "tt": "Trilhas/T0A_Metodologia_experimental/Pre_Lab/FE-T0A-TT-v8.md",
+    "camada2": "Trilhas/T0A_Primeiros_Passos_no_Laboratorio/Pre_Lab/FE-T0A-Camada2-v7.md",
+    "tt": "Trilhas/T0A_Primeiros_Passos_no_Laboratorio/Pre_Lab/FE-T0A-TT-v8.md",
     "dados": {
       "camada2": {
         "titulo": "Metodologia experimental: metodo cientifico, medida, incerteza e seguranca",
         "duracao": 90,
         "arco": [
           {
-            "nome": "Apresentacao + porque da disciplina",
+            "nome": "O que os documentos oficiais revelam?",
             "min": 15
           },
           {
-            "nome": "Metodo cientifico aplicado a fisica",
+            "nome": "O que são as Trilhas de Aprendizagem, quantas paradas estratégicas e quantos Objetos de Aprendizagem cada parada contém?",
             "min": 20
           },
           {
-            "nome": "Medida em pares: altura nas 4 referencias",
+            "nome": "Existe uma sequência para estudar que funciona bem, ou cada estudante escolhe por onde começar e como caminhar?",
             "min": 20
           },
           {
-            "nome": "Construcao coletiva da seguranca + NR-22",
+            "nome": "Como funciona o sistema de avaliação?",
             "min": 20
           },
           {
-            "nome": "Caderno de Laboratorio FE1 + cronograma",
+            "nome": "Como posso carregar os materiais e o método de estudo com segurança na minha mão?",
             "min": 15
           }
         ],
         "detalhe": {
-          "titulo": "Bloco 3 em detalhe (a inovacao pratica)",
-          "texto": "Estudantes organizados em **duplas, trios ou quartetos** (4-5 grupos de 4 alunos). Cada grupo executa, em rotacao, a sequencia:\n\n1. **Estudante A se posiciona** de costas contra a parede, calcanhar tocando o rodape.\n2. **Estudante B mede** a altura de A na **Escala manual 1**, anota.\n3. **Estudante C mede** a altura de A na **Escala manual 2**, anota.\n4. **Estudante D (ou A) mede** a altura de A na **Escala manual 3**, anota.\n5. Em seguida, **conferem** com a **fita metrica colada na parede** (medida indireta — a fita serve de referencia).\n6. **Anotam as 4 medidas** no Caderno de Laboratorio (linha do nome do colega).\n7. **Trocam de posicao** — repetem ate todos terem 4 medidas da propria altura registradas.\n\nNo fim, cada estudante tem **4 numeros** para a sua altura. Pergunta-chave: **\"Por que sao diferentes? Qual e a sua altura, afinal?\"** → discussao guiada sobre **media, desvio e incerteza**."
+          "titulo": "Bloco 3 em detalhe (a inovação prática — a sequência como hipótese)",
+          "texto": "Estudantes organizados em **grupos de 4** (4-5 grupos). Cada grupo investiga a sequência de estudo como se fosse um experimento:\n\n1. **Material (1 min).** O grupo recebe um jogo de **15 cartões embaralhados**: os 11 passos numerados do Método (PP, MD, TT, SM, TN · RB, AP, IG, PR · RM, RC) e os 4 de apoio (CD, MC, IE, CS), todos sem número.\n2. **Hipótese (6 min).** O grupo põe os 11 passos em ordem, separa os de apoio e escreve no Caderno de Laboratório **uma justificativa por passo** (\"vem antes porque…\").\n3. **Evidência (4 min).** O grupo abre a aba Método no celular (ou o cartaz A4 do Método) e compara a sua ordem com a publicada.\n4. **Análise (5 min).** Onde a ordem divergiu, o grupo lê o \"porquê\" do passo no site — responder antes de estudar cria erro produtivo; ouvir antes de ler deixa dois caminhos de recuperação; revisar antes de dormir entra na consolidação da noite — e decide se a sua justificativa resiste.\n5. **Conclusão (4 min).** Cada grupo escreve uma frase para a turma: \"A sequência que funciona é…; o que cada um escolhe é…\".\n\nPergunta-chave: **\"A ordem é imposta ou é descoberta?\"** → discussão guiada: a sequência funciona porque segue como a memória aprende; o estudante escolhe **quando** e **onde** estuda, não a ordem. Regra de ouro: **não se pula um OA; se pulou, volte.**"
         }
       },
       "tt": {
@@ -1973,6 +1987,22 @@ const VIGENTES_FE1 = {
       "tt": null
     }
   },
+  "T0C": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T0D": {
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
   "T01": {
     "camada2": null,
     "tt": null,
@@ -1998,8 +2028,16 @@ const VIGENTES_FE1 = {
     }
   },
   "T04": {
-    "camada2": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-Camada2-v1.md",
-    "tt": "Trilhas/T04_Movimento_Retilineo_Uniforme_MRU/Pre_Lab/FE-T04-TT-v5.md",
+    "camada2": null,
+    "tt": null,
+    "dados": {
+      "camada2": null,
+      "tt": null
+    }
+  },
+  "T05": {
+    "camada2": "Trilhas/T05_Forcas_e_Aceleracao_Esfera_Bolha_Carrinho_Queda/Pre_Lab/FE-T04-Camada2-v1.md",
+    "tt": "Trilhas/T05_Forcas_e_Aceleracao_Esfera_Bolha_Carrinho_Queda/Pre_Lab/FE-T04-TT-v5.md",
     "dados": {
       "camada2": {
         "titulo": "Movimento Retilíneo Uniforme (MRU)",
@@ -2011,14 +2049,6 @@ const VIGENTES_FE1 = {
         "titulo": "A reta que o tempo desenha",
         "duracao": 100
       }
-    }
-  },
-  "T05": {
-    "camada2": null,
-    "tt": null,
-    "dados": {
-      "camada2": null,
-      "tt": null
     }
   },
   "T06": {
@@ -2062,14 +2092,6 @@ const VIGENTES_FE1 = {
     }
   },
   "T11": {
-    "camada2": null,
-    "tt": null,
-    "dados": {
-      "camada2": null,
-      "tt": null
-    }
-  },
-  "T12": {
     "camada2": null,
     "tt": null,
     "dados": {
@@ -4501,7 +4523,9 @@ function selecionarTrilha(code, chipEl) {
 
   const t = TRILHAS[code];
   const temaIdx = t.tema; // T00 tem tema:0, T01-T06 tem tema:1, etc.
-  const temaObj = TEMAS[temaIdx];
+  /* FE1 numera Etapas 1-3 (sem Etapa 0): achar pelo num, nao pela posicao */
+  const temaObj = TEMAS.find(x => x.num === temaIdx) || TEMAS[temaIdx];
+  const rotulo = temaObj.rotulo || 'Tema';
 
   document.getElementById('badge-trilha').textContent = code;
   document.getElementById('out-nome').textContent = t.nome;
@@ -4509,8 +4533,9 @@ function selecionarTrilha(code, chipEl) {
      Tema 0 tem 2 (T0A e T0B) — contar em vez de assumir. */
   const doTema = Object.keys(TRILHAS).filter(c => TRILHAS[c].tema === t.tema).sort();
   const posNaTema = (doTema.indexOf(code) + 1) + ' de ' + doTema.length;
-  document.getElementById('out-posicao').textContent = `Trilha ${posNaTema} do Tema ${t.tema}`;
-  document.getElementById('out-tema').textContent = `Tema ${t.tema} — ${temaObj.nome} · ${temaObj.sub}`;
+  const doRot = rotulo === 'Etapa' ? 'da' : 'do';
+  document.getElementById('out-posicao').textContent = `Trilha ${posNaTema} ${doRot} ${rotulo} ${t.tema}`;
+  document.getElementById('out-tema').textContent = `${rotulo} ${t.tema} — ${temaObj.nome} · ${temaObj.sub}`;
 
   preencherTopicos(code);
   gerarCenarioSec();
