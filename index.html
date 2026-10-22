@@ -3701,6 +3701,7 @@ function preFiltrar(tipo, valor, btn) {
               <div class="ni-campo"><label for="ne-proibidos">Elementos proibidos</label><input id="ne-proibidos" placeholder="n&uacute;meros; pessoas; m&atilde;os; cen&aacute;rio; cor"></div>
               <div class="ni-campo"><label for="ne-saida">Sa&iacute;da</label><input id="ne-saida" value="PDF vetorial + PNG 300 dpi, preto e branco, largura final 8 cm no OA"></div>
               <div class="ni-campo"><label for="ne-pecas">Pe&ccedil;as da biblioteca a usar ou criar</label><input id="ne-pecas" placeholder="criar: mola, dinam&ocirc;metro, bloco; usar: cota, ref, seta"></div>
+              <div class="ni-campo ni-c2"><label for="ne-ref">Refer&ecirc;ncia de conven&ccedil;&atilde;o visual <span>(opcional &mdash; p&aacute;gina do livro ou arquivo; s&oacute; o modo de desenhar, n&atilde;o a geometria)</span></label><input id="ne-ref" placeholder="Bonjorno p. 89: mola em corte com ponteiro na ponta; ou _biblioteca/Bonjorno-Fisica-Identidade/Bonjorno-Tema06-...pdf"></div>
             </div>
           </div>
 
@@ -3713,6 +3714,9 @@ function preFiltrar(tipo, valor, btn) {
                 <div class="ni-pers" id="nc-pers"></div></div>
               <div class="ni-campo ni-c2"><label for="nc-pose">Pose e posi&ccedil;&atilde;o de cada personagem <span>(de costas, de perfil, em tr&ecirc;s quartos com rosto vis&iacute;vel)</span></label><input id="nc-pose" placeholder="Sofia de perfil com rosto visivel; Pedro em tres quartos; Lucas de costas por ultimo"></div>
               <div class="ni-campo ni-c2"><label for="nc-sujeito">Resto do [SUJEITO] <span>(elemento mais espec&iacute;fico primeiro; objetos; Anexe imagem real de referencia, se for local reconhec&iacute;vel)</span></label><textarea id="nc-sujeito" placeholder="VAGONETA DE MINERIO sobre trilhos retos na galeria..."></textarea></div>
+              <div class="ni-campo ni-c2"><label for="nc-ref">Imagem de refer&ecirc;ncia <span>(opcional &mdash; caminho do arquivo ou URL; para local reconhec&iacute;vel)</span></label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap"><input id="nc-ref" style="flex:1 1 260px" placeholder="G:/JA2026/.../foto-museu.jpg ou https://commons.wikimedia.org/..."><button type="button" class="pre-acao" style="margin:0" onclick="niBuscarFoto()">&#128269; Buscar foto (Wikimedia Commons)</button></div></div>
+              <div class="ni-campo ni-c2"><label for="nc-instrucao">O que fazer com a refer&ecirc;ncia <span>(preservar &middot; remover &middot; adicionar)</span></label><input id="nc-instrucao" placeholder="preservar: fachada e vitrines; remover: visitantes; adicionar: o trio no primeiro plano"></div>
               <div class="ni-campo"><label for="nc-cenario">[CENARIO]</label><textarea id="nc-cenario" placeholder="Galeria da Mina da Passagem, Mariana; luz de lampadas quentes; paredes de rocha"></textarea></div>
               <div class="ni-campo"><label for="nc-acao">[ACAO]</label><textarea id="nc-acao" placeholder="A vagoneta avanca em ritmo constante enquanto o trio mede o tempo"></textarea></div>
               <div class="ni-campo"><label for="nc-paleta">[PALETA]</label><input id="nc-paleta" value="#1A4A6E azul . #C8A84B dourado . #6B7280 cinza . tons terrosos de Ouro Preto"></div>
@@ -11046,8 +11050,8 @@ function imgCopiarLote() {
 var NI_TIPO = 'esquema';
 var NI_CAMPOS = {
   esquema: ['ne-codigo', 'ne-pasta', 'ne-fenomeno', 'ne-fixos', 'ne-moveis', 'ne-instantes', 'ne-grandezas',
-            'ne-coords', 'ne-cotas', 'ne-rotulos', 'ne-proibidos', 'ne-saida', 'ne-pecas'],
-  cena: ['nc-codigo', 'nc-estilo', 'nc-pose', 'nc-sujeito', 'nc-cenario', 'nc-acao', 'nc-paleta', 'nc-composicao', 'nc-evitar']
+            'ne-coords', 'ne-cotas', 'ne-rotulos', 'ne-proibidos', 'ne-saida', 'ne-pecas', 'ne-ref'],
+  cena: ['nc-codigo', 'nc-estilo', 'nc-pose', 'nc-sujeito', 'nc-cenario', 'nc-acao', 'nc-paleta', 'nc-composicao', 'nc-evitar', 'nc-ref', 'nc-instrucao']
 };
 var NI_PERSONAGENS = [
   ['Sofia', 'SOFIA - jovem brasileira branca de constituicao esguia, olhos verde-claro, CABELOS CASTANHO MEDIO ANELADOS NAS PONTAS NA ALTURA DOS OMBROS, sem oculos, camiseta azul-marinho IFMG com logo no peito, jeans escuro, tenis cinza, mochila nas costas, caderno de campo sob o braco'],
@@ -11118,7 +11122,8 @@ function niExemplo() {
     'ne-rotulos': 'Inicio da travessia; Fim da travessia; sentido; deslocamento da frente; ponte; trem; deslocamento da frente = ponte + trem',
     'ne-proibidos': 'numeros; paisagem; perspectiva; pessoas; segundo trem; cor',
     'ne-saida': 'PDF vetorial + PNG 300 dpi, preto e branco, largura final 12 cm no Caderno 2',
-    'ne-pecas': 'usar: pcTrilho, pcTrem, pcPonte, pcCota, pcRef, pcSeta, pcPonto, pcFaixa'
+    'ne-pecas': 'usar: pcTrilho, pcTrem, pcPonte, pcCota, pcRef, pcSeta, pcPonto, pcFaixa',
+    'ne-ref': 'Bonjorno p. 50-51: graficos e esquemas do Maglev; so o estilo dos tracos e das setas'
   } : {
     'nc-codigo': 'T10-IT-02', 'nc-estilo': 'Cinematografico',
     'nc-pose': 'Prof. Julio DE PERFIL caminhando ao lado do trio; Sofia DE PERFIL COM ROSTO VISIVEL; Pedro EM TRES QUARTOS COM ROSTO VISIVEL; Lucas de costas por ultimo, olhando a fuselagem',
@@ -11127,7 +11132,9 @@ function niExemplo() {
     'nc-acao': 'O embarque - o trio atravessa a ponte enquanto o professor caminha ao lado, a manha se abrindo nas janelas',
     'nc-paleta': '#1A4A6E azul (vidro e ceu) . #C8A84B dourado (luz) . #6B7280 cinza (metal) . azul-marinho e preto (uniformes)',
     'nc-composicao': 'Quadro 1:1, grupo no terco central caminhando para a direita, aeronave ao fundo pelo vidro',
-    'nc-evitar': 'texto legivel, logotipos de companhia aerea real, rosto de Lucas, oculos nos estudantes, idioma ingles'
+    'nc-evitar': 'texto legivel, logotipos de companhia aerea real, rosto de Lucas, oculos nos estudantes, idioma ingles',
+    'nc-ref': 'foto real da ponte de embarque do Aeroporto de Confins (Wikimedia Commons)',
+    'nc-instrucao': 'preservar: vidro, estrutura metalica e a aeronave ao fundo; remover: passageiros; adicionar: o trio e o professor caminhando'
   };
   Object.keys(ex).forEach(function (id) { var e = document.getElementById(id); if (e) e.value = ex[id]; });
   if (NI_TIPO === 'cena') [1, 1, 1, 1, 0].forEach(function (v, i) { var c = document.getElementById('nc-p' + i); if (c) c.checked = !!v; });
@@ -11153,6 +11160,7 @@ function niPromptEsquema() {
     'Rotulos permitidos (lista fechada, pt-BR): ' + f['ne-rotulos'],
     'Elementos proibidos: ' + (f['ne-proibidos'] || '—'),
     'Pecas da biblioteca: ' + (f['ne-pecas'] || 'as que existirem; criar as que faltarem'),
+    f['ne-ref'] ? 'Referencia de convencao visual (so o modo de desenhar: tracos, simbolos, enquadramento; NUNCA copiar a figura nem a geometria; a geometria vem das coordenadas acima): ' + f['ne-ref'] : '',
     'Saida: ' + (f['ne-saida'] || 'PDF vetorial + PNG 300 dpi, preto e branco'),
     'Destino: ' + (f['ne-pasta'] || 'pasta do OA') + ' — .tex em _tex/ do OA, .pdf e .png ao lado do OA; registrar a figura (e as pecas novas) no INDICE.md.',
     '',
@@ -11169,17 +11177,29 @@ function niPromptCena() {
   if (evitar.length > 10) return { erro: '[EVITAR] com ' + evitar.length + ' termos; o maximo e 10 (prompt longo dispara o filtro)' };
   var pers = NI_PERSONAGENS.filter(function (p, i) { var c = document.getElementById('nc-p' + i); return c && c.checked; });
   var sujeito = pers.map(function (p) { return p[1]; }).concat(f['nc-pose'] ? ['Poses: ' + f['nc-pose']] : []).concat([f['nc-sujeito']]).join('. ');
+  var temRef = !!f['nc-ref'];
+  if (temRef && !/Anexe imagem real de referencia/.test(sujeito)) sujeito += '. Anexe imagem real de referencia.';
   var L = [
-    f['nc-codigo'], NI_HEADER,
+    f['nc-codigo'], NI_HEADER].concat(temRef ? [
+    '[REFERENCIA]: ' + f['nc-ref'],
+    '[INSTRUCAO]: ' + (f['nc-instrucao'] || 'preservar o local e a arquitetura; remover pessoas e elementos modernos; adicionar a cena descrita no [SUJEITO]')] : []).concat([
     '[SUJEITO]: ' + sujeito,
     '[CENARIO]: ' + f['nc-cenario'],
     '[ACAO]: ' + f['nc-acao'],
     '[ESTILO]: ' + f['nc-estilo'],
     '[PALETA]: ' + f['nc-paleta'],
     '[COMPOSICAO]: ' + f['nc-composicao'],
-    '[EVITAR]: ' + evitar.join(', ')
-  ];
+    '[EVITAR]: ' + evitar.join(', ')]);
   return { texto: niSemAcento(L.join('\n').replace(/\s+/g, ' ').replace(/ ?\n ?/g, '\n').replace(/ (\[|T\d|Imagem)/g, '\n$1')) };
+}
+
+function niBuscarFoto() {
+  var m = document.getElementById('ni-msg'), q = niV('nc-cenario') || niV('nc-sujeito');
+  q = q.replace(/\[[^\]]*\]/g, ' ').split(/[;.]/)[0].replace(/\s+/g, ' ').trim().slice(0, 90);
+  if (!q) { m.className = 'ni-aviso erro'; m.textContent = 'preencha o [CENARIO] para buscar'; return; }
+  m.className = 'ni-aviso';
+  window.open('https://commons.wikimedia.org/w/index.php?search=' + encodeURIComponent(q) + '&title=Special:MediaSearch&type=image', '_blank', 'noopener');
+  m.textContent = 'busca aberta: baixe a foto, anexe no Gemini e cole o caminho/URL no campo (confira a licenca)';
 }
 
 function niCopiar() {
