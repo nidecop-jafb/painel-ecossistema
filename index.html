@@ -2745,7 +2745,11 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (25)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">194 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (25)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">195 na lista</span></div>
+<details class="pre-brief" data-escopo="disciplina" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>painel &middot; Produção &gt; Imagens — ficha de Esquema (código) e descritor de Cena (Gemini)<span class="pre-selo">FC1</span><span class="pre-meta">2026-10-22</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Pôr na aba Produção &gt; Imagens do Painel um bloco &quot;Nova imagem&quot; que, em poucos campos, monta o pedido certo para cada tipo de imagem didática: **Esquema** (cotas, vetores, instantes, proporções) vira uma ficha de especificação que o Claude transforma em TikZ/SVG; **Cena** (personagens, Ouro Preto, mina) vira o descritor Gemine de 7 campos — para que uma figura saia certa na primeira passada, e não em 4 horas e 3 rodadas, como a do trem da PE2.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma (edição direta do fonte do Painel + `pecas.sty` novo)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="disciplina" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>oa &middot; os OAs da LME-T0C para a prática de 27/10<span class="pre-selo">LME</span><span class="pre-meta">2026-10-21</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Pôr no ar, até 26/10, o Pré-Lab e o Lab da T0C na versão da Camada 2 v3 — e, até 28/10, o Pós-Lab e o CD —<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skills: geradores próprios da LME (TT em LaTeX pela pipeline Tectonic) <span style="color:var(--ouro);">&#9888; tem decis&otilde;es em aberto</span><br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/LFI_04_LME_Laboratorio_de_Mecanica/Trilhas/T0C_O_Sistema_Internacional_de_Unidades/_pre/PRE-oa-t0c-oas-pratica-27-10-lme-2026-10-21.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/LFI_04_LME_Laboratorio_de_Mecanica/Trilhas/T0C_O_Sistema_Internacional_de_Unidades/_pre/PRE-oa-t0c-oas-pratica-27-10-lme-2026-10-21.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/LFI_04_LME_Laboratorio_de_Mecanica/Trilhas/T0C_O_Sistema_Internacional_de_Unidades/_pre/PRE-oa-t0c-oas-pratica-27-10-lme-2026-10-21.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/LFI_04_LME_Laboratorio_de_Mecanica/Trilhas/T0C_O_Sistema_Internacional_de_Unidades/_pre/PRE-oa-t0c-oas-pratica-27-10-lme-2026-10-21.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/LFI_04_LME_Laboratorio_de_Mecanica/Trilhas/T0C_O_Sistema_Internacional_de_Unidades/_pre/PRE-oa-t0c-oas-pratica-27-10-lme-2026-10-21.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -3522,7 +3526,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>194 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 26 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>195 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 26 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -3639,7 +3643,91 @@ function preFiltrar(tipo, valor, btn) {
     <!-- TAB: IMAGENS TEMATICAS (OA proprio da ILB) -->
     <div class="tab-content" id="tab-imagens">
       <section>
-        <h2 class="section-title">Imagens Tem&aacute;ticas &mdash; OA pr&oacute;prio</h2>
+        <h2 class="section-title">Imagens</h2>
+        <!-- ═══ NOVA IMAGEM — ficha de Esquema (codigo) e descritor de Cena (Gemini) ═══
+             Briefing: _planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md
+             Escrito a mao (nao e zona AUTO). Rascunho por tipo no localStorage; nada vai a planilha. -->
+<style>
+.ni-box { border:1px solid var(--cinza-borda); background:var(--input-bg); padding:14px 16px; margin-bottom:18px; }
+.ni-top { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.ni-top h3 { font-family:var(--display); font-size:15px; font-weight:700; margin:0; }
+.ni-tipo { display:inline-flex; border:1px solid var(--cinza-borda); }
+.ni-tipo button { font-family:var(--mono); font-size:11px; padding:5px 12px; background:var(--fundo); color:var(--texto-sub); border:0; cursor:pointer; }
+.ni-tipo button.ativo { background:var(--ouro); color:#111; font-weight:700; }
+.ni-regra { font-size:12.5px; color:var(--texto-sub); line-height:1.55; margin:0 0 12px; }
+.ni-regra strong { color:var(--texto); }
+.ni-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; }
+.ni-grid .ni-c2 { grid-column:1 / -1; }
+.ni-campo label { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--ouro); margin-bottom:3px; }
+.ni-campo label span { text-transform:none; letter-spacing:0; color:var(--texto-sub); }
+.ni-campo input, .ni-campo textarea, .ni-campo select { width:100%; box-sizing:border-box; font-family:var(--mono); font-size:12px; padding:6px 8px; border:1px solid var(--cinza-borda); background:var(--fundo); color:var(--texto); }
+.ni-campo textarea { min-height:44px; resize:vertical; }
+.ni-pers { display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; }
+.ni-pers label { display:inline-flex; align-items:center; gap:5px; cursor:pointer; }
+.ni-pers input { width:auto; }
+.ni-acoes { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px; }
+.ni-acoes .pre-acao { margin:0; }
+.ni-aviso { font-family:var(--mono); font-size:11px; color:var(--texto-sub); }
+.ni-aviso.erro { color:var(--ouro); }
+@media (max-width:700px) { .ni-grid { grid-template-columns:1fr; } }
+</style>
+        <div class="ni-box" id="ni-box">
+          <div class="ni-top">
+            <h3>Nova imagem</h3>
+            <div class="ni-tipo">
+              <button type="button" id="ni-bt-esquema" class="ativo" onclick="niTipo('esquema')">Esquema (c&oacute;digo)</button>
+              <button type="button" id="ni-bt-cena" onclick="niTipo('cena')">Cena (Gemini)</button>
+            </div>
+            <span class="ni-aviso" id="ni-rascunho"></span>
+          </div>
+          <p class="ni-regra"><strong>Regra de decis&atilde;o:</strong> se a figura depende de uma dist&acirc;ncia, &acirc;ngulo, propor&ccedil;&atilde;o,
+            vetor ou instante que ela mostra, &eacute; <strong>Esquema</strong> e sai por c&oacute;digo (TikZ, pe&ccedil;as em
+            <span style="font-family:var(--mono);">_templates_tex/esquemas/</span>), nunca por gerador de imagem. O resto &eacute;
+            <strong>Cena</strong> e sai pelo Gemini com o descritor de 7 campos da skill <span style="font-family:var(--mono);">imagem-tematica-manual</span>.</p>
+
+          <!-- ESQUEMA -->
+          <div id="ni-form-esquema">
+            <div class="ni-grid">
+              <div class="ni-campo"><label for="ne-codigo">C&oacute;digo da figura <span>(ex.: PE2-Q1, T12-IT-07)</span></label><input id="ne-codigo" placeholder="PE2-Q2"></div>
+              <div class="ni-campo"><label for="ne-pasta">Pasta do OA de destino</label><input id="ne-pasta" placeholder="Trilhas/_avaliacoes/PE/"></div>
+              <div class="ni-campo ni-c2"><label for="ne-fenomeno">Fen&ocirc;meno e vista <span>(lateral, superior, frontal)</span></label><input id="ne-fenomeno" placeholder="Equil&iacute;brio de uma amostra pendurada num dinam&ocirc;metro de mola; vista lateral"></div>
+              <div class="ni-campo"><label for="ne-fixos">Objetos fixos</label><textarea id="ne-fixos" placeholder="suporte; tubo do dinam&ocirc;metro preso no alto; escala de tra&ccedil;os sem n&uacute;meros"></textarea></div>
+              <div class="ni-campo"><label for="ne-moveis">Objetos m&oacute;veis</label><textarea id="ne-moveis" placeholder="mola (estica); ponteiro na ponta da mola; gancho e amostra"></textarea></div>
+              <div class="ni-campo"><label for="ne-instantes">Instantes a mostrar</label><input id="ne-instantes" placeholder="mola livre (sem carga) e mola com a amostra em equil&iacute;brio"></div>
+              <div class="ni-campo"><label for="ne-grandezas">Grandezas e propor&ccedil;&otilde;es <span>(em s&iacute;mbolo, sem n&uacute;mero)</span></label><input id="ne-grandezas" placeholder="deforma&ccedil;&atilde;o x; P = F_el; mola de k/2 deforma 2x"></div>
+              <div class="ni-campo ni-c2"><label for="ne-coords">Coordenadas dos pontos-chave por instante <span>(mesmo ponto f&iacute;sico = mesma coordenada)</span></label><textarea id="ne-coords" placeholder="topo da mola em y = 0 nos dois instantes; ponta da mola em y = -L0 (livre) e y = -(L0 + x) (com carga)"></textarea></div>
+              <div class="ni-campo ni-c2"><label for="ne-cotas">Cotas, setas e linhas de refer&ecirc;ncia <span>(entre quais pontos)</span></label><textarea id="ne-cotas" placeholder="cota x entre a ponta livre e a ponta com carga; vetor P para baixo no centro da amostra; vetor F_el para cima, mesmo m&oacute;dulo; tracejado horizontal na ponta livre"></textarea></div>
+              <div class="ni-campo"><label for="ne-rotulos">R&oacute;tulos permitidos <span>(lista fechada)</span></label><input id="ne-rotulos" placeholder="x; P; F_el; sem carga; em equil&iacute;brio"></div>
+              <div class="ni-campo"><label for="ne-proibidos">Elementos proibidos</label><input id="ne-proibidos" placeholder="n&uacute;meros; pessoas; m&atilde;os; cen&aacute;rio; cor"></div>
+              <div class="ni-campo"><label for="ne-saida">Sa&iacute;da</label><input id="ne-saida" value="PDF vetorial + PNG 300 dpi, preto e branco, largura final 8 cm no OA"></div>
+              <div class="ni-campo"><label for="ne-pecas">Pe&ccedil;as da biblioteca a usar ou criar</label><input id="ne-pecas" placeholder="criar: mola, dinam&ocirc;metro, bloco; usar: cota, ref, seta"></div>
+            </div>
+          </div>
+
+          <!-- CENA -->
+          <div id="ni-form-cena" hidden>
+            <div class="ni-grid">
+              <div class="ni-campo"><label for="nc-codigo">C&oacute;digo <span>(T{NN}-IT-{XX})</span></label><input id="nc-codigo" placeholder="T12-IT-05"></div>
+              <div class="ni-campo"><label for="nc-estilo">Estilo</label><select id="nc-estilo"><option>Cinematografico</option><option>Desenho</option><option>Desenho tecnico</option><option>3D com profundidade, fundo chapado cinza-claro #CCCCCC uniforme, sem vinheta</option></select></div>
+              <div class="ni-campo ni-c2"><label>Personagens <span>(descritor copiado literalmente da paleta + #LESSONS; nunca reescrever)</span></label>
+                <div class="ni-pers" id="nc-pers"></div></div>
+              <div class="ni-campo ni-c2"><label for="nc-pose">Pose e posi&ccedil;&atilde;o de cada personagem <span>(de costas, de perfil, em tr&ecirc;s quartos com rosto vis&iacute;vel)</span></label><input id="nc-pose" placeholder="Sofia de perfil com rosto visivel; Pedro em tres quartos; Lucas de costas por ultimo"></div>
+              <div class="ni-campo ni-c2"><label for="nc-sujeito">Resto do [SUJEITO] <span>(elemento mais espec&iacute;fico primeiro; objetos; Anexe imagem real de referencia, se for local reconhec&iacute;vel)</span></label><textarea id="nc-sujeito" placeholder="VAGONETA DE MINERIO sobre trilhos retos na galeria..."></textarea></div>
+              <div class="ni-campo"><label for="nc-cenario">[CENARIO]</label><textarea id="nc-cenario" placeholder="Galeria da Mina da Passagem, Mariana; luz de lampadas quentes; paredes de rocha"></textarea></div>
+              <div class="ni-campo"><label for="nc-acao">[ACAO]</label><textarea id="nc-acao" placeholder="A vagoneta avanca em ritmo constante enquanto o trio mede o tempo"></textarea></div>
+              <div class="ni-campo"><label for="nc-paleta">[PALETA]</label><input id="nc-paleta" value="#1A4A6E azul . #C8A84B dourado . #6B7280 cinza . tons terrosos de Ouro Preto"></div>
+              <div class="ni-campo"><label for="nc-composicao">[COMPOSICAO]</label><input id="nc-composicao" value="Quadro 1:1, assunto principal no terco central, profundidade com fundo desfocado"></div>
+              <div class="ni-campo ni-c2"><label for="nc-evitar">[EVITAR] <span>(no m&aacute;ximo 10 termos curtos, separados por v&iacute;rgula)</span></label><input id="nc-evitar" value="texto legivel, idioma ingles, logotipos reais, anacronismos"></div>
+            </div>
+          </div>
+
+          <div class="ni-acoes">
+            <button type="button" class="pre-acao" id="ni-copiar" onclick="niCopiar()">&#10697; Copiar prompt para o Claude</button>
+            <button type="button" class="pre-acao" onclick="niExemplo()">Preencher com o exemplo</button>
+            <button type="button" class="pre-acao" onclick="niLimpar()">Limpar</button>
+            <span class="ni-aviso" id="ni-msg"></span>
+          </div>
+        </div>
         <p style="font-size:14px;color:var(--texto-sub);margin-bottom:14px;">
           Gera&ccedil;&atilde;o <strong>manual no Gemini</strong>. Copie o prompt, gere <strong>na ordem do quadro</strong>,
           baixe tudo em <span style="font-family:var(--mono);font-size:12px;" id="img-pasta-download">&mdash;</span>
@@ -10946,6 +11034,174 @@ function imgCopiarLote() {
   var txt = lista.map(function (i) { return i.prompt; }).join('\n\n');
   copiarTexto(txt, lista.length + ' prompts de ' + IMG_TRILHA + ' copiados');
 }
+
+/* ═══ NOVA IMAGEM — ficha de Esquema (codigo) e descritor de Cena (Gemini) ══════
+   Briefing: _planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md
+   Esquema: ficha -> prompt para o Claude, que escreve o TikZ com pecas.sty e entrega PDF + PNG.
+   Cena: 7 campos -> prompt Gemine (cabecalho literal, sem acento, [EVITAR] <= 10 termos).
+   Rascunho por tipo em localStorage (ni-esquema / ni-cena). Personagens: descritor PT
+   literal da producao aprovada (T10 Gemine) corrigido pelo #LESSONS (Felipe 35 anos com
+   oculos metalicos retangulares; Lucas cabelo cacheado, decisao de 2026-08-28). */
+
+var NI_TIPO = 'esquema';
+var NI_CAMPOS = {
+  esquema: ['ne-codigo', 'ne-pasta', 'ne-fenomeno', 'ne-fixos', 'ne-moveis', 'ne-instantes', 'ne-grandezas',
+            'ne-coords', 'ne-cotas', 'ne-rotulos', 'ne-proibidos', 'ne-saida', 'ne-pecas'],
+  cena: ['nc-codigo', 'nc-estilo', 'nc-pose', 'nc-sujeito', 'nc-cenario', 'nc-acao', 'nc-paleta', 'nc-composicao', 'nc-evitar']
+};
+var NI_PERSONAGENS = [
+  ['Sofia', 'SOFIA - jovem brasileira branca de constituicao esguia, olhos verde-claro, CABELOS CASTANHO MEDIO ANELADOS NAS PONTAS NA ALTURA DOS OMBROS, sem oculos, camiseta azul-marinho IFMG com logo no peito, jeans escuro, tenis cinza, mochila nas costas, caderno de campo sob o braco'],
+  ['Pedro', 'PEDRO - jovem brasileiro branco de constituicao atletica media, olhos castanho-escuros, CABELO CURTO LISO CASTANHO-ESCURO, BARBA CURTA COM BIGODE E COSTELETAS CURTAS BEM APARADAS, sem oculos, camiseta preta IFMG, calca cargo caqui, mochila'],
+  ['Lucas', 'LUCAS - jovem brasileiro pardo de constituicao magra e agil, olhos castanho-escuros, CABELO CACHEADO PRETO CURTO, rosto naturalmente limpo sem barba, sem oculos, camiseta branca IFMG, jeans escuro, mochila'],
+  ['Prof. Julio', 'PROF. JULIO AZEVEDO - homem brasileiro branco de aproximadamente 55 anos, 1,70 m, ombros medios, constituicao magra e atletica, rosto oval, OLHOS VERDE-CLARO distintivos, nariz romano largo de ponta arredondada, CABELO CASTANHO-ESCURO ONDULADO PRESO (nao longo), sem costeletas, ROSTO SEM BARBA, sem oculos, camisa polo em tom terroso e calca jeans'],
+  ['Prof. Felipe', 'PROF. FELIPE BEATO - homem brasileiro de 35 anos, 1,80 m, constituicao robusta, rosto quadrado, olhos castanho-escuros, CABELO CURTO ESCURO, COSTELETAS E BARBA CURTAS BEM APARADAS, OCULOS METALICOS RETANGULARES, camisa xadrez de mangas dobradas e calca caqui']
+];
+var NI_HEADER = 'Imagem ficticia, criadas para fins didaticos no projeto Trilhas de Aprendizagem. Gere a imagem:';
+
+function niV(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function niSemAcento(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+function niTipo(t) {
+  NI_TIPO = t;
+  document.getElementById('ni-form-esquema').hidden = t !== 'esquema';
+  document.getElementById('ni-form-cena').hidden = t !== 'cena';
+  document.getElementById('ni-bt-esquema').classList.toggle('ativo', t === 'esquema');
+  document.getElementById('ni-bt-cena').classList.toggle('ativo', t === 'cena');
+  document.getElementById('ni-copiar').innerHTML = t === 'esquema' ? '&#10697; Copiar prompt para o Claude' : '&#10697; Copiar prompt para o Gemini';
+  document.getElementById('ni-msg').textContent = '';
+  try { localStorage.setItem('ni-tipo', t); } catch (e) {}
+}
+
+function niMontarPersonagens() {
+  var el = document.getElementById('nc-pers');
+  if (!el) return;
+  el.innerHTML = NI_PERSONAGENS.map(function (p, i) {
+    return '<label><input type="checkbox" id="nc-p' + i + '" onchange="niSalvar()"> ' + p[0] + '</label>';
+  }).join('');
+}
+
+function niSalvar() {
+  var d = {};
+  NI_CAMPOS[NI_TIPO].forEach(function (id) { d[id] = niV(id); });
+  if (NI_TIPO === 'cena') d.pers = NI_PERSONAGENS.map(function (p, i) { var c = document.getElementById('nc-p' + i); return c && c.checked ? 1 : 0; });
+  try { localStorage.setItem('ni-' + NI_TIPO, JSON.stringify(d)); } catch (e) {}
+  var r = document.getElementById('ni-rascunho'); if (r) r.textContent = 'rascunho salvo neste navegador';
+}
+
+function niCarregar(t) {
+  var d = null;
+  try { d = JSON.parse(localStorage.getItem('ni-' + t) || 'null'); } catch (e) {}
+  if (!d) return false;
+  NI_CAMPOS[t].forEach(function (id) { var e = document.getElementById(id); if (e && d[id] != null) e.value = d[id]; });
+  if (t === 'cena' && d.pers) d.pers.forEach(function (v, i) { var c = document.getElementById('nc-p' + i); if (c) c.checked = !!v; });
+  return true;
+}
+
+function niLimpar() {
+  NI_CAMPOS[NI_TIPO].forEach(function (id) { var e = document.getElementById(id); if (e && e.tagName !== 'SELECT') e.value = ''; });
+  if (NI_TIPO === 'cena') NI_PERSONAGENS.forEach(function (p, i) { var c = document.getElementById('nc-p' + i); if (c) c.checked = false; });
+  try { localStorage.removeItem('ni-' + NI_TIPO); } catch (e) {}
+  document.getElementById('ni-rascunho').textContent = '';
+  document.getElementById('ni-msg').textContent = 'campos limpos';
+}
+
+function niExemplo() {
+  var ex = NI_TIPO === 'esquema' ? {
+    'ne-codigo': 'PE2-Q1', 'ne-pasta': 'Trilhas/_avaliacoes/PE/',
+    'ne-fenomeno': 'Trem atravessando uma ponte: deslocamento da frente para a travessia completa; vista lateral',
+    'ne-fixos': 'trilho reto; ponte trelicada de x = 4 a x = 5 (comprimento L), no mesmo lugar nos dois instantes; rio sob a ponte',
+    'ne-moveis': 'trem (locomotiva na frente, a direita, + 3 vagoes), comprimento 3L, anda da esquerda para a direita',
+    'ne-instantes': 'INICIO: frente da locomotiva encosta na entrada da ponte (x = 4). FIM: traseira do ultimo vagao encosta na saida da ponte (x = 5); frente em x = 8',
+    'ne-grandezas': 'ponte L; trem 3L; deslocamento da frente = L + 3L = 4L (sem numeros na figura)',
+    'ne-coords': 'inicio: trem de x = 1 a x = 4. fim: trem de x = 5 a x = 8. ponte de 4 a 5 nos dois; faixas em y = 4,2 (inicio) e y = 0 (fim)',
+    'ne-cotas': 'seta "deslocamento da frente" de x = 4 a x = 8 entre as faixas; cotas "ponte" (4 a 5) e "trem" (5 a 8) sob a faixa de baixo; tracejados verticais em x = 4, 5 e 8 ligando as faixas',
+    'ne-rotulos': 'Inicio da travessia; Fim da travessia; sentido; deslocamento da frente; ponte; trem; deslocamento da frente = ponte + trem',
+    'ne-proibidos': 'numeros; paisagem; perspectiva; pessoas; segundo trem; cor',
+    'ne-saida': 'PDF vetorial + PNG 300 dpi, preto e branco, largura final 12 cm no Caderno 2',
+    'ne-pecas': 'usar: pcTrilho, pcTrem, pcPonte, pcCota, pcRef, pcSeta, pcPonto, pcFaixa'
+  } : {
+    'nc-codigo': 'T10-IT-02', 'nc-estilo': 'Cinematografico',
+    'nc-pose': 'Prof. Julio DE PERFIL caminhando ao lado do trio; Sofia DE PERFIL COM ROSTO VISIVEL; Pedro EM TRES QUARTOS COM ROSTO VISIVEL; Lucas de costas por ultimo, olhando a fuselagem',
+    'nc-sujeito': 'o grupo atravessa a PONTE DE EMBARQUE de vidro e metal do Aeroporto de Confins. Anexe imagem real de referencia, se disponivel.',
+    'nc-cenario': 'Ponte de embarque (fingerdock) no Aeroporto de Confins em horario normal; aeronave comercial visivel atraves do vidro; manha clara com luz dourada suave',
+    'nc-acao': 'O embarque - o trio atravessa a ponte enquanto o professor caminha ao lado, a manha se abrindo nas janelas',
+    'nc-paleta': '#1A4A6E azul (vidro e ceu) . #C8A84B dourado (luz) . #6B7280 cinza (metal) . azul-marinho e preto (uniformes)',
+    'nc-composicao': 'Quadro 1:1, grupo no terco central caminhando para a direita, aeronave ao fundo pelo vidro',
+    'nc-evitar': 'texto legivel, logotipos de companhia aerea real, rosto de Lucas, oculos nos estudantes, idioma ingles'
+  };
+  Object.keys(ex).forEach(function (id) { var e = document.getElementById(id); if (e) e.value = ex[id]; });
+  if (NI_TIPO === 'cena') [1, 1, 1, 1, 0].forEach(function (v, i) { var c = document.getElementById('nc-p' + i); if (c) c.checked = !!v; });
+  niSalvar();
+  document.getElementById('ni-msg').textContent = 'exemplo carregado (' + (NI_TIPO === 'esquema' ? 'PE2 Q1, trem e ponte' : 'T10-IT-02') + ')';
+}
+
+function niPromptEsquema() {
+  var f = {}; NI_CAMPOS.esquema.forEach(function (id) { f[id] = niV(id); });
+  var faltam = ['ne-codigo', 'ne-fenomeno', 'ne-coords', 'ne-rotulos'].filter(function (id) { return !f[id]; });
+  if (faltam.length) return { erro: 'preencha: ' + faltam.map(function (id) { return document.querySelector('label[for=' + id + ']').firstChild.textContent.trim(); }).join(' · ') };
+  var L = [
+    'ESQUEMA DIDATICO — ' + f['ne-codigo'] + ' (Trilhas de Aprendizagem, IFMG-OP)',
+    'Desenhe este esquema em TikZ, com as pecas de Trilhas/_templates_tex/esquemas/pecas.sty (ler INDICE.md; criar peca nova no .sty quando faltar). Esquema sai por codigo, nunca por gerador de imagem. O mesmo ponto fisico usa a MESMA coordenada em todos os instantes; grandezas em simbolo, sem numero.',
+    '',
+    'Fenomeno e vista: ' + f['ne-fenomeno'],
+    'Objetos fixos: ' + (f['ne-fixos'] || '—'),
+    'Objetos moveis: ' + (f['ne-moveis'] || '—'),
+    'Instantes a mostrar: ' + (f['ne-instantes'] || 'um so'),
+    'Grandezas e proporcoes: ' + (f['ne-grandezas'] || '—'),
+    'Coordenadas dos pontos-chave por instante: ' + f['ne-coords'],
+    'Cotas, setas e linhas de referencia: ' + (f['ne-cotas'] || '—'),
+    'Rotulos permitidos (lista fechada, pt-BR): ' + f['ne-rotulos'],
+    'Elementos proibidos: ' + (f['ne-proibidos'] || '—'),
+    'Pecas da biblioteca: ' + (f['ne-pecas'] || 'as que existirem; criar as que faltarem'),
+    'Saida: ' + (f['ne-saida'] || 'PDF vetorial + PNG 300 dpi, preto e branco'),
+    'Destino: ' + (f['ne-pasta'] || 'pasta do OA') + ' — .tex em _tex/ do OA, .pdf e .png ao lado do OA; registrar a figura (e as pecas novas) no INDICE.md.',
+    '',
+    'Entrega: compilar com Tectonic (-Z search-path=.../_templates_tex/esquemas), rasterizar, conferir instante por instante contra as coordenadas acima e relatar em ate 6 linhas com o caminho dos arquivos.'
+  ];
+  return { texto: L.join('\n') };
+}
+
+function niPromptCena() {
+  var f = {}; NI_CAMPOS.cena.forEach(function (id) { f[id] = niV(id); });
+  var faltam = ['nc-codigo', 'nc-sujeito', 'nc-cenario', 'nc-acao'].filter(function (id) { return !f[id]; });
+  if (faltam.length) return { erro: 'preencha: ' + faltam.join(' · ') };
+  var evitar = f['nc-evitar'].split(',').map(function (s) { return s.trim(); }).filter(String);
+  if (evitar.length > 10) return { erro: '[EVITAR] com ' + evitar.length + ' termos; o maximo e 10 (prompt longo dispara o filtro)' };
+  var pers = NI_PERSONAGENS.filter(function (p, i) { var c = document.getElementById('nc-p' + i); return c && c.checked; });
+  var sujeito = pers.map(function (p) { return p[1]; }).concat(f['nc-pose'] ? ['Poses: ' + f['nc-pose']] : []).concat([f['nc-sujeito']]).join('. ');
+  var L = [
+    f['nc-codigo'], NI_HEADER,
+    '[SUJEITO]: ' + sujeito,
+    '[CENARIO]: ' + f['nc-cenario'],
+    '[ACAO]: ' + f['nc-acao'],
+    '[ESTILO]: ' + f['nc-estilo'],
+    '[PALETA]: ' + f['nc-paleta'],
+    '[COMPOSICAO]: ' + f['nc-composicao'],
+    '[EVITAR]: ' + evitar.join(', ')
+  ];
+  return { texto: niSemAcento(L.join('\n').replace(/\s+/g, ' ').replace(/ ?\n ?/g, '\n').replace(/ (\[|T\d|Imagem)/g, '\n$1')) };
+}
+
+function niCopiar() {
+  var r = NI_TIPO === 'esquema' ? niPromptEsquema() : niPromptCena();
+  var m = document.getElementById('ni-msg');
+  if (r.erro) { m.className = 'ni-aviso erro'; m.textContent = r.erro; return; }
+  m.className = 'ni-aviso';
+  niSalvar();
+  copiarTexto(r.texto, 'Prompt ' + (NI_TIPO === 'esquema' ? 'do esquema' : 'da cena') + ' copiado — cole no ' + (NI_TIPO === 'esquema' ? 'Claude Code' : 'Gemini'));
+  m.textContent = 'copiado (' + r.texto.length + ' caracteres)';
+}
+
+(function niIniciar() {
+  if (!document.getElementById('ni-box')) return;
+  niMontarPersonagens();
+  var t = 'esquema';
+  try { t = localStorage.getItem('ni-tipo') || 'esquema'; } catch (e) {}
+  var tinha = niCarregar('esquema') | niCarregar('cena');
+  niTipo(t);
+  if (tinha) document.getElementById('ni-rascunho').textContent = 'rascunho recuperado deste navegador';
+  document.getElementById('ni-box').addEventListener('input', niSalvar);
+})();
 
 function copiarTexto(txt, msg) {
   navigator.clipboard.writeText(txt).then(function () { alert(msg); })
