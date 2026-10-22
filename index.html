@@ -2745,7 +2745,11 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (25)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">195 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (25)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">196 na lista</span></div>
+<details class="pre-brief" data-escopo="disciplina" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>outro &middot; Esquemas (Nova imagem) a partir do livro Bonjorno, com ficha pré-preenchida<span class="pre-selo">FC1</span><span class="pre-meta">2026-10-22</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Fazer o Claude ler as páginas do livro oficial (*Física: Identidade*, Bonjorno, Saraiva, volume único) de um Tema, listar as figuras que valem esquema, e — para as que o autor escolher — preencher sozinho a ficha de Esquema do Painel e desenhar a figura original em TikZ, de modo que cada esquema saia certo na primeira passada.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (script novo + `pecas.sty` + edição do Painel)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-outro-esquemas-a-partir-do-bonjorno-fc1-2026-10-22.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-outro-esquemas-a-partir-do-bonjorno-fc1-2026-10-22.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-outro-esquemas-a-partir-do-bonjorno-fc1-2026-10-22.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-outro-esquemas-a-partir-do-bonjorno-fc1-2026-10-22.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-outro-esquemas-a-partir-do-bonjorno-fc1-2026-10-22.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="disciplina" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>painel &middot; Produção &gt; Imagens — ficha de Esquema (código) e descritor de Cena (Gemini)<span class="pre-selo">FC1</span><span class="pre-meta">2026-10-22</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Pôr na aba Produção &gt; Imagens do Painel um bloco &quot;Nova imagem&quot; que, em poucos campos, monta o pedido certo para cada tipo de imagem didática: **Esquema** (cotas, vetores, instantes, proporções) vira uma ficha de especificação que o Claude transforma em TikZ/SVG; **Cena** (personagens, Ouro Preto, mina) vira o descritor Gemine de 7 campos — para que uma figura saia certa na primeira passada, e não em 4 horas e 3 rodadas, como a do trem da PE2.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma (edição direta do fonte do Painel + `pecas.sty` novo)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-producao-imagens-ficha-esquema-cena-2026-10-22.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -3526,7 +3530,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>195 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 26 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>196 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 26 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -3701,6 +3705,7 @@ function preFiltrar(tipo, valor, btn) {
               <div class="ni-campo"><label for="ne-proibidos">Elementos proibidos</label><input id="ne-proibidos" placeholder="n&uacute;meros; pessoas; m&atilde;os; cen&aacute;rio; cor"></div>
               <div class="ni-campo"><label for="ne-saida">Sa&iacute;da</label><input id="ne-saida" value="PDF vetorial + PNG 300 dpi, preto e branco, largura final 8 cm no OA"></div>
               <div class="ni-campo"><label for="ne-pecas">Pe&ccedil;as da biblioteca a usar ou criar</label><input id="ne-pecas" placeholder="criar: mola, dinam&ocirc;metro, bloco; usar: cota, ref, seta"></div>
+              <div class="ni-campo"><label for="ne-destino">Destino <span>(OA em que o esquema vai entrar)</span></label><input id="ne-destino" placeholder="FA da T11 Â· PR 06a Â· sess&atilde;o da Oficina IA"></div>
               <div class="ni-campo ni-c2"><label for="ne-ref">Refer&ecirc;ncia de conven&ccedil;&atilde;o visual <span>(opcional &mdash; p&aacute;gina do livro ou arquivo; s&oacute; o modo de desenhar, n&atilde;o a geometria)</span></label><input id="ne-ref" placeholder="Bonjorno p. 89: mola em corte com ponteiro na ponta; ou _biblioteca/Bonjorno-Fisica-Identidade/Bonjorno-Tema06-...pdf"></div>
             </div>
           </div>
@@ -3727,6 +3732,9 @@ function preFiltrar(tipo, valor, btn) {
 
           <div class="ni-acoes">
             <button type="button" class="pre-acao" id="ni-copiar" onclick="niCopiar()">&#10697; Copiar prompt para o Claude</button>
+            <button type="button" class="pre-acao" id="ni-carregar" onclick="document.getElementById('ni-arquivo').click()" title="Arquivo fichas-T{NN}.json gravado pelo Claude em T{NN}/_imagens/esquemas/">&#128194; Carregar ficha</button>
+            <input type="file" id="ni-arquivo" accept=".json,application/json" hidden onchange="niLerArquivo(this)">
+            <select id="ni-fichas" hidden onchange="niAplicarFicha(this.value)" style="font-family:var(--mono);font-size:11px;padding:4px 6px;border:1px solid var(--cinza-borda);background:var(--fundo);color:var(--texto);max-width:260px"></select>
             <button type="button" class="pre-acao" onclick="niExemplo()">Preencher com o exemplo</button>
             <button type="button" class="pre-acao" onclick="niLimpar()">Limpar</button>
             <span class="ni-aviso" id="ni-msg"></span>
@@ -11050,7 +11058,7 @@ function imgCopiarLote() {
 var NI_TIPO = 'esquema';
 var NI_CAMPOS = {
   esquema: ['ne-codigo', 'ne-pasta', 'ne-fenomeno', 'ne-fixos', 'ne-moveis', 'ne-instantes', 'ne-grandezas',
-            'ne-coords', 'ne-cotas', 'ne-rotulos', 'ne-proibidos', 'ne-saida', 'ne-pecas', 'ne-ref'],
+            'ne-coords', 'ne-cotas', 'ne-rotulos', 'ne-proibidos', 'ne-saida', 'ne-pecas', 'ne-ref', 'ne-destino'],
   cena: ['nc-codigo', 'nc-estilo', 'nc-pose', 'nc-sujeito', 'nc-cenario', 'nc-acao', 'nc-paleta', 'nc-composicao', 'nc-evitar', 'nc-ref', 'nc-instrucao']
 };
 var NI_PERSONAGENS = [
@@ -11071,6 +11079,8 @@ function niTipo(t) {
   document.getElementById('ni-form-cena').hidden = t !== 'cena';
   document.getElementById('ni-bt-esquema').classList.toggle('ativo', t === 'esquema');
   document.getElementById('ni-bt-cena').classList.toggle('ativo', t === 'cena');
+  document.getElementById('ni-carregar').hidden = t !== 'esquema';
+  document.getElementById('ni-fichas').hidden = t !== 'esquema' || NI_FICHAS.length < 2;
   document.getElementById('ni-copiar').innerHTML = t === 'esquema' ? '&#10697; Copiar prompt para o Claude' : '&#10697; Copiar prompt para o Gemini';
   document.getElementById('ni-msg').textContent = '';
   try { localStorage.setItem('ni-tipo', t); } catch (e) {}
@@ -11107,6 +11117,34 @@ function niLimpar() {
   try { localStorage.removeItem('ni-' + NI_TIPO); } catch (e) {}
   document.getElementById('ni-rascunho').textContent = '';
   document.getElementById('ni-msg').textContent = 'campos limpos';
+}
+
+/* Carregar ficha: le o fichas-T{NN}.json (lista de objetos com os ids ne-*), gravado pelo Claude
+   a partir da varredura do Bonjorno (PRE-outro-esquemas-a-partir-do-bonjorno-fc1-2026-10-22). */
+var NI_FICHAS = [];
+function niLerArquivo(inp) {
+  var f = inp.files && inp.files[0], m = document.getElementById('ni-msg');
+  if (!f) return;
+  var r = new FileReader();
+  r.onload = function () {
+    try {
+      var d = JSON.parse(r.result); NI_FICHAS = Array.isArray(d) ? d : (d.fichas || [d]);
+      if (!NI_FICHAS.length || !NI_FICHAS[0]['ne-codigo']) throw new Error('sem fichas');
+    } catch (e) { m.className = 'ni-aviso erro'; m.textContent = 'arquivo sem fichas de Esquema validas (' + f.name + ')'; return; }
+    var sel = document.getElementById('ni-fichas');
+    sel.innerHTML = NI_FICHAS.map(function (x, i) { return '<option value="' + i + '">' + imgEsc(x['ne-codigo'] + ' â€” ' + (x['ne-fenomeno'] || '').slice(0, 40)) + '</option>'; }).join('');
+    sel.hidden = NI_FICHAS.length < 2;
+    niAplicarFicha(0);
+    m.className = 'ni-aviso'; m.textContent = NI_FICHAS.length + ' ficha(s) de ' + f.name;
+  };
+  r.readAsText(f, 'utf-8');
+  inp.value = '';
+}
+function niAplicarFicha(i) {
+  var x = NI_FICHAS[+i]; if (!x) return;
+  if (NI_TIPO !== 'esquema') niTipo('esquema');
+  NI_CAMPOS.esquema.forEach(function (id) { var e = document.getElementById(id); if (e) e.value = x[id] || ''; });
+  niSalvar();
 }
 
 function niExemplo() {
@@ -11162,6 +11200,7 @@ function niPromptEsquema() {
     'Pecas da biblioteca: ' + (f['ne-pecas'] || 'as que existirem; criar as que faltarem'),
     f['ne-ref'] ? 'Referencia de convencao visual (so o modo de desenhar: tracos, simbolos, enquadramento; NUNCA copiar a figura nem a geometria; a geometria vem das coordenadas acima): ' + f['ne-ref'] : '',
     'Saida: ' + (f['ne-saida'] || 'PDF vetorial + PNG 300 dpi, preto e branco'),
+    f['ne-destino'] ? 'OA de destino: ' + f['ne-destino'] : '',
     'Destino: ' + (f['ne-pasta'] || 'pasta do OA') + ' — .tex em _tex/ do OA, .pdf e .png ao lado do OA; registrar a figura (e as pecas novas) no INDICE.md.',
     '',
     'Entrega: compilar com Tectonic (-Z search-path=.../_templates_tex/esquemas), rasterizar, conferir instante por instante contra as coordenadas acima e relatar em ate 6 linhas com o caminho dos arquivos.'
