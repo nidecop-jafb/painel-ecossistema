@@ -80,7 +80,8 @@ td.mono { font-family: var(--mono); }
   Registro digital do <strong>Espa&ccedil;o da Equipe de Monitoria</strong>: a entrega do
   <strong>Roteiro de Bancada (RB)</strong> nas trilhas da FE1 e da
   <strong>Folha de Atividades (FA)</strong> nas trilhas da FC1 &mdash; e o
-  <strong>Trabalho da Etapa 2 (TE2)</strong> da FC1, quest&atilde;o por quest&atilde;o (escolha TE2 em Trilha).
+  <strong>Trabalho da Etapa 2 (TE2)</strong> da FC1, quest&atilde;o por quest&atilde;o (escolha TE2 em Trilha), e o
+  <strong>Trabalho 2 da Etapa 2 (TE2-2)</strong>: a corre&ccedil;&atilde;o das quest&otilde;es que o estudante errou na Parte 1 da PE2.
   Digite apenas o <strong>RA</strong> do estudante &mdash; nome, disciplina, curso, turma e grupo
   s&atilde;o preenchidos automaticamente pela lista oficial (SUAP). Cada registro espelha a folha
   impressa: situa&ccedil;&atilde;o do prazo, completude, observa&ccedil;&otilde;es e monitor(a).
@@ -89,7 +90,8 @@ td.mono { font-family: var(--mono); }
 <div class="disc-toggle">
   <button class="disc-btn fe ativa" id="btnFE1" onclick="setDisciplina('FE1')">FE1 &middot; Roteiro de Bancada (RB)</button>
   <button class="disc-btn" id="btnFC1" onclick="setDisciplina('FC1')">FC1 &middot; Folha de Atividades (FA)</button>
-  <button class="disc-btn" id="btnTE2" onclick="abrirTE2()">FC1 &middot; Trabalho da Etapa 2 (TE2)</button>
+  <button class="disc-btn" id="btnTE2" onclick="abrirTE('TE2')">FC1 &middot; Trabalho da Etapa 2 (TE2)</button>
+  <button class="disc-btn" id="btnTE2-2" onclick="abrirTE('TE2-2')">FC1 &middot; Trabalho 2 da Etapa 2 (TE2-2)</button>
 </div>
 
 <div class="card">
@@ -100,7 +102,7 @@ td.mono { font-family: var(--mono); }
     </label>
     <button class="btn" id="btnBuscar" onclick="buscarAluno()">Buscar</button>
     <label class="campo">Trilha
-      <select id="trilha" onchange="atualizarModo()"></select>
+      <select id="trilha" onchange="atualizarModo(); errosSeFaltar()"></select>
     </label>
     <label class="campo">Data da entrega
       <input type="date" id="dataEntrega" onchange="sugerirPrazoTE()">
@@ -113,14 +115,14 @@ td.mono { font-family: var(--mono); }
   </div>
 
   <fieldset id="teBox" hidden>
-    <legend>Trabalho da Etapa 2 &mdash; p&aacute;gina 4 do trabalho</legend>
+    <legend id="teLegend">Trabalho da Etapa 2 &mdash; p&aacute;gina 4 do trabalho</legend>
     <div class="opcoes">
       <label><input type="radio" name="situacaoTE" value="no prazo" checked> Dentro do prazo</label>
       <label><input type="radio" name="situacaoTE" value="fora do prazo"> Fora do prazo</label>
     </div>
     <div class="criterios" id="tePrazoTxt"></div>
     <table id="teQuestoes" style="margin-top:10px;"></table>
-    <div class="meta" style="margin-top:8px;">Total: <strong id="teTotal">&ndash;</strong> de 6,0 pontos</div>
+    <div class="meta" style="margin-top:8px;">Total: <strong id="teTotal">&ndash;</strong> de <span id="teMax">6,0</span> pontos</div>
     <div class="criterios"><strong>Completa (1,0):</strong> os 5 passos da RCP, contas com unidade e resposta em frase &middot;
       <strong>Incompleta (0,5):</strong> falta passo, unidade ou resposta, ou h&aacute; erro &middot;
       <strong>N&atilde;o resolveu (0):</strong> em branco. Fora do prazo &eacute; recebido e s&oacute; registrado.</div>
@@ -225,7 +227,7 @@ var CFG = {
     url: 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec',
     chaveKey: 'fc1_chave_relatorio', tipoCampo: 'tipo', oa: 'FA',
     oaNome: 'Folha de Atividades (FA)',
-    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','TE2']
+    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','TE2','TE2-2']
   },
   FE1: {
     url: 'https://script.google.com/macros/s/AKfycbxBYD4VXRUkFnicnOR2WF8VS_OYdD8z0uYnJCVnGF5Il0BzJF-o4VF8JHPztzARCUJd/exec',
@@ -243,7 +245,22 @@ function cfg() { return CFG[disciplina]; }
 /* Trabalho de Etapa (F34): trilha 'TE2' da FC1, OA 'TE', uma marca por questao. */
 var TE = { TE2: { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'Trabalho da Etapa 2 (TE2)',
   questoes: ['O encontro na estrada da mina', 'A Estrada Real de bicicleta', 'O minério na correia transportadora',
-             'A gaiola da mina subterrânea', 'O para-choque de mola da galeria', 'A mochila no ônibus'] } };
+             'A gaiola da mina subterrânea', 'O para-choque de mola da galeria', 'A mochila no ônibus'] },
+  /* F35: TE2-2 = so as questoes erradas na Parte 1 da PE2 (ou da 2.a chamada), carregadas pelo RA. */
+  'TE2-2': { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'Trabalho 2 da Etapa 2 (TE2-2)',
+    dinamico: true, questoes: [] } };
+/* Titulos das questoes da Parte 1, na ordem da versao A (indice = numero A - 1). */
+var TITULOS_P1 = {
+  PE2: ['O trem turístico Ouro Preto–Mariana', 'O caminhão fora de estrada', 'Os marcos da rodovia Ouro Preto–BH',
+        'A correia transportadora de 150 m', 'A vagoneta da Mina da Passagem', 'A pedra no córrego do Tripuí',
+        'Os operários e a vagoneta da mina-museu', 'O bloco de minério no laboratório',
+        'A balança de mola da feira', 'A pedra do talude e a vagoneta'],
+  '2CH': ['Lucas na galeria da Mina da Passagem', 'O navio graneleiro de 300 m', 'As placas da estrada da mina',
+          'O mineroduto de 300 m', 'O robô de inspeção no túnel', 'O carrinho de mão nas ladeiras',
+          'Os tratores e o bloco de pedra-sabão', 'O saco de manganês do almoxarifado',
+          'A balança de mola da feira de Mariana', 'O separador magnético da usina'] };
+var PROVA_NOME = { PE2: 'PE2', '2CH': '2.ª chamada da PE2' };
+var teErros = null;   // resposta de ?monitoria_erros para o RA buscado (TE2-2)
 var TE_VALOR = { C: 1, I: 0.5, N: 0 };
 function teAtual(t) { return disciplina === 'FC1' ? TE[t || document.getElementById('trilha').value] : null; }
 function oaDe(t) { return teAtual(t) ? 'TE' : cfg().oa; }
@@ -257,11 +274,28 @@ function atualizarModo() {
   if (!te) return;
   document.getElementById('tePrazoTxt').innerHTML = '<strong>Prazo:</strong> ' + te.prazoTxt +
     ' (sugerido pela data da entrega; pode ajustar).';
+  var rotulos = te.questoes.map(function (t, i) { return 'Q' + (i + 1) + ' · ' + t; });
+  if (te.dinamico) {
+    var ok = teErros && teErros.corrigida;
+    te.questoes = ok ? teErros.erradas : [];
+    rotulos = te.questoes.map(function (x) {
+      return 'Q' + x.n + ' (versão ' + teErros.versao + ') · ' + (TITULOS_P1[teErros.prova] || [])[x.a - 1];
+    });
+    document.getElementById('teLegend').textContent = 'Trabalho 2 da Etapa 2 — questões erradas na Parte 1' +
+      (ok ? ' da ' + PROVA_NOME[teErros.prova] : '');
+  } else {
+    document.getElementById('teLegend').textContent = 'Trabalho da Etapa 2 — página 4 do trabalho';
+  }
+  document.getElementById('teMax').textContent = te.questoes.length.toFixed(1).replace('.', ',');
   document.getElementById('teQuestoes').innerHTML =
     '<tr><th>Questão</th><th>Completa (1,0)</th><th>Incompleta (0,5)</th><th>Não resolveu (0)</th></tr>' +
-    te.questoes.map(function (t, i) {
+    (te.dinamico && !rotulos.length ? '<tr><td colspan="4">' + (teErros ? (teErros.corrigida
+      ? 'Acertou todas as questões da Parte 1 — nada a registrar.'
+      : 'Sem Parte 1 corrigida (PE2 ou 2.ª chamada) para este RA.')
+      : 'Busque o RA: as questões que o estudante errou na Parte 1 aparecem aqui.') + '</td></tr>' : '') +
+    rotulos.map(function (t, i) {
       var n = 'teQ' + (i + 1);
-      return '<tr><td>Q' + (i + 1) + ' · ' + esc(t) + '</td>' + ['C', 'I', 'N'].map(function (v) {
+      return '<tr><td>' + esc(t) + '</td>' + ['C', 'I', 'N'].map(function (v) {
         return '<td style="text-align:center;"><input type="radio" name="' + n + '" value="' + v +
           '" onchange="totalTE()"></td>';
       }).join('') + '</tr>';
@@ -316,20 +350,20 @@ function chaveInvalida(msg) {
   }
 }
 
-/* Atalho visivel para o Trabalho da Etapa 2 (TE2) da FC1. */
-function abrirTE2() {
+/* Atalhos visiveis para os Trabalhos de Etapa da FC1 (TE2 e TE2-2). */
+function abrirTE(t) {
   setDisciplina('FC1');
-  ['trilha', 'rTrilha'].forEach(function (id) { document.getElementById(id).value = 'TE2'; });
+  ['trilha', 'rTrilha'].forEach(function (id) { document.getElementById(id).value = t; });
   atualizarModo();
   document.getElementById('btnFC1').classList.remove('ativa');
-  document.getElementById('btnTE2').classList.add('ativa');
+  document.getElementById('btn' + t).classList.add('ativa');
 }
 
 function setDisciplina(d) {
   disciplina = d;
   document.getElementById('btnFE1').classList.toggle('ativa', d === 'FE1');
   document.getElementById('btnFC1').classList.toggle('ativa', d === 'FC1');
-  var bTE = document.getElementById('btnTE2'); if (bTE) bTE.classList.remove('ativa');
+  ['btnTE2', 'btnTE2-2'].forEach(function (id) { document.getElementById(id).classList.remove('ativa'); });
   var opcoes = cfg().trilhas.map(function (t) {
     return '<option value="' + t + '">' + t + '</option>';
   }).join('');
@@ -352,6 +386,33 @@ function limparAluno() {
   alunoAtual = null;
   document.getElementById('alunoBox').style.display = 'none';
   document.getElementById('aviso').hidden = true;
+  limparErros();
+}
+
+function limparErros() {
+  if (!teErros) return;
+  teErros = null;
+  var te = teAtual();
+  if (te && te.dinamico) atualizarModo();
+}
+
+function errosSeFaltar() {
+  var te = teAtual();
+  if (te && te.dinamico && alunoAtual && !teErros) carregarErros(alunoAtual.ra, obterChave(false));
+}
+
+/* F35: questoes erradas do RA na Parte 1 (o servidor nao manda gabarito nem resposta). */
+function carregarErros(ra, chave) {
+  fetch(cfg().url + '?monitoria_erros=1&chave=' + encodeURIComponent(chave) + '&ra=' + ra)
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) { avisar(j.erro || 'Falha ao buscar as questões erradas.', 'erro'); return; }
+      teErros = j;
+      atualizarModo();
+      if (!j.corrigida) avisar('Sem Parte 1 corrigida (PE2 ou 2.ª chamada) para este RA.', 'erro');
+      else if (!j.erradas.length) avisar('Acertou todas as questões da Parte 1 — nada a registrar.', 'ok');
+    })
+    .catch(function () { avisar('Sem conexão com a planilha (questões erradas).', 'erro'); });
 }
 
 function avisar(msg, classe) {
@@ -380,6 +441,8 @@ function buscarAluno() {
       if (j.diario) meta.push('Diário: ' + j.diario);
       document.getElementById('alunoMeta').textContent = meta.join(' · ');
       document.getElementById('alunoBox').style.display = 'block';
+      var te = teAtual();
+      if (te && te.dinamico) carregarErros(ra, chave);
     })
     .catch(function () { avisar('Sem conexão com a planilha. Tente de novo.', 'erro'); })
     .finally(function () { btn.disabled = false; });
@@ -395,6 +458,9 @@ function registrar() {
   var te = teAtual();
   var situacao = valorMarcado(te ? 'situacaoTE' : 'situacao');
   var marcas = te ? marcasTE() : [];
+  if (te && te.dinamico && !marcas.length) {
+    avisar('Nenhuma questão errada carregada para este RA — nada a registrar.', 'erro'); return;
+  }
   if (te && marcas.indexOf('') !== -1) { avisar('Marque todas as questões (completa, incompleta ou não resolveu).', 'erro'); return; }
   var obs = document.getElementById('obs').value.trim();
   if (situacao === 'atestado medico' && !obs) {
@@ -428,6 +494,7 @@ function registrar() {
       document.getElementById('ra').value = '';
       document.querySelector('input[name="situacao"][value="no prazo"]').checked = true;
       document.querySelector('input[name="completude"][value="completo"]').checked = true;
+      teErros = null;
       if (te) atualizarModo();
       limparAlunoMantendoAviso();
       document.getElementById('ra').focus();
@@ -599,7 +666,9 @@ function renderLista() {
       ' · ' + esc(r.oa) + '</td><td class="mono">' + esc(r.data_entrega) +
       '</td><td><span class="tag ' + (TAGS[r.situacao] || '') + '">' +
       esc(ROTULOS[r.situacao] || r.situacao) + '</span></td><td>' +
-      (r.oa === 'TE' ? '<span class="mono">' + esc(String(r.nota).replace('.', ',')) + ' / 6,0</span> · ' + esc(r.questoes) :
+      (r.oa === 'TE' ? '<span class="mono">' + esc(String(r.nota).replace('.', ',')) + ' / ' +
+        (r.trilha === 'TE2-2' ? (String(r.questoes).match(/=/g) || []).length + ',0' : '6,0') +
+        '</span> · ' + esc(r.questoes) :
       (r.completude === 'incompleto' ? '<span class="tag erro">Incompleto</span>' : 'Completo')) +
       '</td><td>' + esc(r.obs) + '</td><td>' + esc(r.monitor) + '</td></tr>';
   });
