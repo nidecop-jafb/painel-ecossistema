@@ -79,7 +79,8 @@ td.mono { font-family: var(--mono); }
 <p class="intro">
   Registro digital do <strong>Espa&ccedil;o da Equipe de Monitoria</strong>: a entrega do
   <strong>Roteiro de Bancada (RB)</strong> nas trilhas da FE1 e da
-  <strong>Folha de Atividades (FA)</strong> nas trilhas da FC1.
+  <strong>Folha de Atividades (FA)</strong> nas trilhas da FC1 &mdash; e o
+  <strong>Trabalho da Etapa 2 (TE2)</strong> da FC1, quest&atilde;o por quest&atilde;o (escolha TE2 em Trilha).
   Digite apenas o <strong>RA</strong> do estudante &mdash; nome, disciplina, curso, turma e grupo
   s&atilde;o preenchidos automaticamente pela lista oficial (SUAP). Cada registro espelha a folha
   impressa: situa&ccedil;&atilde;o do prazo, completude, observa&ccedil;&otilde;es e monitor(a).
@@ -98,10 +99,10 @@ td.mono { font-family: var(--mono); }
     </label>
     <button class="btn" id="btnBuscar" onclick="buscarAluno()">Buscar</button>
     <label class="campo">Trilha
-      <select id="trilha"></select>
+      <select id="trilha" onchange="atualizarModo()"></select>
     </label>
     <label class="campo">Data da entrega
-      <input type="date" id="dataEntrega">
+      <input type="date" id="dataEntrega" onchange="sugerirPrazoTE()">
     </label>
   </div>
 
@@ -110,7 +111,21 @@ td.mono { font-family: var(--mono); }
     <span class="meta-aluno" id="alunoMeta">&mdash;</span>
   </div>
 
-  <fieldset>
+  <fieldset id="teBox" hidden>
+    <legend>Trabalho da Etapa 2 &mdash; p&aacute;gina 4 do trabalho</legend>
+    <div class="opcoes">
+      <label><input type="radio" name="situacaoTE" value="no prazo" checked> Dentro do prazo</label>
+      <label><input type="radio" name="situacaoTE" value="fora do prazo"> Fora do prazo</label>
+    </div>
+    <div class="criterios" id="tePrazoTxt"></div>
+    <table id="teQuestoes" style="margin-top:10px;"></table>
+    <div class="meta" style="margin-top:8px;">Total: <strong id="teTotal">&ndash;</strong> de 6,0 pontos</div>
+    <div class="criterios"><strong>Completa (1,0):</strong> os 5 passos da RCP, contas com unidade e resposta em frase &middot;
+      <strong>Incompleta (0,5):</strong> falta passo, unidade ou resposta, ou h&aacute; erro &middot;
+      <strong>N&atilde;o resolveu (0):</strong> em branco. Fora do prazo &eacute; recebido e s&oacute; registrado.</div>
+  </fieldset>
+
+  <fieldset id="situacaoBox">
     <legend>Situa&ccedil;&atilde;o da entrega</legend>
     <div class="opcoes">
       <label><input type="radio" name="situacao" value="no prazo" checked> No prazo</label>
@@ -127,7 +142,7 @@ td.mono { font-family: var(--mono); }
     </div>
   </fieldset>
 
-  <fieldset>
+  <fieldset id="completudeBox">
     <legend>Completude</legend>
     <div class="opcoes">
       <label><input type="radio" name="completude" value="completo" checked> Completo</label>
@@ -209,7 +224,7 @@ var CFG = {
     url: 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec',
     chaveKey: 'fc1_chave_relatorio', tipoCampo: 'tipo', oa: 'FA',
     oaNome: 'Folha de Atividades (FA)',
-    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10']
+    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','TE2']
   },
   FE1: {
     url: 'https://script.google.com/macros/s/AKfycbxBYD4VXRUkFnicnOR2WF8VS_OYdD8z0uYnJCVnGF5Il0BzJF-o4VF8JHPztzARCUJd/exec',
@@ -223,6 +238,57 @@ var alunoAtual = null;
 var registros = [];
 
 function cfg() { return CFG[disciplina]; }
+
+/* Trabalho de Etapa (F34): trilha 'TE2' da FC1, OA 'TE', uma marca por questao. */
+var TE = { TE2: { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'Trabalho da Etapa 2 (TE2)',
+  questoes: ['O encontro na estrada da mina', 'A Estrada Real de bicicleta', 'O minério na correia transportadora',
+             'A gaiola da mina subterrânea', 'O para-choque de mola da galeria', 'A mochila no ônibus'] } };
+var TE_VALOR = { C: 1, I: 0.5, N: 0 };
+function teAtual(t) { return disciplina === 'FC1' ? TE[t || document.getElementById('trilha').value] : null; }
+function oaDe(t) { return teAtual(t) ? 'TE' : cfg().oa; }
+function oaNomeDe(t) { var te = teAtual(t); return te ? te.nome : cfg().oaNome; }
+
+function atualizarModo() {
+  var te = teAtual();
+  document.getElementById('teBox').hidden = !te;
+  document.getElementById('situacaoBox').hidden = !!te;
+  document.getElementById('completudeBox').hidden = !!te;
+  if (!te) return;
+  document.getElementById('tePrazoTxt').innerHTML = '<strong>Prazo:</strong> ' + te.prazoTxt +
+    ' (sugerido pela data da entrega; pode ajustar).';
+  document.getElementById('teQuestoes').innerHTML =
+    '<tr><th>Questão</th><th>Completa (1,0)</th><th>Incompleta (0,5)</th><th>Não resolveu (0)</th></tr>' +
+    te.questoes.map(function (t, i) {
+      var n = 'teQ' + (i + 1);
+      return '<tr><td>Q' + (i + 1) + ' · ' + esc(t) + '</td>' + ['C', 'I', 'N'].map(function (v) {
+        return '<td style="text-align:center;"><input type="radio" name="' + n + '" value="' + v +
+          '" onchange="totalTE()"></td>';
+      }).join('') + '</tr>';
+    }).join('');
+  totalTE();
+  sugerirPrazoTE();
+}
+
+function marcasTE() {
+  var te = teAtual();
+  return te.questoes.map(function (_, i) { return valorMarcado('teQ' + (i + 1)); });
+}
+
+function totalTE() {
+  var m = marcasTE();
+  var falta = m.filter(function (v) { return !v; }).length;
+  var tot = m.reduce(function (s, v) { return s + (TE_VALOR[v] || 0); }, 0);
+  document.getElementById('teTotal').textContent = tot.toFixed(1).replace('.', ',') +
+    (falta ? ' (faltam ' + falta + ' questão(ões))' : '');
+}
+
+function sugerirPrazoTE() {
+  var te = teAtual();
+  if (!te) return;
+  var d = document.getElementById('dataEntrega').value;
+  var v = d && d > te.prazo ? 'fora do prazo' : 'no prazo';
+  document.querySelector('input[name="situacaoTE"][value="' + v + '"]').checked = true;
+}
 
 /* Acesso da Equipe de Monitoria: chave PROPRIA da Monitoria (a mesma para
    FC1 e FE1, digitada UMA vez — vale so para os endpoints monitoria_*).
@@ -268,6 +334,7 @@ function setDisciplina(d) {
   document.getElementById('fTurma').innerHTML = '<option value="">Todas</option>';
   document.getElementById('metaLista').textContent =
     'Clique em "Atualizar lista" para buscar a planilha da ' + d + '.';
+  atualizarModo();
 }
 
 function limparAluno() {
@@ -314,7 +381,10 @@ function valorMarcado(nome) {
 
 function registrar() {
   if (!alunoAtual) { avisar('Busque o estudante pelo RA antes de registrar.', 'erro'); return; }
-  var situacao = valorMarcado('situacao');
+  var te = teAtual();
+  var situacao = valorMarcado(te ? 'situacaoTE' : 'situacao');
+  var marcas = te ? marcasTE() : [];
+  if (te && marcas.indexOf('') !== -1) { avisar('Marque todas as questões (completa, incompleta ou não resolveu).', 'erro'); return; }
   var obs = document.getElementById('obs').value.trim();
   if (situacao === 'atestado medico' && !obs) {
     avisar('Com Atestado Médico, anote nas observações a data do atestado.', 'erro'); return;
@@ -326,10 +396,11 @@ function registrar() {
   if (!chave) { avisar('Sem a chave da equipe não é possível registrar.', 'erro'); return; }
 
   var corpo = { chave: chave, ra: alunoAtual.ra,
-    trilha: document.getElementById('trilha').value, oa: cfg().oa,
+    trilha: document.getElementById('trilha').value, oa: oaDe(),
     data_entrega: document.getElementById('dataEntrega').value,
     situacao: situacao, completude: valorMarcado('completude'),
     obs: obs, monitor: monitor };
+  if (te) { corpo.questoes = marcas.join(''); corpo.completude = ''; }
   corpo[cfg().tipoCampo] = 'MONITORIA';
 
   var btn = document.getElementById('btnRegistrar');
@@ -339,12 +410,14 @@ function registrar() {
     .then(function (j) {
       if (!j.ok) { chaveInvalida(j.erro); avisar(j.erro || 'Falha ao registrar.', 'erro'); return; }
       avisar((j.atualizado ? 'Registro ATUALIZADO' : 'Entrega registrada') + ' — ' +
-        j.nome + ' · ' + corpo.trilha + ' · ' + cfg().oa +
+        j.nome + ' · ' + corpo.trilha + ' · ' + corpo.oa +
+        (te ? ' · nota ' + String(j.nota).replace('.', ',') : '') +
         ' · registro ' + j.registro + '.', 'ok');
       document.getElementById('obs').value = '';
       document.getElementById('ra').value = '';
       document.querySelector('input[name="situacao"][value="no prazo"]').checked = true;
       document.querySelector('input[name="completude"][value="completo"]').checked = true;
+      if (te) atualizarModo();
       limparAlunoMantendoAviso();
       document.getElementById('ra').focus();
     })
@@ -383,7 +456,7 @@ function gerarRelatorio() {
       renderPendentes(trilha);
       document.getElementById('relatorio').hidden = false;
       document.getElementById('metaRelatorio').textContent =
-        trilha + ' · ' + cfg().oaNome + ' · atualizado agora';
+        trilha + ' · ' + oaNomeDe(trilha) + ' · atualizado agora';
     })
     .catch(function () { document.getElementById('metaRelatorio').textContent = 'Sem conexão com a planilha.'; })
     .finally(function () { btn.disabled = false; });
@@ -398,7 +471,7 @@ function renderPendentes(trilha) {
       '</td><td class="mono">' + esc(a.email) + '</td></tr>';
   });
   tbl.innerHTML = '<tr><th colspan="4">Pendentes — ' + esc(trilha) + ' · ' +
-    esc(cfg().oaNome) + '</th></tr>' +
+    esc(oaNomeDe(trilha)) + '</th></tr>' +
     '<tr><th>RA</th><th>Nome</th><th>Turma</th><th>E-mail</th></tr>' +
     (linhas.length ? linhas.join('') :
       '<tr><td colspan="4">Ninguém pendente — todas as entregas registradas.</td></tr>');
@@ -406,10 +479,16 @@ function renderPendentes(trilha) {
 }
 
 function assuntoCobranca(trilha) {
+  if (teAtual(trilha)) return disciplina + ' · Entrega do ' + oaNomeDe(trilha) + ' na Monitoria';
   return disciplina + ' · Entrega da ' + cfg().oaNome + ' da ' + trilha + ' na Monitoria';
 }
 
 function corpoCobranca(trilha) {
+  var te = teAtual(trilha);
+  if (te) return 'Olá!\n\nA Equipe de Monitoria ainda não registrou a entrega do seu ' + te.nome +
+    ' (' + disciplina + '). O prazo é ' + te.prazoTxt + ', na Monitoria; depois dele o trabalho ainda é recebido e registrado como fora do prazo.\n\n' +
+    'Se você já entregou, procure a Monitoria para conferirmos o registro.\n\n' +
+    'IFMG campus Ouro Preto · CODAFIS / NIDEC · Trilhas de Aprendizagem';
   return 'Olá!\n\nA Equipe de Monitoria ainda não registrou a entrega da sua ' +
     cfg().oaNome + ' da trilha ' + trilha + ' (' + disciplina + ').\n\n' +
     'Entregue a folha impressa na Monitoria o quanto antes. Critérios de registro: ' +
@@ -485,8 +564,8 @@ function preencherFiltro(id, valores) {
   }).join('');
 }
 
-var TAGS = { 'no prazo': 'ok', 'ate 1 semana': 'atraso', 'mais de 1 semana': 'erro', 'atestado medico': 'atraso' };
-var ROTULOS = { 'no prazo': 'No prazo', 'ate 1 semana': 'Atraso ≤ 1 sem.',
+var TAGS = { 'no prazo': 'ok', 'ate 1 semana': 'atraso', 'mais de 1 semana': 'erro', 'atestado medico': 'atraso', 'fora do prazo': 'atraso' };
+var ROTULOS = { 'no prazo': 'No prazo', 'fora do prazo': 'Fora do prazo', 'ate 1 semana': 'Atraso ≤ 1 sem.',
                 'mais de 1 semana': 'Atraso > 1 sem.', 'atestado medico': 'Atestado Médico' };
 
 function esc(s) {
@@ -509,11 +588,12 @@ function renderLista() {
       ' · ' + esc(r.oa) + '</td><td class="mono">' + esc(r.data_entrega) +
       '</td><td><span class="tag ' + (TAGS[r.situacao] || '') + '">' +
       esc(ROTULOS[r.situacao] || r.situacao) + '</span></td><td>' +
-      (r.completude === 'incompleto' ? '<span class="tag erro">Incompleto</span>' : 'Completo') +
+      (r.oa === 'TE' ? '<span class="mono">' + esc(String(r.nota).replace('.', ',')) + ' / 6,0</span> · ' + esc(r.questoes) :
+      (r.completude === 'incompleto' ? '<span class="tag erro">Incompleto</span>' : 'Completo')) +
       '</td><td>' + esc(r.obs) + '</td><td>' + esc(r.monitor) + '</td></tr>';
   });
   tbl.innerHTML = '<tr><th>RA</th><th>Nome</th><th>Turma</th><th>Trilha</th>' +
-    '<th>Entrega</th><th>Situação</th><th>Completude</th>' +
+    '<th>Entrega</th><th>Situação</th><th>Completude / nota</th>' +
     '<th>Observações</th><th>Monitor(a)</th></tr>' + linhas.join('');
   tbl.hidden = false;
   document.getElementById('metaLista').textContent =
