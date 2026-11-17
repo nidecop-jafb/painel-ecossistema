@@ -73,7 +73,7 @@ td.mono { font-family: var(--mono); }
 .meta { font-family: var(--mono); font-size: 0.8rem; color: var(--texto-suave); }
 </style>
 </head>
-<body data-pagina="painel:monitoria-v1">
+<body>
 
 <h2 style="margin-top:0;">Monitoria — Registro de Entregas</h2>
 <p class="intro">
@@ -89,6 +89,7 @@ td.mono { font-family: var(--mono); }
 <div class="disc-toggle">
   <button class="disc-btn fe ativa" id="btnFE1" onclick="setDisciplina('FE1')">FE1 &middot; Roteiro de Bancada (RB)</button>
   <button class="disc-btn" id="btnFC1" onclick="setDisciplina('FC1')">FC1 &middot; Folha de Atividades (FA)</button>
+  <button class="disc-btn" id="btnTE2" onclick="abrirTE2()">FC1 &middot; Trabalho da Etapa 2 (TE2)</button>
 </div>
 
 <div class="card">
@@ -315,10 +316,20 @@ function chaveInvalida(msg) {
   }
 }
 
+/* Atalho visivel para o Trabalho da Etapa 2 (TE2) da FC1. */
+function abrirTE2() {
+  setDisciplina('FC1');
+  ['trilha', 'rTrilha'].forEach(function (id) { document.getElementById(id).value = 'TE2'; });
+  atualizarModo();
+  document.getElementById('btnFC1').classList.remove('ativa');
+  document.getElementById('btnTE2').classList.add('ativa');
+}
+
 function setDisciplina(d) {
   disciplina = d;
   document.getElementById('btnFE1').classList.toggle('ativa', d === 'FE1');
   document.getElementById('btnFC1').classList.toggle('ativa', d === 'FC1');
+  var bTE = document.getElementById('btnTE2'); if (bTE) bTE.classList.remove('ativa');
   var opcoes = cfg().trilhas.map(function (t) {
     return '<option value="' + t + '">' + t + '</option>';
   }).join('');
@@ -608,9 +619,5 @@ function renderLista() {
   setDisciplina('FE1');
 })();
 </script>
-<!-- CONTADOR:INICIO -->
-<script src="contador-config.js"></script>
-<script src="acessos.js"></script>
-<!-- CONTADOR:FIM -->
 </body>
 </html>
