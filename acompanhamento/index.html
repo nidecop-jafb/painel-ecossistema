@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Acompanhamento — TE2 e TE2-2 (FC1)</title>
+<link rel="icon" type="image/png" sizes="192x192" href="../_icones/app-painel-192.png">
+<link rel="apple-touch-icon" href="../_icones/app-painel-192.png">
+<!-- F37 (2026-11-18 · briefing PRE-outro-acompanhamento-te2-link-professor-fc1-2026-11-18):
+     pagina so de leitura, aberta pelo link pessoal do professor (#t=TOKEN).
+     NENHUM token mora neste arquivo: ele vem do fragmento do link (que nao vai
+     ao servidor do site) e fica guardado so neste aparelho. -->
+<style>
+:root {
+  --ouro: oklch(0.65 0.22 45);
+  --ouro-claro: oklch(0.72 0.19 45);
+  --verde-claro: oklch(0.70 0.15 150);
+  --erro: oklch(0.62 0.21 25);
+  --fundo: oklch(0.12 0.02 260);
+  --cinza-card: oklch(0.17 0.02 260);
+  --cinza-claro: oklch(0.22 0.02 260);
+  --cinza-borda: oklch(0.30 0.02 260);
+  --texto: oklch(0.90 0.01 260);
+  --texto-suave: oklch(0.68 0.01 260);
+  --mono: 'Courier New', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--fundo); color: var(--texto); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; padding: 20px; }
+h1 { font-family: var(--mono); font-size: 1.1rem; color: var(--ouro); text-transform: uppercase; letter-spacing: 0.05em; margin: 4px 0 8px; }
+.intro { font-size: 0.9rem; color: var(--texto-suave); line-height: 1.6; max-width: 900px; }
+.card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); padding: 18px; margin-top: 12px; }
+.btn { background: var(--ouro); color: #000; border: none; font-family: var(--mono); font-weight: 700; padding: 10px 20px; cursor: pointer; font-size: 0.9rem; }
+.btn.secundario { background: var(--cinza-claro); color: var(--texto); border: 1px solid var(--cinza-borda); }
+.btn:disabled { opacity: 0.5; cursor: wait; }
+.aviso { margin-top: 12px; padding: 11px 14px; border: 1px solid var(--cinza-borda); font-size: 0.9rem; color: var(--texto-suave); }
+.aviso.ok { border-color: var(--verde-claro); color: var(--verde-claro); }
+.aviso.erro { border-color: var(--erro); color: var(--erro); }
+table { width: 100%; border-collapse: collapse; background: var(--cinza-card); margin-top: 10px; }
+th, td { padding: 8px 10px; border: 1px solid var(--cinza-borda); text-align: left; font-size: 0.85rem; }
+th { font-family: var(--mono); color: var(--texto-suave); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.04em; }
+td.mono, .mono { font-family: var(--mono); }
+.toolbar-lista { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+.meta { font-family: var(--mono); font-size: 0.8rem; color: var(--texto-suave); }
+.acomp-turma h3 { font-family: var(--mono); font-size: 0.95rem; color: var(--ouro-claro); margin: 0 0 10px; }
+.acomp-cols { display: flex; gap: 14px; flex-wrap: wrap; }
+.acomp-col { flex: 1 1 300px; min-width: 0; border: 1px solid var(--cinza-borda); padding: 12px; }
+.acomp-col h4 { font-family: var(--mono); font-size: 0.85rem; margin: 0 0 8px; color: var(--texto); }
+.acomp-num { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; }
+.acomp-col table { table-layout: fixed; }
+.acomp-col td, .acomp-col th { padding: 5px 6px; font-size: 0.8rem; overflow-wrap: anywhere; }
+.acomp-col details { margin-top: 8px; font-size: 0.85rem; }
+.acomp-col summary { cursor: pointer; color: var(--texto-suave); font-family: var(--mono); font-size: 0.8rem; }
+@media (max-width: 560px) { body { padding: 12px; } table { table-layout: fixed; } th, td { overflow-wrap: anywhere; } .btn { width: 100%; } }
+</style>
+</head>
+<body data-pagina="painel:acompanhamento-index">
+<h1>Acompanhamento &mdash; TE2 e TE2-2 (FC1)</h1>
+<p class="intro">Resultados por turma do Trabalho da Etapa 2 (TE2) e do Trabalho 2 da Etapa 2 (TE2-2), com o recado de WhatsApp para o grupo de cada turma. Página só de leitura, aberta pelo seu link pessoal.</p>
+<div class="toolbar-lista">
+  <button class="btn secundario" id="btnAcomp" onclick="carregarAcomp()">Atualizar</button>
+  <span class="meta" id="metaAcomp">Carregando...</span>
+</div>
+<div id="acomp"></div>
+<div class="aviso ok" id="acompCopiado" hidden></div>
+
+<script>
+var URL_FC1 = 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec';
+var TOKEN_KEY = 'acomp_token_fc1';
+var acompDados = null;
+
+/* Token: do fragmento do link (#t=...) e, depois, deste aparelho. */
+function obterToken() {
+  var m = /(?:^|[#&])t=([A-Za-z0-9]+)/.exec(location.hash || '');
+  if (m) { try { localStorage.setItem(TOKEN_KEY, m[1]); } catch (e) {} return m[1]; }
+  try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; }
+}
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+  });
+}
+
+function carregarAcomp() {
+  var meta = document.getElementById('metaAcomp');
+  var token = obterToken();
+  if (!token) {
+    meta.textContent = 'Abra esta página pelo seu link pessoal (o recebido do Prof. Julio).';
+    return;
+  }
+  var btn = document.getElementById('btnAcomp');
+  btn.disabled = true;
+  meta.textContent = 'Buscando...';
+  fetch(URL_FC1 + '?monitoria_acompanhamento=1&chave=' + encodeURIComponent(token))
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j.ok) {
+        if (String(j.erro).indexOf('Chave') !== -1) {
+          try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
+          meta.textContent = 'Este link não vale mais. Peça um novo link ao Prof. Julio.';
+        } else {
+          meta.textContent = j.erro || 'Falha na busca.';
+        }
+        return;
+      }
+      acompDados = j;
+      renderAcomp();
+      meta.textContent = 'Atualizado às ' +
+        new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) +
+        ' · prazo: quinta-feira, 26/11/2026';
+    })
+    .catch(function () { meta.textContent = 'Sem conexão com a planilha.'; })
+    .finally(function () { btn.disabled = false; });
+}
+
+function pct(n, d) { return d ? Math.round(100 * n / d) + '%' : '–'; }
+
+function blocoAcomp(b, titulo, baseRot) {
+  var pend = b.base - b.entregues;
+  var qs = Object.keys(b.questoes).sort(function (x, y) { return +x.slice(1) - +y.slice(1); });
+  var tq = qs.length ? '<table><tr><th>Questão</th><th>C</th><th>I</th><th>N</th></tr>' +
+    qs.map(function (q) {
+      var c = b.questoes[q], t = c.C + c.I + c.N;
+      return '<tr><td class="mono">' + esc(q) + ' <span class="meta">(' + t + ')</span></td><td>' +
+        pct(c.C, t) + '</td><td>' + pct(c.I, t) + '</td><td>' + pct(c.N, t) + '</td></tr>';
+    }).join('') + '</table>' : '<p class="meta">Sem entregas ainda.</p>';
+  var faixas = acompDados.faixas.map(function (f, k) {
+    return esc(f) + ': <strong>' + b.faixas[k] + '</strong>';
+  }).join(' · ');
+  var lista = b.pendentes.length
+    ? '<details><summary>Pendentes (' + b.pendentes.length + ') — nome e RA</summary><table>' +
+      b.pendentes.map(function (a) {
+        return '<tr><td>' + esc(a.nome) + '</td><td class="mono" style="width:90px;">' + esc(a.ra) + '</td></tr>';
+      }).join('') + '</table></details>'
+    : '<p class="meta" style="margin-top:8px;">Sem pendentes.</p>';
+  return '<div class="acomp-col"><h4>' + titulo + '</h4>' +
+    '<div><span class="acomp-num" style="color:var(--verde-claro);">' + b.entregues + '</span> ' +
+    '<span class="meta">entregues (' + pct(b.entregues, b.base) + ')</span> &nbsp; ' +
+    '<span class="acomp-num" style="color:var(--erro);">' + pend + '</span> ' +
+    '<span class="meta">pendentes · base ' + b.base + ' ' + baseRot + '</span></div>' +
+    '<p class="meta" style="margin:6px 0;">No prazo: ' + b.no_prazo + ' · Fora do prazo: ' + b.fora_prazo +
+    ' · Média: <strong>' + (b.media_pct == null ? '–' : b.media_pct + '%') + '</strong> do máximo</p>' +
+    '<p class="meta" style="margin:0 0 6px;">' + faixas + '</p>' + tq + lista + '</div>';
+}
+
+function renderAcomp() {
+  var box = document.getElementById('acomp');
+  if (!acompDados.turmas.length) { box.innerHTML = '<p class="meta">Nenhuma turma na lista.</p>'; return; }
+  box.innerHTML = acompDados.turmas.map(function (t, i) {
+    return '<div class="card acomp-turma"><h3>' + esc(t.turma) + ' · ' + t.alunos + ' estudantes</h3>' +
+      '<div class="acomp-cols">' +
+      blocoAcomp(t.te2, 'Trabalho da Etapa 2 (TE2) · 6 questões', 'estudantes') +
+      blocoAcomp(t.te22, 'Trabalho 2 da Etapa 2 (TE2-2) · questões erradas', 'que erraram') +
+      '</div><div class="toolbar-lista" style="margin-top:12px;">' +
+      '<button class="btn" onclick="copiarMsgTurma(' + i + ')">Mensagem da turma (WhatsApp)</button>' +
+      '<span class="meta">Copia o recado sem nomes; cole no grupo da turma.</span></div></div>';
+  }).join('');
+}
+
+function msgTurma(t) {
+  var p1 = t.te2.base - t.te2.entregues, p2 = t.te22.base - t.te22.entregues;
+  var cab = '*Física Conceitual 1 · ' + t.turma + '*';
+  if (!p1 && !p2) {
+    return cab + ' 🎉\nPessoal, todos já entregaram o *TE2* e o *TE2-2*. Parabéns pela dedicação!\nProf. Julio';
+  }
+  var partes = [];
+  if (p1) partes.push(p1 + (p1 === 1 ? ' de vocês ainda não entregou' : ' de vocês ainda não entregaram') +
+    ' o *Trabalho da Etapa 2 (TE2)*');
+  if (p2) partes.push(p2 + (p2 === 1 ? ' ainda não entregou' : ' ainda não entregaram') +
+    ' o *TE2-2* (correção das questões erradas na Parte 1 da PE2)');
+  return cab + ' 📌\nPessoal, ' + partes.join(' e ') + '.\n' +
+    'Quem falta: leve até *quinta-feira, 26/11*, na Monitoria.\nProf. Julio';
+}
+
+function copiarMsgTurma(i) {
+  var t = acompDados.turmas[i], txt = msgTurma(t);
+  var av = document.getElementById('acompCopiado');
+  var mostra = function () {
+    av.hidden = false;
+    av.textContent = 'Mensagem da ' + t.turma + ' copiada — cole no grupo de WhatsApp da turma.';
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(mostra, function () { prompt('Copie a mensagem:', txt); });
+  } else {
+    prompt('Copie a mensagem:', txt);
+  }
+}
+
+carregarAcomp();
+</script>
+<!-- CONTADOR:INICIO -->
+<script src="../contador-config.js"></script>
+<script src="../acessos.js"></script>
+<!-- CONTADOR:FIM -->
+</body>
+</html>
