@@ -62,6 +62,14 @@ td.mono, .mono { font-family: var(--mono); }
   <button class="btn secundario" id="btnAcomp" onclick="carregarAcomp()">Atualizar</button>
   <span class="meta" id="metaAcomp">Carregando...</span>
 </div>
+<!-- F38: aparelho sem o link pessoal (aberto pelo botão do site) pede o código uma vez -->
+<form class="card" id="codigoBox" hidden onsubmit="entrarCodigo(event)">
+  <label for="codigo" class="meta" style="display:block;margin-bottom:8px;">Seu código de acesso (o do seu link pessoal; fica guardado neste aparelho)</label>
+  <div class="toolbar-lista" style="margin-top:0;">
+    <input id="codigo" autocomplete="off" spellcheck="false" style="flex:1 1 220px;min-width:0;padding:9px 10px;background:var(--cinza-claro);color:var(--texto);border:1px solid var(--cinza-borda);font-family:var(--mono);font-size:0.9rem;">
+    <button class="btn" type="submit">Entrar</button>
+  </div>
+</form>
 <div id="acomp"></div>
 <div class="aviso ok" id="acompCopiado" hidden></div>
 
@@ -83,11 +91,26 @@ function esc(s) {
   });
 }
 
+/* Codigo digitado: so fica guardado se o servidor aceitar. */
+var codigoDigitado = '';
+function entrarCodigo(ev) {
+  ev.preventDefault();
+  codigoDigitado = document.getElementById('codigo').value.replace(/[^A-Za-z0-9]/g, '');
+  if (codigoDigitado) carregarAcomp();
+}
+
+function pedirCodigo(msg) {
+  document.getElementById('codigoBox').hidden = false;
+  document.getElementById('metaAcomp').textContent = msg;
+}
+
 function carregarAcomp() {
   var meta = document.getElementById('metaAcomp');
-  var token = obterToken();
+  var digitado = codigoDigitado;
+  codigoDigitado = '';
+  var token = digitado || obterToken();
   if (!token) {
-    meta.textContent = 'Abra esta página pelo seu link pessoal (o recebido do Prof. Julio).';
+    pedirCodigo('Digite o seu código de acesso, ou abra esta página pelo seu link pessoal.');
     return;
   }
   var btn = document.getElementById('btnAcomp');
@@ -98,13 +121,16 @@ function carregarAcomp() {
     .then(function (j) {
       if (!j.ok) {
         if (String(j.erro).indexOf('Chave') !== -1) {
+          if (digitado) { pedirCodigo('Código inválido.'); return; }
           try { localStorage.removeItem(TOKEN_KEY); } catch (e) {}
-          meta.textContent = 'Este link não vale mais. Peça um novo link ao Prof. Julio.';
+          pedirCodigo('Este link não vale mais. Peça um novo link ao Prof. Julio.');
         } else {
           meta.textContent = j.erro || 'Falha na busca.';
         }
         return;
       }
+      if (digitado) { try { localStorage.setItem(TOKEN_KEY, digitado); } catch (e) {} }
+      document.getElementById('codigoBox').hidden = true;
       acompDados = j;
       renderAcomp();
       meta.textContent = 'Atualizado às ' +

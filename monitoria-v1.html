@@ -349,6 +349,21 @@ function sugerirPrazoTE() {
    FC1 e FE1, digitada UMA vez — vale so para os endpoints monitoria_*).
    A chave da equipe de professores tambem funciona (fallback). */
 var MONITORIA_CHAVE_KEY = 'monitoria_chave';
+var MONITORIA_LINK_KEY = 'monitoria_link';   // F38: aparelho aberto pelo link pessoal
+
+/* F38 (PRE-outro-acesso-professor-monitoras-te2-fc1-2026-11-18): link pessoal
+   da monitora = monitoria-v1.html#t=TOKEN. O token (so no fragmento, nunca no
+   arquivo) vira a chave deste aparelho e sai da barra de endereco. */
+function tokenDoLink() {
+  var m = /(?:^|[#&])t=([A-Za-z0-9]+)/.exec(location.hash || '');
+  if (!m) return false;
+  try {
+    localStorage.setItem(MONITORIA_CHAVE_KEY, m[1]);
+    localStorage.setItem(MONITORIA_LINK_KEY, '1');
+  } catch (e) {}
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  return true;
+}
 
 function obterChave(forcar) {
   var c = '';
@@ -366,7 +381,10 @@ function obterChave(forcar) {
 
 function chaveInvalida(msg) {
   if (String(msg).indexOf('Chave') !== -1) {
-    try { localStorage.removeItem(MONITORIA_CHAVE_KEY); } catch (e) {}
+    try {
+      localStorage.removeItem(MONITORIA_CHAVE_KEY);
+      localStorage.removeItem(MONITORIA_LINK_KEY);
+    } catch (e) {}
   }
 }
 
@@ -805,7 +823,10 @@ function copiarMsgTurma(i) {
   try {
     document.getElementById('monitor').value = localStorage.getItem('monitoria_monitor') || '';
   } catch (e) {}
-  setDisciplina('FE1');
+  var viaLink = tokenDoLink();
+  try { viaLink = viaLink || localStorage.getItem(MONITORIA_LINK_KEY) === '1'; } catch (e) {}
+  if (viaLink) abrirTE('TE2');   // F38: monitora pelo link cai na FC1 com o TE2 aberto
+  else setDisciplina('FE1');
 })();
 </script>
 <!-- CONTADOR:INICIO -->
