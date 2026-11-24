@@ -171,8 +171,8 @@ td.mono { font-family: var(--mono); }
     <div class="criterios" id="tePrazoTxt"></div>
     <table id="teQuestoes" style="margin-top:10px;"></table>
     <div class="meta" style="margin-top:8px;">Total: <strong id="teTotal">&ndash;</strong> de <span id="teMax">6,0</span> pontos</div>
-    <div class="criterios"><strong>Completa (1,0):</strong> os 5 passos da RCP, contas com unidade e resposta em frase &middot;
-      <strong>Incompleta (0,5):</strong> falta passo, unidade ou resposta, ou h&aacute; erro &middot;
+    <div class="criterios"><strong>Completa (<span class="teVC">1,0</span>):</strong> os 5 passos da RCP, contas com unidade e resposta em frase &middot;
+      <strong>Incompleta (<span class="teVI">0,5</span>):</strong> falta passo, unidade ou resposta, ou h&aacute; erro &middot;
       <strong>N&atilde;o resolveu (0):</strong> em branco. Fora do prazo &eacute; recebido e s&oacute; registrado.</div>
   </fieldset>
 
@@ -318,6 +318,14 @@ var TITULOS_P1 = {
 var PROVA_NOME = { PE2: 'PE2', '2CH': '2.ª chamada da PE2' };
 var teErros = null;   // resposta de ?monitoria_erros para o RA buscado (TE2-2)
 var TE_VALOR = { C: 1, I: 0.5, N: 0 };
+/* F41: a TR2-1 (TE2-2) vale 6,0 para qualquer numero n de erradas — cada questao vale 6,0 / n. */
+var TE22_TOTAL = 6;
+function teFator(te) { return te.dinamico && te.questoes.length ? TE22_TOTAL / te.questoes.length : 1; }
+function teNum(v) {   /* 6 -> 6,0 · 1.5 -> 1,5 · 0.75 -> 0,75 · 0.857 -> 0,86 */
+  var t = (Math.round(v * 100) / 100).toString();
+  if (t.indexOf('.') === -1) t += '.0';
+  return t.replace('.', ',');
+}
 function teAtual(t) { return disciplina === 'FC1' ? TE[t || document.getElementById('trilha').value] : null; }
 function oaDe(t) { return teAtual(t) ? 'TE' : cfg().oa; }
 function oaNomeDe(t) { var te = teAtual(t); return te ? te.nome : cfg().oaNome; }
@@ -350,9 +358,12 @@ function atualizarModo() {
   } else {
     document.getElementById('teLegend').textContent = 'TR2-2 — as 6 questões (página 4 do trabalho)';
   }
-  document.getElementById('teMax').textContent = te.questoes.length.toFixed(1).replace('.', ',');
+  var f = teFator(te), vC = teNum(f), vI = teNum(f / 2);
+  document.getElementById('teMax').textContent = te.dinamico ? teNum(TE22_TOTAL) : teNum(te.questoes.length);
+  [].forEach.call(document.querySelectorAll('.teVC'), function (el) { el.textContent = vC; });
+  [].forEach.call(document.querySelectorAll('.teVI'), function (el) { el.textContent = vI; });
   document.getElementById('teQuestoes').innerHTML =
-    '<tr><th>Questão</th><th>Completa (1,0)</th><th>Incompleta (0,5)</th><th>Não resolveu (0)</th></tr>' +
+    '<tr><th>Questão</th><th>Completa (' + vC + ')</th><th>Incompleta (' + vI + ')</th><th>Não resolveu (0)</th></tr>' +
     (te.dinamico && !rotulos.length ? '<tr><td colspan="4">' + (teErros ? (teErros.corrigida
       ? 'Acertou todas as questões da Parte 1 — nada a registrar.'
       : 'Sem Parte 1 corrigida (PE2 ou 2.ª chamada) para este RA.')
@@ -377,6 +388,7 @@ function totalTE() {
   var m = marcasTE();
   var falta = m.filter(function (v) { return !v; }).length;
   var tot = m.reduce(function (s, v) { return s + (TE_VALOR[v] || 0); }, 0);
+  tot = Math.round(10 * tot * teFator(teAtual())) / 10;   // F41: TR2-1 na escala de 6,0
   document.getElementById('teTotal').textContent = tot.toFixed(1).replace('.', ',') +
     (falta ? ' (faltam ' + falta + ' questão(ões))' : '');
 }
@@ -759,8 +771,7 @@ function renderLista() {
       ' · ' + esc(r.oa) + '</td><td class="mono">' + esc(r.data_entrega) +
       '</td><td><span class="tag ' + (TAGS[r.situacao] || '') + '">' +
       esc(ROTULOS[r.situacao] || r.situacao) + '</span></td><td>' +
-      (r.oa === 'TE' ? '<span class="mono">' + esc(String(r.nota).replace('.', ',')) + ' / ' +
-        (r.trilha === 'TE2-2' ? (String(r.questoes).match(/=/g) || []).length + ',0' : '6,0') +
+      (r.oa === 'TE' ? '<span class="mono">' + esc(String(r.nota).replace('.', ',')) + ' / 6,0' +
         '</span> · ' + esc(r.questoes) +
         (r.revisar ? ' <span class="tag erro" title="As questões gravadas não são as erradas de hoje na Parte 1">Revisar</span>' : '') :
       (r.completude === 'incompleto' ? '<span class="tag erro">Incompleto</span>' : 'Completo')) +
