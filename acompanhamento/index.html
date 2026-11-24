@@ -168,7 +168,10 @@ function blocoAcomp(b, titulo, baseRot) {
     '<span class="meta">pendentes · base ' + b.base + ' ' + baseRot + '</span></div>' +
     '<p class="meta" style="margin:6px 0;">No prazo: ' + b.no_prazo + ' · Fora do prazo: ' + b.fora_prazo +
     ' · Média: <strong>' + (b.media_pct == null ? '–' : b.media_pct + '%') + '</strong> do máximo</p>' +
-    '<p class="meta" style="margin:0 0 6px;">' + faixas + '</p>' + tq + lista + '</div>';
+    '<p class="meta" style="margin:0 0 6px;">' + faixas + '</p>' +
+    (b.revisar ? '<p class="meta" style="color:var(--erro);margin:0 0 6px;">Revisar: <strong>' + b.revisar +
+      '</strong> registro(s) com questões que não são as erradas de hoje (a nota não muda sozinha).</p>' : '') +
+    tq + lista + '</div>';
 }
 
 function renderAcomp() {

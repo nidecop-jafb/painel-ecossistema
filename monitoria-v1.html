@@ -32,6 +32,16 @@ h2 { font-family: var(--mono); font-size: 1rem; color: var(--ouro); text-transfo
 }
 .disc-btn.ativa { background: var(--verde-bg); color: var(--verde-claro); border-color: var(--verde-claro); }
 .disc-btn.ativa.fe { background: oklch(0.24 0.05 55); color: var(--epi); border-color: var(--epi); }
+/* F40: qual trabalho esta aberto, em destaque; escolha ao entrar pelo link */
+.te-faixa { font-family: var(--mono); font-weight: 700; font-size: 0.95rem; padding: 10px 14px; margin-bottom: 12px;
+  border: 2px solid var(--ouro); background: oklch(0.22 0.05 45); color: var(--ouro-claro); line-height: 1.5; }
+.te-faixa.te22 { border-color: var(--verde-claro); background: var(--verde-bg); color: var(--verde-claro); }
+.te-faixa .meta { font-family: 'Segoe UI', system-ui, sans-serif; font-weight: 400; display: block; }
+.te-escolha { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.te-escolha .btn { flex: 1 1 240px; text-align: left; padding: 14px; line-height: 1.5; }
+.te-escolha .btn span { display: block; font-weight: 400; font-size: 0.85rem; }
+.q-rot strong { font-family: var(--mono); }
+.q-rot .meta { display: block; font-size: 0.85rem; }
 .card { background: var(--cinza-card); border: 1px solid var(--cinza-borda); padding: 18px; margin-top: 12px; max-width: 900px; }
 .linha-form { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; align-items: flex-end; }
 label.campo { display: flex; flex-direction: column; gap: 5px; font-size: 0.85rem; color: var(--texto-suave); }
@@ -106,7 +116,18 @@ td.mono { font-family: var(--mono); }
   <button class="disc-btn" id="btnTE2-2" onclick="abrirTE('TE2-2')">FC1 &middot; Trabalho 2 da Etapa 2 (TE2-2)</button>
 </div>
 
-<div class="card">
+<div class="card" id="teEscolha" hidden>
+  <strong>Qual trabalho o estudante entregou?</strong>
+  <div class="te-escolha">
+    <button class="btn" onclick="abrirTE('TE2')">TE2 &middot; Trabalho da Etapa 2
+      <span>Caderno do trabalho com 6 quest&otilde;es (encontro na estrada da mina, Estrada Real&hellip;).</span></button>
+    <button class="btn" onclick="abrirTE('TE2-2')">TE2-2 &middot; Trabalho 2 da Etapa 2
+      <span>O caderno da prova escrita: s&oacute; as quest&otilde;es que o estudante errou na Parte 1.</span></button>
+  </div>
+</div>
+
+<div class="card" id="cardForm">
+  <div class="te-faixa" id="teFaixa" hidden></div>
   <div class="linha-form">
     <label class="campo">RA do estudante
       <input type="text" id="ra" maxlength="7" inputmode="numeric" placeholder="0000000"
@@ -291,15 +312,23 @@ function atualizarModo() {
   document.getElementById('teBox').hidden = !te;
   document.getElementById('situacaoBox').hidden = !!te;
   document.getElementById('completudeBox').hidden = !!te;
+  var faixa = document.getElementById('teFaixa');
+  faixa.hidden = !te;
   if (!te) return;
+  faixa.className = 'te-faixa' + (te.dinamico ? ' te22' : '');
+  faixa.innerHTML = te.dinamico
+    ? 'Lançando: TE2-2 · Trabalho 2 da Etapa 2<span class="meta">O caderno da prova escrita (Parte 1): só as questões que o estudante errou, com o número do caderno dele.</span>'
+    : 'Lançando: TE2 · Trabalho da Etapa 2<span class="meta">O caderno do trabalho, 6 questões. A correção da prova escrita é o TE2-2.</span>';
   document.getElementById('tePrazoTxt').innerHTML = '<strong>Prazo:</strong> ' + te.prazoTxt +
     ' (sugerido pela data da entrega; pode ajustar).';
-  var rotulos = te.questoes.map(function (t, i) { return 'Q' + (i + 1) + ' · ' + t; });
+  var rotulos = te.dinamico ? [] : te.questoes.map(function (t, i) { return esc('Q' + (i + 1) + ' · ' + t); });
   if (te.dinamico) {
     var ok = teErros && teErros.corrigida;
     te.questoes = ok ? teErros.erradas : [];
-    rotulos = te.questoes.map(function (x) {
-      return 'Q' + x.n + ' (versão ' + teErros.versao + ') · ' + (TITULOS_P1[teErros.prova] || [])[x.a - 1];
+    rotulos = te.questoes.map(function (x) {   // F40: numero do caderno do estudante em destaque
+      return '<span class="q-rot"><strong>Q' + x.n + '</strong> no caderno do estudante · versão ' +
+        esc(teErros.versao) + ' · ' + esc(PROVA_NOME[teErros.prova] || teErros.prova) +
+        '<span class="meta">' + esc((TITULOS_P1[teErros.prova] || [])[x.a - 1] || '') + '</span></span>';
     });
     document.getElementById('teLegend').textContent = 'Trabalho 2 da Etapa 2 — questões erradas na Parte 1' +
       (ok ? ' da ' + PROVA_NOME[teErros.prova] : '');
@@ -315,7 +344,7 @@ function atualizarModo() {
       : 'Busque o RA: as questões que o estudante errou na Parte 1 aparecem aqui.') + '</td></tr>' : '') +
     rotulos.map(function (t, i) {
       var n = 'teQ' + (i + 1);
-      return '<tr><td>' + esc(t) + '</td>' + ['C', 'I', 'N'].map(function (v) {
+      return '<tr><td>' + t + '</td>' + ['C', 'I', 'N'].map(function (v) {
         return '<td style="text-align:center;"><input type="radio" name="' + n + '" value="' + v +
           '" onchange="totalTE()"></td>';
       }).join('') + '</tr>';
@@ -389,6 +418,11 @@ function chaveInvalida(msg) {
 }
 
 /* Atalhos visiveis para os Trabalhos de Etapa da FC1 (TE2 e TE2-2). */
+function mostrarEscolhaTE() {
+  document.getElementById('teEscolha').hidden = false;
+  document.getElementById('cardForm').hidden = true;
+}
+
 function abrirTE(t) {
   setDisciplina('FC1');
   ['trilha', 'rTrilha'].forEach(function (id) { document.getElementById(id).value = t; });
@@ -399,6 +433,8 @@ function abrirTE(t) {
 
 function setDisciplina(d) {
   disciplina = d;
+  document.getElementById('teEscolha').hidden = true;
+  document.getElementById('cardForm').hidden = false;
   document.getElementById('btnFE1').classList.toggle('ativa', d === 'FE1');
   document.getElementById('btnFC1').classList.toggle('ativa', d === 'FC1');
   ['btnTE2', 'btnTE2-2'].forEach(function (id) { document.getElementById(id).classList.remove('ativa'); });
@@ -706,7 +742,8 @@ function renderLista() {
       esc(ROTULOS[r.situacao] || r.situacao) + '</span></td><td>' +
       (r.oa === 'TE' ? '<span class="mono">' + esc(String(r.nota).replace('.', ',')) + ' / ' +
         (r.trilha === 'TE2-2' ? (String(r.questoes).match(/=/g) || []).length + ',0' : '6,0') +
-        '</span> · ' + esc(r.questoes) :
+        '</span> · ' + esc(r.questoes) +
+        (r.revisar ? ' <span class="tag erro" title="As questões gravadas não são as erradas de hoje na Parte 1">Revisar</span>' : '') :
       (r.completude === 'incompleto' ? '<span class="tag erro">Incompleto</span>' : 'Completo')) +
       '</td><td>' + esc(r.obs) + '</td><td>' + esc(r.monitor) + '</td></tr>';
   });
@@ -772,7 +809,10 @@ function blocoAcomp(b, titulo, baseRot) {
     '<span class="meta">pendentes · base ' + b.base + ' ' + baseRot + '</span></div>' +
     '<p class="meta" style="margin:6px 0;">No prazo: ' + b.no_prazo + ' · Fora do prazo: ' + b.fora_prazo +
     ' · Média: <strong>' + (b.media_pct == null ? '–' : b.media_pct + '%') + '</strong> do máximo</p>' +
-    '<p class="meta" style="margin:0 0 6px;">' + faixas + '</p>' + tq + lista + '</div>';
+    '<p class="meta" style="margin:0 0 6px;">' + faixas + '</p>' +
+    (b.revisar ? '<p class="meta" style="color:var(--erro);margin:0 0 6px;">Revisar: <strong>' + b.revisar +
+      '</strong> registro(s) com questões que não são as erradas de hoje (a nota não muda sozinha).</p>' : '') +
+    tq + lista + '</div>';
 }
 
 function renderAcomp() {
@@ -825,7 +865,9 @@ function copiarMsgTurma(i) {
   } catch (e) {}
   var viaLink = tokenDoLink();
   try { viaLink = viaLink || localStorage.getItem(MONITORIA_LINK_KEY) === '1'; } catch (e) {}
-  if (viaLink) abrirTE('TE2');   // F38: monitora pelo link cai na FC1 com o TE2 aberto
+  /* F40: pelo link a monitora escolhe TE2 ou TE2-2 antes do formulario (antes caia
+     sempre no TE2 e lancava o TE2-2 nas 6 questoes do TE2). */
+  if (viaLink) { setDisciplina('FC1'); mostrarEscolhaTE(); }
   else setDisciplina('FE1');
 })();
 </script>
