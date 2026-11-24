@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<title>Acompanhamento — TE2 e TE2-2 (FC1)</title>
+<title>Acompanhamento — TR2-1 e TR2-2 (FC1)</title>
 <link rel="icon" type="image/png" sizes="192x192" href="../_icones/app-painel-192.png">
 <link rel="apple-touch-icon" href="../_icones/app-painel-192.png">
 <!-- F37 (2026-11-18 · briefing PRE-outro-acompanhamento-te2-link-professor-fc1-2026-11-18):
@@ -56,8 +56,8 @@ td.mono, .mono { font-family: var(--mono); }
 </style>
 </head>
 <body data-pagina="painel:acompanhamento-index">
-<h1>Acompanhamento &mdash; TE2 e TE2-2 (FC1)</h1>
-<p class="intro">Resultados por turma do Trabalho da Etapa 2 (TE2) e do Trabalho 2 da Etapa 2 (TE2-2), com o recado de WhatsApp para o grupo de cada turma. Página só de leitura, aberta pelo seu link pessoal.</p>
+<h1>Acompanhamento &mdash; TR2-1 e TR2-2 (FC1)</h1>
+<p class="intro">Resultados por turma do TR2-1 (resolução pela RCP das questões erradas na Parte 1 da prova escrita) e do TR2-2 (resolução pela RCP das 6 questões ligadas à prova escrita da Etapa 2), com o recado de WhatsApp para o grupo de cada turma. Página só de leitura, aberta pelo seu link pessoal.</p>
 <div class="toolbar-lista">
   <button class="btn secundario" id="btnAcomp" onclick="carregarAcomp()">Atualizar</button>
   <span class="meta" id="metaAcomp">Carregando...</span>
@@ -180,8 +180,8 @@ function renderAcomp() {
   box.innerHTML = acompDados.turmas.map(function (t, i) {
     return '<div class="card acomp-turma"><h3>' + esc(t.turma) + ' · ' + t.alunos + ' estudantes</h3>' +
       '<div class="acomp-cols">' +
-      blocoAcomp(t.te2, 'Trabalho da Etapa 2 (TE2) · 6 questões', 'estudantes') +
-      blocoAcomp(t.te22, 'Trabalho 2 da Etapa 2 (TE2-2) · questões erradas', 'que erraram') +
+      blocoAcomp(t.te22, 'TR2-1 · RCP das questões erradas na Parte 1 da prova escrita', 'que erraram') +
+      blocoAcomp(t.te2, 'TR2-2 · RCP das 6 questões ligadas à prova escrita', 'estudantes') +
       '</div><div class="toolbar-lista" style="margin-top:12px;">' +
       '<button class="btn" onclick="copiarMsgTurma(' + i + ')">Mensagem da turma (WhatsApp)</button>' +
       '<span class="meta">Copia o recado sem nomes; cole no grupo da turma.</span></div></div>';
@@ -189,16 +189,16 @@ function renderAcomp() {
 }
 
 function msgTurma(t) {
-  var p1 = t.te2.base - t.te2.entregues, p2 = t.te22.base - t.te22.entregues;
+  var p1 = t.te22.base - t.te22.entregues, p2 = t.te2.base - t.te2.entregues;   // p1 = TR2-1 (TE2-2), p2 = TR2-2 (TE2)
   var cab = '*Física Conceitual 1 · ' + t.turma + '*';
   if (!p1 && !p2) {
-    return cab + ' 🎉\nPessoal, todos já entregaram o *TE2* e o *TE2-2*. Parabéns pela dedicação!\nProf. Julio';
+    return cab + ' 🎉\nPessoal, todos já entregaram o *TR2-1* e o *TR2-2*. Parabéns pela dedicação!\nProf. Julio';
   }
   var partes = [];
   if (p1) partes.push(p1 + (p1 === 1 ? ' de vocês ainda não entregou' : ' de vocês ainda não entregaram') +
-    ' o *Trabalho da Etapa 2 (TE2)*');
+    ' o *TR2-1* (resolução pela RCP das questões erradas na Parte 1 da prova escrita)');
   if (p2) partes.push(p2 + (p2 === 1 ? ' ainda não entregou' : ' ainda não entregaram') +
-    ' o *TE2-2* (correção das questões erradas na Parte 1 da PE2)');
+    ' o *TR2-2* (resolução pela RCP das 6 questões ligadas à prova escrita)');
   return cab + ' 📌\nPessoal, ' + partes.join(' e ') + '.\n' +
     'Quem falta: leve até *quinta-feira, 26/11*, na Monitoria.\nProf. Julio';
 }

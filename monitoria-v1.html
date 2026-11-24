@@ -37,6 +37,14 @@ h2 { font-family: var(--mono); font-size: 1rem; color: var(--ouro); text-transfo
   border: 2px solid var(--ouro); background: oklch(0.22 0.05 45); color: var(--ouro-claro); line-height: 1.5; }
 .te-faixa.te22 { border-color: var(--verde-claro); background: var(--verde-bg); color: var(--verde-claro); }
 .te-faixa .meta { font-family: 'Segoe UI', system-ui, sans-serif; font-weight: 400; display: block; }
+/* Destaque dos botoes TR2-1 / TR2-2 (2026-11-24) */
+.te-destaque { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 4px; max-width: 900px; }
+.disc-btn.te-btn { flex: 1 1 260px; text-align: left; font-size: 1rem; padding: 12px 16px; line-height: 1.4;
+  border: 2px solid var(--ouro); background: oklch(0.22 0.05 45); color: var(--ouro-claro); }
+.disc-btn.te-btn span { display: block; font-family: 'Segoe UI', system-ui, sans-serif; font-weight: 400;
+  font-size: 0.85rem; color: var(--texto); margin-top: 4px; }
+.disc-btn.te-btn.ativa { background: var(--ouro); color: #000; border-color: var(--ouro); }
+.disc-btn.te-btn.ativa span { color: #000; }
 .te-escolha { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
 .te-escolha .btn { flex: 1 1 240px; text-align: left; padding: 14px; line-height: 1.5; }
 .te-escolha .btn span { display: block; font-weight: 400; font-size: 0.85rem; }
@@ -101,9 +109,10 @@ td.mono { font-family: var(--mono); }
 <p class="intro">
   Registro digital do <strong>Espa&ccedil;o da Equipe de Monitoria</strong>: a entrega do
   <strong>Roteiro de Bancada (RB)</strong> nas trilhas da FE1 e da
-  <strong>Folha de Atividades (FA)</strong> nas trilhas da FC1 &mdash; e o
-  <strong>Trabalho da Etapa 2 (TE2)</strong> da FC1, quest&atilde;o por quest&atilde;o (escolha TE2 em Trilha), e o
-  <strong>Trabalho 2 da Etapa 2 (TE2-2)</strong>: a corre&ccedil;&atilde;o das quest&otilde;es que o estudante errou na Parte 1 da PE2.
+  <strong>Folha de Atividades (FA)</strong> nas trilhas da FC1 &mdash; e
+  os dois trabalhos da Etapa 2 da FC1, quest&atilde;o por quest&atilde;o: o <strong>TR2-1</strong>, resolu&ccedil;&atilde;o pela RCP
+  (5 passos) das quest&otilde;es erradas na Parte 1 da prova escrita, e o <strong>TR2-2</strong>, resolu&ccedil;&atilde;o pela RCP
+  das 6 quest&otilde;es ligadas &agrave; prova escrita da Etapa 2.
   Digite apenas o <strong>RA</strong> do estudante &mdash; nome, disciplina, curso, turma e grupo
   s&atilde;o preenchidos automaticamente pela lista oficial (SUAP). Cada registro espelha a folha
   impressa: situa&ccedil;&atilde;o do prazo, completude, observa&ccedil;&otilde;es e monitor(a).
@@ -112,17 +121,23 @@ td.mono { font-family: var(--mono); }
 <div class="disc-toggle">
   <button class="disc-btn fe ativa" id="btnFE1" onclick="setDisciplina('FE1')">FE1 &middot; Roteiro de Bancada (RB)</button>
   <button class="disc-btn" id="btnFC1" onclick="setDisciplina('FC1')">FC1 &middot; Folha de Atividades (FA)</button>
-  <button class="disc-btn" id="btnTE2" onclick="abrirTE('TE2')">FC1 &middot; Trabalho da Etapa 2 (TE2)</button>
-  <button class="disc-btn" id="btnTE2-2" onclick="abrirTE('TE2-2')">FC1 &middot; Trabalho 2 da Etapa 2 (TE2-2)</button>
+</div>
+<!-- Botoes dos trabalhos da Etapa 2 em destaque. Rotulo na tela TR2-1/TR2-2; codigo gravado
+     continua TE2-2/TE2 (briefing PRE-painel-descricao-visual-tr2-1-tr2-2-fc1-2026-11-24). -->
+<div class="te-destaque">
+  <button class="disc-btn te-btn" id="btnTE2-2" onclick="abrirTE('TE2-2')">FC1 &middot; TR2-1
+    <span>Resolu&ccedil;&atilde;o pela RCP (5 passos) das quest&otilde;es erradas na Parte 1 da prova escrita da Etapa 2.</span></button>
+  <button class="disc-btn te-btn" id="btnTE2" onclick="abrirTE('TE2')">FC1 &middot; TR2-2
+    <span>Resolu&ccedil;&atilde;o pela RCP (5 passos) das 6 quest&otilde;es ligadas &agrave; prova escrita da Etapa 2.</span></button>
 </div>
 
 <div class="card" id="teEscolha" hidden>
   <strong>Qual trabalho o estudante entregou?</strong>
   <div class="te-escolha">
-    <button class="btn" onclick="abrirTE('TE2')">TE2 &middot; Trabalho da Etapa 2
-      <span>Caderno do trabalho com 6 quest&otilde;es (encontro na estrada da mina, Estrada Real&hellip;).</span></button>
-    <button class="btn" onclick="abrirTE('TE2-2')">TE2-2 &middot; Trabalho 2 da Etapa 2
-      <span>O caderno da prova escrita: s&oacute; as quest&otilde;es que o estudante errou na Parte 1.</span></button>
+    <button class="btn" onclick="abrirTE('TE2-2')">TR2-1
+      <span>Resolu&ccedil;&atilde;o pela RCP (5 passos) das quest&otilde;es erradas na Parte 1 da prova escrita da Etapa 2 (no caderno da prova).</span></button>
+    <button class="btn" onclick="abrirTE('TE2')">TR2-2
+      <span>Resolu&ccedil;&atilde;o pela RCP (5 passos) das 6 quest&otilde;es ligadas &agrave; prova escrita da Etapa 2 (caderno do trabalho).</span></button>
   </div>
 </div>
 
@@ -238,7 +253,7 @@ td.mono { font-family: var(--mono); }
   </div>
 </div>
 
-<h2>Acompanhamento &mdash; TE2 e TE2-2 (FC1)</h2>
+<h2>Acompanhamento &mdash; TR2-1 e TR2-2 (FC1)</h2>
 <div class="toolbar-lista">
   <button class="btn secundario" id="btnAcomp" onclick="carregarAcomp()">Atualizar acompanhamento</button>
   <span class="meta" id="metaAcomp">Resultados por turma e mensagem de WhatsApp para o grupo de cada turma.</span>
@@ -268,7 +283,7 @@ var CFG = {
     url: 'https://script.google.com/macros/s/AKfycbxeCb9a0BlRe9LnKuuIw_EjNOnKlEGO_yV4_rzuUWyNbVU4ws_isV-rjjYsl8FZ44nO/exec',
     chaveKey: 'fc1_chave_relatorio', tipoCampo: 'tipo', oa: 'FA',
     oaNome: 'Folha de Atividades (FA)',
-    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','TE2','TE2-2']
+    trilhas: ['T01','T02','T03','T04','T05','T06','T07','T08','T09','T10','TE2-2','TE2']
   },
   FE1: {
     url: 'https://script.google.com/macros/s/AKfycbxBYD4VXRUkFnicnOR2WF8VS_OYdD8z0uYnJCVnGF5Il0BzJF-o4VF8JHPztzARCUJd/exec',
@@ -284,11 +299,11 @@ var registros = [];
 function cfg() { return CFG[disciplina]; }
 
 /* Trabalho de Etapa (F34): trilha 'TE2' da FC1, OA 'TE', uma marca por questao. */
-var TE = { TE2: { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'Trabalho da Etapa 2 (TE2)',
+var TE = { TE2: { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'TR2-2 (resolução pela RCP das 6 questões ligadas à prova escrita da Etapa 2)',
   questoes: ['O encontro na estrada da mina', 'A Estrada Real de bicicleta', 'O minério na correia transportadora',
              'A gaiola da mina subterrânea', 'O para-choque de mola da galeria', 'A mochila no ônibus'] },
   /* F35: TE2-2 = so as questoes erradas na Parte 1 da PE2 (ou da 2.a chamada), carregadas pelo RA. */
-  'TE2-2': { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'Trabalho 2 da Etapa 2 (TE2-2)',
+  'TE2-2': { prazo: '2026-11-26', prazoTxt: 'quinta-feira, 26/11/2026', nome: 'TR2-1 (resolução pela RCP das questões erradas na Parte 1 da prova escrita da Etapa 2)',
     dinamico: true, questoes: [] } };
 /* Titulos das questoes da Parte 1, na ordem da versao A (indice = numero A - 1). */
 var TITULOS_P1 = {
@@ -317,8 +332,8 @@ function atualizarModo() {
   if (!te) return;
   faixa.className = 'te-faixa' + (te.dinamico ? ' te22' : '');
   faixa.innerHTML = te.dinamico
-    ? 'Lançando: TE2-2 · Trabalho 2 da Etapa 2<span class="meta">O caderno da prova escrita (Parte 1): só as questões que o estudante errou, com o número do caderno dele.</span>'
-    : 'Lançando: TE2 · Trabalho da Etapa 2<span class="meta">O caderno do trabalho, 6 questões. A correção da prova escrita é o TE2-2.</span>';
+    ? 'Lançando: TR2-1<span class="meta">Resolução pela RCP (5 passos) das questões erradas na Parte 1 da prova escrita da Etapa 2 — só as que o estudante errou, com o número do caderno dele.</span>'
+    : 'Lançando: TR2-2<span class="meta">Resolução pela RCP (5 passos) das 6 questões ligadas à prova escrita da Etapa 2 (caderno do trabalho).</span>';
   document.getElementById('tePrazoTxt').innerHTML = '<strong>Prazo:</strong> ' + te.prazoTxt +
     ' (sugerido pela data da entrega; pode ajustar).';
   var rotulos = te.dinamico ? [] : te.questoes.map(function (t, i) { return esc('Q' + (i + 1) + ' · ' + t); });
@@ -330,10 +345,10 @@ function atualizarModo() {
         esc(teErros.versao) + ' · ' + esc(PROVA_NOME[teErros.prova] || teErros.prova) +
         '<span class="meta">' + esc((TITULOS_P1[teErros.prova] || [])[x.a - 1] || '') + '</span></span>';
     });
-    document.getElementById('teLegend').textContent = 'Trabalho 2 da Etapa 2 — questões erradas na Parte 1' +
+    document.getElementById('teLegend').textContent = 'TR2-1 — questões erradas na Parte 1' +
       (ok ? ' da ' + PROVA_NOME[teErros.prova] : '');
   } else {
-    document.getElementById('teLegend').textContent = 'Trabalho da Etapa 2 — página 4 do trabalho';
+    document.getElementById('teLegend').textContent = 'TR2-2 — as 6 questões (página 4 do trabalho)';
   }
   document.getElementById('teMax').textContent = te.questoes.length.toFixed(1).replace('.', ',');
   document.getElementById('teQuestoes').innerHTML =
@@ -431,6 +446,10 @@ function abrirTE(t) {
   document.getElementById('btn' + t).classList.add('ativa');
 }
 
+/* Rotulo na tela dos trabalhos da Etapa 2: o codigo gravado nao muda (TE2-2 = TR2-1, TE2 = TR2-2). */
+var ROT_TE = { 'TE2-2': 'TR2-1', 'TE2': 'TR2-2' };
+function rotTE(t) { return ROT_TE[t] || t; }
+
 function setDisciplina(d) {
   disciplina = d;
   document.getElementById('teEscolha').hidden = true;
@@ -439,7 +458,7 @@ function setDisciplina(d) {
   document.getElementById('btnFC1').classList.toggle('ativa', d === 'FC1');
   ['btnTE2', 'btnTE2-2'].forEach(function (id) { document.getElementById(id).classList.remove('ativa'); });
   var opcoes = cfg().trilhas.map(function (t) {
-    return '<option value="' + t + '">' + t + '</option>';
+    return '<option value="' + t + '">' + rotTE(t) + '</option>';
   }).join('');
   document.getElementById('trilha').innerHTML = opcoes;
   document.getElementById('rTrilha').innerHTML = opcoes;
@@ -712,7 +731,7 @@ function preencherFiltro(id, valores) {
   var sel = document.getElementById(id);
   var atual = sel.value;
   sel.innerHTML = '<option value="">Todas</option>' + valores.map(function (v) {
-    return '<option' + (v === atual ? ' selected' : '') + '>' + v + '</option>';
+    return '<option value="' + v + '"' + (v === atual ? ' selected' : '') + '>' + rotTE(v) + '</option>';
   }).join('');
 }
 
@@ -736,7 +755,7 @@ function renderLista() {
   var linhas = vis.map(function (r) {
     var grupo = r.grupo ? ' · ' + esc(r.grupo) : '';
     return '<tr><td class="mono">' + esc(r.ra) + '</td><td>' + esc(r.nome) +
-      '</td><td>' + esc(r.turma) + grupo + '</td><td class="mono">' + esc(r.trilha) +
+      '</td><td>' + esc(r.turma) + grupo + '</td><td class="mono">' + esc(rotTE(r.trilha)) +
       ' · ' + esc(r.oa) + '</td><td class="mono">' + esc(r.data_entrega) +
       '</td><td><span class="tag ' + (TAGS[r.situacao] || '') + '">' +
       esc(ROTULOS[r.situacao] || r.situacao) + '</span></td><td>' +
@@ -821,8 +840,8 @@ function renderAcomp() {
   box.innerHTML = acompDados.turmas.map(function (t, i) {
     return '<div class="card acomp-turma"><h3>' + esc(t.turma) + ' · ' + t.alunos + ' estudantes</h3>' +
       '<div class="acomp-cols">' +
-      blocoAcomp(t.te2, 'Trabalho da Etapa 2 (TE2) · 6 questões', 'estudantes') +
-      blocoAcomp(t.te22, 'Trabalho 2 da Etapa 2 (TE2-2) · questões erradas', 'que erraram') +
+      blocoAcomp(t.te22, 'TR2-1 · RCP das questões erradas na Parte 1 da prova escrita', 'que erraram') +
+      blocoAcomp(t.te2, 'TR2-2 · RCP das 6 questões ligadas à prova escrita', 'estudantes') +
       '</div><div class="toolbar-lista" style="margin-top:12px;">' +
       '<button class="btn" onclick="copiarMsgTurma(' + i + ')">Mensagem da turma (WhatsApp)</button>' +
       '<span class="meta">Copia o recado sem nomes; cole no grupo da turma.</span></div></div>';
@@ -830,16 +849,16 @@ function renderAcomp() {
 }
 
 function msgTurma(t) {
-  var p1 = t.te2.base - t.te2.entregues, p2 = t.te22.base - t.te22.entregues;
+  var p1 = t.te22.base - t.te22.entregues, p2 = t.te2.base - t.te2.entregues;   // p1 = TR2-1 (TE2-2), p2 = TR2-2 (TE2)
   var cab = '*Física Conceitual 1 · ' + t.turma + '*';
   if (!p1 && !p2) {
-    return cab + ' 🎉\nPessoal, todos já entregaram o *TE2* e o *TE2-2*. Parabéns pela dedicação!\nProf. Julio';
+    return cab + ' 🎉\nPessoal, todos já entregaram o *TR2-1* e o *TR2-2*. Parabéns pela dedicação!\nProf. Julio';
   }
   var partes = [];
   if (p1) partes.push(p1 + (p1 === 1 ? ' de vocês ainda não entregou' : ' de vocês ainda não entregaram') +
-    ' o *Trabalho da Etapa 2 (TE2)*');
+    ' o *TR2-1* (resolução pela RCP das questões erradas na Parte 1 da prova escrita)');
   if (p2) partes.push(p2 + (p2 === 1 ? ' ainda não entregou' : ' ainda não entregaram') +
-    ' o *TE2-2* (correção das questões erradas na Parte 1 da PE2)');
+    ' o *TR2-2* (resolução pela RCP das 6 questões ligadas à prova escrita)');
   return cab + ' 📌\nPessoal, ' + partes.join(' e ') + '.\n' +
     'Quem falta: leve até *quinta-feira, 26/11*, na Monitoria.\nProf. Julio';
 }
