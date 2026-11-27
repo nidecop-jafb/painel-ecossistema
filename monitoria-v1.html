@@ -101,9 +101,22 @@ td.mono { font-family: var(--mono); }
 .acomp-col details { margin-top: 8px; font-size: 0.85rem; }
 .acomp-col summary { cursor: pointer; color: var(--texto-suave); font-family: var(--mono); font-size: 0.8rem; }
 @media (max-width: 560px) { body { padding: 12px; } table { table-layout: fixed; } th, td { overflow-wrap: anywhere; } }
+/* Voltar ao site (autor, 2026-11-26): so aparece quando a pagina vem do menu de um site (?de=fc1|fe1) */
+.voltar-site { display: inline-block; margin: 0 0 14px; padding: 8px 16px; min-height: 40px; box-sizing: border-box; border: 2px solid var(--ouro); border-radius: 6px; background: var(--cinza-card); color: var(--ouro-claro); font: 700 .9rem/1.3 'Segoe UI', system-ui, sans-serif; text-decoration: none; }
+.voltar-site:hover, .voltar-site:focus-visible { background: var(--ouro); color: var(--fundo); }
+.voltar-site[hidden] { display: none; }
 </style>
 </head>
 <body data-pagina="painel:monitoria-v1">
+<a class="voltar-site" id="voltarSite" href="#" hidden>&larr; Voltar ao site</a>
+<script>
+(function () {
+  var SITES = { fc1: 'https://nidecop-jafb.github.io/fc1-oa/', fe1: 'https://nidecop-jafb.github.io/fe1-oa/' };
+  var de = ''; try { de = (new URLSearchParams(location.search).get('de') || '').toLowerCase(); } catch (e) {}
+  var a = document.getElementById('voltarSite');
+  if (SITES[de]) { a.href = SITES[de]; a.hidden = false; }
+})();
+</script>
 
 <h2 style="margin-top:0;">Monitoria — Registro de Entregas</h2>
 <p class="intro">
