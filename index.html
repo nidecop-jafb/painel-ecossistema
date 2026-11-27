@@ -1035,6 +1035,7 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
       <div class="tab" id="grp-coleta" onclick="showTab('monitoria')">Coleta</div>
       <div class="tab" id="grp-analise" onclick="showTab('dados')">An&aacute;lise</div>
       <div class="tab" id="grp-integracao" onclick="showTab('integracao')">Integra&ccedil;&atilde;o</div>
+      <div class="tab" id="grp-relatos" onclick="showTab('relatos')">Relatos</div>
     </div>
     <div class="tabs subtabs" id="subtabs-producao" style="margin-top:0;margin-bottom:0;">
       <div class="tab" id="pill-producao" onclick="showTab('producao')">Produ&ccedil;&atilde;o</div>
@@ -2764,7 +2765,11 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (30)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">339 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (30)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">340 na lista</span></div>
+<details class="pre-brief" data-escopo="disciplina" data-status="rascunho">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>site &middot; aba Relatos no Painel do Ecossistema (depois de Integração), com os relatos que hoje estão no Cadastro<span class="pre-selo">FC1</span><span class="pre-meta">2026-11-27</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar a aba **Relatos** logo depois de **Integração** no menu do Painel e mover para ela os 3 blocos de relatos que hoje ficam no fim da aba Cadastro: Sugestões do RIF (Rumo ao IFMG), Recados da Ficha de Retorno (FR) e Site no celular.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Sonnet 5 · Esforço: baixo · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-painel-aba-relatos-fc1-2026-11-27.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-painel-aba-relatos-fc1-2026-11-27.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-painel-aba-relatos-fc1-2026-11-27.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-painel-aba-relatos-fc1-2026-11-27.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-painel-aba-relatos-fc1-2026-11-27.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="disciplina" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; FR1 (Ficha de Retorno da Parte 1, questões objetivas) e FR2 (Ficha de Retorno da Parte 2, questões discursivas) da FC1 no /retorno/<span class="pre-selo">FC1</span><span class="pre-meta">2026-11-27</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Organizar o `/retorno/` do fc1-oa em duas fichas por prova escrita (PE1, Prova Escrita 1, e PE2, Prova Escrita 2). A **FR1 (Ficha de Retorno da Parte 1, questões objetivas)** é nova e mostra só as questões que o estudante **errou**. A **FR2 (Ficha de Retorno da Parte 2, questões discursivas)** é a ficha que já está no ar para a PE2, com a Tabela 1 por passo da RCP (Resolução Científica do Problema), e não muda.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -4121,7 +4126,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>339 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 47 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>340 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 48 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -5380,48 +5385,6 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
         <button type="button" class="pre-acao" onclick="finSalvar(this)">Salvar financiador</button>
       </div>
 
-      <!-- SUGESTOES DO RIF (F23 · PRJ-0003 · 2026-09-25): respostas as sugestoes anonimas do
-           rif-oa/sugestoes/. Rascunho diario do Claude (tarefa agendada); a equipe edita e aprova.
-           Aprovada = entra em rif-oa/agradecimentos/ na proxima geracao do site (resumo + resposta). -->
-      <h3 style="margin-top:36px;">Sugest&otilde;es do RIF &mdash; respostas (PRJ-0003)</h3>
-      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
-        Sugest&otilde;es an&ocirc;nimas enviadas em <span style="color:var(--ouro-claro);">rif-oa/sugestoes/</span>
-        (aba <span style="color:var(--ouro-claro);">sugestoes</span>, Origem = RIF). Todo dia o Claude escreve um
-        <strong style="color:var(--texto);">rascunho</strong>; voc&ecirc; edita e escolhe o status.
-        <strong style="color:var(--texto);">Aprovada</strong> publica em Agradecimentos s&oacute; o
-        <em>Resumo</em> e a <em>Resposta</em> &mdash; nunca o texto original nem o &aacute;udio.
-        &Aacute;udio: ou&ccedil;a no Drive e escreva voc&ecirc; a resposta.
-      </p>
-      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
-        <button type="button" class="pre-acao" onclick="sugRifCarregar(this)">&#128273; Carregar sugest&otilde;es do RIF</button>
-        <label style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"><input type="checkbox" id="sugRifTodas" onchange="sugRifDesenhar()"> mostrar arquivadas</label>
-        <span id="sugRifStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
-      </div>
-      <div id="sugRifLista" style="max-width:1100px;"></div>
-
-      <!-- RECADOS DA FICHA DE RETORNO (F39 · FC1 · 2026-11-23 · PRE-site-ficha-de-retorno-fr-no-site-fc1-2026-11-23):
-           recados enviados em fc1-oa/retorno/ (aba fr_recados); audio no Drive "FC1 - Recados FR". -->
-      <h3 style="margin-top:36px;">Recados da Ficha de Retorno (FR) &mdash; FC1</h3>
-      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
-        Recados dos estudantes enviados em <span style="color:var(--ouro-claro);">fc1-oa/retorno/</span>, depois de ler a FR (aba <span style="color:var(--ouro-claro);">fr_recados</span>).</p>
-      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
-        <button type="button" class="pre-acao" onclick="frRecCarregar(this)">&#128273; Carregar recados da FR</button>
-        <span id="frRecStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
-      </div>
-      <div id="frRecLista" style="max-width:1100px;"></div>
-
-      <!-- SITE NO CELULAR (F42 · FC1 · 2026-11-27 · PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27):
-           relatos de fc1-oa/celular/ (aba celular_relatos); print e audio no Drive "FC1 - Site no celular".
-           A rotina diaria fc1-site-no-celular responde; aqui o autor le e confere. -->
-      <h3 style="margin-top:36px;">Site no celular &mdash; relatos dos estudantes (FC1)</h3>
-      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
-        Problemas de tela ou funcionamento enviados em <span style="color:var(--ouro-claro);">fc1-oa/celular/</span> (aba <span style="color:var(--ouro-claro);">celular_relatos</span>). A rotina di&aacute;ria do Claude responde &agrave;s 7h; defeito do site vira proposta de conserto para aprova&ccedil;&atilde;o.</p>
-      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
-        <button type="button" class="pre-acao" onclick="celCarregar(this)">&#128273; Carregar relatos do celular</button>
-        <label style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"><input type="checkbox" id="celPend"> s&oacute; os sem resposta</label>
-        <span id="celStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
-      </div>
-      <div id="celLista" style="max-width:1100px;"></div>
     </div>
 
     <!-- ABA PROJETO -- documentos executivos das disciplinas (A4.28). -->
@@ -5453,6 +5416,56 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
     <div class="tab-content" id="tab-integracao">
       <h2 class="section-title">Integra&ccedil;&atilde;o</h2>
       <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;">Em breve: integracao com o SUAP (hoje via acesso direto pelo Chrome) e, apos autorizacao da TI do IFMG, com o SEI.</p>
+    </div>
+
+    <!-- ABA RELATOS (2026-11-27 · PRE-site-painel-aba-relatos-fc1-2026-11-27): os relatos que chegam
+         dos sites (RIF, Ficha de Retorno, Site no celular), antes no fim do Cadastro. Um botao carrega
+         tudo com a chave; o nome da aba mostra quantos esperam resposta. Atalho: #relatos -->
+    <div class="tab-content" id="tab-relatos">
+      <h2 class="section-title">Relatos</h2>
+      <div style="display:flex;align-items:center;gap:12px;margin:10px 0 6px;flex-wrap:wrap;">
+        <button type="button" class="pre-acao" onclick="relCarregarTudo(this)">&#128273; Carregar todos os relatos</button>
+        <span id="relStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe uma vez).</span>
+      </div>
+      <!-- SUGESTOES DO RIF (F23 · PRJ-0003 · 2026-09-25): respostas as sugestoes anonimas do
+           rif-oa/sugestoes/. Rascunho diario do Claude (tarefa agendada); a equipe edita e aprova.
+           Aprovada = entra em rif-oa/agradecimentos/ na proxima geracao do site (resumo + resposta). -->
+      <h3 style="margin-top:20px;">Sugest&otilde;es do RIF &mdash; respostas (PRJ-0003)</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
+        Sugest&otilde;es an&ocirc;nimas enviadas em <span style="color:var(--ouro-claro);">rif-oa/sugestoes/</span>
+        (aba <span style="color:var(--ouro-claro);">sugestoes</span>, Origem = RIF). Todo dia o Claude escreve um
+        <strong style="color:var(--texto);">rascunho</strong>; voc&ecirc; edita e escolhe o status.
+        <strong style="color:var(--texto);">Aprovada</strong> publica em Agradecimentos s&oacute; o
+        <em>Resumo</em> e a <em>Resposta</em> &mdash; nunca o texto original nem o &aacute;udio.
+        &Aacute;udio: ou&ccedil;a no Drive e escreva voc&ecirc; a resposta.
+      </p>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
+        <label style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"><input type="checkbox" id="sugRifTodas" onchange="sugRifDesenhar()"> mostrar arquivadas</label>
+        <span id="sugRifStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
+      </div>
+      <div id="sugRifLista" style="max-width:1100px;"></div>
+
+      <!-- RECADOS DA FICHA DE RETORNO (F39 · FC1 · 2026-11-23 · PRE-site-ficha-de-retorno-fr-no-site-fc1-2026-11-23):
+           recados enviados em fc1-oa/retorno/ (aba fr_recados); audio no Drive "FC1 - Recados FR". -->
+      <h3 style="margin-top:36px;">Recados da Ficha de Retorno (FR) &mdash; FC1</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
+        Recados dos estudantes enviados em <span style="color:var(--ouro-claro);">fc1-oa/retorno/</span>, depois de ler a FR (aba <span style="color:var(--ouro-claro);">fr_recados</span>).</p>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
+        <span id="frRecStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
+      </div>
+      <div id="frRecLista" style="max-width:1100px;"></div>
+
+      <!-- SITE NO CELULAR (F42 · FC1 · 2026-11-27 · PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27):
+           relatos de fc1-oa/celular/ (aba celular_relatos); print e audio no Drive "FC1 - Site no celular".
+           A rotina diaria fc1-site-no-celular responde; aqui o autor le e confere. -->
+      <h3 style="margin-top:36px;">Site no celular &mdash; relatos dos estudantes (FC1)</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
+        Problemas de tela ou funcionamento enviados em <span style="color:var(--ouro-claro);">fc1-oa/celular/</span> (aba <span style="color:var(--ouro-claro);">celular_relatos</span>). A rotina di&aacute;ria do Claude responde &agrave;s 7h; defeito do site vira proposta de conserto para aprova&ccedil;&atilde;o.</p>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
+        <label style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"><input type="checkbox" id="celPend" onchange="celDesenhar()"> s&oacute; os sem resposta</label>
+        <span id="celStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
+      </div>
+      <div id="celLista" style="max-width:1100px;"></div>
     </div>
 
   </main>
@@ -6817,14 +6830,15 @@ function projExcluir(pj, btn) {
 }
 
 /* ---------- RECADOS DA FICHA DE RETORNO (F39) ---------- */
+var FR_REC = [];
 function frRecCarregar(btn) {
   var st = document.getElementById('frRecStatus'), chave = cfgObterChave();
-  if (!chave) { st.textContent = 'Sem a chave da equipe a lista nao pode ser exibida.'; return; }
-  btn.disabled = true; st.textContent = 'Buscando recados...';
-  fetch(COLETA_ENDPOINT + '?fr_recados=1&chave=' + encodeURIComponent(chave)).then(function (r) { return r.json(); })
+  if (!chave) { st.textContent = 'Sem a chave da equipe a lista nao pode ser exibida.'; return Promise.resolve(); }
+  if (btn) btn.disabled = true; st.textContent = 'Buscando recados...';
+  return fetch(COLETA_ENDPOINT + '?fr_recados=1&chave=' + encodeURIComponent(chave)).then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) throw new Error(res.erro || 'resposta invalida');
-      st.textContent = res.recados.length + ' recado(s)';
+      FR_REC = res.recados; st.textContent = res.recados.length + ' recado(s)';
       document.getElementById('frRecLista').innerHTML = res.recados.map(function (r) {
         return '<div style="border:1px solid var(--cinza-borda);padding:10px 14px;margin-bottom:10px;">' +
           '<div style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">' + sugRifEsc(r.data) + ' · ' +
@@ -6839,16 +6853,24 @@ function frRecCarregar(btn) {
 }
 
 /* ---------- SITE NO CELULAR (F42) ---------- */
+var CEL_REL = [];
 function celCarregar(btn) {
   var st = document.getElementById('celStatus'), chave = cfgObterChave(), e = sugRifEsc;
-  if (!chave) { st.textContent = 'Sem a chave da equipe a lista nao pode ser exibida.'; return; }
-  btn.disabled = true; st.textContent = 'Buscando relatos...';
-  var pend = document.getElementById('celPend').checked ? '&pendentes=1' : '';
-  fetch(COLETA_ENDPOINT + '?celular_relatos=1&chave=' + encodeURIComponent(chave) + pend).then(function (r) { return r.json(); })
+  if (!chave) { st.textContent = 'Sem a chave da equipe a lista nao pode ser exibida.'; return Promise.resolve(); }
+  if (btn) btn.disabled = true; st.textContent = 'Buscando relatos...';
+  return fetch(COLETA_ENDPOINT + '?celular_relatos=1&chave=' + encodeURIComponent(chave)).then(function (r) { return r.json(); })
     .then(function (res) {
       if (!res.ok) throw new Error(res.erro || 'resposta invalida');
-      var L = res.relatos.slice().reverse();
-      st.textContent = L.length + ' relato(s) · ' + L.filter(function (r) { return r.status === 'recebido'; }).length + ' sem resposta';
+      CEL_REL = res.relatos.slice().reverse();
+      st.textContent = CEL_REL.length + ' relato(s) · ' + CEL_REL.filter(function (r) { return r.status === 'recebido'; }).length + ' sem resposta';
+      celDesenhar();
+    })
+    .catch(function (x) { st.textContent = 'Falha ao carregar: ' + x.message; })
+    .finally(function () { if (btn) btn.disabled = false; });
+}
+function celDesenhar() {
+  var e = sugRifEsc, pend = document.getElementById('celPend').checked;
+  var L = CEL_REL.filter(function (r) { return !pend || r.status === 'recebido'; });
       document.getElementById('celLista').innerHTML = L.map(function (r) {
         var t = {}; try { t = JSON.parse(r.tecnico || '{}'); } catch (x) {}
         var cor = r.status === 'recebido' ? 'var(--ouro-claro)' : (r.status === 'em análise' ? 'var(--erro)' : 'var(--verde-claro)');
@@ -6865,9 +6887,20 @@ function celCarregar(btn) {
           (r.resposta ? '<div style="margin-top:6px;padding:6px 10px;background:var(--superficie);"><b>Resposta (' + e(r.respondido) + '):</b> ' + e(r.resposta) + '</div>' : '') +
           '</div>';
       }).join('');
-    })
-    .catch(function (x) { st.textContent = 'Falha ao carregar: ' + x.message; })
-    .finally(function () { btn.disabled = false; });
+}
+
+/* ---------- ABA RELATOS: um botao carrega tudo + contador no nome da aba ---------- */
+function relCarregarTudo(btn) {
+  var st = document.getElementById('relStatus');
+  if (!cfgObterChave()) { st.textContent = 'Sem a chave da equipe os relatos nao podem ser exibidos.'; return; }
+  btn.disabled = true; st.textContent = 'Buscando os relatos...';
+  Promise.all([sugRifCarregar(null), frRecCarregar(null), celCarregar(null)]).then(function () {
+    var rif = SUG_RIF.filter(function (x) { return !x.status || x.status === 'rascunho'; }).length;
+    var cel = CEL_REL.filter(function (x) { return x.status === 'recebido'; }).length;
+    var n = rif + FR_REC.length + cel;
+    document.getElementById('grp-relatos').textContent = 'Relatos (' + n + ')';
+    st.textContent = n + ' esperando resposta · RIF ' + rif + ' · FR ' + FR_REC.length + ' · celular ' + cel;
+  }).finally(function () { btn.disabled = false; });
 }
 
 /* ---------- SUGESTOES DO RIF (F23) ---------- */
