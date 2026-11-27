@@ -6849,7 +6849,7 @@ function frRecCarregar(btn) {
       }).join('');
     })
     .catch(function (e) { st.textContent = 'Falha ao carregar: ' + e.message; })
-    .finally(function () { btn.disabled = false; });
+    .finally(function () { if (btn) btn.disabled = false; });
 }
 
 /* ---------- SITE NO CELULAR (F42) ---------- */
