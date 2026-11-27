@@ -988,6 +988,15 @@ a.pill:hover { opacity: .7; text-decoration: underline; }
   .next-action-desc { font-size: 15px; }
   .next-action-cmd { font-size: 14px; }
 }
+/* Aba Relatos: links (print, audio no Drive) legiveis no fundo escuro — nunca o azul padrao
+   do navegador (2026-11-27, pedido do autor). Vira botao de borda ouro com texto claro. */
+#tab-relatos a { color: var(--ouro-claro); text-decoration: none; display: inline-block; margin: 2px 8px 2px 0;
+  padding: 5px 12px; border: 1px solid var(--ouro-claro); border-radius: 4px; font-family: var(--mono);
+  font-size: 12px; font-weight: 600; }
+#tab-relatos a:hover, #tab-relatos a:focus-visible { background: var(--ouro-claro); color: #14120D; outline: none; }
+#tab-relatos a:visited { color: var(--ouro-claro); }
+#tab-relatos a:visited:hover { color: #14120D; }
+#tab-relatos p a, #tab-relatos span a { padding: 0; border: 0; margin: 0; text-decoration: underline; font-weight: 400; }
 </style>
 </head>
 <body data-pagina="inicio">
