@@ -2764,7 +2764,15 @@ function preFiltrar(tipo, valor, btn) {
   if (c) c.textContent = n + ' na lista';
 }
 </script>
-<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (30)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">337 na lista</span></div>
+<div class="pre-filtros"><span>Escopo:</span><button type="button" data-f="escopo" class="ativo" onclick="preFiltrar('escopo', 'todos', this)">Todos</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'disciplina', this)">Disciplinas</button><button type="button" data-f="escopo" onclick="preFiltrar('escopo', 'projeto', this)">Projetos (30)</button><span>Status:</span><button type="button" data-f="status" class="ativo" onclick="preFiltrar('status', 'todos', this)">Todos</button><button type="button" data-f="status" onclick="preFiltrar('status', 'rascunho', this)">Rascunho</button><button type="button" data-f="status" onclick="preFiltrar('status', 'aprovado', this)">Aprovado</button><button type="button" data-f="status" onclick="preFiltrar('status', 'executado', this)">Executado</button><span id="preFiltroConta">339 na lista</span></div>
+<details class="pre-brief" data-escopo="disciplina" data-status="executado">
+<summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; FR1 (Ficha de Retorno da Parte 1, questões objetivas) e FR2 (Ficha de Retorno da Parte 2, questões discursivas) da FC1 no /retorno/<span class="pre-selo">FC1</span><span class="pre-meta">2026-11-27</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Organizar o `/retorno/` do fc1-oa em duas fichas por prova escrita (PE1, Prova Escrita 1, e PE2, Prova Escrita 2). A **FR1 (Ficha de Retorno da Parte 1, questões objetivas)** é nova e mostra só as questões que o estudante **errou**. A **FR2 (Ficha de Retorno da Parte 2, questões discursivas)** é a ficha que já está no ar para a PE2, com a Tabela 1 por passo da RCP (Resolução Científica do Problema), e não muda.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-ficha-de-retorno-fr1-fr2-parte1-fc1-2026-11-27.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
+<details class="pre-brief" data-escopo="disciplina" data-status="rascunho">
+<summary><span class="pre-status pre-rascunho">RASCUNHO</span>site &middot; &quot;Site no celular&quot; no Fique ligado do fc1-oa (relato de problema de tela e de funcionamento, respondido pelo Claude)<span class="pre-selo">FC1</span><span class="pre-meta">2026-11-27</span></summary>
+<div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar no menu Fique ligado do fc1-oa a opção **Site no celular**, em que o estudante relata um problema de visualização ou de funcionamento com print, texto ou áudio. Uma rotina diária do Claude lê os relatos e responde ao estudante no próprio site, pelo RA (Registro Acadêmico).<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma (rotina: `schedule`)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
+</details>
 <details class="pre-brief" data-escopo="disciplina" data-status="executado">
 <summary><span class="pre-status pre-executado">EXECUTADO</span>site &middot; Minhas entregas e Fique ligado no fe1-oa, no molde da FC1<span class="pre-selo">FE1</span><span class="pre-meta">2026-11-27</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Levar à página principal do fe1-oa a caixa da FC1 (olho de acessos à esquerda + &quot;Minhas entregas&quot; com matrícula, pontos e frequência) e o menu &quot;Fique ligado&quot; da barra, com a paleta da FE1.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: médio · Skill: nenhuma<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FE1_Fisica_Experimental_1/_planejamento/_pre/PRE-site-minhas-entregas-fique-ligado-fe1-2026-11-27.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FE1_Fisica_Experimental_1/_planejamento/_pre/PRE-site-minhas-entregas-fique-ligado-fe1-2026-11-27.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FE1_Fisica_Experimental_1/_planejamento/_pre/PRE-site-minhas-entregas-fique-ligado-fe1-2026-11-27.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FE1_Fisica_Experimental_1/_planejamento/_pre/PRE-site-minhas-entregas-fique-ligado-fe1-2026-11-27.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FE1_Fisica_Experimental_1/_planejamento/_pre/PRE-site-minhas-entregas-fique-ligado-fe1-2026-11-27.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
@@ -4113,7 +4121,7 @@ function preFiltrar(tipo, valor, btn) {
 <summary><span class="pre-status pre-aprovado">APROVADO</span>Painel &middot; aba Pré-Planejamento<span class="pre-selo">FC1</span><span class="pre-meta">2026-09-05</span></summary>
 <div class="pre-corpo"><strong style="color:var(--texto);">Objetivo:</strong> Criar uma aba nova &quot;Pré-Planejamento&quot; no Painel do Ecossistema que lista os briefings PRE-*.md de todas as disciplinas, permite rodar a entrevista-autor pelo formulário (gera o prompt, como a aba Texto Temático faz com a Camada 2) e dá botões de aprovar/copiar edição.<br><strong style="color:var(--texto);">Execu&ccedil;&atilde;o:</strong> Modelo: Opus 5 · Esforço: alto · Skill: nenhuma (revisão/edição direta do Painel, conforme seção 18.4 do CLAUDE.md raiz: &quot;Opus 5 para revisão do Painel&quot;)<br><span style="font-family:var(--mono);font-size:11px;">3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md</span><br><button type="button" class="pre-acao" onclick="prePromptAprovarSo('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar</button><button type="button" class="pre-acao" onclick="prePromptAprovar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#10003; Aprovar e executar</button><button type="button" class="pre-acao" onclick="prePromptEditar('3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md', this)">&#9998; Copiar prompt de edi&ccedil;&atilde;o</button><a class="pre-acao" style="text-decoration:none;display:inline-block;" href="vscode://file/G:/JA2026/3_Estudio/TMI_01_FC1_Fisica_Conceitual_1/_planejamento/_pre/PRE-painel-pre-planejamento-2026-09-05.md" title="Abrir no VS Code">&#128196; Abrir o .md</a></div>
 </details>
-<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>337 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 46 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
+<p style="font-size:12px;color:var(--texto-sub);margin:12px 0 0;line-height:1.6;"><strong>339 Instru&ccedil;&atilde;o(&otilde;es) Inicial(is) &middot; 47 aguardando aprova&ccedil;&atilde;o.</strong> Lista gerada do disco pelo <span style="font-family:var(--mono);">atualizar_painel.py</span> &mdash; os <span style="font-family:var(--mono);">.md</span> ficam no reposit&oacute;rio de produ&ccedil;&atilde;o (o link "Abrir o .md" abre no VS Code, precisa do VS Code instalado na m&aacute;quina).</p>
 <!-- AUTO:PREPLANEJAMENTO:FIM -->
       </section>
     </div>
@@ -5401,6 +5409,19 @@ details.dist-trilha > .dist-corpo { padding: 2px 12px 12px 32px; font-size: 12px
         <span id="frRecStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
       </div>
       <div id="frRecLista" style="max-width:1100px;"></div>
+
+      <!-- SITE NO CELULAR (F42 · FC1 · 2026-11-27 · PRE-site-fique-ligado-site-no-celular-fc1-2026-11-27):
+           relatos de fc1-oa/celular/ (aba celular_relatos); print e audio no Drive "FC1 - Site no celular".
+           A rotina diaria fc1-site-no-celular responde; aqui o autor le e confere. -->
+      <h3 style="margin-top:36px;">Site no celular &mdash; relatos dos estudantes (FC1)</h3>
+      <p style="color:var(--texto-sub);font-family:var(--mono);font-size:13px;line-height:1.6;">
+        Problemas de tela ou funcionamento enviados em <span style="color:var(--ouro-claro);">fc1-oa/celular/</span> (aba <span style="color:var(--ouro-claro);">celular_relatos</span>). A rotina di&aacute;ria do Claude responde &agrave;s 7h; defeito do site vira proposta de conserto para aprova&ccedil;&atilde;o.</p>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0 10px;flex-wrap:wrap;">
+        <button type="button" class="pre-acao" onclick="celCarregar(this)">&#128273; Carregar relatos do celular</button>
+        <label style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);"><input type="checkbox" id="celPend"> s&oacute; os sem resposta</label>
+        <span id="celStatus" style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">Clique para carregar (pede a chave da equipe).</span>
+      </div>
+      <div id="celLista" style="max-width:1100px;"></div>
     </div>
 
     <!-- ABA PROJETO -- documentos executivos das disciplinas (A4.28). -->
@@ -6814,6 +6835,38 @@ function frRecCarregar(btn) {
       }).join('');
     })
     .catch(function (e) { st.textContent = 'Falha ao carregar: ' + e.message; })
+    .finally(function () { btn.disabled = false; });
+}
+
+/* ---------- SITE NO CELULAR (F42) ---------- */
+function celCarregar(btn) {
+  var st = document.getElementById('celStatus'), chave = cfgObterChave(), e = sugRifEsc;
+  if (!chave) { st.textContent = 'Sem a chave da equipe a lista nao pode ser exibida.'; return; }
+  btn.disabled = true; st.textContent = 'Buscando relatos...';
+  var pend = document.getElementById('celPend').checked ? '&pendentes=1' : '';
+  fetch(COLETA_ENDPOINT + '?celular_relatos=1&chave=' + encodeURIComponent(chave) + pend).then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.erro || 'resposta invalida');
+      var L = res.relatos.slice().reverse();
+      st.textContent = L.length + ' relato(s) · ' + L.filter(function (r) { return r.status === 'recebido'; }).length + ' sem resposta';
+      document.getElementById('celLista').innerHTML = L.map(function (r) {
+        var t = {}; try { t = JSON.parse(r.tecnico || '{}'); } catch (x) {}
+        var cor = r.status === 'recebido' ? 'var(--ouro-claro)' : (r.status === 'em análise' ? 'var(--erro)' : 'var(--verde-claro)');
+        return '<div style="border:1px solid var(--cinza-borda);border-left:3px solid ' + cor + ';padding:10px 14px;margin-bottom:10px;">' +
+          '<div style="font-family:var(--mono);font-size:12px;color:var(--texto-sub);">' + e(r.data) + ' · ' + e(r.id) + ' · ' + e(r.turma) + ' · ' +
+          e(r.nome) + ' (RA ' + e(r.ra) + ') · <b style="color:' + cor + ';">' + e(r.status) + '</b></div>' +
+          '<div style="margin-top:4px;font-size:13px;">' + e(r.problema) + ' · ' + e(r.fabricante) + ' ' + e(r.modelo) + ' · ' + e(r.onde) +
+          (r.pagina ? ' · <span style="font-family:var(--mono);">' + e(r.pagina) + '</span>' : '') + '</div>' +
+          '<div style="margin-top:2px;font-family:var(--mono);font-size:11px;color:var(--texto-sub);">tela ' + e(t.tela) + ' · janela ' + e(t.janela) +
+          ' · dpr ' + e(t.dpr) + ' · zoom ' + e(t.zoom) + (t.instalado ? ' · instalado' : '') + ' · ' + e(t.ua) + '</div>' +
+          (r.texto ? '<div style="margin-top:6px;white-space:pre-wrap;">' + e(r.texto) + '</div>' : '') +
+          '<div style="margin-top:6px;">' + (r.print ? '<a href="' + e(r.print) + '" target="_blank" rel="noopener">&#128247; Ver o print</a> ' : '') +
+          (r.audio ? '<a href="' + e(r.audio) + '" target="_blank" rel="noopener">&#127911; Ouvir o áudio</a>' : '') + '</div>' +
+          (r.resposta ? '<div style="margin-top:6px;padding:6px 10px;background:var(--superficie);"><b>Resposta (' + e(r.respondido) + '):</b> ' + e(r.resposta) + '</div>' : '') +
+          '</div>';
+      }).join('');
+    })
+    .catch(function (x) { st.textContent = 'Falha ao carregar: ' + x.message; })
     .finally(function () { btn.disabled = false; });
 }
 
